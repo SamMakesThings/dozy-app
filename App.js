@@ -6,6 +6,7 @@ import * as firebase from 'firebase';
 import '@firebase/firestore';
 import { Google } from 'expo';
 
+
 // Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDt4d8l9OnDz-sr3HhoMi9n7pB5EoDcCRo",
@@ -118,6 +119,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#232B3F',
   },
 });

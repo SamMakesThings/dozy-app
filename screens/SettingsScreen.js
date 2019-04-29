@@ -11,7 +11,7 @@ export default class SettingsScreen extends React.Component {
   };
   render() {
     return (
-      <View>
+      <View styles={{flex: 1, backgroundColor: "#232B3F"}}>
         <Text>MobX Demo</Text>
         <Button title={"Test"} onPress={this.toggleBox}>Toggle Box</Button>
         {this.boxVisible && <View style={styles.box} />}

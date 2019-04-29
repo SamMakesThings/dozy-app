@@ -128,7 +128,7 @@ class Root extends Component {
                 }
               ]}
             >
-              Photo by Max Kleinen on Unsplashh
+              Login powered by Google
             </Text>
           </Container>
         </Container>
