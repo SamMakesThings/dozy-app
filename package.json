@@ -20,8 +20,14 @@
     "react-navigation": "^3.0.9"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-preset-expo": "^5.0.0",
-    "jest-expo": "^32.0.0"
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "jest-expo": "^32.0.0",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.3"
   },
   "private": true
 }

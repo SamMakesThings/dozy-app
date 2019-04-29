@@ -1,14 +1,30 @@
-import React from 'react';
-import { ExpoConfigView } from '@expo/samples';
+import React, { Component } from "react";
+import { observer } from "mobx-react";
+import { observable } from "mobx";
+import { View, Text, Button } from "react-native";
 
+@observer
 export default class SettingsScreen extends React.Component {
-  static navigationOptions = {
-    title: 'app.json',
+  @observable boxVisible = true;
+  toggleBox = () => {
+    this.boxVisible = !this.boxVisible;
   };
-
   render() {
-    /* Go ahead and delete ExpoConfigView and replace it with your
-     * content, we just wanted to give you a quick view of your config */
-    return <ExpoConfigView />;
+    return (
+      <View>
+        <Text>MobX Demo</Text>
+        <Button title={"Test"} onPress={this.toggleBox}>Toggle Box</Button>
+        {this.boxVisible && <View style={styles.box} />}
+      </View>
+    );
   }
 }
+
+const styles = {
+  box: {
+    margin: 10,
+    height: 200,
+    width: 200,
+    backgroundColor: "red"
+  }
+};
