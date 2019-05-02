@@ -4,8 +4,10 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import * as firebase from 'firebase';
 import '@firebase/firestore';
+import { timerFix } from './timerFix'
 import { Google } from 'expo';
 
+timerFix;
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -35,35 +37,7 @@ docRef.get().then(function(doc) {
 });
 
 // Google sign-in functionality
-const clientId = '713165282203-jjc54if1n7krahda9gvkio0siqltq57t.apps.googleusercontent.com';
-
-const _loginWithGoogle = async function() {
-  try {
-    const result = await Expo.Google.logInAsync({
-      androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",
-      iosClientId:"YOUR_iOS_CLIENT_ID",
-      scopes: ["profile", "email"]
-    });
-
-    if (result.type === "success") {
-      const { idToken, accessToken } = result;
-      const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-      firebase
-        .auth()
-        .signInAndRetrieveDataWithCredential(credential)
-        .then(res => {
-          // user res, create your user, do whatever you want
-        })
-        .catch(error => {
-          console.log("firebase cred err:", error);
-        });
-    } else {
-      return { cancelled: true };
-    }
-  } catch (err) {
-    console.log("err:", err);
-  }
-};
+// const clientId = '713165282203-jjc54if1n7krahda9gvkio0siqltq57t.apps.googleusercontent.com';
 
 export default class App extends React.Component {
   state = {

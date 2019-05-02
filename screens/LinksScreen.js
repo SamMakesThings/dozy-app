@@ -12,6 +12,7 @@ import {
   FlatList
 } from "react-native";
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
+import * as firebase from 'firebase';
 
 // Google login function
 const _loginWithGoogle = async function() {
@@ -30,6 +31,7 @@ const _loginWithGoogle = async function() {
         .signInAndRetrieveDataWithCredential(credential)
         .then(res => {
           // user res, create your user, do whatever you want
+          console.log("hey, the login worked! using the LinksScreen.js snippet.");
         })
         .catch(error => {
           console.log("firebase cred err:", error);
@@ -38,7 +40,7 @@ const _loginWithGoogle = async function() {
       return { cancelled: true };
     }
   } catch (err) {
-    console.log("err:", err);
+    console.log("err from LinksScreen.js:", err);
   }
 };
 
