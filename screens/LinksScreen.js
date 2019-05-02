@@ -11,8 +11,8 @@ import {
   TextInput,
   FlatList
 } from "react-native";
+import firebase from "../config/firebase";
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
-import * as firebase from 'firebase';
 
 // Google login function
 const _loginWithGoogle = async function() {
@@ -26,6 +26,8 @@ const _loginWithGoogle = async function() {
     if (result.type === "success") {
       const { idToken, accessToken } = result;
       const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+      console.log("Trying Firebase calls...");
+      await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       firebase
         .auth()
         .signInAndRetrieveDataWithCredential(credential)

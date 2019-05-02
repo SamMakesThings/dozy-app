@@ -2,23 +2,12 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
-import * as firebase from 'firebase';
+import firebase from "./config/firebase";
 import '@firebase/firestore';
 import { timerFix } from './timerFix'
-import { Google } from 'expo';
+// import { Google } from 'expo';
 
-timerFix;
-
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyDt4d8l9OnDz-sr3HhoMi9n7pB5EoDcCRo",
-  authDomain: "slumber-app.firebaseapp.com",
-  databaseURL: "https://slumber-app.firebaseio.com",
-  projectId: "slumber-app",
-  storageBucket: "slumber-app.appspot.com"
-};
-
-firebase.initializeApp(firebaseConfig);
+// timerFix; (I think this breaks Firebase somehow?)
 
 // Making Firestore happen, testing data retrieval
 var db = firebase.firestore();

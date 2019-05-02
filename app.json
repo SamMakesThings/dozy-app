@@ -24,6 +24,15 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "extra": {
+      "firebase": {
+        "apiKey": "AIzaSyDt4d8l9OnDz-sr3HhoMi9n7pB5EoDcCRo",
+        "authDomain": "slumber-app.firebaseapp.com",
+        "databaseURL": "https://slumber-app.firebaseio.com",
+        "projectId": "slumber-app",
+        "storageBucket": "slumber-app.appspot.com"
+      }
     }
   }
 }

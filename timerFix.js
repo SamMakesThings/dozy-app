@@ -1,4 +1,4 @@
-import {Platform, InteractionManager} from 'react-native';
+/* import {Platform, InteractionManager} from 'react-native';
 
 const _setTimeout = global.setTimeout;
 const _clearTimeout = global.clearTimeout;
@@ -42,4 +42,4 @@ if (Platform.OS === 'android') {
         }
         _clearTimeout(id);
     };
-}
+} */
