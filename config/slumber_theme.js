@@ -10,7 +10,7 @@ export const slumber_theme = {
     "large": 16
   },
   "borderRadius": {
-    "global": 6,
+    "global": 3,
     "button": 24
   },
   "typography": {
