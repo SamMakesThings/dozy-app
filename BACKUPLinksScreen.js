@@ -11,41 +11,12 @@ import {
   TextInput,
   FlatList
 } from "react-native";
-import firebase from "../config/firebase";
+import { FbAuth, FbLib } from "../config/firebaseConfig";
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
+import { observer } from "mobx-react";
+// import stores from '../stores/stores';
 
-// Google login function
-const _loginWithGoogle = async function() {
-  try {
-    const result = await Expo.Google.logInAsync({
-      androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",
-      iosClientId:"YOUR_iOS_CLIENT_ID",
-      scopes: ["profile", "email"]
-    });
-
-    if (result.type === "success") {
-      const { idToken, accessToken } = result;
-      const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-      console.log("Trying Firebase calls...");
-      await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-      firebase
-        .auth()
-        .signInAndRetrieveDataWithCredential(credential)
-        .then(res => {
-          // user res, create your user, do whatever you want
-          console.log("hey, the login worked! using the LinksScreen.js snippet.");
-        })
-        .catch(error => {
-          console.log("firebase cred err:", error);
-        });
-    } else {
-      return { cancelled: true };
-    }
-  } catch (err) {
-    console.log("err from LinksScreen.js:", err);
-  }
-};
-
+// @observer
 class Root extends Component {
   state = {};
 
@@ -55,7 +26,42 @@ class Root extends Component {
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content");
-  }
+  };
+
+  _loginWithGoogle = async function() {
+    try {
+      const result = await Expo.Google.logInAsync({
+        androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",
+        iosClientId:"YOUR_iOS_CLIENT_ID",
+        scopes: ["profile", "email"]
+      });
+  
+      if (result.type === "success") {
+        const { idToken, accessToken } = result;
+        const credential = FbLib.auth.GoogleAuthProvider.credential(idToken, accessToken);
+        console.log("Trying Firebase calls...");
+        await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
+        FbAuth
+          .signInAndRetrieveDataWithCredential(credential)
+          .then(res => {
+            // user res, create your user, do whatever you want
+            console.log("hey, the login worked! using the LinksScreen.js snippet.");
+            console.log("here's the result: " + JSON.stringify(res));
+            // App.state.user = res;
+            // stores.fbUserStore.user = res;
+            // console.log("Firebase user store added as: " + JSON.stringify(stores.fbUserStore.user));
+            // console.log(App.state.user);
+          })
+          .catch(error => {
+            console.log("firebase cred err:", error);
+          });
+      } else {
+        return { cancelled: true };
+      }
+    } catch (err) {
+      console.log("err from LinksScreen.js:", err);
+    }
+  };
 
   render() {
     const { theme } = this.props;
