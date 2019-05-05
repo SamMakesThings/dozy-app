@@ -14,8 +14,10 @@
   "dependencies": {
     "@draftbit/ui": "^2.12.3",
     "@expo/samples": "2.1.1",
+    "date-time-format-timezone": "^1.0.21",
     "expo": "^32.0.0",
     "firebase": "^5.10.0",
+    "intl": "^1.2.5",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-typography": "^1.4.0",

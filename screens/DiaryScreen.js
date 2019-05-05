@@ -9,346 +9,401 @@ import {
   ImageBackground,
   Text,
   TextInput,
-  FlatList
+  FlatList,
+  Platform
 } from "react-native";
 import { withTheme, ScreenContainer, Container } from "@draftbit/ui";
 import { slumber_theme } from "../config/slumber_theme";
 import { FbAuth, FbLib } from "../config/firebaseConfig";
 import '@firebase/firestore';
+import Intl from 'intl';
+if (Platform.OS === 'android') {
+  require('intl/locale-data/jsonp/en-US');
+  require('intl/locale-data/jsonp/tr-TR');
+  require('date-time-format-timezone');
+  Intl.__disableRegExpRestore();/*For syntaxerror invalid regular expression unmatched parentheses*/
+}
+import GLOBAL from '../global';
 
-GLOBAL = require('../global');
+class SleepLogEntryCard extends Component {
+    constructor(props) {
+        super(props);
+    }
 
-class Root extends Component {
-  state = {};
-
-  static navigationOptions = {
-    header: null,
-  };
-
-  componentDidMount() {
-    StatusBar.setBarStyle("light-content");
-  }
-
-  fetchSleepLogs() {
-    // Making Firestore happen, testing data retrieval
-    
-    var db = FbLib.firestore();
-
-    var docRef = db.collection("sleep-logs").doc(GLOBAL.userData.uid);
-
-    docRef.get().then(function(doc) {
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
-    });
-  }
-
-  render() {
-    const theme = slumber_theme;
-    return (
-        <ScreenContainer style={{backgroundColor: "#232B3F"}} hasSafeArea={true} scrollable={false}>
-            <Container elevation={0} useThemeGutterPadding={true}>
-                <Container elevation={0} useThemeGutterPadding={true}>
+    render () {
+        const theme = slumber_theme;
+        return (
+            <Container
+            style={{
+                marginTop: 20
+            }}
+            elevation={0}
+            useThemeGutterPadding={false}
+            >
+                <Container
+                    style={{
+                    paddingLeft: 0,
+                    marginLeft: 28,
+                    marginBottom: 2
+                    }}
+                    elevation={0}
+                    useThemeGutterPadding={false}
+                >
                     <Text
                     style={[
-                        theme.typography.headline4,
+                        theme.typography.headline6,
                         {
-                        color: theme.colors.secondary,
-                        textAlign: "center",
+                        color: theme.colors.light,
 
-                        width: "100%",
-                        marginTop: 30
+                        width: "100%"
                         }
                     ]}
                     >
-                    April 2019
+                        {this.props.sleepLog.upTime.toDate().toLocaleString('en-US', { weekday: 'long', month:'long', day:'numeric' })}
                     </Text>
                 </Container>
-            </Container>
-            <Container elevation={0} useThemeGutterPadding={true}>
-                <ScrollView horizontal={false}>
+                <Container
+                    style={{
+                    minHeight: 200,
+                    alignContent: "flex-start",
+                    flexDirection: "row",
+                    paddingVertical: 10,
+                    borderRadius: theme.borderRadius.global,
+                    overflow: "hidden"
+                    }}
+                    elevation={2}
+                    backgroundColor={theme.colors.medium}
+                    useThemeGutterPadding={true}
+                >
                     <Container
                     style={{
-                        marginTop: 2
+                        width: "33%",
+                        justifyContent: "space-between",
+                        alignItems: "space-between"
                     }}
                     elevation={0}
                     useThemeGutterPadding={false}
                     >
                     <Container
                         style={{
-                        paddingLeft: 0,
-                        marginLeft: 28,
-                        marginBottom: 2
+                        width: "94%",
+                        alignSelf: "flex-start",
+                        marginHorizontal: 0,
+                        borderRadius: theme.borderRadius.button,
+                        overflow: "hidden"
                         }}
                         elevation={0}
+                        backgroundColor={theme.colors.primary}
                         useThemeGutterPadding={false}
                     >
                         <Text
                         style={[
                             theme.typography.headline6,
                             {
-                            color: theme.colors.light,
+                            color: theme.colors.secondary,
+                            textAlign: "center",
 
-                            width: "100%"
+                            width: "100%",
+                            paddingVertical: 8,
+                            paddingHorizontal: 2
                             }
                         ]}
                         >
-                        Monday, April 15
+                        {this.props.sleepLog.bedTime.toDate().toLocaleString('en-US', {hour:'numeric',minute:'numeric'})}
                         </Text>
                     </Container>
+                    <Text
+                        style={{
+                        color: theme.colors.light,
+                        textAlign: "center",
+
+                        width: "100%",
+                        paddingLeft: 50,
+                        paddingTop: 1,
+                        paddingBottom: 0
+                        }}
+                    >
+                        {this.props.sleepLog.fallAsleepTime.toDate().toLocaleString('en-US', {hour:'numeric',minute:'numeric'}).slice(0,-3)}
+                    </Text>
+                    <Text
+                        style={{
+                        color: theme.colors.light,
+                        textAlign: "center",
+
+                        width: "100%",
+                        paddingLeft: 50,
+                        paddingTop: 12,
+                        marginLeft: 0
+                        }}
+                    >
+                        {this.props.sleepLog.wakeTime.toDate().toLocaleString('en-US', {hour:'numeric',minute:'numeric'}).slice(0,-3)}
+                    </Text>
                     <Container
                         style={{
-                        minHeight: 200,
-                        alignContent: "flex-start",
-                        flexDirection: "row",
-                        paddingVertical: 10,
-                        borderRadius: theme.borderRadius.global,
+                        width: "94%",
+                        alignSelf: "flex-start",
+                        borderRadius: theme.borderRadius.button,
                         overflow: "hidden"
                         }}
-                        elevation={2}
-                        backgroundColor={theme.colors.medium}
-                        useThemeGutterPadding={true}
+                        elevation={0}
+                        backgroundColor={theme.colors.secondary}
+                        useThemeGutterPadding={false}
                     >
-                        <Container
-                        style={{
-                            width: "33%",
-                            justifyContent: "space-between",
-                            alignItems: "space-between"
-                        }}
-                        elevation={0}
-                        useThemeGutterPadding={false}
-                        >
-                        <Container
-                            style={{
-                            width: "94%",
-                            alignSelf: "flex-start",
-                            marginHorizontal: 0,
-                            borderRadius: theme.borderRadius.global,
-                            overflow: "hidden"
-                            }}
-                            elevation={0}
-                            backgroundColor={theme.colors.primary}
-                            useThemeGutterPadding={false}
-                        >
-                            <Text
-                            style={[
-                                theme.typography.headline6,
-                                {
-                                color: theme.colors.secondary,
-                                textAlign: "center",
-
-                                width: "100%",
-                                paddingVertical: 8,
-                                paddingHorizontal: 2
-                                }
-                            ]}
-                            >
-                            11:03 PM
-                            </Text>
-                        </Container>
                         <Text
-                            style={{
+                        style={[
+                            theme.typography.headline6,
+                            {
+                            color: theme.colors.primary,
+                            textAlign: "center",
+
+                            width: "100%",
+                            paddingVertical: 8,
+                            paddingHorizontal: 2
+                            }
+                        ]}
+                        >
+                        {this.props.sleepLog.upTime.toDate().toLocaleString('en-US', {hour:'numeric',minute:'numeric'})}
+                        </Text>
+                    </Container>
+                    </Container>
+                    <Container
+                    style={{
+                        width: "27%",
+                        justifyContent: "space-between",
+                        alignItems: "space-between",
+                        paddingVertical: 8
+                    }}
+                    elevation={0}
+                    useThemeGutterPadding={false}
+                    >
+                    <Text
+                        style={[
+                        theme.typography.subtitle2,
+                        {
                             color: theme.colors.light,
                             textAlign: "left",
 
-                            width: "100%",
-                            paddingLeft: 50,
-                            paddingTop: 1,
-                            paddingBottom: 0
-                            }}
-                        >
-                            11:56
-                        </Text>
-                        <Text
-                            style={{
+                            width: "100%"
+                        }
+                        ]}
+                    >
+                        bedtime
+                    </Text>
+                    <Text
+                        style={[
+                        theme.typography.subtitle2,
+                        {
                             color: theme.colors.light,
                             textAlign: "left",
 
+                            width: "100%"
+                        }
+                        ]}
+                    >
+                        fell asleep
+                    </Text>
+                    <Text
+                        style={[
+                        theme.typography.subtitle2,
+                        {
+                            color: theme.colors.light,
+                            textAlign: "left",
+
+                            width: "100%"
+                        }
+                        ]}
+                    >
+                        woke up
+                    </Text>
+                    <Text
+                        style={[
+                        theme.typography.subtitle2,
+                        {
+                            color: theme.colors.light,
+                            textAlign: "left",
+
+                            width: "100%"
+                        }
+                        ]}
+                    >
+                        got up
+                    </Text>
+                    </Container>
+                    <Container
+                    style={{
+                        width: "40%",
+                        alignItems: "space-between",
+                        alignSelf: "stretch",
+                        alignContent: "space-between"
+                    }}
+                    elevation={0}
+                    useThemeGutterPadding={false}
+                    >
+                    <Text
+                        style={[
+                        theme.typography.headline4,
+                        {
+                            color: theme.colors.secondary,
+                            textAlign: "right",
+
                             width: "100%",
-                            paddingLeft: 50,
-                            paddingTop: 12,
-                            marginLeft: 0
-                            }}
-                        >
-                            7:44
-                        </Text>
-                        <Container
-                            style={{
-                            width: "94%",
-                            alignSelf: "flex-start",
-                            borderRadius: theme.borderRadius.global,
-                            overflow: "hidden"
-                            }}
-                            elevation={0}
-                            backgroundColor={theme.colors.secondary}
-                            useThemeGutterPadding={false}
-                        >
-                            <Text
-                            style={[
-                                theme.typography.headline6,
-                                {
-                                color: theme.colors.primary,
-                                textAlign: "center",
+                            position: "absolute"
+                        }
+                        ]}
+                    >
+                        {+(this.props.sleepLog.sleepDuration / 60).toFixed(1)} hours
+                    </Text>
+                    <Text
+                        style={[
+                        theme.typography.subtitle2,
+                        {
+                            color: theme.colors.light,
+                            textAlign: "right",
 
-                                width: "100%",
-                                paddingVertical: 8,
-                                paddingHorizontal: 2
-                                }
-                            ]}
-                            >
-                            9:05 AM
-                            </Text>
-                        </Container>
-                        </Container>
-                        <Container
-                        style={{
-                            width: "27%",
-                            justifyContent: "space-between",
-                            alignItems: "space-between",
-                            paddingVertical: 8
-                        }}
-                        elevation={0}
-                        useThemeGutterPadding={false}
-                        >
-                        <Text
-                            style={[
-                            theme.typography.subtitle2,
-                            {
-                                color: theme.colors.light,
-                                textAlign: "left",
+                            width: "100%",
+                            paddingTop: 0,
+                            marginTop: 23
+                        }
+                        ]}
+                    >
+                        duration
+                    </Text>
+                    <Text
+                        style={[
+                        theme.typography.headline4,
+                        {
+                            color: theme.colors.secondary,
+                            textAlign: "right",
 
-                                width: "100%"
-                            }
-                            ]}
-                        >
-                            bedtime
-                        </Text>
-                        <Text
-                            style={[
-                            theme.typography.subtitle2,
-                            {
-                                color: theme.colors.light,
-                                textAlign: "left",
+                            width: "100%",
+                            paddingBottom: 0,
+                            marginTop: 0,
+                            marginBottom: 13,
+                            bottom: 0,
+                            position: "absolute"
+                        }
+                        ]}
+                    >
+                        {(this.props.sleepLog.sleepEfficiency).toString().slice(2)}%
+                    </Text>
+                    <Text
+                        style={[
+                        theme.typography.subtitle2,
+                        {
+                            color: theme.colors.light,
+                            textAlign: "right",
 
-                                width: "100%"
-                            }
-                            ]}
-                        >
-                            fell asleep
-                        </Text>
-                        <Text
-                            style={[
-                            theme.typography.subtitle2,
-                            {
-                                color: theme.colors.light,
-                                textAlign: "left",
-
-                                width: "100%"
-                            }
-                            ]}
-                        >
-                            woke up
-                        </Text>
-                        <Text
-                            style={[
-                            theme.typography.subtitle2,
-                            {
-                                color: theme.colors.light,
-                                textAlign: "left",
-
-                                width: "100%"
-                            }
-                            ]}
-                        >
-                            got up
-                        </Text>
-                        </Container>
-                        <Container
-                        style={{
-                            width: "40%",
-                            alignItems: "space-between",
-                            alignSelf: "stretch",
-                            alignContent: "space-between"
-                        }}
-                        elevation={0}
-                        useThemeGutterPadding={false}
-                        >
-                        <Text
-                            style={[
-                            theme.typography.headline4,
-                            {
-                                color: theme.colors.secondary,
-                                textAlign: "right",
-
-                                width: "100%",
-                                position: "absolute"
-                            }
-                            ]}
-                        >
-                            6h 30m
-                        </Text>
-                        <Text
-                            style={[
-                            theme.typography.subtitle2,
-                            {
-                                color: theme.colors.light,
-                                textAlign: "right",
-
-                                width: "100%",
-                                paddingTop: 0,
-                                marginTop: 23
-                            }
-                            ]}
-                        >
-                            duration
-                        </Text>
-                        <Text
-                            style={[
-                            theme.typography.headline4,
-                            {
-                                color: theme.colors.secondary,
-                                textAlign: "right",
-
-                                width: "100%",
-                                paddingBottom: 0,
-                                marginTop: 0,
-                                marginBottom: 13,
-                                bottom: 0,
-                                position: "absolute"
-                            }
-                            ]}
-                        >
-                            65%
-                        </Text>
-                        <Text
-                            style={[
-                            theme.typography.subtitle2,
-                            {
-                                color: theme.colors.light,
-                                textAlign: "right",
-
-                                width: "100%",
-                                bottom: 0,
-                                position: "absolute"
-                            }
-                            ]}
-                            onPress={() => this.fetchSleepLogs()}
-                        >
-                            sleep efficiency
-                        </Text>
-                        </Container>
+                            width: "100%",
+                            bottom: 0,
+                            position: "absolute"
+                        }
+                        ]}
+                    >
+                        sleep efficiency
+                    </Text>
                     </Container>
-                    </Container>
-                </ScrollView>
+                </Container>
             </Container>
-        </ScreenContainer>
-    );
-  }
+        )
+    }
+}
+
+class SleepLogsView extends Component {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        if (this.props.sleepLogs) {
+            console.log("props worked");
+            // console.log(this.props.sleepLogs);
+            const sleepLogs = Object.keys(this.props.sleepLogs).map((key) => {
+                return this.props.sleepLogs[key];
+            });
+            console.log(sleepLogs);
+            return(
+                <ScrollView horizontal={false}>
+                    {sleepLogs.map((log, index) => {
+                        return (
+                            <SleepLogEntryCard sleepLog={log} key={log.upTime.seconds}/>
+                        )
+                        })}
+                </ScrollView>
+            );
+        } else { //
+            console.log("props didn't work");
+            return (<Text>It didn't work...</Text>)
+        }
+    }
+}
+
+class Root extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            sleepLogs: null
+        }
+    };
+
+    static navigationOptions = {
+        header: null,
+    };
+
+    componentDidMount() {
+        StatusBar.setBarStyle("light-content");
+        console.log(GLOBAL.userData.uid);
+        setTimeout(() => this.fetchSleepLogs(), 2000)
+    };
+
+    fetchSleepLogs = () => {
+        // Retrieving sleep logs from Firestore
+        
+        var db = FbLib.firestore();
+
+        var docRef = db.collection("sleep-logs").doc(GLOBAL.userData.uid);
+
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                this.setState({ sleepLogs: doc.data() });
+                // console.log("Sleep logs:", this.state.sleepLogs);
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such log!");
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+    };
+
+    render() {
+        const theme = slumber_theme;
+        return (
+            <ScreenContainer style={{backgroundColor: "#232B3F"}} hasSafeArea={true} scrollable={false}>
+                <Container elevation={0} useThemeGutterPadding={true}>
+                    <Container elevation={0} useThemeGutterPadding={true}>
+                        <Text
+                        style={[
+                            theme.typography.headline4,
+                            {
+                            color: theme.colors.secondary,
+                            textAlign: "center",
+
+                            width: "100%",
+                            marginTop: 30
+                            }
+                        ]}
+                        >
+                        April 2019
+                        </Text>
+                    </Container>
+                </Container>
+                <Container elevation={0} useThemeGutterPadding={true}>
+                    <SleepLogsView sleepLogs={this.state.sleepLogs}></SleepLogsView>
+                </Container>
+            </ScreenContainer>
+        );
+    }
 }
 
 export default withTheme(Root);
