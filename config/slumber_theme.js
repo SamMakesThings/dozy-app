@@ -67,8 +67,7 @@ export const slumber_theme = {
       "fontSize": 24,
       "lineHeight": 32,
       "letterSpacing": 0,
-      "fontWeight": null,
-      "fontFamily": "System"
+      ...systemWeights.semibold
     },
     "headline5": {
       "fontSize": 20,
