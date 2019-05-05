@@ -13,11 +13,10 @@ import {
 } from "react-native";
 import { FbAuth, FbLib } from "../config/firebaseConfig";
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
-import { observer } from "mobx-react";
-import stores from '../stores/stores';
+GLOBAL = require('../global');
 
 // @observer // THIS OBSERVER breaks the screen for some reason?
-class Root extends Component {
+class LoginTest extends Component {
   state = {};
 
   static navigationOptions = {
@@ -47,10 +46,8 @@ class Root extends Component {
             // user res, create your user, do whatever you want
             console.log("hey, the login worked! using the LinksScreen.js snippet.");
             console.log("here's the result: " + JSON.stringify(res));
-            // App.state.user = res;
-            // stores.fbUserStore.user = res;
-            // console.log("Firebase user store added as: " + JSON.stringify(stores.fbUserStore.user));
-            // console.log(App.state.user);
+            GLOBAL.userData = res;
+            console.log(GLOBAL.userData);
           })
           .catch(error => {
             console.log("firebase cred err:", error);
@@ -123,6 +120,7 @@ class Root extends Component {
               }}
               type="solid"
               color={theme.colors.primary}
+              onPress={() => console.log(GLOBAL.userData)}
             >
               Sign Up
             </Button>
@@ -147,4 +145,4 @@ class Root extends Component {
   }
 }
 
-export default withTheme(Root);
+export default withTheme(LoginTest);

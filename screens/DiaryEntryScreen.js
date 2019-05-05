@@ -21,6 +21,7 @@ import {
   Button
 } from "@draftbit/ui";
 import { slumber_theme } from "../config/slumber_theme";
+GLOBAL = require('../global');
 
 class Root extends Component {
   state = {};
@@ -109,7 +110,7 @@ class Root extends Component {
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Button type="solid" loading={false} disabled={false} color={theme.colors.primary}>
+          <Button type="solid" loading={false} disabled={false} color={theme.colors.primary} onPress={() => console.log(GLOBAL.userData)}>
             Next
           </Button>
         </Container>

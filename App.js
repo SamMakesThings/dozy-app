@@ -2,23 +2,12 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
-import { FbApp, FbAuth } from "./config/firebaseConfig";
+import { FbAuth } from "./config/firebaseConfig";
 import '@firebase/firestore';
-import { Provider, observer } from "mobx-react";
-import { observable, action } from "mobx"; 
-// import { FbUserStore } from "./stores/fbUserStores";
-import stores from './stores/stores';
+GLOBAL = require('./global');
 
-/* class FbUserStore {
-  @observable user = null;
-
-  @action setUser (userData) {
-      this.user = userData;
-  }
-} */
 
 export default class App extends React.Component {
-  @observable
   state = {
     isLoadingComplete: false,
     user: null,
@@ -26,7 +15,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.subscribeAuthChange(fbUser => { this.setState({ user: fbUser }); console.log("User login data: " + JSON.stringify(this.state.user));});
-    
+    this.subscribeAuthChange(fbUser => { GLOBAL.userData = fbUser });
   }
 
   subscribeAuthChange(callback = (user) => void 0) {
@@ -46,7 +35,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator /* applicationState={stores.fbUserStore} *//>
+          <AppNavigator />
         </View>
       );
     }
