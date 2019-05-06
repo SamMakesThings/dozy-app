@@ -14,7 +14,7 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
-    this.subscribeAuthChange(fbUser => { this.setState({ user: fbUser }); console.log("User login data: " + JSON.stringify(this.state.user));});
+    this.subscribeAuthChange(fbUser => { this.setState({ user: fbUser }); console.log(this.state.user);});
     this.subscribeAuthChange(fbUser => { GLOBAL.userData = fbUser });
   }
 

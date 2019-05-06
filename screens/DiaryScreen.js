@@ -17,6 +17,7 @@ import { slumber_theme } from "../config/slumber_theme";
 import { FbAuth, FbLib } from "../config/firebaseConfig";
 import '@firebase/firestore';
 import Intl from 'intl';
+import { SecureStore } from 'expo';
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/tr-TR');
@@ -349,19 +350,28 @@ class Root extends React.Component {
     static navigationOptions = {
         header: null,
     };
+    
+    _fetchUidFromAsync = async () => {
+        userId = await SecureStore.getItemAsync('userData');
+        this.fetchSleepLogs();
+        return userId;
+    }
 
-    componentDidMount() {
+    componentDidMount = () => {
         StatusBar.setBarStyle("light-content");
-        console.log(GLOBAL.userData.uid);
-        setTimeout(() => this.fetchSleepLogs(), 2000)
+        // console.log(GLOBAL.userData.uid);
+        // setTimeout(() => this.fetchSleepLogs(), 2000);
+        this._fetchUidFromAsync();
     };
 
-    fetchSleepLogs = () => {
+    fetchSleepLogs = async () => {
         // Retrieving sleep logs from Firestore
         
         var db = FbLib.firestore();
 
-        var docRef = db.collection("sleep-logs").doc(GLOBAL.userData.uid);
+        userId = await SecureStore.getItemAsync('userData');
+
+        var docRef = db.collection("sleep-logs").doc(userId); //CHANGE THIS CALL
 
         docRef.get().then((doc) => {
             if (doc.exists) {
@@ -394,7 +404,7 @@ class Root extends React.Component {
                             }
                         ]}
                         >
-                        April 2019
+                        Sleep diary
                         </Text>
                     </Container>
                 </Container>

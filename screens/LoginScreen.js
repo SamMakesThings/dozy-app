@@ -9,25 +9,39 @@ import {
   ImageBackground,
   Text,
   TextInput,
-  FlatList
+  FlatList,
+  AsyncStorage
 } from "react-native";
 import { FbAuth, FbLib } from "../config/firebaseConfig";
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
+import { SecureStore } from 'expo';
 GLOBAL = require('../global');
 
 // @observer // THIS OBSERVER breaks the screen for some reason?
-class LoginTest extends Component {
-  state = {};
+class LoginScreen extends Component {
+  constructor (props) {
+    super(props);
+    state={}
+  }
 
   static navigationOptions = {
     header: null,
+
   };
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content");
   };
 
-  _loginWithGoogle = async function() {
+  _signInAsync = async (userData) => {
+    console.log("this is just before the _signInAsync function is called.");
+    // console.log(userData.uid);
+    await SecureStore.setItemAsync('userData', userData.user.uid);
+    console.log("this is just after the _signInAsync function is called.");
+    this.props.navigation.navigate('App');
+  }
+
+  _loginWithGoogle = async () => {
     try {
       const result = await Expo.Google.logInAsync({
         androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",
@@ -38,16 +52,17 @@ class LoginTest extends Component {
       if (result.type === "success") {
         const { idToken, accessToken } = result;
         const credential = FbLib.auth.GoogleAuthProvider.credential(idToken, accessToken);
-        console.log("Trying Firebase calls...");
         await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
         FbAuth
           .signInAndRetrieveDataWithCredential(credential)
           .then(res => {
             // user res, create your user, do whatever you want
-            console.log("hey, the login worked! using the LinksScreen.js snippet.");
-            console.log("here's the result: " + JSON.stringify(res));
+            console.log("hey, the login worked!");
+            // console.log("here's the result: " + JSON.stringify(res));
             GLOBAL.userData = res;
-            console.log(GLOBAL.userData);
+            console.log(res.user.uid);
+            // console.log(GLOBAL.userData);
+            this._signInAsync(res);
           })
           .catch(error => {
             console.log("firebase cred err:", error);
@@ -145,4 +160,50 @@ class LoginTest extends Component {
   }
 }
 
-export default withTheme(LoginTest);
+export default withTheme(LoginScreen);
+
+/*
+class SignInScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Please sign in',
+  };
+
+  render() {
+    return (
+      <View>
+        <Button title="Sign in!" onPress={this._signInAsync} />
+      </View>
+    );
+  }
+
+  _signInAsync = async () => {
+    await AsyncStorage.setItem('userToken', 'abc');
+    this.props.navigation.navigate('App');
+  };
+}
+
+class HomeScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Welcome to the app!',
+  };
+
+  render() {
+    return (
+      <View>
+        <Button title="Show me more of the app" onPress={this._showMoreApp} />
+        <Button title="Actually, sign me out :)" onPress={this._signOutAsync} />
+      </View>
+    );
+  }
+
+  _showMoreApp = () => {
+    this.props.navigation.navigate('Other');
+  };
+
+  _signOutAsync = async () => {
+    await AsyncStorage.clear();
+    this.props.navigation.navigate('Auth');
+  };
+}
+
+*/
