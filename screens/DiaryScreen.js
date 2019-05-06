@@ -12,7 +12,7 @@ import {
   FlatList,
   Platform
 } from "react-native";
-import { withTheme, ScreenContainer, Container } from "@draftbit/ui";
+import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
 import { slumber_theme } from "../config/slumber_theme";
 import { FbAuth, FbLib } from "../config/firebaseConfig";
 import '@firebase/firestore';
@@ -315,6 +315,7 @@ class SleepLogsView extends Component {
     }
 
     render() {
+        const theme = slumber_theme;
         if (this.props.sleepLogs) {
             console.log("props worked");
             // console.log(this.props.sleepLogs);
@@ -324,6 +325,17 @@ class SleepLogsView extends Component {
             console.log(sleepLogs);
             return(
                 <ScrollView horizontal={false}>
+                    <Button
+                    icon="Ionicons/ios-add-circle"
+                    type="solid"
+                    color={theme.colors.primary}
+                    style={{
+                        marginTop: 35,
+                    }}
+                    onPress={() => this.props.logEntryRedirect()}
+                    >
+                        How did you sleep last night?
+                    </Button>
                     {sleepLogs.map((log, index) => {
                         return (
                             <SleepLogEntryCard sleepLog={log} key={log.upTime.seconds}/>
@@ -332,8 +344,23 @@ class SleepLogsView extends Component {
                 </ScrollView>
             );
         } else { //
-            console.log("props didn't work");
-            return (<Text>It didn't work...</Text>)
+            const theme = slumber_theme;
+            return (
+                <Text
+                    style={[
+                    theme.typography.headline6,
+                    {
+                        color: theme.colors.secondary,
+                        textAlign: "right",
+
+                        width: "100%",
+                        position: "absolute"
+                    }
+                    ]}
+                >
+                    Seems like you haven't logged any data yet.
+                </Text>
+            )
         }
     }
 }
@@ -359,8 +386,6 @@ class Root extends React.Component {
 
     componentDidMount = () => {
         StatusBar.setBarStyle("light-content");
-        // console.log(GLOBAL.userData.uid);
-        // setTimeout(() => this.fetchSleepLogs(), 2000);
         this._fetchUidFromAsync();
     };
 
@@ -386,6 +411,10 @@ class Root extends React.Component {
         });
     };
 
+    goToLogEntry = () => {
+        this.props.navigation.navigate('SleepDiaryEntry');
+    }
+
     render() {
         const theme = slumber_theme;
         return (
@@ -409,7 +438,7 @@ class Root extends React.Component {
                     </Container>
                 </Container>
                 <Container elevation={0} useThemeGutterPadding={true}>
-                    <SleepLogsView sleepLogs={this.state.sleepLogs}></SleepLogsView>
+                    <SleepLogsView sleepLogs={this.state.sleepLogs} logEntryRedirect={this.goToLogEntry}></SleepLogsView>
                 </Container>
             </ScreenContainer>
         );
