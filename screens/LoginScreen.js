@@ -135,7 +135,7 @@ class LoginScreen extends Component {
               }}
               type="solid"
               color={theme.colors.primary}
-              onPress={() => console.log(GLOBAL.userData)}
+              onPress={this._loginWithGoogle}
             >
               Sign Up
             </Button>

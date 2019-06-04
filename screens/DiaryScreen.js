@@ -346,20 +346,33 @@ class SleepLogsView extends Component {
         } else { //
             const theme = slumber_theme;
             return (
-                <Text
-                    style={[
-                    theme.typography.headline6,
-                    {
-                        color: theme.colors.secondary,
-                        textAlign: "right",
+                <ScrollView horizontal={false}>
+                    <Button
+                    icon="Ionicons/ios-add-circle"
+                    type="solid"
+                    color={theme.colors.primary}
+                    style={{
+                        marginTop: 35,
+                    }}
+                    onPress={() => this.props.logEntryRedirect()}
+                    >
+                        How did you sleep last night?
+                    </Button>
+                    <Text
+                        style={[
+                        theme.typography.headline6,
+                        {
+                            color: theme.colors.secondary,
+                            textAlign: "right",
 
-                        width: "100%",
-                        position: "absolute"
-                    }
-                    ]}
-                >
-                    Seems like you haven't logged any data yet.
-                </Text>
+                            width: "100%",
+                            position: "absolute"
+                        }
+                        ]}
+                    >
+                        Seems like you haven't logged any data yet.
+                    </Text>
+                </ScrollView>
             )
         }
     }
