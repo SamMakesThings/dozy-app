@@ -9,7 +9,9 @@ import {
   ImageBackground,
   Text,
   TextInput,
-  FlatList
+  FlatList,
+  Platform,
+  TimePickerAndroid
 } from "react-native";
 import {
   withTheme,
@@ -23,7 +25,67 @@ import {
   Picker
 } from "@draftbit/ui";
 import { slumber_theme } from "../config/slumber_theme";
+import Intl from 'intl';
+if (Platform.OS === 'android') {
+  require('intl/locale-data/jsonp/en-US');
+  require('intl/locale-data/jsonp/tr-TR');
+  require('date-time-format-timezone');
+  Intl.__disableRegExpRestore();/*For syntaxerror invalid regular expression unmatched parentheses*/
+}
 GLOBAL = require('../global');
+
+class TimePicker extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { defaultTime: "10:00 PM" };
+  }
+
+  render() {
+    if (Platform.OS === "ios") {
+      console.log("iphone detected");
+      return(<Text>ios time picker not supported yet</Text>);
+    } else {
+      console.log("android detected");
+      return(
+        <TextField
+        type="underline"
+        // titleProp={inputTitle}
+        onChange={defaultTime =>
+          this.setState({ defaultTime })
+        }
+        value={this.state.defaultTime}
+        multiline={true}
+        placeholder="(press to select time)"
+        leftIconMode="inset"
+        onPress={async () => {
+          try {
+            const {action, hour, minute} = await TimePickerAndroid.open({
+              hour: 14,
+              minute: 0,
+              is24Hour: false, // Will display '2 PM'
+            });
+            if (action !== TimePickerAndroid.dismissedAction) {
+              // Selected hour (0-23), minute (0-59)
+              var timestamp = new Date();
+              timestamp.setHours(hour, minute, 0);
+              formattedTime = timestamp.toLocaleString('en-US', {hour:'numeric',minute:'numeric'});
+
+              console.log(formattedTime);
+              // const timeInputTitle = this.props.inputTitle;
+              // this.setState({ timeInputTitle: timestamp });
+              this.value = formattedTime;
+            }
+          } catch ({code, message}) {
+              console.warn('Cannot open time picker', message);
+            }
+          } 
+        }/>
+        
+      );
+    }
+  }
+}
 
 class Root extends Component {
   constructor(props) {
@@ -124,10 +186,10 @@ class Root extends Component {
             </Text>
             <TextField
               type="underline"
-              onChange={fallAsleepDuratio =>
-                this.setState({ fallAsleepDuratio })
+              onChange={fallAsleepDuration =>
+                this.setState({ fallAsleepDuration })
               }
-              value={this.state.fallAsleepDuratio}
+              value={this.state.fallAsleepDuration}
               multiline={true}
               placeholder="(in minutes)"
               keyboardType="number-pad"
@@ -222,13 +284,13 @@ class Root extends Component {
             >
               What time did you go to bed last night?
             </Text>
-            <DatePicker
+            <TimePicker
               type="underline"
               error={false}
               label="Woke up time"
               disabled={false}
               leftIconMode="inset"
-              onDateChange={this.onDateChange}
+              onChange={bedTime => this.setState({ bedTime })}
             />
           </Container>
           <Container
