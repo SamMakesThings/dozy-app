@@ -8,6 +8,7 @@ import LinksScreen from '../screens/LoginScreen';
 // import SettingsScreen from '../screens/MobXTest';
 import DiaryScreen from '../screens/DiaryScreen';
 import DiaryEntryScreen from '../screens/DiaryEntryScreen';
+import LogEntry8Screen from '../screens/form_screens/LogEntry8Screen';
 
 const HomeStack = createStackNavigator({
   Home: DiaryScreen,
@@ -32,7 +33,7 @@ HomeStack.navigationOptions = {
 };
 
 const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+  Links: LogEntry8Screen,
 });
 
 LinksStack.navigationOptions = {

@@ -282,9 +282,9 @@ class Root extends Component {
                 }
               ]}
             >
-              What time did you go to bed last night?
+              What time did you last wake up this morning?
             </Text>
-            <TimePicker
+            <DatePicker
               type="underline"
               error={false}
               label="Woke up time"
@@ -310,7 +310,7 @@ class Root extends Component {
                 }
               ]}
             >
-              What time did you go to bed last night?
+              What time did you get out of bed this morning?
             </Text>
             <DatePicker
               type="underline"

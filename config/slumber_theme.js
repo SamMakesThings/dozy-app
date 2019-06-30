@@ -114,7 +114,7 @@ export const slumber_theme = {
     "mediumInverse": "rgba(255, 255, 255, 0.87)",
     "primary": "rgba(0, 129, 138, 1)",
     "secondary": "rgba(219, 237, 243, 1)",
-    "strong": "rgba(18, 20, 44, 1)",
+    "strong": "rgba(255, 255, 255, 1)",
     "strongInverse": "rgba(255, 255, 255, 1)",
     "surface": "rgba(255, 255, 255, 1)"
   },

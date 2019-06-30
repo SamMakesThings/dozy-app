@@ -431,7 +431,7 @@ class Root extends React.Component {
     render() {
         const theme = slumber_theme;
         return (
-            <ScreenContainer style={{backgroundColor: "#232B3F"}} hasSafeArea={true} scrollable={false}>
+            <ScreenContainer style={{backgroundColor: "#232B3F"}} hasSafeArea={true} scrollable={true}>
                 <Container elevation={0} useThemeGutterPadding={true}>
                     <Container elevation={0} useThemeGutterPadding={true}>
                         <Text
