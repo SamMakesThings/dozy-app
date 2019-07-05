@@ -7,6 +7,7 @@ import {
   IconButton,
   ProgressBar,
   TextField,
+  DatePicker,
   Button
 } from "@draftbit/ui"
 import { slumber_theme } from "../../config/slumber_theme";
@@ -61,31 +62,16 @@ class Root extends React.Component {
           >
             What time did you go to bed last night?
           </Text>
-          <Container style={styles.Container_n1m} elevation={0} useThemeGutterPadding={true}>
-            <TextField
-              style={styles.TextField_nrw}
-              type="underline"
-              label="Hour (e.g. 23)"
-              leftIconMode="inset"
-            />
-            <Text
-              style={[
-                styles.Text_nct,
-                theme.typography.headline4,
-                {
-                  color: theme.colors.secondary
-                }
-              ]}
-            >
-              :
-            </Text>
-            <TextField
-              style={styles.TextField_n6f}
-              type="underline"
-              label="Minute (e.g. 30)"
-              leftIconMode="inset"
-            />
-          </Container>
+          <DatePicker
+          style={styles.DatePicker_nd}
+          mode="time"
+          type="underline"
+          error={false}
+          label="Date"
+          disabled={false}
+          leftIconMode="inset"
+          onDateChange={this.onDateChange}
+          />
         </Container>
         <Container style={styles.Container_nno} elevation={0} useThemeGutterPadding={true}>
           <Button

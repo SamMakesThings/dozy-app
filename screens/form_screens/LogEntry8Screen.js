@@ -10,9 +10,13 @@ import {
   Button
 } from "@draftbit/ui"
 import { slumber_theme } from "../../config/slumber_theme";
+import GLOBAL from '../../global';
 
 class Root extends React.Component {
-  state = {}
+  constructor(props) {
+    super(props);
+    this.state = { };
+  }
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content")
@@ -20,7 +24,12 @@ class Root extends React.Component {
 
   static navigationOptions = {
     header: null,
-  };
+  }
+
+  onFormSubmit (value) {
+    GLOBAL.sleepNotes = value;
+    this.props.navigation.navigate("App");
+  }
 
   render() {
     const theme = slumber_theme;
@@ -66,6 +75,10 @@ class Root extends React.Component {
             label="(e.g. noise, lights)"
             keyboardType="default"
             leftIconMode="inset"
+            onChangeText ={sleepNotes => this.setState({ sleepNotes })}
+            onSubmitEditing={(event)=>{
+                this.onFormSubmit(event.nativeEvent.text)
+            }}
           />
         </Container>
         <Container style={styles.Container_nmw} elevation={0} useThemeGutterPadding={true}>
@@ -73,7 +86,7 @@ class Root extends React.Component {
             style={styles.Button_n5c}
             type="solid"
             onPress={() => {
-              this.props.navigation.navigate("App")
+                this.onFormSubmit(this.state.sleepNotes)
             }}
           >
             Finish

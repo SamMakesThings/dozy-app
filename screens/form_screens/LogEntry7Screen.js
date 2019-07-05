@@ -9,6 +9,7 @@ import {
   Button
 } from "@draftbit/ui"
 import { slumber_theme } from "../../config/slumber_theme";
+import GLOBAL from '../../global';
 
 class Root extends React.Component {
   state = {}
@@ -20,6 +21,12 @@ class Root extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  onQuestionSubmit (value) {
+    GLOBAL.sleepRating = value;
+    console.log(GLOBAL.sleepRating);
+    this.props.navigation.navigate("LogEntry8Screen");
+  }
 
   render() {
     const theme = slumber_theme;
@@ -67,7 +74,7 @@ class Root extends React.Component {
             color={theme.colors.secondary}
             loading={false}
             onPress={() => {
-              this.props.navigation.navigate("LogEntry8Screen")
+                this.onQuestionSubmit(1)
             }}
             disabled={false}
           >
@@ -79,7 +86,7 @@ class Root extends React.Component {
             color={theme.colors.secondary}
             loading={false}
             onPress={() => {
-              this.props.navigation.navigate("LogEntry8Screen")
+                this.onQuestionSubmit(2)
             }}
             disabled={false}
           >
@@ -91,7 +98,7 @@ class Root extends React.Component {
             color={theme.colors.secondary}
             loading={false}
             onPress={() => {
-              this.props.navigation.navigate("LogEntry8Screen")
+                this.onQuestionSubmit(3)
             }}
             disabled={false}
           >
@@ -103,7 +110,7 @@ class Root extends React.Component {
             color={theme.colors.secondary}
             loading={false}
             onPress={() => {
-              this.props.navigation.navigate("LogEntry8Screen")
+                this.onQuestionSubmit(4)
             }}
             disabled={false}
           >
@@ -115,7 +122,7 @@ class Root extends React.Component {
             color={theme.colors.secondary}
             loading={false}
             onPress={() => {
-              this.props.navigation.navigate("LogEntry8Screen")
+                this.onQuestionSubmit(5)
             }}
             disabled={false}
           >

@@ -10,10 +10,9 @@ import {
   Button
 } from "@draftbit/ui"
 import { slumber_theme } from "../../config/slumber_theme";
+import GLOBAL from '../../global';
 
 class Root extends React.Component {
-  state = {}
-
   componentDidMount() {
     StatusBar.setBarStyle("light-content")
   }
@@ -21,6 +20,12 @@ class Root extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  onQuestionSubmit (value) {
+    GLOBAL.upTime = value;
+    console.log(GLOBAL.upTime);
+    this.props.navigation.navigate("LogEntry7Screen");
+  }
 
   render() {
     const theme = slumber_theme;
@@ -67,6 +72,11 @@ class Root extends React.Component {
               label="Hour (e.g. 23)"
               keyboardType="number-pad"
               leftIconMode="inset"
+              value={this.state.upTimeHour !== null ? this.state.upTimeHour : 10}
+              onChangeText ={upTimeHour => this.setState({ upTimeHour })}
+              onSubmitEditing={(event)=>{
+                this.onQuestionSubmit(event.nativeEvent.text+":"+this.state.upTimeMinute)
+              }}
             />
             <Text
               style={[
@@ -85,6 +95,11 @@ class Root extends React.Component {
               label="Minute (e.g. 30)"
               keyboardType="number-pad"
               leftIconMode="inset"
+              value={this.state.upTimeMinute}
+              value={this.state.upTimeMinute !== null ? this.state.upTimeMinute : 30}
+              onSubmitEditing={(event)=>{
+                this.onQuestionSubmit(this.state.upTimeHour+":"+event.nativeEvent.text)
+              }}
             />
           </Container>
         </Container>
@@ -93,7 +108,7 @@ class Root extends React.Component {
             style={styles.Button_nw3}
             type="solid"
             onPress={() => {
-              this.props.navigation.navigate("LogEntry7Screen")
+                this.onQuestionSubmit(this.state.upTimeHour+":"+this.state.upTimeMinute)
             }}
           >
             Next
