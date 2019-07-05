@@ -6,6 +6,7 @@ import {
   Container,
   IconButton,
   ProgressBar,
+  DatePicker,
   TextField,
   Button
 } from "@draftbit/ui"
@@ -65,51 +66,25 @@ class Root extends React.Component {
           >
             What time did you get up?
           </Text>
-          <Container style={styles.Container_npb} elevation={0} useThemeGutterPadding={true}>
-            <TextField
-              style={styles.TextField_nrr}
-              type="underline"
-              label="Hour (e.g. 23)"
-              keyboardType="number-pad"
-              leftIconMode="inset"
-              value={this.state.upTimeHour !== null ? this.state.upTimeHour : 10}
-              onChangeText ={upTimeHour => this.setState({ upTimeHour })}
-              onSubmitEditing={(event)=>{
-                this.onQuestionSubmit(event.nativeEvent.text+":"+this.state.upTimeMinute)
-              }}
-            />
-            <Text
-              style={[
-                styles.Text_n23,
-                theme.typography.headline4,
-                {
-                  color: theme.colors.secondary
-                }
-              ]}
-            >
-              :
-            </Text>
-            <TextField
-              style={styles.TextField_nkw}
-              type="underline"
-              label="Minute (e.g. 30)"
-              keyboardType="number-pad"
-              leftIconMode="inset"
-              value={this.state.upTimeMinute}
-              value={this.state.upTimeMinute !== null ? this.state.upTimeMinute : 30}
-              onSubmitEditing={(event)=>{
-                this.onQuestionSubmit(this.state.upTimeHour+":"+event.nativeEvent.text)
-              }}
-            />
-          </Container>
+          <DatePicker
+          style={styles.DatePicker_nd}
+          mode="time"
+          type="underline"
+          error={false}
+          label="Date"
+          disabled={false}
+          leftIconMode="inset"
+          onDateChange={upTime => this.setState({ upTime })}
+          />
         </Container>
         <Container style={styles.Container_nu4} elevation={0} useThemeGutterPadding={true}>
           <Button
             style={styles.Button_nw3}
             type="solid"
             onPress={() => {
-                this.onQuestionSubmit(this.state.upTimeHour+":"+this.state.upTimeMinute)
+                this.onQuestionSubmit(this.state.upTime)
             }}
+            color={theme.colors.primary}
           >
             Next
           </Button>
@@ -125,7 +100,7 @@ const styles = StyleSheet.create({
     marginTop: 8
   },
   Container_n3b: {
-    height: "75%",
+    height: "72%",
     justifyContent: "center",
     marginTop: 20
   },

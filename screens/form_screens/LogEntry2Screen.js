@@ -75,6 +75,7 @@ class Root extends React.Component {
             onPress={() => {
               this.props.navigation.navigate("LogEntry3Screen")
             }}
+            color={theme.colors.primary}
           >
             Next
           </Button>
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     marginTop: 8
   },
   Container_nfw: {
-    height: "75%",
+    height: "72%",
     justifyContent: "center",
     marginTop: 20
   },

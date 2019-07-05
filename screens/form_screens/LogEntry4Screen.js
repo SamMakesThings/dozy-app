@@ -75,6 +75,7 @@ class Root extends React.Component {
             onPress={() => {
               this.props.navigation.navigate("LogEntry5Screen")
             }}
+            color={theme.colors.primary}
           >
             Next
           </Button>
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   Container_n57: {
-    height: "75%",
+    height: "72%",
     justifyContent: "center",
     marginTop: 20
   },

@@ -75,7 +75,7 @@ class Root extends React.Component {
             label="(e.g. noise, lights)"
             keyboardType="default"
             leftIconMode="inset"
-            onChangeText ={sleepNotes => this.setState({ sleepNotes })}
+            onChangeText={sleepNotes => this.setState({ sleepNotes })}
             onSubmitEditing={(event)=>{
                 this.onFormSubmit(event.nativeEvent.text)
             }}
@@ -88,6 +88,7 @@ class Root extends React.Component {
             onPress={() => {
                 this.onFormSubmit(this.state.sleepNotes)
             }}
+            color={theme.colors.primary}
           >
             Finish
           </Button>
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     marginTop: 8
   },
   Container_n8t: {
-    height: "75%",
+    height: "72%",
     justifyContent: "center",
     marginTop: 20
   },

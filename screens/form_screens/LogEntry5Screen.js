@@ -6,6 +6,7 @@ import {
   Container,
   IconButton,
   ProgressBar,
+  DatePicker,
   TextField,
   Button
 } from "@draftbit/ui"
@@ -60,33 +61,16 @@ class Root extends React.Component {
           >
             What time did you wake up?
           </Text>
-          <Container style={styles.Container_njh} elevation={0} useThemeGutterPadding={true}>
-            <TextField
-              style={styles.TextField_n66}
-              type="underline"
-              label="Hour (e.g. 23)"
-              keyboardType="number-pad"
-              leftIconMode="inset"
-            />
-            <Text
-              style={[
-                styles.Text_njq,
-                theme.typography.headline4,
-                {
-                  color: theme.colors.secondary
-                }
-              ]}
-            >
-              :
-            </Text>
-            <TextField
-              style={styles.TextField_n2o}
-              type="underline"
-              label="Minute (e.g. 30)"
-              keyboardType="number-pad"
-              leftIconMode="inset"
-            />
-          </Container>
+          <DatePicker
+          style={styles.DatePicker_nd}
+          mode="time"
+          type="underline"
+          error={false}
+          label="Date"
+          disabled={false}
+          leftIconMode="inset"
+          onDateChange={this.onDateChange}
+          />
         </Container>
         <Container style={styles.Container_n0v} elevation={0} useThemeGutterPadding={true}>
           <Button
@@ -95,6 +79,7 @@ class Root extends React.Component {
             onPress={() => {
               this.props.navigation.navigate("LogEntry6Screen")
             }}
+            color={theme.colors.primary}
           >
             Next
           </Button>
@@ -125,7 +110,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   Container_njd: {
-    height: "75%",
+    height: "72%",
     justifyContent: "center",
     marginTop: 20
   },

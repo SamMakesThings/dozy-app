@@ -81,6 +81,7 @@ class Root extends React.Component {
               this.props.navigation.navigate("LogEntry2Screen")
             }}
             disabled={false}
+            color={theme.colors.primary}
           >
             Next
           </Button>
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   Container_nfe: {
-    height: "75%",
+    height: "72%",
     justifyContent: "center",
     marginTop: 20
   },
