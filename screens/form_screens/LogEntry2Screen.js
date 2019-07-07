@@ -10,6 +10,7 @@ import {
   Button
 } from "@draftbit/ui"
 import { slumber_theme } from "../../config/slumber_theme";
+import GLOBAL from '../../global';
 
 class Root extends React.Component {
   state = {}
@@ -21,6 +22,12 @@ class Root extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  onQuestionSubmit (value) {
+    GLOBAL.minsToFallAsleep = value;
+    console.log(GLOBAL.minsToFallAsleep);
+    this.props.navigation.navigate("LogEntry3Screen");
+  }
 
   render() {
     const theme = slumber_theme;
@@ -66,6 +73,10 @@ class Root extends React.Component {
             label="(in minutes)"
             keyboardType="number-pad"
             leftIconMode="inset"
+            onChangeText={minsToFallAsleep => this.setState({ minsToFallAsleep })}
+            onSubmitEditing={(event)=>{
+                this.onQuestionSubmit(event.nativeEvent.text)
+            }}
           />
         </Container>
         <Container style={styles.Container_nrj} elevation={0} useThemeGutterPadding={true}>
@@ -73,7 +84,7 @@ class Root extends React.Component {
             style={styles.Button_nqa}
             type="solid"
             onPress={() => {
-              this.props.navigation.navigate("LogEntry3Screen")
+              this.onQuestionSubmit(this.state.minsToFallAsleep)
             }}
             color={theme.colors.primary}
           >

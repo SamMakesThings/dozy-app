@@ -24,6 +24,12 @@ class Root extends React.Component {
     header: null,
   };
 
+  onQuestionSubmit (value) {
+    GLOBAL.bedTime = value;
+    console.log(GLOBAL.bedTime);
+    this.props.navigation.navigate("LogEntry2Screen");
+  }
+
   render() {
     const theme = slumber_theme;
     return (
@@ -70,7 +76,7 @@ class Root extends React.Component {
           label="Date"
           disabled={false}
           leftIconMode="inset"
-          onDateChange={this.onDateChange}
+          onDateChange={bedTime => this.setState({ bedTime })}
           />
         </Container>
         <Container style={styles.Container_nno} elevation={0} useThemeGutterPadding={true}>
@@ -78,7 +84,7 @@ class Root extends React.Component {
             style={styles.Button_nso}
             type="solid"
             onPress={() => {
-              this.props.navigation.navigate("LogEntry2Screen")
+              this.onQuestionSubmit(this.state.bedTime)
             }}
             disabled={false}
             color={theme.colors.primary}

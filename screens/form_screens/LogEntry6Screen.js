@@ -14,6 +14,11 @@ import { slumber_theme } from "../../config/slumber_theme";
 import GLOBAL from '../../global';
 
 class Root extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { upTime: "2019-07-05T14:00:00.014Z"};
+  }
+
   componentDidMount() {
     StatusBar.setBarStyle("light-content")
   }
@@ -71,6 +76,7 @@ class Root extends React.Component {
           mode="time"
           type="underline"
           error={false}
+          value={ this.state.upTime }
           label="Date"
           disabled={false}
           leftIconMode="inset"

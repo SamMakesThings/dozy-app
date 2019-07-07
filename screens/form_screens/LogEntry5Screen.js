@@ -11,6 +11,7 @@ import {
   Button
 } from "@draftbit/ui"
 import { slumber_theme } from "../../config/slumber_theme";
+import GLOBAL from '../../global';
 
 class Root extends React.Component {
   state = {}
@@ -22,6 +23,12 @@ class Root extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  onQuestionSubmit (value) {
+    GLOBAL.wakeTime = value;
+    console.log(GLOBAL.wakeTime);
+    this.props.navigation.navigate("LogEntry6Screen");
+  }
 
   render() {
     const theme = slumber_theme;
@@ -69,7 +76,7 @@ class Root extends React.Component {
           label="Date"
           disabled={false}
           leftIconMode="inset"
-          onDateChange={this.onDateChange}
+          onDateChange={wakeTime => this.setState({ wakeTime })}
           />
         </Container>
         <Container style={styles.Container_n0v} elevation={0} useThemeGutterPadding={true}>
@@ -77,7 +84,7 @@ class Root extends React.Component {
             style={styles.Button_nxx}
             type="solid"
             onPress={() => {
-              this.props.navigation.navigate("LogEntry6Screen")
+              this.onQuestionSubmit(this.state.wakeTime)
             }}
             color={theme.colors.primary}
           >
