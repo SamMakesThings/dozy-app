@@ -317,12 +317,12 @@ class SleepLogsView extends Component {
     render() {
         const theme = slumber_theme;
         if (this.props.sleepLogs) {
-            console.log("props worked");
-            // console.log(this.props.sleepLogs);
-            const sleepLogs = Object.keys(this.props.sleepLogs).map((key) => {
+            var sleepLogs = Object.keys(this.props.sleepLogs).map((key) => {
                 return this.props.sleepLogs[key];
             });
-            console.log(sleepLogs);
+            sleepLogs.sort((a,b) => {
+                return b.wakeTime.seconds - a.wakeTime.seconds;
+            })
             return(
                 <ScrollView horizontal={false}>
                     <Button
