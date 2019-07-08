@@ -3,12 +3,11 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-// import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LoginScreen';
-// import SettingsScreen from '../screens/MobXTest';
 import DiaryScreen from '../screens/DiaryScreen';
-import DiaryEntryScreen from '../screens/DiaryEntryScreen';
 import LogEntry8Screen from '../screens/form_screens/LogEntry8Screen';
+import SettingsScreen from '../screens/SettingsScreen';
+import TreatmentPlaceholderScreen from '../screens/TreatmentPlaceholderScreen';
 
 const HomeStack = createStackNavigator({
   Home: DiaryScreen,
@@ -33,7 +32,7 @@ HomeStack.navigationOptions = {
 };
 
 const LinksStack = createStackNavigator({
-  Links: LogEntry8Screen,
+  Links: TreatmentPlaceholderScreen,
 });
 
 LinksStack.navigationOptions = {
@@ -47,7 +46,7 @@ LinksStack.navigationOptions = {
 };
 
 const SettingsStack = createStackNavigator({
-  Settings: DiaryEntryScreen,
+  Settings: SettingsScreen,
 });
 
 SettingsStack.navigationOptions = {
