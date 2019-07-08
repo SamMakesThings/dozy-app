@@ -1,5 +1,5 @@
 import React from "react"
-import { StatusBar, StyleSheet, Text } from "react-native"
+import { StatusBar, StyleSheet, Text, Linking } from "react-native"
 import { withTheme, ScreenContainer, Container, Icon, Switch, DatePicker, Touchable } from "@draftbit/ui"
 import { slumber_theme } from "../config/slumber_theme";
 
@@ -49,7 +49,7 @@ class Root extends React.Component {
           </Text>
         </Container>
         <Container style={styles.Container_ns} elevation={0} useThemeGutterPadding={true}>
-          <Touchable style={styles.Touchable_n0}>
+          <Touchable style={styles.Touchable_n0} onPress={() => {Linking.openURL("mailto://sam@naritai.co")}}>
             <Container style={styles.Container_nf} elevation={0} useThemeGutterPadding={true}>
               <Text
                 style={[
