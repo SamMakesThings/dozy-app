@@ -31,7 +31,7 @@ class Root extends React.Component {
               styles.Text_n1,
               theme.typography.headline4,
               {
-                color: theme.colors.strong
+                color: '#ffffff'
               }
             ]}
           >
@@ -42,7 +42,7 @@ class Root extends React.Component {
               styles.Text_ni,
               theme.typography.subtitle1,
               {
-                color: theme.colors.strong
+                color: '#aaaaaa'
               }
             ]}
           >

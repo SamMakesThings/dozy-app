@@ -1,6 +1,6 @@
 import React from "react"
 import { StatusBar, StyleSheet, Text } from "react-native"
-import { withTheme, ScreenContainer, Container, Icon, Switch, DatePicker } from "@draftbit/ui"
+import { withTheme, ScreenContainer, Container, Icon, Switch, DatePicker, Touchable } from "@draftbit/ui"
 import { slumber_theme } from "../config/slumber_theme";
 
 class Root extends React.Component {
@@ -49,6 +49,27 @@ class Root extends React.Component {
           </Text>
         </Container>
         <Container style={styles.Container_ns} elevation={0} useThemeGutterPadding={true}>
+          <Touchable style={styles.Touchable_n0}>
+            <Container style={styles.Container_nf} elevation={0} useThemeGutterPadding={true}>
+              <Text
+                style={[
+                  styles.Text_nl,
+                  theme.typography.body1,
+                  {
+                    color: theme.colors.strong
+                  }
+                ]}
+              >
+                Get Help and Support
+              </Text>
+              <Icon
+                style={styles.Icon_nf}
+                name="Ionicons/md-mail"
+                size={36}
+                color={theme.colors.primary}
+              />
+            </Container>
+          </Touchable>
           <Container style={styles.Container_ni} elevation={0} useThemeGutterPadding={true}>
             <Text
               style={[
@@ -99,6 +120,13 @@ class Root extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  Container_nf: {
+    minWidth: 0,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    paddingBottom: 15
+    },
   Container_ni: {
     minWidth: 0,
     justifyContent: "space-between",
@@ -131,9 +159,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "100%"
   },
+  Text_nl: {
+    textAlign: "center",
+    width: "100%"
+  },
   Text_nc: {
     textAlign: "center",
     width: "100%"
+  },
+  Touchable_n0: {
+    paddingBottom: 15
+  },
+  Icon_nf: {
   }
 })
 
