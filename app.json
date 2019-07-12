@@ -8,11 +8,11 @@
       "ios",
       "android"
     ],
-    "version": "0.4.1",
+    "version": "0.4.2",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/appleIcon.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/splashImage.png",
       "resizeMode": "contain",
       "backgroundColor": "#232B3F"
     },
@@ -24,10 +24,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.slumbertech.slumber"
+      "bundleIdentifier": "com.slumbertech.slumber",
+      "icon": "./assets/images/appleIcon.png"
     },
     "android": {
-      "package": "com.slumbertech.slumber"
+      "package": "com.slumbertech.slumber",
+      "icon": "./assets/images/appleIcon.png"
     },
     "extra": {
       "firebase": {
