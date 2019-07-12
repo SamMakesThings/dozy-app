@@ -53,6 +53,9 @@ class Root extends React.Component {
     todayDateString = yyyy + '-' + mm + '-' + dd;
 
     // TODO: If bedtime/sleeptime are in the evening, change them to be the day before
+    if (GLOBAL.bedTime > GLOBAL.wakeTime) {
+      GLOBAL.bedTime = new Date(GLOBAL.bedTime.setDate(GLOBAL.bedTime.getDate() - 1));
+    }
 
     // calculate total time in bed, time between waking & getting up, and time awake in bed
     var minsInBedTotalMs = (GLOBAL.upTime - GLOBAL.bedTime);

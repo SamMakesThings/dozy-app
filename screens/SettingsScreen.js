@@ -49,7 +49,7 @@ class Root extends React.Component {
           </Text>
         </Container>
         <Container style={styles.Container_ns} elevation={0} useThemeGutterPadding={true}>
-          <Touchable style={styles.Touchable_n0} onPress={() => {Linking.openURL("mailto://sam@naritai.co")}}>
+          <Touchable style={styles.Touchable_n0} onPress={() => {Linking.openURL("mailto:sam@naritai.co")}}>
             <Container style={styles.Container_nf} elevation={0} useThemeGutterPadding={true}>
               <Text
                 style={[
