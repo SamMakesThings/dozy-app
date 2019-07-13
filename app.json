@@ -29,7 +29,8 @@
     },
     "android": {
       "package": "com.slumbertech.slumber",
-      "icon": "./assets/images/appleIcon.png"
+      "icon": "./assets/images/appleIcon.png",
+      "versionCode": 2
     },
     "extra": {
       "firebase": {
