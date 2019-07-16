@@ -1,11 +1,12 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Provider as ThemeProvider } from '@draftbit/ui';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import { FbAuth } from "./config/firebaseConfig";
+import { slumber_theme } from "./config/slumber_theme";
 import '@firebase/firestore';
 GLOBAL = require('./global');
-
 
 export default class App extends React.Component {
   state = {
@@ -34,8 +35,10 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
+          <ThemeProvider theme={slumber_theme}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            <AppNavigator />
+          </ThemeProvider>
         </View>
       );
     }
