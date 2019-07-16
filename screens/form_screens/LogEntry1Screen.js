@@ -33,12 +33,7 @@ class Root extends React.Component {
   render() {
     const { theme } = this.props
     return (
-      <ScreenContainer style={[
-        styles.LogEntry1Screen_n81,
-        {
-    backgroundColor: theme.colors.background
-        }
-      ]} hasSafeArea={true} scrollable={false}>
+      <ScreenContainer style={{ backgroundColor: theme.colors.background }} hasSafeArea={true} scrollable={false}>
         <Container style={styles.Container_nt5} elevation={0} useThemeGutterPadding={true}>
           <IconButton
             style={styles.IconButton_nei}
