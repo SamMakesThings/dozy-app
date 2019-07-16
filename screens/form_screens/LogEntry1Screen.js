@@ -17,7 +17,7 @@ class LogEntry1Screen extends React.Component {
   };
 
   state = {
-    bedTime: null
+    bedTime: new Date()
   }
 
   componentDidMount() {
@@ -69,14 +69,16 @@ class LogEntry1Screen extends React.Component {
             What time did you go to bed last night?
           </Text>
           <DatePicker
-          style={styles.DatePicker_nd}
-          mode="time"
-          type="underline"
-          error={false}
-          label="Date"
-          disabled={false}
-          leftIconMode="inset"
-          onDateChange={bedTime => this.setState({ bedTime })}
+            style={styles.DatePicker_nd}
+            mode="time"
+            type="underline"
+            error={false}
+            label="Date"
+            disabled={false}
+            leftIconMode="inset"
+            format="h:mm tt"
+            date={this.state.bedTime}
+            onDateChange={bedTime => this.setState({ bedTime })}
           />
         </Container>
         <Container style={styles.Container_nno} elevation={0} useThemeGutterPadding={true}>
