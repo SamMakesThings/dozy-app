@@ -10,19 +10,19 @@ import {
   DatePicker,
   Button
 } from "@draftbit/ui"
-import { slumber_theme } from "../../config/slumber_theme";
 
+class LogEntry1Screen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
 
-class Root extends React.Component {
-  state = {}
+  state = {
+    bedTime: null
+  }
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content")
   }
-
-  static navigationOptions = {
-    header: null,
-  };
 
   onQuestionSubmit (value) {
     GLOBAL.bedTime = value;
