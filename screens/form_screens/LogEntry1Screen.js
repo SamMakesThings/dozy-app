@@ -31,9 +31,14 @@ class Root extends React.Component {
   }
 
   render() {
-    const theme = slumber_theme;
+    const { theme } = this.props
     return (
-      <ScreenContainer style={styles.Root_n81} hasSafeArea={true} scrollable={false}>
+      <ScreenContainer style={[
+        styles.LogEntry1Screen_n81,
+        {
+    backgroundColor: theme.colors.background
+        }
+      ]} hasSafeArea={true} scrollable={false}>
         <Container style={styles.Container_nt5} elevation={0} useThemeGutterPadding={true}>
           <IconButton
             style={styles.IconButton_nei}
@@ -135,9 +140,6 @@ const styles = StyleSheet.create({
     paddingRight: 0,
     marginRight: 0
   },
-  Root_n81: {
-    backgroundColor: slumber_theme.colors.background
-  },
   TextField_n6f: {
     minWidth: "40%",
     maxWidth: "46%"
@@ -158,4 +160,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(Root)
+export default withTheme(LogEntry1Screen)
