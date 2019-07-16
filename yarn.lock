@@ -860,15 +860,16 @@
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@draftbit/ui@^2.28.6":
-  version "2.28.6"
-  resolved "https://registry.yarnpkg.com/@draftbit/ui/-/ui-2.28.6.tgz#46c7c2072acb726e0894c681f1721c8db31a7709"
-  integrity sha512-y3jzedgHr9d8FiZx09bL1gloYBWu31ZkB4RY4X3RIUqJU//XFMLGcfnztjdYofIE5L2Mfgv+bnSdY18WKJ9rGg==
+"@draftbit/ui@^2.29.0":
+  version "2.29.0"
+  resolved "https://registry.yarnpkg.com/@draftbit/ui/-/ui-2.29.0.tgz#da12f44ae9eec6d945df1f77ad3fda908b3b15f6"
+  integrity sha512-u9A5u/R/elXKoJGXtekHQboMGq50noZiSD8iyscXIsmIO8PWB1j6HkGzTpC8sMkNfEafeNRjTgz2gqvi9etPuA==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.0"
     "@expo/vector-icons" "^10.0.2"
     color "^3.1.2"
     create-react-context "^0.3.0"
+    dateformat "^3.0.3"
     react-lifecycles-compat "^3.0.4"
     react-native-maps "^0.24.2"
     react-native-platform-touchable "^1.1.1"
@@ -2756,6 +2757,11 @@ date-time-format-timezone@^1.0.21:
   version "1.0.21"
   resolved "https://registry.yarnpkg.com/date-time-format-timezone/-/date-time-format-timezone-1.0.21.tgz#a8beb84ac8b803a77cf3e6a45e3a7a7c154af66f"
   integrity sha512-qKIX5JyqOcDh0YWVk4niGkhfaPpYeG9gbf9IxiRi/d0VeEscnzUwaMoahJ4ThpsQqVIBJfv4e5GFxiRbC4ZEmQ==
+
+dateformat@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
+  integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
 
 debounce@^1.2.0:
   version "1.2.0"
