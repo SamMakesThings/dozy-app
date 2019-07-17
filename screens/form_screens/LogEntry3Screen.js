@@ -6,10 +6,8 @@ import {
   Container,
   IconButton,
   ProgressBar,
-  TextField,
   Button
 } from "@draftbit/ui"
-import { slumber_theme } from "../../config/slumber_theme";
 import GLOBAL from '../../global';
 
 class LogEntry3Screen extends React.Component {
