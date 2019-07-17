@@ -12,7 +12,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@draftbit/ui": "^2.28.3",
+    "@draftbit/ui": "^2.29.0",
     "@expo/samples": "2.1.1",
     "date-time-format-timezone": "^1.0.21",
     "expo": "^32.0.0",
