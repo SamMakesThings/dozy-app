@@ -8,19 +8,20 @@ import {
   ProgressBar,
   Button
 } from "@draftbit/ui"
-import { slumber_theme } from "../../config/slumber_theme";
 import GLOBAL from '../../global';
 
-class Root extends React.Component {
-  state = {}
+class LogEntry7Screen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
+  state = {
+    sleepRating: 3
+  }
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content")
   }
-
-  static navigationOptions = {
-    header: null,
-  };
 
   onQuestionSubmit (value) {
     GLOBAL.sleepRating = value;
@@ -29,7 +30,7 @@ class Root extends React.Component {
   }
 
   render() {
-    const theme = slumber_theme;
+    const { theme } = this.props
     return (
       <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_ngy}>
         <Container style={styles.Container_n9t} elevation={0} useThemeGutterPadding={true}>
@@ -173,7 +174,6 @@ const styles = StyleSheet.create({
   },
   Root_ngy: {
     justifyContent: "space-between",
-    backgroundColor: slumber_theme.colors.background
   },
   Text_nkc: {
     textAlign: "center",
@@ -183,4 +183,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(Root)
+export default withTheme(LogEntry7Screen)

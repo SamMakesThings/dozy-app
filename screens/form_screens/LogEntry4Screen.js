@@ -9,19 +9,20 @@ import {
   TextField,
   Button
 } from "@draftbit/ui"
-import { slumber_theme } from "../../config/slumber_theme";
 import GLOBAL from '../../global';
 
-class Root extends React.Component {
-  state = {}
+class LogEntry4Screen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
+  state = {
+    nightMinsAwake: 25
+  }
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content")
   }
-
-  static navigationOptions = {
-    header: null,
-  };
 
   onQuestionSubmit (value) {
     GLOBAL.nightMinsAwake = value;
@@ -30,7 +31,7 @@ class Root extends React.Component {
   }
 
   render() {
-    const theme = slumber_theme;
+    const { theme } = this.props
     return (
       <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_n3a}>
         <Container style={styles.Container_n0n} elevation={0} useThemeGutterPadding={true}>
@@ -131,7 +132,6 @@ const styles = StyleSheet.create({
     marginRight: 0
   },
   Root_n3a: {
-    backgroundColor: slumber_theme.colors.background
   },
   TextField_nan: {},
   Text_nvx: {
@@ -142,4 +142,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(Root)
+export default withTheme(LogEntry4Screen)

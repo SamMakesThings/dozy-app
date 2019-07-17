@@ -10,19 +10,20 @@ import {
   TextField,
   Button
 } from "@draftbit/ui"
-import { slumber_theme } from "../../config/slumber_theme";
 import GLOBAL from '../../global';
 
-class Root extends React.Component {
-  state = {}
+class LogEntry5Screen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
+  state = {
+    wakeTime: new Date()
+  }
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content")
   }
-
-  static navigationOptions = {
-    header: null,
-  };
 
   onQuestionSubmit (value) {
     GLOBAL.wakeTime = value;
@@ -31,7 +32,7 @@ class Root extends React.Component {
   }
 
   render() {
-    const theme = slumber_theme;
+    const { theme } = this.props;
     return (
       <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_nnz}>
         <Container style={styles.Container_n1a} elevation={0} useThemeGutterPadding={true}>
@@ -69,14 +70,16 @@ class Root extends React.Component {
             What time did you wake up?
           </Text>
           <DatePicker
-          style={styles.DatePicker_nd}
-          mode="time"
-          type="underline"
-          error={false}
-          label="Date"
-          disabled={false}
-          leftIconMode="inset"
-          onDateChange={wakeTime => this.setState({ wakeTime })}
+            style={styles.DatePicker_nd}
+            mode="time"
+            type="underline"
+            error={false}
+            label="Date"
+            disabled={false}
+            leftIconMode="inset"
+            format="h:mm tt"
+            date={this.state.wakeTime}
+            onDateChange={wakeTime => this.setState({ wakeTime })}
           />
         </Container>
         <Container style={styles.Container_n0v} elevation={0} useThemeGutterPadding={true}>
@@ -135,7 +138,6 @@ const styles = StyleSheet.create({
     marginRight: 0
   },
   Root_nnz: {
-    backgroundColor: slumber_theme.colors.background
   },
   TextField_n2o: {
     minWidth: "40%",
@@ -157,4 +159,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(Root)
+export default withTheme(LogEntry5Screen)

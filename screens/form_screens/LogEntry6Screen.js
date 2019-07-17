@@ -7,25 +7,25 @@ import {
   IconButton,
   ProgressBar,
   DatePicker,
-  TextField,
   Button
 } from "@draftbit/ui"
 import { slumber_theme } from "../../config/slumber_theme";
 import GLOBAL from '../../global';
 
-class Root extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { upTime: "2019-07-05T14:00:00.014Z"};
+class LogEntry6Screen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
+  state = {
+    upTime: new Date()
   }
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content")
   }
 
-  static navigationOptions = {
-    header: null,
-  };
+
 
   onQuestionSubmit (value) {
     GLOBAL.upTime = value;
@@ -34,7 +34,7 @@ class Root extends React.Component {
   }
 
   render() {
-    const theme = slumber_theme;
+    const { theme } = this.props
     return (
       <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_nh4}>
         <Container style={styles.Container_n3l} elevation={0} useThemeGutterPadding={true}>
@@ -72,15 +72,16 @@ class Root extends React.Component {
             What time did you get up?
           </Text>
           <DatePicker
-          style={styles.DatePicker_nd}
-          mode="time"
-          type="underline"
-          error={false}
-          value={ this.state.upTime }
-          label="Date"
-          disabled={false}
-          leftIconMode="inset"
-          onDateChange={upTime => this.setState({ upTime })}
+            style={styles.DatePicker_nd}
+            mode="time"
+            type="underline"
+            error={false}
+            label="Date"
+            disabled={false}
+            leftIconMode="inset"
+            format="h:mm tt"
+            date={this.state.upTime}
+            onDateChange={upTime => this.setState({ upTime })}
           />
         </Container>
         <Container style={styles.Container_nu4} elevation={0} useThemeGutterPadding={true}>
@@ -161,4 +162,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(Root)
+export default withTheme(LogEntry6Screen)

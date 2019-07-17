@@ -22,18 +22,17 @@ if (Platform.OS === 'android') {
 }
 import GLOBAL from '../../global';
 
-class Root extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { };
+class LogEntry8Screen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  }
+
+  state = {
+    notes: ""
   }
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content")
-  }
-
-  static navigationOptions = {
-    header: null,
   }
 
   pushSleepLogToFirebase = async () => {
@@ -98,7 +97,7 @@ class Root extends React.Component {
   }
 
   render() {
-    const theme = slumber_theme;
+    const { theme } = this.props
     return (
       <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_nb1}>
         <Container style={styles.Container_nof} elevation={0} useThemeGutterPadding={true}>
@@ -199,7 +198,6 @@ const styles = StyleSheet.create({
     marginRight: 0
   },
   Root_nb1: {
-    backgroundColor: slumber_theme.colors.background
   },
   TextField_no0: {},
   Text_nqt: {
@@ -210,4 +208,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(Root)
+export default withTheme(LogEntry8Screen)

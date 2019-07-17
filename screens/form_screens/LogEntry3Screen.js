@@ -12,16 +12,18 @@ import {
 import { slumber_theme } from "../../config/slumber_theme";
 import GLOBAL from '../../global';
 
-class Root extends React.Component {
-  state = {}
+class LogEntry3Screen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
+  state = {
+    wakeCount: 2
+  }
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content")
   }
-
-  static navigationOptions = {
-    header: null,
-  };
 
   onQuestionSubmit (value) {
     GLOBAL.wakeCount = value;
@@ -30,7 +32,7 @@ class Root extends React.Component {
   }
 
   render() {
-    const theme = slumber_theme;
+    const { theme } = this.props
     return (
       <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_ne0}>
         <Container style={styles.Container_n9i} elevation={0} useThemeGutterPadding={true}>
@@ -183,7 +185,6 @@ const styles = StyleSheet.create({
   },
   Root_ne0: {
     justifyContent: "space-between",
-    backgroundColor: slumber_theme.colors.background
   },
   Text_npp: {
     textAlign: "center",
@@ -193,4 +194,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withTheme(Root)
+export default withTheme(LogEntry3Screen)
