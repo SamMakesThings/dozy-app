@@ -1,7 +1,9 @@
 import React from "react"
 import { StatusBar, StyleSheet, Text, Linking } from "react-native"
 import { withTheme, ScreenContainer, Container, Icon, Switch, DatePicker, Touchable } from "@draftbit/ui"
-import { slumber_theme } from "../config/slumber_theme";
+import { Notifications } from "expo"
+import * as Permissions from 'expo-permissions';
+import { slumber_theme } from "../config/slumber_theme"
 
 class Root extends React.Component {
   state = {}
@@ -13,6 +15,48 @@ class Root extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  registerForPushNotificationsAsync = async() => {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+    let finalStatus = existingStatus;
+  
+    // only ask if permissions have not already been determined, because
+    // iOS won't necessarily prompt the user a second time.
+    if (existingStatus !== 'granted') {
+      // Android remote notification permissions are granted during the app
+      // install, so this will only ask on iOS
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+  
+    // Stop here if the user did not grant permissions
+    if (finalStatus !== 'granted') {
+      return;
+    }
+  
+    // Get the token that uniquely identifies this device
+    let token = await Notifications.getExpoPushTokenAsync();
+
+    pushExpoTokenToFirebase = async () => {
+      // Pushing our generated Expo token (for push notifications) into Firestore
+      
+      var db = FbLib.firestore();
+  
+      userId = await SecureStore.getItemAsync('userData');
+  
+      var docRef = db.collection("users").doc(userId);
+    
+      // Write the token to the user's data document in Firebase
+      docRef.update({
+        "expoToken": token
+      }).catch(function(error) {
+          console.log("Error pushing Expo token to Firebase:", error);
+      });
+    };
+
+  }
 
   render() {
     const theme = slumber_theme;
@@ -79,6 +123,9 @@ class Root extends React.Component {
                   color: theme.colors.strong
                 }
               ]}
+              onPress={
+                () => {this.registerForPushNotificationsAsync()}
+              }
             >
               Sleep Log Reminders
             </Text>

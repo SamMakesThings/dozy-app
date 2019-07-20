@@ -9,7 +9,6 @@ import {
   TextField,
   Button,
 } from "@draftbit/ui"
-import { slumber_theme } from "../../config/slumber_theme";
 import { FbAuth, FbLib } from "../../config/firebaseConfig";
 import '@firebase/firestore';
 import Intl from 'intl';
@@ -51,7 +50,7 @@ class LogEntry8Screen extends React.Component {
     var yyyy = todayDate.getFullYear();
     todayDateString = yyyy + '-' + mm + '-' + dd;
 
-    // TODO: If bedtime/sleeptime are in the evening, change them to be the day before
+    // If bedtime/sleeptime are in the evening, change them to be the day before
     if (GLOBAL.bedTime > GLOBAL.wakeTime) {
       GLOBAL.bedTime = new Date(GLOBAL.bedTime.setDate(GLOBAL.bedTime.getDate() - 1));
     }
