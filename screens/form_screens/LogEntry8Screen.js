@@ -12,7 +12,7 @@ import {
 import { FbAuth, FbLib } from "../../config/firebaseConfig";
 import '@firebase/firestore';
 import Intl from 'intl';
-import { SecureStore } from 'expo';
+import * as SecureStore from 'expo-secure-store';
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/tr-TR');

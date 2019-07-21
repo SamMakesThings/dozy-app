@@ -5,7 +5,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { SecureStore } from 'expo';
+import * as SecureStore from 'expo-secure-store';
 
 export default class AuthLoadingScreen extends React.Component {
   constructor(props) {

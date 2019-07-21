@@ -14,14 +14,20 @@
   "dependencies": {
     "@draftbit/ui": "^2.29.0",
     "@expo/samples": "2.1.1",
+    "@expo/vector-icons": "^10.0.0",
     "date-time-format-timezone": "^1.0.21",
-    "expo": "^32.0.0",
+    "expo": "^33.0.0",
+    "expo-asset": "^5.0.1",
+    "expo-constants": "~5.0.1",
+    "expo-font": "~5.0.1",
+    "expo-permissions": "~5.0.1",
+    "expo-secure-store": "~5.0.1",
     "firebase": "^5.10.0",
     "intl": "^1.2.5",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react": "16.8.3",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-typography": "^1.4.0",
-    "react-navigation": "^3.0.9"
+    "react-navigation": "^3.11.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.4.4",
@@ -29,7 +35,7 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-preset-expo": "^5.0.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
-    "jest-expo": "^32.0.0",
+    "jest-expo": "^33.0.0",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.3"
   },

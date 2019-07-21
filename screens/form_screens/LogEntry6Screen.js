@@ -9,7 +9,6 @@ import {
   DatePicker,
   Button
 } from "@draftbit/ui"
-import { slumber_theme } from "../../config/slumber_theme";
 import GLOBAL from '../../global';
 
 class LogEntry6Screen extends React.Component {
@@ -140,7 +139,6 @@ const styles = StyleSheet.create({
     marginRight: 0
   },
   Root_nh4: {
-    backgroundColor: slumber_theme.colors.background
   },
   TextField_nkw: {
     minWidth: "40%",

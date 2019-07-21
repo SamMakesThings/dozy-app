@@ -41,6 +41,8 @@ class Root extends React.Component {
 
     pushExpoTokenToFirebase = async () => {
       // Pushing our generated Expo token (for push notifications) into Firestore
+
+      console.log("attempting to get an expo token & such");
       
       var db = FbLib.firestore();
   

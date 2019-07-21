@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { FbAuth, FbLib } from "../config/firebaseConfig";
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
-import { SecureStore } from 'expo';
+import * as SecureStore from 'expo-secure-store';
 GLOBAL = require('../global');
 
 // @observer // THIS OBSERVER breaks the screen for some reason?

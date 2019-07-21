@@ -1,7 +1,11 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Provider as ThemeProvider } from '@draftbit/ui';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { AppLoading } from 'expo';
+import { Asset } from 'expo-asset'
+import Constants from 'expo-constants'
+import * as Font from 'expo-font'
+import * as Icon from '@expo/vector-icons'
 import AppNavigator from './navigation/AppNavigator';
 import { FbAuth } from "./config/firebaseConfig";
 import { slumber_theme } from "./config/slumber_theme";
