@@ -1,8 +1,10 @@
 import React from "react"
 import { StatusBar, StyleSheet, Text, Linking } from "react-native"
 import { withTheme, ScreenContainer, Container, Icon, Switch, DatePicker, Touchable } from "@draftbit/ui"
+import { FbLib } from "../config/firebaseConfig"
 import { Notifications } from "expo"
 import * as Permissions from 'expo-permissions';
+import * as SecureStore from 'expo-secure-store';
 import { slumber_theme } from "../config/slumber_theme"
 
 class Root extends React.Component {
@@ -17,6 +19,8 @@ class Root extends React.Component {
   };
 
   registerForPushNotificationsAsync = async() => {
+    console.log("ATTEMPTING TO DO A PUSH NOTIFICATION TOKEN THING...")
+
     const { status: existingStatus } = await Permissions.getAsync(
       Permissions.NOTIFICATIONS
     );
@@ -42,7 +46,7 @@ class Root extends React.Component {
     pushExpoTokenToFirebase = async () => {
       // Pushing our generated Expo token (for push notifications) into Firestore
 
-      console.log("attempting to get an expo token & such");
+      console.log("attempting to push an expo token to Firebase");
       
       var db = FbLib.firestore();
   
@@ -57,6 +61,8 @@ class Root extends React.Component {
           console.log("Error pushing Expo token to Firebase:", error);
       });
     };
+
+    pushExpoTokenToFirebase();
 
   }
 
@@ -116,6 +122,27 @@ class Root extends React.Component {
               />
             </Container>
           </Touchable>
+          <Touchable style={styles.Touchable_n0} onPress={() => {this.registerForPushNotificationsAsync()}}>
+            <Container style={styles.Container_nf} elevation={0} useThemeGutterPadding={true}>
+              <Text
+                style={[
+                  styles.Text_nl,
+                  theme.typography.body1,
+                  {
+                    color: theme.colors.strong
+                  }
+                ]}
+              >
+                Test push notification key storage
+              </Text>
+              <Icon
+                style={styles.Icon_nf}
+                name="Ionicons/md-mail"
+                size={36}
+                color={theme.colors.primary}
+              />
+            </Container>
+          </Touchable>
           <Container style={styles.Container_ni} elevation={0} useThemeGutterPadding={true}>
             <Text
               style={[
@@ -125,9 +152,6 @@ class Root extends React.Component {
                   color: theme.colors.strong
                 }
               ]}
-              onPress={
-                () => {this.registerForPushNotificationsAsync()}
-              }
             >
               Sleep Log Reminders
             </Text>
