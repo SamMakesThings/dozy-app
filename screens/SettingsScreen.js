@@ -66,6 +66,52 @@ class Root extends React.Component {
 
   }
 
+  updateReminderTime = async (newSetting) => {
+    // Define variables for the Firebase push
+    var db = FbLib.firestore();
+    userId = await SecureStore.getItemAsync('userData');
+    var docRef = db.collection("users").doc(userId);
+
+    // Write the new setting (reminder time) to Firebase
+    docRef.update({
+      "reminderTime": newSetting
+    }).catch(function(error) {
+      console.log("Error pushing updated reminder time to Firebase:", error);
+    })
+  }
+
+  updateRemindersOnOff = async (newSetting) => {
+    // Define variables for the Firebase push
+    var db = FbLib.firestore();
+    userId = await SecureStore.getItemAsync('userData');
+    var docRef = db.collection("users").doc(userId);
+
+    // Write the new setting (turning reminders on/off) to Firebase
+    docRef.update({
+      "remindersOn": newSetting
+    }).catch(function(error) {
+      console.log("Error pushing reminder on/off to Firebase:", error);
+    })
+  }
+
+  componentDidMount = async () => {
+    // Define variables for the Firebase pull
+    var db = FbLib.firestore();
+    userId = await SecureStore.getItemAsync('userData');
+    var docRef = db.collection("users").doc(userId);
+
+    // Update displayed settings based on current user settings
+    docRef.get().then((userData) => {
+      console.log("updating settings from firebase");
+      console.log(userData);
+      let reminderTime = userData.reminderTime;
+      this.setState({ reminderTime });
+      console.log(this.state);
+    }).catch(function(error) {
+      console.log("Error getting settings from Firebase:", error);
+    })
+  }
+
   render() {
     const theme = slumber_theme;
     return (
@@ -159,8 +205,12 @@ class Root extends React.Component {
               style={styles.Switch_n9}
               color={theme.colors.primary}
               disabled={false}
-              onValueChange={pushNotificationsToggle => this.setState({ pushNotificationsToggle })}
-              value={this.state.pushNotificationsToggle}
+              onValueChange={remindersOn => {
+                this.setState({ remindersOn });
+                this.updateReminderTime(remindersOn);
+                }
+              }
+              value={this.state.remindersOn}
             />
           </Container>
           <Container style={styles.Container_nw} elevation={0} useThemeGutterPadding={true}>
@@ -173,7 +223,7 @@ class Root extends React.Component {
                 }
               ]}
             >
-              Reminder Time (soon)
+              Reminder Time
             </Text>
             <DatePicker
               style={styles.DatePicker_nl}
@@ -181,9 +231,15 @@ class Root extends React.Component {
               type="solid"
               error={false}
               label="Date"
-              disabled={true}
+              disabled={false}
               leftIconMode="inset"
-              onDateChange={this.onDateChange}
+              date={this.state.reminderTime}
+              onDateChange={reminderTime => {
+                this.setState({ reminderTime });
+                this.updateRemindersOnOff(reminderTime);
+                console.log(this.state);
+                }
+              }
             />
           </Container>
         </Container>
