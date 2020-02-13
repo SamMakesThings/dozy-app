@@ -10,11 +10,12 @@ import {
   Text,
   TextInput,
   FlatList,
-  AsyncStorage
+  AsyncStorage,
 } from "react-native";
 import { FbAuth, FbLib } from "../config/firebaseConfig";
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
 import * as SecureStore from 'expo-secure-store';
+import * as Google from 'expo-google-app-auth';
 GLOBAL = require('../global');
 
 // @observer // THIS OBSERVER breaks the screen for some reason?
@@ -43,9 +44,9 @@ class LoginScreen extends Component {
 
   _loginWithGoogle = async () => {
     try {
-      const result = await Expo.Google.logInAsync({
+      const result = await Google.logInAsync({
         androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",
-        iosClientId:"YOUR_iOS_CLIENT_ID",
+        iosClientId:"713165282203-fr943kvhd9rbst5i5ss4g3htgjho143a.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
   
@@ -71,7 +72,7 @@ class LoginScreen extends Component {
         return { cancelled: true };
       }
     } catch (err) {
-      console.log("err from LinksScreen.js:", err);
+      console.log("err from LoginScreen.js:", err);
     }
   };
 
