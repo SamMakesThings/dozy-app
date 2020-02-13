@@ -3,7 +3,7 @@
     "name": "Slumber",
     "slug": "slumber_app",
     "privacy": "public",
-    "sdkVersion": "33.0.0",
+    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android"
