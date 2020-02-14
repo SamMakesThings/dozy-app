@@ -24,7 +24,7 @@ HomeStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-journal${focused ? '' : '-outline'}`
+          ? `ios-journal`
           : 'md-journal'
       }
     />

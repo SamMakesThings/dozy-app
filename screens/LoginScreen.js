@@ -44,6 +44,8 @@ class LoginScreen extends Component {
 
   _loginWithGoogle = async () => {
     try {
+      // NOTE: These keys only work in development!! To work in standalone apps, need to update hostnames
+      // on these keys through the Google Cloud Console.
       const result = await Google.logInAsync({
         androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",
         iosClientId:"713165282203-fr943kvhd9rbst5i5ss4g3htgjho143a.apps.googleusercontent.com",
