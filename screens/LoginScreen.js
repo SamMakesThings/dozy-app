@@ -18,17 +18,11 @@ import * as SecureStore from 'expo-secure-store';
 import * as Google from 'expo-google-app-auth';
 GLOBAL = require('../global');
 
-// @observer // THIS OBSERVER breaks the screen for some reason?
 class LoginScreen extends Component {
   constructor (props) {
     super(props);
     state={}
   }
-
-  static navigationOptions = {
-    header: null,
-
-  };
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content");
@@ -44,7 +38,7 @@ class LoginScreen extends Component {
 
   _loginWithGoogle = async () => {
     try {
-      // NOTE: These keys only work in development!! To work in standalone apps, need to update hostnames
+      // NOTE: These keys only work in Expo dev environment!! To work in standalone apps, need to update hostnames
       // on these keys through the Google Cloud Console.
       const result = await Google.logInAsync({
         androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",

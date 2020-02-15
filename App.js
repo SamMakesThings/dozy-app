@@ -10,6 +10,7 @@ import AppNavigator from './navigation/AppNavigator';
 import { FbAuth } from "./config/firebaseConfig";
 import { slumber_theme } from "./config/slumber_theme";
 import '@firebase/firestore';
+import { NavigationContainer } from '@react-navigation/native';
 GLOBAL = require('./global');
 
 export default class App extends React.Component {
@@ -38,12 +39,14 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <View style={styles.container}>
-          <ThemeProvider theme={slumber_theme}>
-            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <AppNavigator />
-          </ThemeProvider>
-        </View>
+        <NavigationContainer>
+          <View style={styles.container}>
+            <ThemeProvider theme={slumber_theme}>
+              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+              <AppNavigator />
+            </ThemeProvider>
+          </View>
+        </NavigationContainer>
       );
     }
   }
