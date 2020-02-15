@@ -13,21 +13,25 @@ import '@firebase/firestore';
 import { NavigationContainer } from '@react-navigation/native';
 GLOBAL = require('./global');
 
+// Root app component
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
     user: null,
   };
 
+  // If user is logged in, store that in app state
   componentDidMount() {
     this.subscribeAuthChange(fbUser => { this.setState({ user: fbUser }); console.log(this.state.user);});
     this.subscribeAuthChange(fbUser => { GLOBAL.userData = fbUser });
   }
 
+  // Update auth state as necessary (may remove this with new dynamic nav structure)
   subscribeAuthChange(callback = (user) => void 0) {
     FbAuth.onAuthStateChanged(callback);
   }
 
+  // Render a loading screen if loading, otherwise load the main app
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
@@ -39,9 +43,9 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <NavigationContainer>
+        <NavigationContainer> {/* Wrapper component for react-navigation 5.0 */}
           <View style={styles.container}>
-            <ThemeProvider theme={slumber_theme}>
+            <ThemeProvider theme={slumber_theme}> {/* Theme wrapper for Draftbit theme*/}
               {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
               <AppNavigator />
             </ThemeProvider>
@@ -51,6 +55,7 @@ export default class App extends React.Component {
     }
   }
 
+  // Load assets async w/Expo tools
   _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([
@@ -73,11 +78,13 @@ export default class App extends React.Component {
     console.warn(error);
   };
 
+  // Trigger the switch from the loading screen to the app
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
   };
 }
 
+// Basic app styles - will move to their own file soon
 const styles = StyleSheet.create({
   container: {
     flex: 1,
