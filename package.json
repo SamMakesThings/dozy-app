@@ -16,12 +16,10 @@
     "@expo/samples": "2.1.1",
     "@expo/vector-icons": "^10.0.0",
     "@react-native-community/masked-view": "0.1.5",
-    "@react-navigation/bottom-tabs": "^5.0.4",
+    "@react-navigation/bottom-tabs": "^5.0.5",
     "@react-navigation/native": "^5.0.4",
     "@react-navigation/stack": "^5.0.4",
     "date-time-format-timezone": "^1.0.21",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^14.0.0",
     "expo": "^36.0.0",
     "expo-asset": "~8.0.0",
     "expo-constants": "~8.0.0",
@@ -41,9 +39,17 @@
     "react-native-typography": "^1.4.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.3",
     "babel-preset-expo": "^8.0.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-native": "^3.8.1",
     "jest-expo": "^36.0.0"
   },
   "private": true

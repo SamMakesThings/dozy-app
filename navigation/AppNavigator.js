@@ -1,18 +1,10 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack'
+import { React } from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import MainTabNavigator from './MainTabNavigator';
+import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
-import DiaryEntryNavigator from '../navigation/DiaryEntryNavigator'
-import LogEntry1Screen from '../screens/form_screens/LogEntry1Screen';
-import LogEntry2Screen from '../screens/form_screens/LogEntry2Screen';
-import LogEntry3Screen from '../screens/form_screens/LogEntry3Screen';
-import LogEntry4Screen from '../screens/form_screens/LogEntry4Screen';
-import LogEntry5Screen from '../screens/form_screens/LogEntry5Screen';
-import LogEntry6Screen from '../screens/form_screens/LogEntry6Screen';
-import LogEntry7Screen from '../screens/form_screens/LogEntry7Screen';
-import LogEntry8Screen from '../screens/form_screens/LogEntry8Screen';
+import DiaryEntryNavigator from './DiaryEntryNavigator';
 
 
 // Create the main app auth navigation flow
@@ -21,48 +13,46 @@ import LogEntry8Screen from '../screens/form_screens/LogEntry8Screen';
 const TopStack = createStackNavigator();
 
 // Export the navigation components and screens, with if/then for auth state
-export default function initialAuthNavigator() {
+export default function initialAuthNavigator(isLoggedIn) {
+  // const isLoggedIn = React.useContext(AuthContext); FIX THIS
+
   return (
     <TopStack.Navigator
       initialRouteName='AuthLoading'
     >
-      {state=isLoading}
-      {isLoggedIn ? (
+        {(isLoggedIn ? (
           <>
-            <TopStack.Screen 
+            <TopStack.Screen
               name="App"
-              component={MainTabNavigator}
+              component={BottomTabs/* If logged in, go to the tab navigator */}
             />
             <TopStack.Screen
               name="SleepDiaryEntry"
               component={DiaryEntryNavigator}
-            />
-            <TopStack.Screen
-              name="AuthLoading"
-              component={AuthLoadingScreen}
             />
           </>
         ) : (
           <TopStack.Screen
             name="Auth"
             component={LoginScreen}
-            options={{
-              header: null
+            options={{ // If not logged in, jump to the login screen
+              header: null,
             }}
           />
-        )}
-      <TopStack.Screen 
+        ))
+      }
+      <TopStack.Screen
         name="App"
-        component={MainTabNavigator}
+        component={BottomTabs}
       />
       <TopStack.Screen
         name="SleepDiaryEntry"
-        component={diaryEntryNavigator}
+        component={DiaryEntryNavigator}
       />
       <TopStack.Screen
         name="AuthLoading"
         component={AuthLoadingScreen}
       />
     </TopStack.Navigator>
-  )
-};
+  );
+}

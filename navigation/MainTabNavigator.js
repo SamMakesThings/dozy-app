@@ -1,22 +1,79 @@
-import React from 'react';
 import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack'
+import { React } from 'react';
 
 import TabBarIcon from '../components/TabBarIcon';
-import LinksScreen from '../screens/LoginScreen';
 import DiaryScreen from '../screens/DiaryScreen';
-import LogEntry8Screen from '../screens/form_screens/LogEntry8Screen';
 import SettingsScreen from '../screens/SettingsScreen';
 import TreatmentPlaceholderScreen from '../screens/TreatmentPlaceholderScreen';
 
+/*
 const HomeStack = createStackNavigator({
   Home: DiaryScreen,
-},   
+},
 {
   headerMode: 'screen',
   cardStyle: { backgroundColor: '#222222' },
-});
+}); */
+
+
+const Tab = createBottomTabNavigator();
+
+export default function BottomTabs() {
+  return (
+    <Tab.Navigator tabBarOptions={{
+      activeTintColor: '#ffffff',
+      inactiveTintColor: '#7FC0C4',
+      style: {
+        backgroundColor: '#00818A',
+      },
+    }}>
+      {/* Main treatment info & check-in screen */}
+      <Tab.Screen
+        name="Sleep"
+        component={DiaryScreen}
+        options={{
+          tabBarLabel: 'Sleep',
+          // eslint-disable-next-line react/display-name
+          tabBarIcon: (focused) => (
+            <TabBarIcon
+              focused={focused}
+              name={Platform.OS === 'ios' ? 'ios-journal' : 'md-journal'} />
+          ),
+        }} />
+
+      {/* Main treatment info & check-in screen */}
+      <Tab.Screen
+        name="Home"
+        component={TreatmentPlaceholderScreen}
+        options={{
+          tabBarLabel: 'Home',
+          // eslint-disable-next-line react/display-name
+          tabBarIcon: (focused) => (
+            <TabBarIcon
+            focused={focused}
+            name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'} />
+          ),
+        }} />
+
+      {/* Support & FAQ screen */}
+      <Tab.Screen
+        name="Support"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: 'Support',
+          // eslint-disable-next-line react/display-name
+          tabBarIcon: (focused) => (
+            <TabBarIcon
+            focused={focused}
+            name={Platform.OS === 'ios' ? 'ios-text' : 'md-text'} />
+          ),
+        }} />
+    </Tab.Navigator>
+  );
+}
+
+/*
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Sleep',
@@ -59,7 +116,9 @@ SettingsStack.navigationOptions = {
     />
   ),
 };
+*/
 
+/*
 export default createBottomTabNavigator({
   HomeStack,
   LinksStack,
@@ -72,4 +131,4 @@ export default createBottomTabNavigator({
       backgroundColor: '#00818A',
     },
   }
-});
+}); */

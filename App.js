@@ -11,6 +11,7 @@ import { FbAuth } from "./config/firebaseConfig";
 import { slumber_theme } from "./config/slumber_theme";
 import '@firebase/firestore';
 import { NavigationContainer } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
 GLOBAL = require('./global');
 
 // Prepare hooks for authentication functions
@@ -71,7 +72,8 @@ export default class App extends React.Component {
       let userToken;
 
       try {
-        userToken = await AsyncStorage.getItem('userToken');
+        // userToken = await AsyncStorage.getItem('userToken'); // This is the template code, delete if below line works
+        userToken = await SecureStore.getItemAsync('userData');
       } catch (e) {
         // Restoring token failed
       }
@@ -109,11 +111,14 @@ export default class App extends React.Component {
     []
   );
 
+  /*
   return (
     <AuthContext.Provider value={authContext}>
-      {/* We'll render navigator content here */}
+      // Add app content to render here
     </AuthContext.Provider>
   );
+  */
+  
 
   // Render a loading screen if loading, otherwise load the main app
   render() {
@@ -127,14 +132,16 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <NavigationContainer> {/* Wrapper component for react-navigation 5.0 */}
-          <View style={styles.container}>
-            <ThemeProvider theme={slumber_theme}> {/* Theme wrapper for Draftbit theme*/}
-              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <AppNavigator />
-            </ThemeProvider>
-          </View>
-        </NavigationContainer>
+        <AuthContext.Provider value={authContext}>
+          <NavigationContainer> {/* Wrapper component for react-navigation 5.0 */}
+            <View style={styles.container}>
+              <ThemeProvider theme={slumber_theme}> {/* Theme wrapper for Draftbit theme*/}
+                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+                <AppNavigator />
+              </ThemeProvider>
+            </View>
+          </NavigationContainer>
+        </AuthContext.Provider>
       );
     }
   }
