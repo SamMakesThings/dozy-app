@@ -7,7 +7,8 @@ import Constants from 'expo-constants'
 import * as Font from 'expo-font'
 import * as Icon from '@expo/vector-icons'
 import AppNavigator from './navigation/AppNavigator';
-import { FbAuth } from "./config/firebaseConfig";
+import { FbAuth, FbLib } from "./config/firebaseConfig";
+import * as Google from 'expo-google-app-auth';
 import { slumber_theme } from "./config/slumber_theme";
 import '@firebase/firestore';
 import { NavigationContainer } from '@react-navigation/native';
@@ -19,10 +20,11 @@ const AuthContext = React.createContext();
 
 // Root app component
 export default class App extends React.Component {
+  /* DELETE this old state if new navigation functions as it should
   state = {
     isLoadingComplete: false,
     user: null,
-  };
+  }; */
 
   // If user is logged in, store that in app state
   componentDidMount() {
@@ -33,6 +35,43 @@ export default class App extends React.Component {
   // Update auth state as necessary (may remove this with new dynamic nav structure)
   subscribeAuthChange(callback = (user) => void 0) {
     FbAuth.onAuthStateChanged(callback);
+  };
+
+  _loginWithGoogle = async () => {
+    try {
+      // NOTE: Current keys only work in Expo dev environment!! To work in standalone apps, need to update hostnames
+      // on these keys through the Google Cloud Console.
+      const result = await Google.logInAsync({
+        androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",
+        iosClientId:"713165282203-fr943kvhd9rbst5i5ss4g3htgjho143a.apps.googleusercontent.com",
+        scopes: ["profile", "email"]
+      });
+  
+      if (result.type === "success") {
+        const { idToken, accessToken } = result;
+        const credential = FbLib.auth.GoogleAuthProvider.credential(idToken, accessToken);
+        await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
+        FbAuth
+          .signInAndRetrieveDataWithCredential(credential)
+          .then(res => {
+            // user res, create your user, do whatever you want
+            console.log("hey, the login worked!");
+            // console.log("here's the result: " + JSON.stringify(res));
+            GLOBAL.userData = res;
+            console.log(res.user.uid);
+            // console.log(GLOBAL.userData);
+            // this._signInAsync(res); REPLACE THIS
+            return (res);
+          })
+          .catch(error => {
+            console.log("firebase cred err:", error);
+          });
+      } else {
+        return { cancelled: true };
+      }
+    } catch (err) {
+      console.log("err from LoginScreen.js:", err);
+    }
   };
 
   // Copying auth functions from react-navigation guide
@@ -96,7 +135,13 @@ export default class App extends React.Component {
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
 
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        // Use my previously defined login function to get user data and store the token
+        let userData = this._loginWithGoogle();
+
+        // Store the retrieved token in secure async storage
+        await SecureStore.setItemAsync('userData', userData);
+
+        dispatch({ type: 'SIGN_IN', token: userData.user.uid });
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signUp: async data => {
@@ -105,7 +150,13 @@ export default class App extends React.Component {
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
 
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        // Use my previously defined login function to get user data and store the token
+        let userData = this._loginWithGoogle();
+
+        // Store the retrieved token in secure async storage
+        await SecureStore.setItemAsync('userData', userData);
+
+        dispatch({ type: 'SIGN_IN', token: userData.user.uid });
       },
     }),
     []
@@ -122,7 +173,7 @@ export default class App extends React.Component {
 
   // Render a loading screen if loading, otherwise load the main app
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+    if (this.state.isLoading && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
           startAsync={this._loadResourcesAsync}
@@ -137,7 +188,7 @@ export default class App extends React.Component {
             <View style={styles.container}>
               <ThemeProvider theme={slumber_theme}> {/* Theme wrapper for Draftbit theme*/}
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-                <AppNavigator />
+                <AppNavigator userToken={state.userToken}/>
               </ThemeProvider>
             </View>
           </NavigationContainer>
@@ -171,7 +222,7 @@ export default class App extends React.Component {
 
   // Trigger the switch from the loading screen to the app
   _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true });
+    this.setState({ isLoading: false });
   };
 }
 

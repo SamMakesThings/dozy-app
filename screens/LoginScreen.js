@@ -1,21 +1,13 @@
 import React, { Component } from "react";
 import {
   StatusBar,
-  StyleSheet,
-  View,
-  WebView,
-  ScrollView,
-  KeyboardAvoidingView,
-  ImageBackground,
   Text,
-  TextInput,
-  FlatList,
-  AsyncStorage,
 } from "react-native";
-import { FbAuth, FbLib } from "../config/firebaseConfig";
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
 import * as SecureStore from 'expo-secure-store';
 import * as Google from 'expo-google-app-auth';
+import { FbAuth, FbLib } from "../config/firebaseConfig";
+
 GLOBAL = require('../global');
 
 class LoginScreen extends Component {
@@ -26,19 +18,16 @@ class LoginScreen extends Component {
 
   componentDidMount() {
     StatusBar.setBarStyle("light-content");
-  };
+  }
 
   _signInAsync = async (userData) => {
-    console.log("this is just before the _signInAsync function is called.");
-    // console.log(userData.uid);
     await SecureStore.setItemAsync('userData', userData.user.uid);
-    console.log("this is just after the _signInAsync function is called.");
-    this.props.navigation.navigate('App');
+    // this.props.navigation.navigate('App'); DELETE this if react-navigation dynamic nav is working
   }
 
   _loginWithGoogle = async () => {
     try {
-      // NOTE: These keys only work in Expo dev environment!! To work in standalone apps, need to update hostnames
+      // NOTE: Current keys only work in Expo dev environment!! To work in standalone apps, need to update hostnames
       // on these keys through the Google Cloud Console.
       const result = await Google.logInAsync({
         androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",

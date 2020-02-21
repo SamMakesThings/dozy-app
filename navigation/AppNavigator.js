@@ -13,14 +13,14 @@ import DiaryEntryNavigator from './DiaryEntryNavigator';
 const TopStack = createStackNavigator();
 
 // Export the navigation components and screens, with if/then for auth state
-export default function initialAuthNavigator(isLoggedIn) {
+export default function initialAuthNavigator(userToken) {
   // const isLoggedIn = React.useContext(AuthContext); FIX THIS
 
   return (
     <TopStack.Navigator
       initialRouteName='AuthLoading'
     >
-        {(isLoggedIn ? (
+        {(userToken ? (
           <>
             <TopStack.Screen
               name="App"
