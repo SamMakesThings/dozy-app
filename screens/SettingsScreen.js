@@ -1,10 +1,10 @@
 import React from "react"
 import { StatusBar, StyleSheet, Text, Linking } from "react-native"
 import { withTheme, ScreenContainer, Container, Icon, Switch, DatePicker, Touchable } from "@draftbit/ui"
-import { FbLib } from "../config/firebaseConfig"
 import { Notifications } from "expo"
 import * as Permissions from 'expo-permissions';
 import * as SecureStore from 'expo-secure-store';
+import { FbLib } from "../config/firebaseConfig"
 import { slumber_theme } from "../config/slumber_theme"
 
 class Root extends React.Component {
@@ -43,14 +43,14 @@ class Root extends React.Component {
     // Get the token that uniquely identifies this device
     let token = await Notifications.getExpoPushTokenAsync();
 
-    pushExpoTokenToFirebase = async () => {
+    let pushExpoTokenToFirebase = async () => {
       // Pushing our generated Expo token (for push notifications) into Firestore
 
       console.log("attempting to push an expo token to Firebase");
       
       var db = FbLib.firestore();
   
-      userId = await SecureStore.getItemAsync('userData');
+      let userId = await SecureStore.getItemAsync('userData');
   
       var docRef = db.collection("users").doc(userId);
     
@@ -69,7 +69,7 @@ class Root extends React.Component {
   updateReminderTime = async (newSetting) => {
     // Define variables for the Firebase push
     var db = FbLib.firestore();
-    userId = await SecureStore.getItemAsync('userData');
+    let userId = await SecureStore.getItemAsync('userData');
     var docRef = db.collection("users").doc(userId);
 
     // Write the new setting (reminder time) to Firebase
@@ -83,7 +83,7 @@ class Root extends React.Component {
   updateRemindersOnOff = async (newSetting) => {
     // Define variables for the Firebase push
     var db = FbLib.firestore();
-    userId = await SecureStore.getItemAsync('userData');
+    let userId = await SecureStore.getItemAsync('userData');
     var docRef = db.collection("users").doc(userId);
 
     // Write the new setting (turning reminders on/off) to Firebase
@@ -97,7 +97,7 @@ class Root extends React.Component {
   componentDidMount = async () => {
     // Define variables for the Firebase pull
     var db = FbLib.firestore();
-    userId = await SecureStore.getItemAsync('userData');
+    let userId = await SecureStore.getItemAsync('userData');
     var docRef = db.collection("users").doc(userId);
 
     // Update displayed settings based on current user settings

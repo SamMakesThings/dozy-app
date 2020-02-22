@@ -104,7 +104,7 @@ export default function App () {
         return { cancelled: true };
       }
     } catch (err) {
-      console.log("err from LoginScreen.js:", err);
+      console.log("err from App.js:", err);
     }
   }
 
@@ -116,6 +116,8 @@ export default function App () {
       try {
         // userToken = await AsyncStorage.getItem('userToken'); // This is the template code, delete if below line works
         userToken = await SecureStore.getItemAsync('userData');
+        console.log("Here's the userToken");
+        console.log(userToken);
       } catch (e) {
         // Restoring token failed
       }

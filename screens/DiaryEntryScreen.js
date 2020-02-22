@@ -9,7 +9,6 @@ import {
   ImageBackground,
   Text,
   TextInput,
-  FlatList,
   Platform,
   TimePickerAndroid
 } from "react-native";

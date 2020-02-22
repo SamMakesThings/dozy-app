@@ -19,6 +19,9 @@ export default function initialAuthNavigator(userToken) {
   return (
     <TopStack.Navigator
       initialRouteName='AuthLoading'
+      screenOptions={{
+        headerShown: false
+      }}
     >
         {(userToken ? (
           <>
