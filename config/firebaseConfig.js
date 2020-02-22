@@ -1,6 +1,8 @@
 import * as firebase from 'firebase';
+import Expo from 'expo';
+import Constants from 'expo-constants';
   
-export const FbApp = !firebase.apps.length ? firebase.initializeApp(Expo.Constants.manifest.extra.firebase) : firebase.app();
+export const FbApp = !firebase.apps.length ? firebase.initializeApp(Constants.manifest.extra.firebase) : firebase.app();
 
 export const FbAuth = firebase.auth();
 

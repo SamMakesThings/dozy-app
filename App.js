@@ -3,41 +3,75 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset'
-import Constants from 'expo-constants'
 import * as Font from 'expo-font'
 import * as Icon from '@expo/vector-icons'
-import AppNavigator from './navigation/AppNavigator';
-import { FbAuth, FbLib } from "./config/firebaseConfig";
 import * as Google from 'expo-google-app-auth';
+import * as SecureStore from 'expo-secure-store';
+import { NavigationContainer } from '@react-navigation/native';
+import { FbAuth, FbLib } from "./config/firebaseConfig";
 import { slumber_theme } from "./config/slumber_theme";
 import '@firebase/firestore';
-import { NavigationContainer } from '@react-navigation/native';
-import * as SecureStore from 'expo-secure-store';
-GLOBAL = require('./global');
+import AppNavigator from './navigation/AppNavigator';
+import GLOBAL from './global';
 
 // Prepare hooks for authentication functions
 const AuthContext = React.createContext();
 
 // Root app component
-export default class App extends React.Component {
+export default function App () {
   /* DELETE this old state if new navigation functions as it should
   state = {
     isLoadingComplete: false,
     user: null,
   }; */
 
+  /*
   // If user is logged in, store that in app state
   componentDidMount() {
     this.subscribeAuthChange(fbUser => { this.setState({ user: fbUser }); console.log(this.state.user);});
     this.subscribeAuthChange(fbUser => { GLOBAL.userData = fbUser });
-  };
+  }
 
   // Update auth state as necessary (may remove this with new dynamic nav structure)
   subscribeAuthChange(callback = (user) => void 0) {
     FbAuth.onAuthStateChanged(callback);
-  };
+  }
 
-  _loginWithGoogle = async () => {
+  */
+
+  // Copying auth functions from react-navigation guide
+  // Sticking it all inside render since Babel seems unable to parse class properties
+  const [state, dispatch] = React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'RESTORE_TOKEN':
+          return {
+            ...prevState,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case 'SIGN_IN':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+          };
+        case 'SIGN_OUT':
+          return {
+            ...prevState,
+            isSignout: true,
+            userToken: undefined,
+          };
+      }
+    },
+    {
+      isLoading: true,
+      isSignout: false,
+      userToken: null,
+    }
+  );
+
+  async function _loginWithGoogle () {
     try {
       // NOTE: Current keys only work in Expo dev environment!! To work in standalone apps, need to update hostnames
       // on these keys through the Google Cloud Console.
@@ -72,38 +106,7 @@ export default class App extends React.Component {
     } catch (err) {
       console.log("err from LoginScreen.js:", err);
     }
-  };
-
-  // Copying auth functions from react-navigation guide
-  const [state, dispatch] = React.useReducer(
-    (prevState, action) => {
-      switch (action.type) {
-        case 'RESTORE_TOKEN':
-          return {
-            ...prevState,
-            userToken: action.token,
-            isLoading: false,
-          };
-        case 'SIGN_IN':
-          return {
-            ...prevState,
-            isSignout: false,
-            userToken: action.token,
-          };
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignout: true,
-            userToken: undefined,
-          };
-      }
-    },
-    {
-      isLoading: true,
-      isSignout: false,
-      userToken: null,
-    }
-  );
+  }
 
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
@@ -127,6 +130,7 @@ export default class App extends React.Component {
     bootstrapAsync();
   }, []);
 
+  // Create authContext so relevant functions are available through the app
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
@@ -136,7 +140,7 @@ export default class App extends React.Component {
         // In the example, we'll use a dummy token
 
         // Use my previously defined login function to get user data and store the token
-        let userData = this._loginWithGoogle();
+        let userData = _loginWithGoogle();
 
         // Store the retrieved token in secure async storage
         await SecureStore.setItemAsync('userData', userData);
@@ -151,7 +155,7 @@ export default class App extends React.Component {
         // In the example, we'll use a dummy token
 
         // Use my previously defined login function to get user data and store the token
-        let userData = this._loginWithGoogle();
+        let userData = _loginWithGoogle();
 
         // Store the retrieved token in secure async storage
         await SecureStore.setItemAsync('userData', userData);
@@ -162,43 +166,19 @@ export default class App extends React.Component {
     []
   );
 
-  /*
-  return (
-    <AuthContext.Provider value={authContext}>
-      // Add app content to render here
-    </AuthContext.Provider>
-  );
-  */
-  
+  const _handleLoadingError = error => {
+    // In this case, you might want to report the error to your error
+    // reporting service, for example Sentry
+    console.warn(error);
+  };
 
-  // Render a loading screen if loading, otherwise load the main app
-  render() {
-    if (this.state.isLoading && !this.props.skipLoadingScreen) {
-      return (
-        <AppLoading
-          startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
-        />
-      );
-    } else {
-      return (
-        <AuthContext.Provider value={authContext}>
-          <NavigationContainer> {/* Wrapper component for react-navigation 5.0 */}
-            <View style={styles.container}>
-              <ThemeProvider theme={slumber_theme}> {/* Theme wrapper for Draftbit theme*/}
-                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-                <AppNavigator userToken={state.userToken}/>
-              </ThemeProvider>
-            </View>
-          </NavigationContainer>
-        </AuthContext.Provider>
-      );
-    }
-  }
+  // Trigger the switch from the loading screen to the app
+  const _handleFinishLoading = () => {
+    this.setState({ isLoading: false });
+  };
 
   // Load assets async w/Expo tools
-  _loadResourcesAsync = async () => {
+  const _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([
         require('./assets/images/robot-dev.png'),
@@ -214,17 +194,31 @@ export default class App extends React.Component {
     ]);
   };
 
-  _handleLoadingError = error => {
-    // In this case, you might want to report the error to your error
-    // reporting service, for example Sentry
-    console.warn(error);
-  };
-
-  // Trigger the switch from the loading screen to the app
-  _handleFinishLoading = () => {
-    this.setState({ isLoading: false });
-  };
+  // Render a loading screen if loading, otherwise load the main app
+  if (state.isLoading) {
+    return (
+      <AppLoading
+        startAsync={_loadResourcesAsync}
+        onError={_handleLoadingError}
+        onFinish={_handleFinishLoading}
+      />
+    );
+  } else {
+    return (
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          <View style={styles.container}>
+            <ThemeProvider theme={slumber_theme}>
+              {Platform.OS === 'ios' ? <StatusBar barStyle="default" /> : []}
+              <AppNavigator userToken={state.userToken}/>
+            </ThemeProvider>
+          </View>
+        </NavigationContainer>
+      </AuthContext.Provider>
+    );
+  }
 }
+
 
 // Basic app styles - will move to their own file soon
 const styles = StyleSheet.create({

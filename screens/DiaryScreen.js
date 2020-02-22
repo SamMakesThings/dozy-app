@@ -1,30 +1,24 @@
 import React, { Component } from "react";
 import {
   StatusBar,
-  StyleSheet,
-  View,
-  WebView,
   ScrollView,
-  KeyboardAvoidingView,
-  ImageBackground,
   Text,
-  TextInput,
-  FlatList,
   Platform
 } from "react-native";
+import * as SecureStore from 'expo-secure-store';
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
-import { slumber_theme } from "../config/slumber_theme";
-import { FbAuth, FbLib } from "../config/firebaseConfig";
 import '@firebase/firestore';
 import Intl from 'intl';
-import * as SecureStore from 'expo-secure-store';
+import { FbLib } from "../config/firebaseConfig";
+import { slumber_theme } from "../config/slumber_theme";
+import GLOBAL from '../global';
+
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/tr-TR');
   require('date-time-format-timezone');
   Intl.__disableRegExpRestore();/*For syntaxerror invalid regular expression unmatched parentheses*/
 }
-import GLOBAL from '../global';
 
 class SleepLogEntryCard extends Component {
     constructor(props) {
@@ -370,7 +364,7 @@ class SleepLogsView extends Component {
                         }
                         ]}
                     >
-                        Seems like you haven't logged any data yet.
+                        Seems like you have not logged any data yet.
                     </Text>
                 </ScrollView>
             )
@@ -385,7 +379,7 @@ class Root extends React.Component {
         this.state = {
             sleepLogs: null
         }
-    };
+    }
 
     static navigationOptions = {
         header: null,

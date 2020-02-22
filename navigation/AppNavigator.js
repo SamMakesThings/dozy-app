@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import BottomTabs from './MainTabNavigator';
@@ -41,18 +41,6 @@ export default function initialAuthNavigator(userToken) {
           />
         ))
       }
-      <TopStack.Screen
-        name="App"
-        component={BottomTabs}
-      />
-      <TopStack.Screen
-        name="SleepDiaryEntry"
-        component={DiaryEntryNavigator}
-      />
-      <TopStack.Screen
-        name="AuthLoading"
-        component={AuthLoadingScreen}
-      />
     </TopStack.Navigator>
   );
 }
