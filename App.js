@@ -12,13 +12,12 @@ import { FbAuth, FbLib } from "./config/firebaseConfig";
 import { slumber_theme } from "./config/slumber_theme";
 import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
-import GLOBAL from './global';
-
-// Prepare hooks for authentication functions
-const AuthContext = React.createContext();
+import { AuthContext } from './authContext';
+// import GLOBAL from './global';
 
 // Root app component
 export default function App () {
+
   /* DELETE this old state if new navigation functions as it should
   state = {
     isLoadingComplete: false,
@@ -45,18 +44,21 @@ export default function App () {
     (prevState, action) => {
       switch (action.type) {
         case 'RESTORE_TOKEN':
+          console.log("Restoring token!");
           return {
             ...prevState,
             userToken: action.token,
             isLoading: false,
           };
         case 'SIGN_IN':
+          console.log("Signing in!");
           return {
             ...prevState,
             isSignout: false,
             userToken: action.token,
           };
         case 'SIGN_OUT':
+          console.log("Signing out!");
           return {
             ...prevState,
             isSignout: true,
@@ -75,31 +77,35 @@ export default function App () {
     try {
       // NOTE: Current keys only work in Expo dev environment!! To work in standalone apps, need to update hostnames
       // on these keys through the Google Cloud Console.
+      console.log("attempting to fetch google keys");
       const result = await Google.logInAsync({
         androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",
         iosClientId:"713165282203-fr943kvhd9rbst5i5ss4g3htgjho143a.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
   
+      console.log("Here's the google result: ");
+      console.log(result);
       if (result.type === "success") {
         const { idToken, accessToken } = result;
+        console.log("Now attempting to get authenticated with Firebase: ");
         const credential = FbLib.auth.GoogleAuthProvider.credential(idToken, accessToken);
         await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
-        FbAuth
-          .signInAndRetrieveDataWithCredential(credential)
+        return( await FbAuth.signInWithCredential(credential) )
+        /*
           .then(res => {
             // user res, create your user, do whatever you want
-            console.log("hey, the login worked!");
-            // console.log("here's the result: " + JSON.stringify(res));
+            console.log("hey, the login worked! Here's the firebase result: ");
+            console.log(res);
             GLOBAL.userData = res;
-            console.log(res.user.uid);
+            // console.log(res.user.uid);
             // console.log(GLOBAL.userData);
             // this._signInAsync(res); REPLACE THIS
             return (res);
           })
           .catch(error => {
             console.log("firebase cred err:", error);
-          });
+          }); */
       } else {
         return { cancelled: true };
       }
@@ -142,14 +148,26 @@ export default function App () {
         // In the example, we'll use a dummy token
 
         // Use my previously defined login function to get user data and store the token
-        let userData = _loginWithGoogle();
+        console.log("Running sign in function in app.js. Running loginWithGoogle")
+        // let userData = await _loginWithGoogle();
+        _loginWithGoogle().then(result => {
+          console.log("Signing in! user data is:");
+          console.log(result);
 
-        // Store the retrieved token in secure async storage
-        await SecureStore.setItemAsync('userData', userData);
+          // Store credentials in SecureStore
+          SecureStore.setItemAsync('accessToken', result.credential.accessToken);
+          SecureStore.setItemAsync('idToken', result.credential.idToken);
+          SecureStore.setItemAsync('providerId', result.credential.providerId);
+          SecureStore.setItemAsync('userData', result.user.uid);
 
-        dispatch({ type: 'SIGN_IN', token: userData.user.uid });
+          // Update app state accordingly thru context hook function
+          dispatch({ type: 'SIGN_IN', token: result.user.uid });
+
+        });
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signOut: () => {
+        console.log("Signing out now! Calling dispatch");
+        dispatch({ type: 'SIGN_OUT' });},
       signUp: async data => {
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed
@@ -161,6 +179,8 @@ export default function App () {
 
         // Store the retrieved token in secure async storage
         await SecureStore.setItemAsync('userData', userData);
+        console.log("Signing up ! user data is:");
+        console.log(userData);
 
         dispatch({ type: 'SIGN_IN', token: userData.user.uid });
       },
@@ -195,6 +215,9 @@ export default function App () {
       }),
     ]);
   };
+
+  // Get the signOut function to pass to other screens
+  // const { signOut } = React.useContext(AuthContext);
 
   // Render a loading screen if loading, otherwise load the main app
   if (state.isLoading) {

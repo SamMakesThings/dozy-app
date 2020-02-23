@@ -1,22 +1,16 @@
-import React from "react"
-import { StatusBar, StyleSheet, Text, Linking } from "react-native"
-import { withTheme, ScreenContainer, Container, Icon, Switch, DatePicker, Touchable } from "@draftbit/ui"
-import { Notifications } from "expo"
+import React from "react";
+import { StatusBar, StyleSheet, Text, Linking } from "react-native";
+import { withTheme, ScreenContainer, Container, Icon, Switch, DatePicker, Touchable } from "@draftbit/ui";
+import { Notifications } from "expo";
 import * as Permissions from 'expo-permissions';
 import * as SecureStore from 'expo-secure-store';
-import { FbLib } from "../config/firebaseConfig"
-import { slumber_theme } from "../config/slumber_theme"
+import { FbLib } from "../config/firebaseConfig";
+import { slumber_theme } from "../config/slumber_theme";
+import { AuthContext } from "../authContext";
 
-class Root extends React.Component {
-  state = {}
-
-  componentDidMount() {
-    StatusBar.setBarStyle("light-content")
-  }
-
-  static navigationOptions = {
-    header: null,
-  };
+function Root () {
+  // state = {}
+  /*
 
   registerForPushNotificationsAsync = async() => {
     console.log("ATTEMPTING TO DO A PUSH NOTIFICATION TOKEN THING...")
@@ -110,143 +104,132 @@ class Root extends React.Component {
     }).catch(function(error) {
       console.log("Error getting settings from Firebase:", error);
     })
-  }
+  } */
 
-  render() {
-    const theme = slumber_theme;
-    return (
-      <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_nd}>
-        <Container style={styles.Container_nz} elevation={0} useThemeGutterPadding={true}>
-          <Icon
-            style={styles.Icon_ny}
-            name="Ionicons/ios-person"
-            size={200}
-            color={theme.colors.primary}
-          />
+
+  const theme = slumber_theme;
+
+  // Pass along the signOut function from the context provider
+  const { signOut } = React.useContext(AuthContext);
+  
+  return (
+    <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_nd}>
+      <Container style={styles.Container_nz} elevation={0} useThemeGutterPadding={true}>
+        <Icon
+          style={styles.Icon_ny}
+          name="Ionicons/ios-person"
+          size={200}
+          color={theme.colors.primary}
+        />
+        <Text
+          style={[
+            styles.Text_n1,
+            theme.typography.headline3,
+            {
+              color: theme.colors.strong
+            }
+          ]}
+        >
+          User
+        </Text>
+        <Text
+          style={[
+            styles.Text_nc,
+            theme.typography.subtitle2,
+            {
+              color: theme.colors.light
+            }
+          ]}
+        >
+          @slumberapp
+        </Text>
+      </Container>
+      <Container style={styles.Container_ns} elevation={0} useThemeGutterPadding={true}>
+        <Touchable style={styles.Touchable_n0} onPress={() => {Linking.openURL("mailto:sam@naritai.co")}}>
+          <Container style={styles.Container_nf} elevation={0} useThemeGutterPadding={true}>
+            <Text
+              style={[
+                styles.Text_nl,
+                theme.typography.body1,
+                {
+                  color: theme.colors.strong
+                }
+              ]}
+            >
+              Get Help and Support
+            </Text>
+            <Icon
+              style={styles.Icon_nf}
+              name="Ionicons/md-mail"
+              size={36}
+              color={theme.colors.primary}
+            />
+          </Container>
+        </Touchable>
+        <Touchable style={styles.Touchable_n0} onPress={signOut/* this.registerForPushNotificationsAsync() */}>
+          <Container style={styles.Container_nf} elevation={0} useThemeGutterPadding={true}>
+            <Text
+              style={[
+                styles.Text_nl,
+                theme.typography.body1,
+                {
+                  color: theme.colors.strong
+                }
+              ]}
+            >
+              Test push notification key storage
+            </Text>
+            <Icon
+              style={styles.Icon_nf}
+              name="Ionicons/md-mail"
+              size={36}
+              color={theme.colors.primary}
+            />
+          </Container>
+        </Touchable>
+        <Container style={styles.Container_ni} elevation={0} useThemeGutterPadding={true}>
           <Text
             style={[
-              styles.Text_n1,
-              theme.typography.headline3,
+              styles.Text_nv,
+              theme.typography.body1,
               {
                 color: theme.colors.strong
               }
             ]}
           >
-            User
+            Sleep Log Reminders
           </Text>
+          <Switch
+            style={styles.Switch_n9}
+            color={theme.colors.primary}
+            disabled={false}
+            onValueChange={remindersOn => {
+              // this.setState({ remindersOn });
+              // this.updateReminderTime(remindersOn);
+              console.log("attempted to run state switch");
+              }
+            }
+            value={1 /*this.state.remindersOn*/}
+          />
+        </Container>
+        <Container style={styles.Container_nw} elevation={0} useThemeGutterPadding={true}>
           <Text
             style={[
-              styles.Text_nc,
-              theme.typography.subtitle2,
+              styles.Text_nb,
+              theme.typography.body1,
               {
-                color: theme.colors.light
+                color: theme.colors.strong
               }
             ]}
           >
-            @slumberapp
+            Reminder Time
           </Text>
         </Container>
-        <Container style={styles.Container_ns} elevation={0} useThemeGutterPadding={true}>
-          <Touchable style={styles.Touchable_n0} onPress={() => {Linking.openURL("mailto:sam@naritai.co")}}>
-            <Container style={styles.Container_nf} elevation={0} useThemeGutterPadding={true}>
-              <Text
-                style={[
-                  styles.Text_nl,
-                  theme.typography.body1,
-                  {
-                    color: theme.colors.strong
-                  }
-                ]}
-              >
-                Get Help and Support
-              </Text>
-              <Icon
-                style={styles.Icon_nf}
-                name="Ionicons/md-mail"
-                size={36}
-                color={theme.colors.primary}
-              />
-            </Container>
-          </Touchable>
-          <Touchable style={styles.Touchable_n0} onPress={() => {this.registerForPushNotificationsAsync()}}>
-            <Container style={styles.Container_nf} elevation={0} useThemeGutterPadding={true}>
-              <Text
-                style={[
-                  styles.Text_nl,
-                  theme.typography.body1,
-                  {
-                    color: theme.colors.strong
-                  }
-                ]}
-              >
-                Test push notification key storage
-              </Text>
-              <Icon
-                style={styles.Icon_nf}
-                name="Ionicons/md-mail"
-                size={36}
-                color={theme.colors.primary}
-              />
-            </Container>
-          </Touchable>
-          <Container style={styles.Container_ni} elevation={0} useThemeGutterPadding={true}>
-            <Text
-              style={[
-                styles.Text_nv,
-                theme.typography.body1,
-                {
-                  color: theme.colors.strong
-                }
-              ]}
-            >
-              Sleep Log Reminders
-            </Text>
-            <Switch
-              style={styles.Switch_n9}
-              color={theme.colors.primary}
-              disabled={false}
-              onValueChange={remindersOn => {
-                this.setState({ remindersOn });
-                this.updateReminderTime(remindersOn);
-                }
-              }
-              value={this.state.remindersOn}
-            />
-          </Container>
-          <Container style={styles.Container_nw} elevation={0} useThemeGutterPadding={true}>
-            <Text
-              style={[
-                styles.Text_nb,
-                theme.typography.body1,
-                {
-                  color: theme.colors.strong
-                }
-              ]}
-            >
-              Reminder Time
-            </Text>
-            <DatePicker
-              style={styles.DatePicker_nl}
-              mode="time"
-              type="solid"
-              error={false}
-              label="Date"
-              disabled={false}
-              leftIconMode="inset"
-              date={this.state.reminderTime}
-              onDateChange={reminderTime => {
-                this.setState({ reminderTime });
-                this.updateRemindersOnOff(reminderTime);
-                console.log(this.state);
-                }
-              }
-            />
-          </Container>
-        </Container>
-      </ScreenContainer>
-    )
-  }
+      </Container>
+    </ScreenContainer>
+  )
 }
+
 
 const styles = StyleSheet.create({
   Container_nf: {
@@ -304,3 +287,23 @@ const styles = StyleSheet.create({
 })
 
 export default withTheme(Root)
+
+/* OLD TIME PICKER - this was causing a toLocaleTimeString error, which means I think it's a Draftbit error.
+          <DatePicker
+            style={styles.DatePicker_nl}
+            mode="time"
+            type="solid"
+            error={false}
+            label="Date"
+            disabled={false}
+            leftIconMode="inset"
+            date={this.state.reminderTime}
+            onDateChange={reminderTime => {
+              // this.setState({ reminderTime });
+              // this.updateRemindersOnOff(reminderTime);
+              // console.log(this.state);
+              console.log("attempted to set push notifs time change");
+              }
+            }
+          />
+*/

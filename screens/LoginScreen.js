@@ -7,10 +7,12 @@ import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
 import * as SecureStore from 'expo-secure-store';
 import * as Google from 'expo-google-app-auth';
 import { FbAuth, FbLib } from "../config/firebaseConfig";
+import { slumber_theme } from "../config/slumber_theme";
+import { AuthContext } from "../authContext";
+import GLOBAL from '../global';
 
-GLOBAL = require('../global');
-
-class LoginScreen extends Component {
+function LoginScreen () {
+  /*
   constructor (props) {
     super(props);
     state={}
@@ -60,91 +62,94 @@ class LoginScreen extends Component {
       console.log("err from LoginScreen.js:", err);
     }
   };
+  */
 
-  render() {
-    const { theme } = this.props;
-    return (
-      <ScreenContainer hasSafeArea={false} scrollable={false}>
+  const theme = slumber_theme;
+
+  const { signIn, signUp } = React.useContext(AuthContext);
+
+  return (
+    <ScreenContainer hasSafeArea={false} scrollable={false}>
+      <Container
+        style={{
+          minWidth: "100%",
+          minHeight: "100%",
+          justifyContent: "space-around",
+          flexGrow: 1
+        }}
+        elevation={0}
+        backgroundImage="https://apps-draftbit-com.s3.amazonaws.com/nnVD1nJp/assets/a7c432db-7d90-4506-9e09-15bc773ad9bc"
+        useThemeGutterPadding={true}
+        backgroundImageResizeMode="cover"
+      >
+        <Container elevation={0} useThemeGutterPadding={true}>
+          <Text
+            style={[
+              theme.typography.headline2,
+              {
+                color: theme.colors.strongInverse,
+                textAlign: "center",
+
+                paddingHorizontal: 0,
+                marginVertical: 0
+              }
+            ]}
+          >
+            Welcome to Slumber
+          </Text>
+          <Text
+            style={[
+              theme.typography.headline6,
+              {
+                color: theme.colors.strongInverse,
+                textAlign: "center",
+
+                paddingHorizontal: 0,
+                marginVertical: 0
+              }
+            ]}
+          >
+            Lets get started.
+          </Text>
+        </Container>
         <Container
           style={{
-            minWidth: "100%",
-            minHeight: "100%",
-            justifyContent: "space-around",
-            flexGrow: 1
+            height: 150,
+            justifyContent: "space-between"
           }}
           elevation={0}
-          backgroundImage="https://apps-draftbit-com.s3.amazonaws.com/nnVD1nJp/assets/a7c432db-7d90-4506-9e09-15bc773ad9bc"
-          useThemeGutterPadding={true}
-          backgroundImageResizeMode="cover"
+          useThemeGutterPadding={false}
         >
-          <Container elevation={0} useThemeGutterPadding={true}>
-            <Text
-              style={[
-                theme.typography.headline2,
-                {
-                  color: theme.colors.strongInverse,
-                  textAlign: "center",
-
-                  paddingHorizontal: 0,
-                  marginVertical: 0
-                }
-              ]}
-            >
-              Welcome to Slumber
-            </Text>
-            <Text
-              style={[
-                theme.typography.headline6,
-                {
-                  color: theme.colors.strongInverse,
-                  textAlign: "center",
-
-                  paddingHorizontal: 0,
-                  marginVertical: 0
-                }
-              ]}
-            >
-              Lets get started.
-            </Text>
-          </Container>
-          <Container
+          <Button
             style={{
-              height: 150,
-              justifyContent: "space-between"
+              marginTop: 0
             }}
-            elevation={0}
-            useThemeGutterPadding={false}
+            type="solid"
+            color={theme.colors.primary}
+            onPress={signUp}
           >
-            <Button
-              style={{
-                marginTop: 0
-              }}
-              type="solid"
-              color={theme.colors.primary}
-              onPress={this._loginWithGoogle}
-            >
-              Sign Up
-            </Button>
-            <Button type="outline" color={theme.colors.background} onPress={this._loginWithGoogle}>
-              Log In
-            </Button>
-            <Text
-              style={[
-                theme.typography.caption,
-                {
-                  color: theme.colors.lightInverse,
-                  textAlign: "center"
-                }
-              ]}
-            >
-              Login powered by Google
-            </Text>
-          </Container>
+            Sign Up
+          </Button>
+          <Button type="outline" color={theme.colors.background} onPress={signIn}>
+            Log In
+          </Button>
+          <Text
+            style={[
+              theme.typography.caption,
+              {
+                color: theme.colors.lightInverse,
+                textAlign: "center"
+              }
+            ]}
+          >
+            Login powered by Google
+          </Text>
         </Container>
-      </ScreenContainer>
-    );
-  }
+      </Container>
+    </ScreenContainer>
+  );
 }
+
 
 export default withTheme(LoginScreen);
 

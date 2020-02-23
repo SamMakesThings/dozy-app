@@ -1,4 +1,3 @@
 {
-    "presets": ["@babel/react", "babel-preset-expo"],
-    "plugins": ["@babel/plugin-proposal-class-properties"]
+    "presets": ["@babel/react", "babel-preset-expo"]
 }

@@ -399,12 +399,33 @@ class Root extends React.Component {
     fetchSleepLogs = async () => {
         // Retrieving sleep logs from Firestore
         
+        console.log("calling up a Firestore in DiaryScreen! Next log is attempt at UID");
         var db = FbLib.firestore();
 
-        userId = await SecureStore.getItemAsync('userData');
+        let userId = await SecureStore.getItemAsync('userData');
+        console.log(userId);
 
-        var docRef = db.collection("sleep-logs").doc(userId); //CHANGE THIS CALL
+        console.log("Attempting to pull the sleep diary collection from Firestore")
+        var docRef = db.collection("sleep-logs").doc("eyzZSaIc4uWPgP5cZwrjYXx2lE03"); //CHANGE THIS CALL
+        console.log(docRef);
 
+        /*
+        // This gets stuck at a promise
+        console.log(docRef.get().then((doc) => {return doc.data();}));
+        
+
+        docRef.get().then(function(doc) {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+        });
+        */
+        
         docRef.get().then((doc) => {
             if (doc.exists) {
                 this.setState({ sleepLogs: doc.data() });
@@ -416,10 +437,11 @@ class Root extends React.Component {
         }).catch(function(error) {
             console.log("Error getting document:", error);
         });
+        
     };
 
     goToLogEntry = () => {
-        this.props.navigation.navigate('SleepDiaryEntry');
+        //this.props.navigation.navigate('SleepDiaryEntry');
     }
 
     render() {

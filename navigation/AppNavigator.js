@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
-import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import DiaryEntryNavigator from './DiaryEntryNavigator';
 
 
@@ -13,8 +12,11 @@ import DiaryEntryNavigator from './DiaryEntryNavigator';
 const TopStack = createStackNavigator();
 
 // Export the navigation components and screens, with if/then for auth state
-export default function initialAuthNavigator(userToken) {
+export default function initialAuthNavigator({userToken}) {
   // const isLoggedIn = React.useContext(AuthContext); FIX THIS
+
+  console.log("userToken received in AppNavigator: ")
+  console.log(userToken);
 
   return (
     <TopStack.Navigator
@@ -23,7 +25,7 @@ export default function initialAuthNavigator(userToken) {
         headerShown: false
       }}
     >
-        {(userToken ? (
+        {(userToken != undefined ? (
           <>
             <TopStack.Screen
               name="App"

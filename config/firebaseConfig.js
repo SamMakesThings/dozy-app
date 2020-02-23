@@ -1,29 +1,16 @@
 import * as firebase from 'firebase';
+import '@firebase/firestore';
 import Constants from 'expo-constants';
   
 export const FbApp = !firebase.apps.length ? firebase.initializeApp(Constants.manifest.extra.firebase) : firebase.app();
+console.log("Oh hey we just attempted to initialize Firebase. Here's the config settings: ");
+console.log(Constants.manifest.extra.firebase);
 
 export const FbAuth = firebase.auth();
 
 export const FbLib = firebase;
 
-// Making Firestore happen, testing data retrieval
-/* 
-var db = firebase.firestore();
-
-var docRef = db.collection("cities").doc("SF");
-
-docRef.get().then(function(doc) {
-    if (doc.exists) {
-        console.log("Document data:", doc.data());
-    } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-    }
-}).catch(function(error) {
-    console.log("Error getting document:", error);
-});
-*/
+// Need projectId, apiKey, appId and messagingSenderId
 
 // Google sign-in functionality
 // const clientId = '713165282203-jjc54if1n7krahda9gvkio0siqltq57t.apps.googleusercontent.com';

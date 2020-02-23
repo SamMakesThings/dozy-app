@@ -39,7 +39,9 @@
         "authDomain": "slumber-app.firebaseapp.com",
         "databaseURL": "https://slumber-app.firebaseio.com",
         "projectId": "slumber-app",
-        "storageBucket": "slumber-app.appspot.com"
+        "storageBucket": "slumber-app.appspot.com",
+        "messagingSenderId": "713165282203",
+        "appId": "1:713165282203:web:634561b97436c2905bdf3e"
       }
     }
   }

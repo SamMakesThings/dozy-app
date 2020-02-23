@@ -24,13 +24,15 @@
     },
     "rules": {
         "react/display-name": 1,
-        "no-unused-vars": "warn"
+        "no-unused-vars": "warn",
+        "no-console": "off"
     },
     "parser": "babel-eslint",
     "plugins": [
         "react",
         "react-native",
-        "eslint-plugin-babel"
+        "eslint-plugin-babel",
+        "react-hooks"
         ],
     "settings": {
         "react": {
