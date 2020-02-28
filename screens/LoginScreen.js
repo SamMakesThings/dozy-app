@@ -1,68 +1,12 @@
-import React, { Component } from "react";
+/* import React from "react";
 import {
-  StatusBar,
   Text,
 } from "react-native";
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
-import * as SecureStore from 'expo-secure-store';
-import * as Google from 'expo-google-app-auth';
-import { FbAuth, FbLib } from "../config/firebaseConfig";
 import { slumber_theme } from "../config/slumber_theme";
 import { AuthContext } from "../authContext";
-import GLOBAL from '../global';
 
 function LoginScreen () {
-  /*
-  constructor (props) {
-    super(props);
-    state={}
-  }
-
-  componentDidMount() {
-    StatusBar.setBarStyle("light-content");
-  }
-
-  _signInAsync = async (userData) => {
-    await SecureStore.setItemAsync('userData', userData.user.uid);
-    // this.props.navigation.navigate('App'); DELETE this if react-navigation dynamic nav is working
-  }
-
-  _loginWithGoogle = async () => {
-    try {
-      // NOTE: Current keys only work in Expo dev environment!! To work in standalone apps, need to update hostnames
-      // on these keys through the Google Cloud Console.
-      const result = await Google.logInAsync({
-        androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",
-        iosClientId:"713165282203-fr943kvhd9rbst5i5ss4g3htgjho143a.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
-      });
-  
-      if (result.type === "success") {
-        const { idToken, accessToken } = result;
-        const credential = FbLib.auth.GoogleAuthProvider.credential(idToken, accessToken);
-        await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
-        FbAuth
-          .signInAndRetrieveDataWithCredential(credential)
-          .then(res => {
-            // user res, create your user, do whatever you want
-            console.log("hey, the login worked!");
-            // console.log("here's the result: " + JSON.stringify(res));
-            GLOBAL.userData = res;
-            console.log(res.user.uid);
-            // console.log(GLOBAL.userData);
-            this._signInAsync(res);
-          })
-          .catch(error => {
-            console.log("firebase cred err:", error);
-          });
-      } else {
-        return { cancelled: true };
-      }
-    } catch (err) {
-      console.log("err from LoginScreen.js:", err);
-    }
-  };
-  */
 
   const theme = slumber_theme;
 
@@ -149,52 +93,172 @@ function LoginScreen () {
     </ScreenContainer>
   );
 }
+*/
 
+
+import React from 'react';
+import {
+  withTheme,
+  Button,
+  ScreenContainer,
+  Container,
+  Image,
+  Touchable,
+} from '@draftbit/ui';
+import { StyleSheet, Text } from 'react-native';
+import Images from '../config/Images';
+import { AuthContext } from "../authContext";
+import { slumber_theme } from "../config/slumber_theme";
+
+function LoginScreen () {
+  // Pull the theme manually
+  const theme = slumber_theme;
+
+  // Get my auth functions from hook
+  const { signIn, signUp } = React.useContext(AuthContext);
+
+  return (
+    <ScreenContainer
+      scrollable={false}
+      hasSafeArea={false}
+      style={styles.screenContainer1D}
+    >
+      <Container
+        backgroundImage={Images.DreamBgExtended}
+        useThemeGutterPadding={false}
+        backgroundImageResizeMode="contain"
+        elevation={0}
+        style={styles.containerA6}
+      >
+        <Container
+          elevation={0}
+          useThemeGutterPadding={false}
+          style={styles.containerG3}
+        >
+          <Image
+            source={Images.WordmarkTrans}
+            resizeMode="contain"
+            style={styles.imagePQ}
+          />
+        </Container>
+        <Container
+          elevation={0}
+          useThemeGutterPadding={true}
+          style={styles.containerPi}
+        >
+          <Image
+            source={Images.UndrawBed}
+            resizeMode="contain"
+            style={styles.image6G}
+          />
+          <Text
+            allowFontScaling={false}
+            style={StyleSheet.flatten([
+              styles.text94,
+              theme.typography.headline3,
+              { color: theme.colors.strongInverse },
+            ])}
+          >
+            Sleep through
+          </Text>
+          <Text
+            accessible={true}
+            adjustsFontSizeToFit={false}
+            allowFontScaling={false}
+            style={StyleSheet.flatten([
+              styles.textBw,
+              theme.typography.headline3,
+              { color: theme.colors.strongInverse },
+            ])}
+          >
+            the night again
+          </Text>
+        </Container>
+        <Container
+          useThemeGutterPadding={true}
+          elevation={0}
+          style={styles.containerGr}
+        >
+          <Button
+            type="solid"
+            color={theme.colors.primary}
+            style={StyleSheet.flatten([
+              styles.button9I,
+              { borderRadius: theme.borderRadius.button },
+            ])}
+            onPress={signUp}
+          >
+            Get Started
+          </Button>
+          <Touchable style={styles.touchable64} onPress={signIn}>
+            <Text
+              style={StyleSheet.flatten([
+                styles.textW2,
+                theme.typography.body1,
+                { color: theme.colors.surface },
+              ])}
+            >
+              Sign In
+            </Text>
+          </Touchable>
+        </Container>
+      </Container>
+    </ScreenContainer>
+  );
+}
+
+const styles = StyleSheet.create({
+  button9I: {
+    height: 55,
+    justifyContent: 'center',
+  },
+  screenContainer1D: {
+    // alignItems: 'auto', DELETE THIS LINE IF THINGS DON'T BREAK
+  },
+  containerA6: {
+    flexGrow: 1,
+    width: '100%',
+    height: '60%',
+    justifyContent: 'space-between',
+  },
+  containerG3: {
+    height: '15%',
+  },
+  textW2: {
+    textAlign: 'center',
+  },
+  image6G: {
+    width: '60%',
+    alignSelf: 'center',
+    height: '40%',
+  },
+  imagePQ: {
+    alignSelf: 'flex-start',
+    marginLeft: 15,
+    width: '50%',
+    height: '120%',
+  },
+  containerPi: {
+    height: '65%',
+    justifyContent: 'flex-end',
+  },
+  touchable64: {
+    paddingTop: 25,
+    paddingBottom: 25,
+    marginBottom: 10,
+  },
+  text94: {
+    textAlign: 'center',
+  },
+  textBw: {
+    marginTop: -10,
+    textAlign: 'center',
+    marginBottom: 35,
+  },
+  containerGr: {
+    justifyContent: 'flex-end',
+    height: '20%',
+  },
+});
 
 export default withTheme(LoginScreen);
-
-/*
-class SignInScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Please sign in',
-  };
-
-  render() {
-    return (
-      <View>
-        <Button title="Sign in!" onPress={this._signInAsync} />
-      </View>
-    );
-  }
-
-  _signInAsync = async () => {
-    await AsyncStorage.setItem('userToken', 'abc');
-    this.props.navigation.navigate('App');
-  };
-}
-
-class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Welcome to the app!',
-  };
-
-  render() {
-    return (
-      <View>
-        <Button title="Show me more of the app" onPress={this._showMoreApp} />
-        <Button title="Actually, sign me out :)" onPress={this._signOutAsync} />
-      </View>
-    );
-  }
-
-  _showMoreApp = () => {
-    this.props.navigation.navigate('Other');
-  };
-
-  _signOutAsync = async () => {
-    await AsyncStorage.clear();
-    this.props.navigation.navigate('Auth');
-  };
-}
-
-*/

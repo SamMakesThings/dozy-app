@@ -93,7 +93,7 @@ class SleepLogEntryCard extends Component {
                     >
                         <Text
                         style={[
-                            theme.typography.headline6,
+                            theme.typography.body1,
                             {
                             color: theme.colors.secondary,
                             textAlign: "center",
@@ -146,7 +146,7 @@ class SleepLogEntryCard extends Component {
                     >
                         <Text
                         style={[
-                            theme.typography.headline6,
+                            theme.typography.body1,
                             {
                             color: theme.colors.primary,
                             textAlign: "center",
@@ -236,7 +236,7 @@ class SleepLogEntryCard extends Component {
                     >
                     <Text
                         style={[
-                        theme.typography.headline4,
+                        theme.typography.headline5,
                         {
                             color: theme.colors.secondary,
                             textAlign: "right",
@@ -257,7 +257,7 @@ class SleepLogEntryCard extends Component {
 
                             width: "100%",
                             paddingTop: 0,
-                            marginTop: 23
+                            marginTop: 20
                         }
                         ]}
                     >
@@ -265,7 +265,7 @@ class SleepLogEntryCard extends Component {
                     </Text>
                     <Text
                         style={[
-                        theme.typography.headline4,
+                        theme.typography.headline5,
                         {
                             color: theme.colors.secondary,
                             textAlign: "right",
@@ -273,7 +273,7 @@ class SleepLogEntryCard extends Component {
                             width: "100%",
                             paddingBottom: 0,
                             marginTop: 0,
-                            marginBottom: 13,
+                            marginBottom: 17,
                             bottom: 0,
                             position: "absolute"
                         }
@@ -290,7 +290,7 @@ class SleepLogEntryCard extends Component {
 
                             width: "100%",
                             bottom: 0,
-                            position: "absolute"
+                            position: "absolute",
                         }
                         ]}
                     >
@@ -452,7 +452,7 @@ class Root extends React.Component {
                     <Container elevation={0} useThemeGutterPadding={true}>
                         <Text
                         style={[
-                            theme.typography.headline4,
+                            theme.typography.headline5,
                             {
                             color: theme.colors.secondary,
                             textAlign: "center",

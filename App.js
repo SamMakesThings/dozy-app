@@ -140,6 +140,23 @@ export default function App () {
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+
+      return await Promise.all([
+        Asset.loadAsync([
+          require('./assets/images/robot-dev.png'),
+          require('./assets/images/robot-prod.png'),
+        ]),
+        Font.loadAsync({
+          // This is the font that we are using for our tab bar
+          ...Icon.Ionicons.font,
+          // We include SpaceMono because we use it in HomeScreen.js. Feel free
+          // to remove this if you are not using it in your app
+          'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+          RubikRegular: require("./assets/fonts/RubikRegular.ttf"),
+          RubikMedium: require("./assets/fonts/RubikMedium.ttf"),
+          RubikBold: require("./assets/fonts/RubikBold.ttf")
+        }),
+      ]);
     };
 
     bootstrapAsync();
@@ -227,6 +244,9 @@ export default function App () {
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+        RubikRegular: require("./assets/fonts/RubikRegular.ttf"),
+        RubikMedium: require("./assets/fonts/RubikMedium.ttf"),
+        RubikBold: require("./assets/fonts/RubikBold.ttf")
       }),
     ]);
   };
