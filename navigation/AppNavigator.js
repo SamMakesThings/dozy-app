@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import BottomTabs from './MainTabNavigator';
@@ -11,12 +12,35 @@ import DiaryEntryNavigator from './DiaryEntryNavigator';
 // (do I need individual definitions, or should I just use "Stack" every time?)
 const TopStack = createStackNavigator();
 
+// Set up a loading screen for waiting on Firebase response
+function LoadingScreen() {
+  return (
+    <View styles={{
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center', 
+      backgroundColor: '#232B3F',
+      padding: 20,}}>
+      <ActivityIndicator size="large" color="#ffffff" style={{
+        width: 50, 
+        height: 50,
+        marginTop: '100%',
+        alignSelf: 'center',
+      }}/>
+    </View>
+  )
+}
+
 // Export the navigation components and screens, with if/then for auth state
-export default function initialAuthNavigator({userToken}) {
+export default function initialAuthNavigator({userToken, authLoading}) {
   // const isLoggedIn = React.useContext(AuthContext); FIX THIS
 
   console.log("userToken received in AppNavigator: ")
   console.log(userToken);
+
+  if (authLoading) {
+    return (<LoadingScreen />)
+  }
 
   return (
     <TopStack.Navigator
@@ -44,8 +68,7 @@ export default function initialAuthNavigator({userToken}) {
               header: null,
             }}
           />
-        ))
-      }
+        ))}
     </TopStack.Navigator>
   );
 }

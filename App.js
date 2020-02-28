@@ -56,6 +56,7 @@ export default function App () {
             ...prevState,
             isSignout: false,
             userToken: action.token,
+            authLoading: action.isAuthLoading,
           };
         case 'SIGN_OUT':
           console.log("Signing out!");
@@ -63,6 +64,11 @@ export default function App () {
             ...prevState,
             isSignout: true,
             userToken: undefined,
+          };
+        case 'AUTH_LOADING':
+          return {
+            ...prevState,
+            authLoading: action.isAuthLoading,
           };
       }
     },
@@ -89,6 +95,7 @@ export default function App () {
       if (result.type === "success") {
         const { idToken, accessToken } = result;
         console.log("Now attempting to get authenticated with Firebase: ");
+        dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
         const credential = FbLib.auth.GoogleAuthProvider.credential(idToken, accessToken);
         await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
         return( await FbAuth.signInWithCredential(credential) )
@@ -161,7 +168,7 @@ export default function App () {
           SecureStore.setItemAsync('userData', result.user.uid);
 
           // Update app state accordingly thru context hook function
-          dispatch({ type: 'SIGN_IN', token: result.user.uid });
+          dispatch({ type: 'SIGN_IN', token: result.user.uid, isAuthLoading: false });
 
         });
       },
@@ -169,20 +176,28 @@ export default function App () {
         console.log("Signing out now! Calling dispatch");
         dispatch({ type: 'SIGN_OUT' });},
       signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
+        // In a production app, we need to send some data (usually username, password) to server and get a token
+        // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
 
         // Use my previously defined login function to get user data and store the token
-        let userData = _loginWithGoogle();
+        console.log("Running sign in function in app.js. Running loginWithGoogle")
+        // let userData = await _loginWithGoogle();
+        _loginWithGoogle().then(result => {
+          console.log("Signing up! user data is:");
+          console.log(result);
 
-        // Store the retrieved token in secure async storage
-        await SecureStore.setItemAsync('userData', userData);
-        console.log("Signing up ! user data is:");
-        console.log(userData);
+          // Store credentials in SecureStore
+          SecureStore.setItemAsync('accessToken', result.credential.accessToken);
+          SecureStore.setItemAsync('idToken', result.credential.idToken);
+          SecureStore.setItemAsync('providerId', result.credential.providerId);
+          SecureStore.setItemAsync('userData', result.user.uid);
 
-        dispatch({ type: 'SIGN_IN', token: userData.user.uid });
+          // Update app state accordingly thru context hook function
+          dispatch({ type: 'SIGN_IN', token: result.user.uid, isAuthLoading: false });
+
+        });
       },
     }),
     []
@@ -235,7 +250,7 @@ export default function App () {
           <View style={styles.container}>
             <ThemeProvider theme={slumber_theme}>
               {Platform.OS === 'ios' ? <StatusBar barStyle="default" /> : []}
-              <AppNavigator userToken={state.userToken}/>
+              <AppNavigator userToken={state.userToken} authLoading={state.authLoading}/>
             </ThemeProvider>
           </View>
         </NavigationContainer>
