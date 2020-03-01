@@ -29,7 +29,7 @@
     "expo-google-app-auth": "^8.0.1",
     "expo-permissions": "~8.0.0",
     "expo-secure-store": "~8.0.0",
-    "firebase": "^7.9.1",
+    "firebase": "^7.9.3",
     "grpc": "^1.20.2",
     "intl": "^1.2.5",
     "react": "16.9.0",

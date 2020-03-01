@@ -2,7 +2,6 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import { AppLoading } from 'expo';
-import { Asset } from 'expo-asset'
 import * as Font from 'expo-font'
 import * as Icon from '@expo/vector-icons'
 import * as Google from 'expo-google-app-auth';
@@ -48,7 +47,7 @@ export default function App () {
           return {
             ...prevState,
             userToken: action.token,
-            isLoading: false,
+            // isLoading: false,
           };
         case 'SIGN_IN':
           console.log("Signing in!");
@@ -70,6 +69,11 @@ export default function App () {
             ...prevState,
             authLoading: action.isAuthLoading,
           };
+        case 'FINISH_LOADING':
+          return {
+            ...prevState,
+            isLoading: false,
+          }
       }
     },
     {
@@ -96,9 +100,15 @@ export default function App () {
         const { idToken, accessToken } = result;
         console.log("Now attempting to get authenticated with Firebase: ");
         dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
+        console.log("Now attempting to get credential from Firebase");
         const credential = FbLib.auth.GoogleAuthProvider.credential(idToken, accessToken);
+        console.log("Got credential. Now async getting Firebase persistence.");
         await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
-        return( await FbAuth.signInWithCredential(credential) )
+        console.log("Persistence seems set. Now doing final FbAuth.signInWithCredentail call.");
+        // Seems to be hanging on the signInWithCredential call. Maybe it's something to do with that await?
+        let fbSigninResult = FbAuth.signInWithCredential(credential);
+        console.log(fbSigninResult);
+        return( await fbSigninResult )
         /*
           .then(res => {
             // user res, create your user, do whatever you want
@@ -127,7 +137,6 @@ export default function App () {
       let userToken;
 
       try {
-        // userToken = await AsyncStorage.getItem('userToken'); // This is the template code, delete if below line works
         userToken = await SecureStore.getItemAsync('userData');
         console.log("Here's the userToken");
         console.log(userToken);
@@ -140,23 +149,6 @@ export default function App () {
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
-
-      return await Promise.all([
-        Asset.loadAsync([
-          require('./assets/images/robot-dev.png'),
-          require('./assets/images/robot-prod.png'),
-        ]),
-        Font.loadAsync({
-          // This is the font that we are using for our tab bar
-          ...Icon.Ionicons.font,
-          // We include SpaceMono because we use it in HomeScreen.js. Feel free
-          // to remove this if you are not using it in your app
-          'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-          RubikRegular: require("./assets/fonts/RubikRegular.ttf"),
-          RubikMedium: require("./assets/fonts/RubikMedium.ttf"),
-          RubikBold: require("./assets/fonts/RubikBold.ttf")
-        }),
-      ]);
     };
 
     bootstrapAsync();
@@ -227,18 +219,17 @@ export default function App () {
   };
 
   // Trigger the switch from the loading screen to the app
-  const _handleFinishLoading = () => {
-    this.setState({ isLoading: false });
-  };
+  function _handleFinishLoading () {
+    dispatch({ type: 'FINISH_LOADING'});
+  }
 
   // Load assets async w/Expo tools
-  const _loadResourcesAsync = async () => {
-    return Promise.all([
-      Asset.loadAsync([
-        require('./assets/images/robot-dev.png'),
-        require('./assets/images/robot-prod.png'),
-      ]),
-      Font.loadAsync({
+  async function _loadResourcesAsync () {
+    //await Asset.loadAsync([
+    //    require('./assets/images/robot-dev.png'),
+    //    require('./assets/images/robot-prod.png'),
+    //  ]);
+    await Font.loadAsync({
         // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
@@ -247,9 +238,8 @@ export default function App () {
         RubikRegular: require("./assets/fonts/RubikRegular.ttf"),
         RubikMedium: require("./assets/fonts/RubikMedium.ttf"),
         RubikBold: require("./assets/fonts/RubikBold.ttf")
-      }),
-    ]);
-  };
+      });
+  } 
 
   // Get the signOut function to pass to other screens
   // const { signOut } = React.useContext(AuthContext);
