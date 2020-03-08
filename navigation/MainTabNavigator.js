@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import TabBarIcon from '../components/TabBarIcon';
 import DiaryScreen from '../screens/DiaryScreen';
@@ -77,62 +78,7 @@ export default function BottomTabs() {
   );
 }
 
-/*
-
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Sleep',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-journal`
-          : 'md-journal'
-      }
-    />
-  ),
-};
-
-const LinksStack = createStackNavigator({
-  Links: TreatmentPlaceholderScreen,
-});
-
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'}
-    />
-  ),
-};
-
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
-});
-
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Support',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-text' : 'md-text'}
-    />
-  ),
-};
-*/
-
-/*
-export default createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack,
-}, {
-  tabBarOptions: {
-    activeTintColor: '#ffffff',
-    inactiveTintColor: '#7FC0C4',
-    style: {
-      backgroundColor: '#00818A',
-    },
-  }
-}); */
+BottomTabs.propTypes = {
+  color: PropTypes.string,
+  focused: PropTypes.bool,
+}

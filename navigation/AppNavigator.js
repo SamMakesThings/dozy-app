@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import PropTypes from 'prop-types';
 
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
@@ -32,7 +33,7 @@ function LoadingScreen() {
 }
 
 // Export the navigation components and screens, with if/then for auth state
-export default function initialAuthNavigator({userToken, authLoading}) {
+export default function InitialAuthNavigator({userToken, authLoading}) {
   // const isLoggedIn = React.useContext(AuthContext); FIX THIS
 
   console.log("userToken received in AppNavigator: ")
@@ -71,4 +72,9 @@ export default function initialAuthNavigator({userToken, authLoading}) {
         ))}
     </TopStack.Navigator>
   );
+}
+
+InitialAuthNavigator.propTypes = {
+  userToken: PropTypes.string,
+  authLoading: PropTypes.bool
 }

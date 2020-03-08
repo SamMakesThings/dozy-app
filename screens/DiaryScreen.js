@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import * as SecureStore from 'expo-secure-store';
 import { withTheme, ScreenContainer, Container, Button } from "@draftbit/ui";
+import PropTypes from 'prop-types';
 import '@firebase/firestore';
 import Intl from 'intl';
 import { FbLib } from "../config/firebaseConfig";
@@ -329,7 +330,7 @@ class SleepLogsView extends Component {
                     >
                         How did you sleep last night?
                     </Button>
-                    {sleepLogs.map((log, index) => {
+                    {sleepLogs.map((log) => {
                         return (
                             <SleepLogEntryCard sleepLog={log} key={log.upTime.seconds}/>
                         )
@@ -385,7 +386,7 @@ class Root extends React.Component {
     };
     
     _fetchUidFromAsync = async () => {
-        userId = await SecureStore.getItemAsync('userData');
+        let userId = await SecureStore.getItemAsync('userData');
         this.fetchSleepLogs();
         return userId;
     }
@@ -472,5 +473,19 @@ class Root extends React.Component {
         );
     }
 }
+
+SleepLogEntryCard.propTypes = {
+    sleepLog: PropTypes.object,
+}
+
+SleepLogsView.propTypes = {
+    sleepLogs: PropTypes.object,
+    logEntryRedirect: PropTypes.func
+}
+
+Root.propTypes = {
+    navigation: PropTypes.any
+}
+  
 
 export default withTheme(Root);
