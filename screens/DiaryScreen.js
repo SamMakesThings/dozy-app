@@ -11,7 +11,6 @@ import '@firebase/firestore';
 import Intl from 'intl';
 import { FbLib } from "../config/firebaseConfig";
 import { slumber_theme } from "../config/slumber_theme";
-import GLOBAL from '../global';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -441,7 +440,7 @@ class Root extends React.Component {
     };
 
     goToLogEntry = () => {
-        //this.props.navigation.navigate('SleepDiaryEntry');
+        this.props.navigation.navigate('SleepDiaryEntry');
     }
 
     render() {

@@ -26,18 +26,20 @@ export default function BottomTabs() {
       inactiveTintColor: '#7FC0C4',
       style: {
         backgroundColor: '#00818A',
+        borderTopWidth: 0,
       },
     }}>
-      {/* Main treatment info & check-in screen */}
+      {/* Sleep diary entries screen */}
       <Tab.Screen
         name="Sleep"
         component={DiaryScreen}
         options={{
           tabBarLabel: 'Sleep',
           // eslint-disable-next-line react/display-name
-          tabBarIcon: (focused) => (
+          tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               focused={focused}
+              color={color}
               name={Platform.OS === 'ios' ? 'ios-journal' : 'md-journal'} />
           ),
         }} />
@@ -49,10 +51,11 @@ export default function BottomTabs() {
         options={{
           tabBarLabel: 'Home',
           // eslint-disable-next-line react/display-name
-          tabBarIcon: (focused) => (
+          tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-            focused={focused}
-            name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'} />
+              focused={focused}
+              color={color}
+              name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'} />
           ),
         }} />
 
@@ -63,10 +66,11 @@ export default function BottomTabs() {
         options={{
           tabBarLabel: 'Support',
           // eslint-disable-next-line react/display-name
-          tabBarIcon: (focused) => (
+          tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-            focused={focused}
-            name={Platform.OS === 'ios' ? 'ios-text' : 'md-text'} />
+              focused={focused}
+              color={color}
+              name={Platform.OS === 'ios' ? 'ios-text' : 'md-text'} />
           ),
         }} />
     </Tab.Navigator>

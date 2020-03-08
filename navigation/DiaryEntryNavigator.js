@@ -1,5 +1,13 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack'
+import LogEntry1Screen from '../screens/form_screens/LogEntry1Screen'
+import LogEntry2Screen from '../screens/form_screens/LogEntry2Screen'
+import LogEntry3Screen from '../screens/form_screens/LogEntry3Screen'
+import LogEntry4Screen from '../screens/form_screens/LogEntry4Screen'
+import LogEntry5Screen from '../screens/form_screens/LogEntry5Screen'
+import LogEntry6Screen from '../screens/form_screens/LogEntry6Screen'
+import LogEntry7Screen from '../screens/form_screens/LogEntry7Screen'
+import LogEntry8Screen from '../screens/form_screens/LogEntry8Screen'
 
 // Init and define the authentication flow for diary entry
 const DiaryEntryStack = createStackNavigator();
