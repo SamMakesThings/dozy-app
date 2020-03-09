@@ -1,10 +1,10 @@
 import React from "react";
-import { StatusBar, StyleSheet, Text, Linking } from "react-native";
-import { withTheme, ScreenContainer, Container, Icon, Switch, DatePicker, Touchable } from "@draftbit/ui";
-import { Notifications } from "expo";
-import * as Permissions from 'expo-permissions';
-import * as SecureStore from 'expo-secure-store';
-import { FbLib } from "../config/firebaseConfig";
+import { StyleSheet, Text, Linking } from "react-native";
+import { withTheme, ScreenContainer, Container, Icon, Switch, Touchable } from "@draftbit/ui";
+// import { Notifications } from "expo";
+// import * as Permissions from 'expo-permissions';
+// import * as SecureStore from 'expo-secure-store';
+// import { FbLib } from "../config/firebaseConfig";
 import { slumber_theme } from "../config/slumber_theme";
 import { AuthContext } from "../authContext";
 

@@ -1,21 +1,17 @@
-import React from "react"
-import { StatusBar, StyleSheet, Text } from "react-native"
+import React from "react";
+import PropTypes from 'prop-types';
+import { StatusBar, StyleSheet, Text, TextInput } from "react-native";
 import {
   withTheme,
   ScreenContainer,
   Container,
   IconButton,
   ProgressBar,
-  TextField,
   Button
-} from "@draftbit/ui"
+} from "@draftbit/ui";
 import GLOBAL from '../../global';
 
 class LogEntry2Screen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
-
   state = {
     minsToFallAsleep: 25,
   }
@@ -68,17 +64,33 @@ class LogEntry2Screen extends React.Component {
           >
             Roughly how long did it take you to fall asleep?
           </Text>
-          <TextField
-            style={styles.TextField_nw8}
-            type="underline"
-            label="(in minutes)"
-            keyboardType="number-pad"
-            leftIconMode="inset"
-            onChangeText={minsToFallAsleep => this.setState({ minsToFallAsleep })}
-            onSubmitEditing={(event)=>{
-                this.onQuestionSubmit(event.nativeEvent.text)
-            }}
-          />
+          <Container style={{
+            marginTop: 65,
+            marginBottom: 30,
+            width: '50%',
+            alignSelf: 'center',
+            borderBottomWidth: 1.5,
+            borderColor: theme.colors.medium
+          }}>
+            <TextInput 
+              style={{
+                height: 40,
+                color: "#ffffff",
+                fontSize: 21,
+                paddingBottom: 12,
+              }}
+              placeholder="(in minutes)"
+              placeholderTextColor={theme.colors.light}
+              keyboardType="number-pad"
+              keyboardAppearance="dark"
+              returnKeyType="done"
+              enablesReturnKeyAutomatically={true}
+              onChangeText={minsToFallAsleep => this.setState({ minsToFallAsleep })}
+              onSubmitEditing={(event)=>{
+                  this.onQuestionSubmit(event.nativeEvent.text)
+              }}
+            />
+          </Container>
         </Container>
         <Container style={styles.Container_nrj} elevation={0} useThemeGutterPadding={true}>
           <Button
@@ -141,5 +153,10 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   }
 })
+
+LogEntry2Screen.propTypes = {
+  navigation: PropTypes.any,
+  theme: PropTypes.object,
+}
 
 export default withTheme(LogEntry2Screen)

@@ -18,6 +18,9 @@ export default function DiaryEntryNavigator () {
   return (
     <DiaryEntryStack.Navigator
       initialRouteName='LogEntry1Screen'
+      screenOptions={{
+        headerShown: false
+      }}
     >
       <DiaryEntryStack.Screen
         name="LogEntry1Screen"

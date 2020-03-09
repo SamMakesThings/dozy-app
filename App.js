@@ -158,7 +158,7 @@ export default function App () {
   // Create authContext so relevant functions are available through the app
   const authContext = React.useMemo(
     () => ({
-      signIn: async data => {
+      signIn: async () => {
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
@@ -185,7 +185,7 @@ export default function App () {
       signOut: () => {
         console.log("Signing out now! Calling dispatch");
         dispatch({ type: 'SIGN_OUT' });},
-      signUp: async data => {
+      signUp: async () => {
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
