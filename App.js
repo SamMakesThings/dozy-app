@@ -13,9 +13,17 @@ import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './authContext';
 // import GLOBAL from './global';
+import {decode, encode} from 'base-64'
+
 
 // Root app component
 export default function App () {
+
+  // temporary fix for the Firebase "can't find atob" error
+
+  if (!global.btoa) {  global.btoa = encode }
+
+  if (!global.atob) { global.atob = decode }
 
   /* DELETE this old state if new navigation functions as it should
   state = {
