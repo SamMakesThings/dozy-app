@@ -940,10 +940,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@callstack/react-theme-provider@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@callstack/react-theme-provider/-/react-theme-provider-2.1.0.tgz#a460f5c654c7b3db79f65975a34afea8ac722e8b"
-  integrity sha512-QScjktxZsiS/Ow0HQiMXwUg/TMpy6FEfGw+WC6C9fotafk/pmGYvJYvsewBvrdOA8jR/2KIrd6X2JfzXfcA9pg==
+"@callstack/react-theme-provider@^3.0.5":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@callstack/react-theme-provider/-/react-theme-provider-3.0.5.tgz#a173e455e9603c9c45357a3b6ace1273086527ca"
+  integrity sha512-Iec+ybWN0FvNj87sD3oWo/49edGUP0UOSdMnzCJEFJIDYr992ECIuOV89burAAh2/ibPCxgLiK6dmgv2mO/8Tg==
   dependencies:
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
@@ -956,24 +956,25 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@draftbit/ui@^2.39.1-16":
-  version "2.39.1-16"
-  resolved "https://registry.yarnpkg.com/@draftbit/ui/-/ui-2.39.1-16.tgz#af0b8c25bc5c7a310fd50d361fed361cea8dc464"
-  integrity sha512-p1AmL1+WB9D02BrCeVPXktfgyT/saSeLZCWA/Nc24tPW5r3LFOOV2T/syD19jzDdDVYgRNNfXuY4Csm2eLoKkQ==
+"@draftbit/ui@^36.2.0":
+  version "36.2.0"
+  resolved "https://registry.yarnpkg.com/@draftbit/ui/-/ui-36.2.0.tgz#73a8c1c4590ab5b680ae3c60edc118cddd27b28e"
+  integrity sha512-V43OZD9yUcGhYpuiJIGp1maR4Oc7Ya43d4XH0gtng2F6RJI6c0c9e3XeZhKoWD2jgSMxluo8833g4m9Sn4Noww==
   dependencies:
-    "@callstack/react-theme-provider" "^2.1.0"
-    "@expo/vector-icons" "^10.0.6"
+    "@callstack/react-theme-provider" "^3.0.5"
+    "@expo/vector-icons" "~10.0.0"
     color "^3.1.2"
     create-react-context "^0.3.0"
     dateformat "^3.0.3"
     expo-av "~8.0.0"
+    expo-blur "~8.0.0"
     expo-constants "~8.0.0"
     react-lifecycles-compat "^3.0.4"
-    react-native-gesture-handler "1.5.1"
+    react-native-gesture-handler "1.5.0"
     react-native-maps "0.26.1"
     react-native-platform-touchable "^1.1.1"
-    react-native-progress "^4.0.3"
-    react-native-reanimated "1.4.0"
+    react-native-progress "^3.6.0"
+    react-native-reanimated "~1.4.0"
     react-native-slider "^0.11.0"
     react-native-step-indicator "^0.0.11"
     react-native-webview "7.4.3"
@@ -1222,7 +1223,7 @@
   resolved "https://registry.yarnpkg.com/@expo/traveling-fastlane-linux/-/traveling-fastlane-linux-1.12.1.tgz#e9081b6fc092eaf2f79bf8f6d041f29f6b5fd135"
   integrity sha512-oJ4uNcuD0hd/5W3eGBVtaTvvn7n14RjN8Z8E+WUjDXhZMLFg25xLtb+uhC8AIaEdvofIgU5DShVkRBCLmLNHgw==
 
-"@expo/vector-icons@^10.0.0", "@expo/vector-icons@^10.0.2", "@expo/vector-icons@^10.0.6":
+"@expo/vector-icons@^10.0.0", "@expo/vector-icons@^10.0.2", "@expo/vector-icons@~10.0.0":
   version "10.0.6"
   resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-10.0.6.tgz#5718953ff0b97827d11dae5787976fa8ce5caaed"
   integrity sha512-qNlKPNdf073LpeEpyClxAh0D3mmIK4TGAQzeKR0HVwf14RIEe17+mLW5Z6Ka5Ho/lUtKMRPDHumSllFyKvpeGg==
@@ -2240,15 +2241,6 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
-
-"@react-native-community/art@^1.0.3":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/art/-/art-1.1.2.tgz#8d365ad5a12f83a0570ef83590f883a201f8e723"
-  integrity sha512-KCPWdrdkjMOjUjKjYhJUt628mjf+SyoopXPztFbPvSpMl6jI9Qs8fnxnrt8ITKJvt7Xy7K7y6Cn/Q5h1GgIwjQ==
-  dependencies:
-    art "^0.10.3"
-    invariant "^2.2.4"
-    prop-types "^15.7.2"
 
 "@react-native-community/cli-debugger-ui@^3.0.0":
   version "3.0.0"
@@ -3299,7 +3291,7 @@ arrify@^1.0.1:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
   integrity sha1-iYUI2iIm84DfkEcoRWhJwVAaSw0=
 
-art@^0.10.0, art@^0.10.3:
+art@^0.10.0:
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/art/-/art-0.10.3.tgz#b01d84a968ccce6208df55a733838c96caeeaea2"
   integrity sha512-HXwbdofRTiJT6qZX/FnchtldzJjS3vkLJxQilc3Xj+ma2MXjY4UAyQ0ls1XZYVnDvVIBiFZbC6QsvtW86TD6tQ==
@@ -6735,6 +6727,13 @@ expo-av@~8.0.0:
   dependencies:
     lodash "^4.17.15"
     nullthrows "^1.1.0"
+
+expo-blur@~8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-8.0.0.tgz#79df808b266bda8b6a66d54567abda5738355ad0"
+  integrity sha512-aZhfT2clEc4D3y0tnCb8/mM1c1Gm8Fqk8xHwgJKV869+5lvtRcUKhlMhZTynspVmPzwHgWV7Q9VcOkzGs7N/5g==
+  dependencies:
+    prop-types "^15.6.0"
 
 expo-cli@^3.13.1:
   version "3.13.1"
@@ -12800,10 +12799,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-native-gesture-handler@1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.5.1.tgz#681cef98954d48cd82f99f75de3ab203c8754354"
-  integrity sha512-n4+tXAplf7B3qoHgvOxmKfx8cr/hzCSxyEEGxO/3aYyvSYbyt1o6Q7hmTC2JuezllB44b4v/FcCTd6Rgu3MMfg==
+react-native-gesture-handler@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.5.0.tgz#df7dc5285c152e0656db70f55200fa632c4f45af"
+  integrity sha512-YUOXHsGLajK1cFReQ4Xh0H9GUTxDW9cUZEVu1q+dVqur2urSKi63KklAFB2l8Neob9nl1E/w0c5hGcBP9FMCIA==
   dependencies:
     hammerjs "^2.0.8"
     hoist-non-react-statics "^2.3.1"
@@ -12836,15 +12835,14 @@ react-native-platform-touchable@^1.1.1:
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
   integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
 
-react-native-progress@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-4.0.3.tgz#0020a9ce9fa5cb14c7aac8f993b31f27a7ff2150"
-  integrity sha512-UMjY9W82bU/NLJ2PxkQ3rZFHZPzVTwKowuOfO1bWEainuyjAXwlcZdyQnZxuqIgHrLkZpg9ppdu+g2mflT86ZQ==
+react-native-progress@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-3.6.0.tgz#feaf37491f91bb421207fd761e20cb7258a2a3a6"
+  integrity sha512-zzTe595xaaskyfR5OzaGrU4O0R+YkgdEw+EspgGD7wh8Hu0fs6ue3xLW+HEbTjOCn62pCRivwi3NxbpWNBCC7Q==
   dependencies:
-    "@react-native-community/art" "^1.0.3"
     prop-types "^15.7.2"
 
-react-native-reanimated@1.4.0, react-native-reanimated@~1.4.0:
+react-native-reanimated@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.4.0.tgz#7f1acbf9be08492d834f512700570978052be2f9"
   integrity sha512-tO7nSNNP+iRLVbkcSS5GXyDBb7tSI02+XuRL3/S39EAr35rnvUy2JfeLUQG+fWSObJjnMVhasUDEUwlENk8IXw==

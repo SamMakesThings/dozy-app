@@ -73,7 +73,7 @@ class LogEntry1Screen extends React.Component {
             mode="time"
             type="underline"
             error={false}
-            label="Date"
+            label="Bedtime"
             disabled={false}
             leftIconMode="inset"
             format="h:mm tt"
