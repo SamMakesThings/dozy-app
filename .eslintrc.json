@@ -25,7 +25,8 @@
     "rules": {
         "react/display-name": 1,
         "no-unused-vars": "warn",
-        "no-console": "off"
+        "no-console": "off",
+        "react/prop-types": 0
     },
     "parser": "babel-eslint",
     "plugins": [

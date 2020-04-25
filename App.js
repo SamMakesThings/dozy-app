@@ -7,14 +7,13 @@ import * as Icon from '@expo/vector-icons'
 import * as Google from 'expo-google-app-auth';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
+import {decode, encode} from 'base-64'
 import { FbAuth, FbLib } from "./config/firebaseConfig";
 import { slumber_theme } from "./config/slumber_theme";
 import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './authContext';
 // import GLOBAL from './global';
-import {decode, encode} from 'base-64'
-
 
 // Root app component
 export default function App () {

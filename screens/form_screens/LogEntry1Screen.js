@@ -9,6 +9,7 @@ import {
   DatePicker,
   Button
 } from "@draftbit/ui"
+import GLOBAL from '../../global';
 
 class LogEntry1Screen extends React.Component {
   static navigationOptions = {
