@@ -17,7 +17,7 @@ import { AuthContext } from './authContext';
 // Root app component
 export default function App () {
 
-  // temporary fix for the Firebase "can't find atob" error
+  // Temporary fix for the Firebase "can't find atob" error
   if (!global.btoa) {  global.btoa = encode }
   if (!global.atob) { global.atob = decode }
 
@@ -82,7 +82,6 @@ export default function App () {
         dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
         const credential = FbLib.auth.GoogleAuthProvider.credential(idToken, accessToken);
         await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
-        // Seems to be hanging on the signInWithCredential call. Maybe it's something to do with that await?
         let fbSigninResult = FbAuth.signInWithCredential(credential);
         return( await fbSigninResult )
       } else {
@@ -140,13 +139,7 @@ export default function App () {
       signOut: () => {
         dispatch({ type: 'SIGN_OUT' });},
       signUp: async () => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-
         // Use my previously defined login function to get user data and store the token
-        // let userData = await _loginWithGoogle();
         _loginWithGoogle().then(result => {
           // Store credentials in SecureStore
           SecureStore.setItemAsync('accessToken', result.credential.accessToken);
@@ -179,8 +172,6 @@ export default function App () {
     await Font.loadAsync({
         // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,
-        // We include SpaceMono because we use it in HomeScreen.js. Feel free
-        // to remove this if you are not using it in your app
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
         RubikRegular: require("./assets/fonts/RubikRegular.ttf"),
         RubikMedium: require("./assets/fonts/RubikMedium.ttf"),
@@ -213,7 +204,6 @@ export default function App () {
   }
 }
 
-// Basic app styles - will move to their own file soon
 const styles = StyleSheet.create({
   container: {
     flex: 1,
