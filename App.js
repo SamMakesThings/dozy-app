@@ -70,43 +70,21 @@ export default function App () {
     try {
       // NOTE: Current keys only work in Expo dev environment!! To work in standalone apps, need to update hostnames
       // on these keys through the Google Cloud Console.
-      console.log("attempting to fetch google keys");
       const result = await Google.logInAsync({
         // TODO: Move these client IDs to the manifest or another file for cleaner code.
         androidClientId:"713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com",
         iosClientId:"713165282203-fr943kvhd9rbst5i5ss4g3htgjho143a.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
-  
-      console.log("Here's the google result: ");
-      console.log(result);
+
       if (result.type === "success") {
         const { idToken, accessToken } = result;
-        console.log("Now attempting to get authenticated with Firebase: ");
         dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
-        console.log("Now attempting to get credential from Firebase");
         const credential = FbLib.auth.GoogleAuthProvider.credential(idToken, accessToken);
-        console.log("Got credential. Now async getting Firebase persistence.");
         await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
-        console.log("Persistence seems set. Now doing final FbAuth.signInWithCredentail call.");
         // Seems to be hanging on the signInWithCredential call. Maybe it's something to do with that await?
         let fbSigninResult = FbAuth.signInWithCredential(credential);
-        console.log(fbSigninResult);
         return( await fbSigninResult )
-        /*
-          .then(res => {
-            // user res, create your user, do whatever you want
-            console.log("hey, the login worked! Here's the firebase result: ");
-            console.log(res);
-            GLOBAL.userData = res;
-            // console.log(res.user.uid);
-            // console.log(GLOBAL.userData);
-            // this._signInAsync(res); REPLACE THIS
-            return (res);
-          })
-          .catch(error => {
-            console.log("firebase cred err:", error);
-          }); */
       } else {
         return { cancelled: true };
       }
@@ -122,8 +100,6 @@ export default function App () {
 
       try {
         userToken = await SecureStore.getItemAsync('userData');
-        console.log("Here's the userToken");
-        console.log(userToken);
       } catch (e) {
         // Restoring token failed
       }
@@ -148,11 +124,7 @@ export default function App () {
         // In the example, we'll use a dummy token
 
         // Use my previously defined login function to get user data and store the token
-        console.log("Running sign in function in app.js. Running loginWithGoogle")
-        // let userData = await _loginWithGoogle();
         _loginWithGoogle().then(result => {
-          console.log("Signing in! user data is:");
-          console.log(result);
 
           // Store credentials in SecureStore
           SecureStore.setItemAsync('accessToken', result.credential.accessToken);
@@ -166,7 +138,6 @@ export default function App () {
         });
       },
       signOut: () => {
-        console.log("Signing out now! Calling dispatch");
         dispatch({ type: 'SIGN_OUT' });},
       signUp: async () => {
         // In a production app, we need to send some data (usually username, password) to server and get a token
@@ -175,12 +146,8 @@ export default function App () {
         // In the example, we'll use a dummy token
 
         // Use my previously defined login function to get user data and store the token
-        console.log("Running sign in function in app.js. Running loginWithGoogle")
         // let userData = await _loginWithGoogle();
         _loginWithGoogle().then(result => {
-          console.log("Signing up! user data is:");
-          console.log(result);
-
           // Store credentials in SecureStore
           SecureStore.setItemAsync('accessToken', result.credential.accessToken);
           SecureStore.setItemAsync('idToken', result.credential.idToken);
@@ -209,10 +176,6 @@ export default function App () {
 
   // Load assets async w/Expo tools
   async function _loadResourcesAsync () {
-    //await Asset.loadAsync([
-    //    require('./assets/images/robot-dev.png'),
-    //    require('./assets/images/robot-prod.png'),
-    //  ]);
     await Font.loadAsync({
         // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,
@@ -224,9 +187,6 @@ export default function App () {
         RubikBold: require("./assets/fonts/RubikBold.ttf")
       });
   } 
-
-  // Get the signOut function to pass to other screens
-  // const { signOut } = React.useContext(AuthContext);
 
   // Render a loading screen if loading, otherwise load the main app
   if (state.isLoading) {
@@ -252,7 +212,6 @@ export default function App () {
     );
   }
 }
-
 
 // Basic app styles - will move to their own file soon
 const styles = StyleSheet.create({
