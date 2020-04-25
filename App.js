@@ -13,36 +13,13 @@ import { slumber_theme } from "./config/slumber_theme";
 import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './authContext';
-// import GLOBAL from './global';
 
 // Root app component
 export default function App () {
 
   // temporary fix for the Firebase "can't find atob" error
-
   if (!global.btoa) {  global.btoa = encode }
-
   if (!global.atob) { global.atob = decode }
-
-  /* DELETE this old state if new navigation functions as it should
-  state = {
-    isLoadingComplete: false,
-    user: null,
-  }; */
-
-  /*
-  // If user is logged in, store that in app state
-  componentDidMount() {
-    this.subscribeAuthChange(fbUser => { this.setState({ user: fbUser }); console.log(this.state.user);});
-    this.subscribeAuthChange(fbUser => { GLOBAL.userData = fbUser });
-  }
-
-  // Update auth state as necessary (may remove this with new dynamic nav structure)
-  subscribeAuthChange(callback = (user) => void 0) {
-    FbAuth.onAuthStateChanged(callback);
-  }
-
-  */
 
   // Copying auth functions from react-navigation guide
   // Sticking it all inside render since Babel seems unable to parse class properties
@@ -54,7 +31,6 @@ export default function App () {
           return {
             ...prevState,
             userToken: action.token,
-            // isLoading: false,
           };
         case 'SIGN_IN':
           console.log("Signing in!");
