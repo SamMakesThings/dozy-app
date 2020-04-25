@@ -1,5 +1,5 @@
 import React from "react"
-import { StatusBar, StyleSheet, Text } from "react-native"
+import { StyleSheet, Text } from "react-native"
 import {
   withTheme,
   ScreenContainer,
@@ -11,27 +11,16 @@ import {
 } from "@draftbit/ui"
 import GLOBAL from '../../global';
 
-class LogEntry1Screen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
+const LogEntry1Screen = props => {
+  const [bedTime, setBedTime] = React.useState(new Date());
 
-  state = {
-    bedTime: new Date()
-  }
-
-  componentDidMount() {
-    StatusBar.setBarStyle("light-content")
-  }
-
-  onQuestionSubmit (value) {
+  function onQuestionSubmit (value) {
     GLOBAL.bedTime = value;
     console.log(GLOBAL.bedTime);
-    this.props.navigation.navigate("LogEntry2Screen");
+    props.navigation.navigate("LogEntry2Screen");
   }
 
-  render() {
-    const { theme } = this.props
+    const { theme } = props
     return (
       <ScreenContainer style={{ backgroundColor: theme.colors.background }} hasSafeArea={true} scrollable={false}>
         <Container style={styles.Container_nt5} elevation={0} useThemeGutterPadding={true}>
@@ -41,7 +30,7 @@ class LogEntry1Screen extends React.Component {
             size={32}
             color={theme.colors.secondary}
             onPress={() => {
-              this.props.navigation.goBack()
+              props.navigation.goBack()
             }}
           />
           <Container style={styles.Container_ngt} elevation={0} useThemeGutterPadding={true}>
@@ -77,8 +66,8 @@ class LogEntry1Screen extends React.Component {
             disabled={false}
             leftIconMode="inset"
             format="h:MM tt"
-            date={this.state.bedTime}
-            onDateChange={bedTime => this.setState({ bedTime })}
+            date={bedTime}
+            onDateChange={bedTime => setBedTime( bedTime )}
           />
         </Container>
         <Container style={styles.Container_nno} elevation={0} useThemeGutterPadding={true}>
@@ -86,7 +75,7 @@ class LogEntry1Screen extends React.Component {
             style={styles.Button_nso}
             type="solid"
             onPress={() => {
-              this.onQuestionSubmit(this.state.bedTime)
+              onQuestionSubmit(bedTime)
             }}
             disabled={false}
             color={theme.colors.primary}
@@ -96,7 +85,6 @@ class LogEntry1Screen extends React.Component {
         </Container>
       </ScreenContainer>
     )
-  }
 }
 
 const styles = StyleSheet.create({
