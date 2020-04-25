@@ -76,7 +76,7 @@ class LogEntry1Screen extends React.Component {
             label="Bedtime"
             disabled={false}
             leftIconMode="inset"
-            format="h:mm tt"
+            format="h:MM tt"
             date={this.state.bedTime}
             onDateChange={bedTime => this.setState({ bedTime })}
           />
