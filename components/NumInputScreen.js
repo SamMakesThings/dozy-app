@@ -27,7 +27,7 @@ const NumInputScreen = props => {
         />
         <Container style={styles.Container_nzw} elevation={0} useThemeGutterPadding={true}>
           <ProgressBar
-            style={{...styles.ProgressBar_neb, ...{display: props.progressBar ? 'relative' : 'none'}}}
+            style={{...styles.ProgressBar_neb, ...{display: props.progressBar ? 'flex' : 'none'}}}
             color={theme.colors.primary}
             progress={props.progressBarPercent}
             borderWidth={0}

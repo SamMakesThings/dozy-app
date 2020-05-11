@@ -28,7 +28,7 @@ const TimePickerScreen = props => {
           />
           <Container style={styles.Container_ngt} elevation={0} useThemeGutterPadding={true}>
             <ProgressBar
-              style={{...styles.ProgressBar_nv3, ...{display: props.progressBar ? 'relative' : 'none'}}}
+              style={{...styles.ProgressBar_nv3, ...{display: props.progressBar ? 'flex' : 'none'}}}
               color={theme.colors.primary}
               progress={props.progressBarPercent}
               borderWidth={0}
