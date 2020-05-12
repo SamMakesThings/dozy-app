@@ -12,6 +12,11 @@
   "jest": {
     "preset": "jest-expo"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "dependencies": {
     "@draftbit/ui": "^36.2.0",
     "@expo/samples": "2.1.1",
@@ -66,8 +71,10 @@
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^2.4.0",
     "eslint-plugin-react-native": "^3.8.1",
+    "husky": "^4.2.5",
     "jest-expo": "^36.0.0",
     "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
     "react-devtools": "^4.4.0"
   },
   "private": true

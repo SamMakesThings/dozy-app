@@ -24,7 +24,7 @@ const TagSelectScreen = (props) => {
   // Set the available tags and icons
   const { theme, touchableTags } = props;
 
-  // Setup component state for tags and note field
+  // Set up component state for tags and note field
   const [selectedTags, updateTags] = React.useState([]);
   const [notes, setNotes] = React.useState('');
 
