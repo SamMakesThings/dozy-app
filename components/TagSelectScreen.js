@@ -1,5 +1,5 @@
 import React from "react"
-import { StyleSheet, Text, Platform, View } from "react-native"
+import { StyleSheet, Text, Platform, View, TouchableWithoutFeedback } from "react-native"
 import {
   withTheme,
   ScreenContainer,
@@ -22,12 +22,61 @@ if (Platform.OS === 'android') {
   Intl.__disableRegExpRestore();/*For syntaxerror invalid regular expression unmatched parentheses*/
 }
 
-const TagSelectScreen = props => {
-    // Setup component state
-    const [selectedTags, setSelectedTags] = React.useState([]);
-    const [notes, setNotes] = React.useState("");
+// Component for the icon/button that toggles
+const ToggleTag = props => {
+  const { theme } = props;
+  const [selected, setSelected] = React.useState(false);
 
-    const { theme } = props
+  return (
+    <TouchableWithoutFeedback onPress={() => {
+      setSelected(!selected);
+      props.onPress(props.label);
+    }}>
+      <View style={{
+        width: '15%',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 5,
+      }}>
+        <View style={[{
+            borderWidth: 2,
+            borderRadius: 100,
+            width: 60,
+            height: 60,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }, selected ? {
+            backgroundColor: theme.colors.primary,
+            borderColor: theme.colors.primary,
+          } : {
+            borderColor: theme.colors.light,
+        }]}>
+          <Entypo name={props.entypoIcon} size={38} color={selected ? theme.colors.secondary : theme.colors.primary} />
+        </View>
+        <Text style={{textAlign: 'center', color: theme.colors.light, paddingTop: 2}}>{props.label}</Text>
+    </View>
+  </TouchableWithoutFeedback>
+  )
+}
+
+const TagSelectScreen = props => {
+  // Set the available tags and icons
+  const touchableTags = [
+    {label: "noise", icon: "sound"},
+    {label: "light", icon: "light-bulb"},
+    {label: "temp", icon: "adjust"},
+    {label: "stress", icon: "new"},
+    {label: "worry", icon: "emoji-sad"},
+    {label: "partner", icon: "users"},
+  ];
+
+  // Setup component state
+  const [selectedTags, updateTags] = React.useState([]);
+  const [notes, setNotes] = React.useState("");
+
+
+  const { theme } = props
     return (
         <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_nb1}>
             <Container style={styles.Container_nof} elevation={0} useThemeGutterPadding={true}>
@@ -64,26 +113,38 @@ const TagSelectScreen = props => {
                 >
                     {props.questionLabel}
                 </Text>
-                <View style={{flex: 4}}>
-                    <View style={{
-                        width: 100,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                        <View style={{
-                            borderWidth: 2,
-                            borderRadius: 100,
-                            borderColor: '#ffffff',
-                            width: 75,
-                            height: 75,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                            <Entypo name="sound" size={42} color={theme.colors.primary} />
-                        </View>
-                        <Text style={{textAlign: 'center', color: 'white'}}>noise</Text>
-                    </View>
+                <View style={{
+                  flex: 4, 
+                  flexDirection: 'row', 
+                  justifyContent: 'space-around', 
+                  flexWrap: 'wrap', 
+                  alignContent: 'center', 
+                  alignItems: 'flex-start'
+                }}>
+                  {touchableTags.map(tag => {
+                    const {label, selected, icon} = tag;
+
+                    return(
+                      <ToggleTag
+                        key={label}
+                        theme={theme}
+                        selected={selected}
+                        entypoIcon={icon}
+                        label={label}
+                        onPress={() => {
+                          let tempArray = selectedTags;
+                          const index = selectedTags.findIndex(tag => tag === label);
+                          if (index > -1) {
+                            tempArray.splice(index, 1);
+                            updateTags(tempArray);
+                          } else {
+                            tempArray.push(label);
+                            updateTags(tempArray);
+                          }
+                        }}
+                      />
+                    )
+                  })}
                 </View>
                 <TextField
                     style={styles.TextField_no0}
@@ -149,7 +210,9 @@ const styles = StyleSheet.create({
   },
   Root_nb1: {
   },
-  TextField_no0: {},
+  TextField_no0: {
+    flex: 1,
+  },
   Text_nqt: {
     textAlign: "center",
     width: "100%",

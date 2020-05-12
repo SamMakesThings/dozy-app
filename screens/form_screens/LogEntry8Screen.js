@@ -72,7 +72,7 @@ const LogEntry8Screen = props => {
       progressBar
       progressBarPercent={0.95}
       questionLabel="What, if anything, disturbed your sleep last night?"
-      inputLabel="(e.g. The cat woke me up)"
+      inputLabel="Anything else of note?"
     />
   )
 }
