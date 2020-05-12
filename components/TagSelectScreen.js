@@ -65,7 +65,12 @@ const TagSelectScreen = props => {
                     {props.questionLabel}
                 </Text>
                 <View style={{flex: 4}}>
-                    <View>
+                    <View style={{
+                        width: 100,
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
                         <View style={{
                             borderWidth: 2,
                             borderRadius: 100,
@@ -77,7 +82,7 @@ const TagSelectScreen = props => {
                         }}>
                             <Entypo name="sound" size={42} color={theme.colors.primary} />
                         </View>
-                        <Text style={{textAlign: 'center'}}>noise</Text>
+                        <Text style={{textAlign: 'center', color: 'white'}}>noise</Text>
                     </View>
                 </View>
                 <TextField
