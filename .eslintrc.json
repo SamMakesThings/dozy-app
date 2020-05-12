@@ -1,43 +1,41 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "airbnb-base",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "prettier",
+    "prettier/react",
+    "prettier/@typescript-eslint"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": [
-        "airbnb-base",
-        "eslint:recommended",
-        "plugin:react/recommended"
-    ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "babelOptions": {
-            "configFile": "./babelrc"
-          }
-    },
-    "rules": {
-        "react/display-name": 1,
-        "no-unused-vars": "warn",
-        "no-console": "off",
-        "react/prop-types": 0
-    },
-    "parser": "babel-eslint",
-    "plugins": [
-        "react",
-        "react-native",
-        "eslint-plugin-babel",
-        "react-hooks"
-        ],
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
+    "babelOptions": {
+      "configFile": "./babelrc"
     }
+  },
+  "rules": {
+    "react/display-name": 1,
+    "no-unused-vars": "warn",
+    "no-console": "off",
+    "react/prop-types": 0
+  },
+  "parser": "babel-eslint",
+  "plugins": ["react", "react-native", "eslint-plugin-babel", "react-hooks"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }

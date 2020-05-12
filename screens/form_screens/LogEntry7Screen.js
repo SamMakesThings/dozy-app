@@ -1,5 +1,5 @@
-import React from "react"
-import { StatusBar, StyleSheet, Text } from "react-native"
+import React from 'react';
+import { StatusBar, StyleSheet, Text } from 'react-native';
 import {
   withTheme,
   ScreenContainer,
@@ -7,43 +7,55 @@ import {
   IconButton,
   ProgressBar,
   Button
-} from "@draftbit/ui"
+} from '@draftbit/ui';
 import GLOBAL from '../../global';
 
 class LogEntry7Screen extends React.Component {
   static navigationOptions = {
-    header: null,
+    header: null
   };
 
   state = {
     sleepRating: 3
-  }
+  };
 
   componentDidMount() {
-    StatusBar.setBarStyle("light-content")
+    StatusBar.setBarStyle('light-content');
   }
 
-  onQuestionSubmit (value) {
+  onQuestionSubmit(value) {
     GLOBAL.sleepRating = value;
     console.log(GLOBAL.sleepRating);
-    this.props.navigation.navigate("LogEntry8Screen");
+    this.props.navigation.navigate('LogEntry8Screen');
   }
 
   render() {
-    const { theme } = this.props
+    const { theme } = this.props;
     return (
-      <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_ngy}>
-        <Container style={styles.Container_n9t} elevation={0} useThemeGutterPadding={true}>
+      <ScreenContainer
+        hasSafeArea={true}
+        scrollable={false}
+        style={styles.Root_ngy}
+      >
+        <Container
+          style={styles.Container_n9t}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
           <IconButton
             style={styles.IconButton_ncb}
             icon="Ionicons/md-arrow-back"
             size={32}
             color={theme.colors.secondary}
             onPress={() => {
-              this.props.navigation.goBack()
+              this.props.navigation.goBack();
             }}
           />
-          <Container style={styles.Container_n78} elevation={0} useThemeGutterPadding={true}>
+          <Container
+            style={styles.Container_n78}
+            elevation={0}
+            useThemeGutterPadding={true}
+          >
             <ProgressBar
               style={styles.ProgressBar_neb}
               color={theme.colors.primary}
@@ -55,7 +67,11 @@ class LogEntry7Screen extends React.Component {
             />
           </Container>
         </Container>
-        <Container style={styles.Container_ncd} elevation={0} useThemeGutterPadding={true}>
+        <Container
+          style={styles.Container_ncd}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
           <Text
             style={[
               styles.Text_nkc,
@@ -65,17 +81,22 @@ class LogEntry7Screen extends React.Component {
               }
             ]}
           >
-            On a scale of 1-5, how would you rate the quality of your sleep last night?
+            On a scale of 1-5, how would you rate the quality of your sleep last
+            night?
           </Text>
         </Container>
-        <Container style={styles.Container_nco} elevation={0} useThemeGutterPadding={true}>
+        <Container
+          style={styles.Container_nco}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
           <Button
             style={styles.Button_n9n}
             type="outline"
             color={theme.colors.secondary}
             loading={false}
             onPress={() => {
-                this.onQuestionSubmit(1)
+              this.onQuestionSubmit(1);
             }}
             disabled={false}
           >
@@ -87,7 +108,7 @@ class LogEntry7Screen extends React.Component {
             color={theme.colors.secondary}
             loading={false}
             onPress={() => {
-                this.onQuestionSubmit(2)
+              this.onQuestionSubmit(2);
             }}
             disabled={false}
           >
@@ -99,7 +120,7 @@ class LogEntry7Screen extends React.Component {
             color={theme.colors.secondary}
             loading={false}
             onPress={() => {
-                this.onQuestionSubmit(3)
+              this.onQuestionSubmit(3);
             }}
             disabled={false}
           >
@@ -111,7 +132,7 @@ class LogEntry7Screen extends React.Component {
             color={theme.colors.secondary}
             loading={false}
             onPress={() => {
-                this.onQuestionSubmit(4)
+              this.onQuestionSubmit(4);
             }}
             disabled={false}
           >
@@ -123,7 +144,7 @@ class LogEntry7Screen extends React.Component {
             color={theme.colors.secondary}
             loading={false}
             onPress={() => {
-                this.onQuestionSubmit(5)
+              this.onQuestionSubmit(5);
             }}
             disabled={false}
           >
@@ -131,7 +152,7 @@ class LogEntry7Screen extends React.Component {
           </Button>
         </Container>
       </ScreenContainer>
-    )
+    );
   }
 }
 
@@ -142,25 +163,25 @@ const styles = StyleSheet.create({
   Button_nq5: {},
   Button_nr6: {},
   Container_n78: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center"
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   Container_n9t: {
-    width: "100%",
-    height: "10%",
-    justifyContent: "space-between",
-    flexDirection: "row",
+    width: '100%',
+    height: '10%',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     marginTop: 20
   },
   Container_ncd: {
-    height: "20%",
-    justifyContent: "flex-end",
+    height: '20%',
+    justifyContent: 'flex-end',
     marginTop: 20
   },
   Container_nco: {
-    height: "45%",
-    justifyContent: "space-around",
+    height: '45%',
+    justifyContent: 'space-around',
     marginBottom: 10
   },
   IconButton_ncb: {
@@ -173,14 +194,14 @@ const styles = StyleSheet.create({
     marginRight: 0
   },
   Root_ngy: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between'
   },
   Text_nkc: {
-    textAlign: "center",
-    width: "100%",
-    alignItems: "flex-start",
-    alignSelf: "center"
+    textAlign: 'center',
+    width: '100%',
+    alignItems: 'flex-start',
+    alignSelf: 'center'
   }
-})
+});
 
-export default withTheme(LogEntry7Screen)
+export default withTheme(LogEntry7Screen);

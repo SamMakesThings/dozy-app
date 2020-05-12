@@ -1,5 +1,5 @@
-import React from "react"
-import { StatusBar, StyleSheet, Text } from "react-native"
+import React from 'react';
+import { StatusBar, StyleSheet, Text } from 'react-native';
 import {
   withTheme,
   ScreenContainer,
@@ -8,43 +8,55 @@ import {
   ProgressBar,
   TextField,
   Button
-} from "@draftbit/ui"
+} from '@draftbit/ui';
 import GLOBAL from '../../global';
 
 class LogEntry4Screen extends React.Component {
   static navigationOptions = {
-    header: null,
+    header: null
   };
 
   state = {
     nightMinsAwake: 25
-  }
+  };
 
   componentDidMount() {
-    StatusBar.setBarStyle("light-content")
+    StatusBar.setBarStyle('light-content');
   }
 
-  onQuestionSubmit (value) {
+  onQuestionSubmit(value) {
     GLOBAL.nightMinsAwake = value;
     console.log(GLOBAL.nightMinsAwake);
-    this.props.navigation.navigate("LogEntry5Screen");
+    this.props.navigation.navigate('LogEntry5Screen');
   }
 
   render() {
-    const { theme } = this.props
+    const { theme } = this.props;
     return (
-      <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_n3a}>
-        <Container style={styles.Container_n0n} elevation={0} useThemeGutterPadding={true}>
+      <ScreenContainer
+        hasSafeArea={true}
+        scrollable={false}
+        style={styles.Root_n3a}
+      >
+        <Container
+          style={styles.Container_n0n}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
           <IconButton
             style={styles.IconButton_ngl}
             icon="Ionicons/md-arrow-back"
             size={32}
             color={theme.colors.secondary}
             onPress={() => {
-              this.props.navigation.goBack()
+              this.props.navigation.goBack();
             }}
           />
-          <Container style={styles.Container_nd1} elevation={0} useThemeGutterPadding={true}>
+          <Container
+            style={styles.Container_nd1}
+            elevation={0}
+            useThemeGutterPadding={true}
+          >
             <ProgressBar
               style={styles.ProgressBar_nuc}
               color={theme.colors.primary}
@@ -56,7 +68,11 @@ class LogEntry4Screen extends React.Component {
             />
           </Container>
         </Container>
-        <Container style={styles.Container_n57} elevation={0} useThemeGutterPadding={true}>
+        <Container
+          style={styles.Container_n57}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
           <Text
             style={[
               styles.Text_nvx,
@@ -74,18 +90,22 @@ class LogEntry4Screen extends React.Component {
             label="(in minutes)"
             keyboardType="number-pad"
             leftIconMode="inset"
-            onChangeText={nightMinsAwake => this.setState({ nightMinsAwake })}
-            onSubmitEditing={(event)=>{
-                this.onQuestionSubmit(event.nativeEvent.text)
+            onChangeText={(nightMinsAwake) => this.setState({ nightMinsAwake })}
+            onSubmitEditing={(event) => {
+              this.onQuestionSubmit(event.nativeEvent.text);
             }}
           />
         </Container>
-        <Container style={styles.Container_nrt} elevation={0} useThemeGutterPadding={true}>
+        <Container
+          style={styles.Container_nrt}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
           <Button
             style={styles.Button_n09}
             type="solid"
             onPress={() => {
-              this.onQuestionSubmit(this.state.nightMinsAwake)
+              this.onQuestionSubmit(this.state.nightMinsAwake);
             }}
             color={theme.colors.primary}
           >
@@ -93,7 +113,7 @@ class LogEntry4Screen extends React.Component {
           </Button>
         </Container>
       </ScreenContainer>
-    )
+    );
   }
 }
 
@@ -103,24 +123,24 @@ const styles = StyleSheet.create({
     marginTop: 8
   },
   Container_n0n: {
-    width: "100%",
-    height: "10%",
-    justifyContent: "space-between",
-    flexDirection: "row",
+    width: '100%',
+    height: '10%',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     marginTop: 20
   },
   Container_n57: {
-    height: "72%",
-    justifyContent: "center",
+    height: '72%',
+    justifyContent: 'center',
     marginTop: 20
   },
   Container_nd1: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center"
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   Container_nrt: {
-    height: "15%"
+    height: '15%'
   },
   IconButton_ngl: {
     paddingRight: 0
@@ -131,15 +151,14 @@ const styles = StyleSheet.create({
     paddingRight: 0,
     marginRight: 0
   },
-  Root_n3a: {
-  },
+  Root_n3a: {},
   TextField_nan: {},
   Text_nvx: {
-    textAlign: "center",
-    width: "100%",
-    alignItems: "flex-start",
-    alignSelf: "center"
+    textAlign: 'center',
+    width: '100%',
+    alignItems: 'flex-start',
+    alignSelf: 'center'
   }
-})
+});
 
-export default withTheme(LogEntry4Screen)
+export default withTheme(LogEntry4Screen);

@@ -17,19 +17,20 @@ const HomeStack = createStackNavigator({
   cardStyle: { backgroundColor: '#222222' },
 }); */
 
-
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {
   return (
-    <Tab.Navigator tabBarOptions={{
-      activeTintColor: '#ffffff',
-      inactiveTintColor: '#7FC0C4',
-      style: {
-        backgroundColor: '#00818A',
-        borderTopWidth: 0,
-      },
-    }}>
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: '#ffffff',
+        inactiveTintColor: '#7FC0C4',
+        style: {
+          backgroundColor: '#00818A',
+          borderTopWidth: 0
+        }
+      }}
+    >
       {/* Sleep diary entries screen */}
       <Tab.Screen
         name="Sleep"
@@ -41,9 +42,11 @@ export default function BottomTabs() {
             <TabBarIcon
               focused={focused}
               color={color}
-              name={Platform.OS === 'ios' ? 'ios-journal' : 'md-journal'} />
-          ),
-        }} />
+              name={Platform.OS === 'ios' ? 'ios-journal' : 'md-journal'}
+            />
+          )
+        }}
+      />
 
       {/* Main treatment info & check-in screen */}
       <Tab.Screen
@@ -56,9 +59,11 @@ export default function BottomTabs() {
             <TabBarIcon
               focused={focused}
               color={color}
-              name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'} />
-          ),
-        }} />
+              name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'}
+            />
+          )
+        }}
+      />
 
       {/* Support & FAQ screen */}
       <Tab.Screen
@@ -71,14 +76,16 @@ export default function BottomTabs() {
             <TabBarIcon
               focused={focused}
               color={color}
-              name={Platform.OS === 'ios' ? 'ios-text' : 'md-text'} />
-          ),
-        }} />
+              name={Platform.OS === 'ios' ? 'ios-text' : 'md-text'}
+            />
+          )
+        }}
+      />
     </Tab.Navigator>
   );
 }
 
 BottomTabs.propTypes = {
   color: PropTypes.string,
-  focused: PropTypes.bool,
-}
+  focused: PropTypes.bool
+};

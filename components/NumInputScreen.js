@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, Text, TextInput } from "react-native";
+import React from 'react';
+import { StyleSheet, Text, TextInput } from 'react-native';
 import {
   withTheme,
   ScreenContainer,
@@ -7,27 +7,42 @@ import {
   IconButton,
   ProgressBar,
   Button
-} from "@draftbit/ui";
+} from '@draftbit/ui';
 
-const NumInputScreen = props => {
+const NumInputScreen = (props) => {
   const [selectedNum, setSelectedNum] = React.useState(0);
 
   const { theme } = props;
   return (
-    <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_n3a}>
-      <Container style={styles.Container_nh7} elevation={0} useThemeGutterPadding={true}>
+    <ScreenContainer
+      hasSafeArea={true}
+      scrollable={false}
+      style={styles.Root_n3a}
+    >
+      <Container
+        style={styles.Container_nh7}
+        elevation={0}
+        useThemeGutterPadding={true}
+      >
         <IconButton
           style={styles.IconButton_nmh}
           icon="Ionicons/md-arrow-back"
           size={32}
           color={theme.colors.secondary}
           onPress={() => {
-            props.navigation.goBack()
+            props.navigation.goBack();
           }}
         />
-        <Container style={styles.Container_nzw} elevation={0} useThemeGutterPadding={true}>
+        <Container
+          style={styles.Container_nzw}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
           <ProgressBar
-            style={{...styles.ProgressBar_neb, ...{display: props.progressBar ? 'flex' : 'none'}}}
+            style={{
+              ...styles.ProgressBar_neb,
+              ...{ display: props.progressBar ? 'flex' : 'none' }
+            }}
             color={theme.colors.primary}
             progress={props.progressBarPercent}
             borderWidth={0}
@@ -37,7 +52,11 @@ const NumInputScreen = props => {
           />
         </Container>
       </Container>
-      <Container style={styles.Container_nfw} elevation={0} useThemeGutterPadding={true}>
+      <Container
+        style={styles.Container_nfw}
+        elevation={0}
+        useThemeGutterPadding={true}
+      >
         <Text
           style={[
             styles.Text_nlz,
@@ -49,20 +68,22 @@ const NumInputScreen = props => {
         >
           {props.questionLabel}
         </Text>
-        <Container style={{
-          marginTop: 65,
-          marginBottom: 30,
-          width: '50%',
-          alignSelf: 'center',
-          borderBottomWidth: 1.5,
-          borderColor: theme.colors.medium
-        }}>
-          <TextInput 
+        <Container
+          style={{
+            marginTop: 65,
+            marginBottom: 30,
+            width: '50%',
+            alignSelf: 'center',
+            borderBottomWidth: 1.5,
+            borderColor: theme.colors.medium
+          }}
+        >
+          <TextInput
             style={{
               height: 40,
-              color: "#ffffff",
+              color: '#ffffff',
               fontSize: 21,
-              paddingBottom: 12,
+              paddingBottom: 12
             }}
             placeholder={props.inputLabel}
             placeholderTextColor={theme.colors.light}
@@ -70,19 +91,23 @@ const NumInputScreen = props => {
             keyboardAppearance="dark"
             returnKeyType="done"
             enablesReturnKeyAutomatically={true}
-            onChangeText={inputValue => setSelectedNum(inputValue)}
-            onSubmitEditing={(event)=>{
-                props.onQuestionSubmit(event.nativeEvent.text)
+            onChangeText={(inputValue) => setSelectedNum(inputValue)}
+            onSubmitEditing={(event) => {
+              props.onQuestionSubmit(event.nativeEvent.text);
             }}
           />
         </Container>
       </Container>
-      <Container style={styles.Container_nrj} elevation={0} useThemeGutterPadding={true}>
+      <Container
+        style={styles.Container_nrj}
+        elevation={0}
+        useThemeGutterPadding={true}
+      >
         <Button
           style={styles.Button_nqa}
           type="solid"
           onPress={() => {
-            props.onQuestionSubmit(selectedNum)
+            props.onQuestionSubmit(selectedNum);
           }}
           color={theme.colors.primary}
         >
@@ -90,8 +115,8 @@ const NumInputScreen = props => {
         </Button>
       </Container>
     </ScreenContainer>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   Button_nqa: {
@@ -99,24 +124,24 @@ const styles = StyleSheet.create({
     marginTop: 8
   },
   Container_nfw: {
-    height: "72%",
-    justifyContent: "center",
+    height: '72%',
+    justifyContent: 'center',
     marginTop: 20
   },
   Container_nh7: {
-    width: "100%",
-    height: "10%",
-    justifyContent: "space-between",
-    flexDirection: "row",
+    width: '100%',
+    height: '10%',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     marginTop: 20
   },
   Container_nrj: {
-    height: "15%"
+    height: '15%'
   },
   Container_nzw: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center"
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   IconButton_nmh: {
     paddingRight: 0
@@ -127,15 +152,14 @@ const styles = StyleSheet.create({
     paddingRight: 0,
     marginRight: 0
   },
-  Root_n3a: {
-  },
+  Root_n3a: {},
   TextField_nw8: {},
   Text_nlz: {
-    textAlign: "center",
-    width: "100%",
-    alignItems: "flex-start",
-    alignSelf: "center"
+    textAlign: 'center',
+    width: '100%',
+    alignItems: 'flex-start',
+    alignSelf: 'center'
   }
-})
+});
 
-export default withTheme(NumInputScreen)
+export default withTheme(NumInputScreen);

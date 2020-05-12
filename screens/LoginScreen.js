@@ -5,14 +5,14 @@ import {
   ScreenContainer,
   Container,
   Image,
-  Touchable,
+  Touchable
 } from '@draftbit/ui';
 import { StyleSheet, Text } from 'react-native';
 import Images from '../config/Images';
-import { AuthContext } from "../authContext";
-import { slumber_theme } from "../config/slumber_theme";
+import { AuthContext } from '../authContext';
+import { slumber_theme } from '../config/slumber_theme';
 
-function LoginScreen () {
+function LoginScreen() {
   // Pull the theme manually
   const theme = slumber_theme;
 
@@ -58,7 +58,7 @@ function LoginScreen () {
             style={StyleSheet.flatten([
               styles.text94,
               theme.typography.headline3,
-              { color: theme.colors.strongInverse },
+              { color: theme.colors.strongInverse }
             ])}
           >
             Sleep through
@@ -70,7 +70,7 @@ function LoginScreen () {
             style={StyleSheet.flatten([
               styles.textBw,
               theme.typography.headline3,
-              { color: theme.colors.strongInverse },
+              { color: theme.colors.strongInverse }
             ])}
           >
             the night again
@@ -86,7 +86,7 @@ function LoginScreen () {
             color={theme.colors.primary}
             style={StyleSheet.flatten([
               styles.button9I,
-              { borderRadius: theme.borderRadius.button },
+              { borderRadius: theme.borderRadius.button }
             ])}
             onPress={signUp}
           >
@@ -97,7 +97,7 @@ function LoginScreen () {
               style={StyleSheet.flatten([
                 styles.textW2,
                 theme.typography.body1,
-                { color: theme.colors.surface },
+                { color: theme.colors.surface }
               ])}
             >
               Sign In
@@ -112,7 +112,7 @@ function LoginScreen () {
 const styles = StyleSheet.create({
   button9I: {
     height: 55,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   screenContainer1D: {
     // alignItems: 'auto', DELETE THIS LINE IF THINGS DON'T BREAK
@@ -121,46 +121,46 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     width: '100%',
     height: '60%',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   containerG3: {
-    height: '15%',
+    height: '15%'
   },
   textW2: {
-    textAlign: 'center',
+    textAlign: 'center'
   },
   image6G: {
     width: '60%',
     alignSelf: 'center',
-    height: '40%',
+    height: '40%'
   },
   imagePQ: {
     alignSelf: 'flex-start',
     marginLeft: 15,
     width: '50%',
-    height: '120%',
+    height: '120%'
   },
   containerPi: {
     height: '65%',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   touchable64: {
     paddingTop: 25,
     paddingBottom: 25,
-    marginBottom: 10,
+    marginBottom: 10
   },
   text94: {
-    textAlign: 'center',
+    textAlign: 'center'
   },
   textBw: {
     marginTop: -10,
     textAlign: 'center',
-    marginBottom: 35,
+    marginBottom: 35
   },
   containerGr: {
     justifyContent: 'flex-end',
-    height: '20%',
-  },
+    height: '20%'
+  }
 });
 
 export default withTheme(LoginScreen);

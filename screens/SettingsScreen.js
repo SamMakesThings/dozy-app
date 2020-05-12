@@ -1,14 +1,21 @@
-import React from "react";
-import { StyleSheet, Text, Linking } from "react-native";
-import { withTheme, ScreenContainer, Container, Icon, Switch, Touchable } from "@draftbit/ui";
+import React from 'react';
+import { StyleSheet, Text, Linking } from 'react-native';
+import {
+  withTheme,
+  ScreenContainer,
+  Container,
+  Icon,
+  Switch,
+  Touchable
+} from '@draftbit/ui';
 // import { Notifications } from "expo";
 // import * as Permissions from 'expo-permissions';
 // import * as SecureStore from 'expo-secure-store';
 // import { FbLib } from "../config/firebaseConfig";
-import { slumber_theme } from "../config/slumber_theme";
-import { AuthContext } from "../authContext";
+import { slumber_theme } from '../config/slumber_theme';
+import { AuthContext } from '../authContext';
 
-function Root () {
+function Root() {
   // state = {}
   /*
 
@@ -106,15 +113,22 @@ function Root () {
     })
   } */
 
-
   const theme = slumber_theme;
 
   // Pass along the signOut function from the context provider
   const { signOut } = React.useContext(AuthContext);
-  
+
   return (
-    <ScreenContainer hasSafeArea={true} scrollable={false} style={styles.Root_nd}>
-      <Container style={styles.Container_nz} elevation={0} useThemeGutterPadding={true}>
+    <ScreenContainer
+      hasSafeArea={true}
+      scrollable={false}
+      style={styles.Root_nd}
+    >
+      <Container
+        style={styles.Container_nz}
+        elevation={0}
+        useThemeGutterPadding={true}
+      >
         <Icon
           style={styles.Icon_ny}
           name="Ionicons/ios-person"
@@ -144,9 +158,22 @@ function Root () {
           @slumberapp
         </Text>
       </Container>
-      <Container style={styles.Container_ns} elevation={0} useThemeGutterPadding={true}>
-        <Touchable style={styles.Touchable_n0} onPress={() => {Linking.openURL("mailto:sam@naritai.co")}}>
-          <Container style={styles.Container_nf} elevation={0} useThemeGutterPadding={true}>
+      <Container
+        style={styles.Container_ns}
+        elevation={0}
+        useThemeGutterPadding={true}
+      >
+        <Touchable
+          style={styles.Touchable_n0}
+          onPress={() => {
+            Linking.openURL('mailto:sam@naritai.co');
+          }}
+        >
+          <Container
+            style={styles.Container_nf}
+            elevation={0}
+            useThemeGutterPadding={true}
+          >
             <Text
               style={[
                 styles.Text_nl,
@@ -166,8 +193,15 @@ function Root () {
             />
           </Container>
         </Touchable>
-        <Touchable style={styles.Touchable_n0} onPress={signOut/* this.registerForPushNotificationsAsync() */}>
-          <Container style={styles.Container_nf} elevation={0} useThemeGutterPadding={true}>
+        <Touchable
+          style={styles.Touchable_n0}
+          onPress={signOut /* this.registerForPushNotificationsAsync() */}
+        >
+          <Container
+            style={styles.Container_nf}
+            elevation={0}
+            useThemeGutterPadding={true}
+          >
             <Text
               style={[
                 styles.Text_nl,
@@ -187,7 +221,11 @@ function Root () {
             />
           </Container>
         </Touchable>
-        <Container style={styles.Container_ni} elevation={0} useThemeGutterPadding={true}>
+        <Container
+          style={styles.Container_ni}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
           <Text
             style={[
               styles.Text_nv,
@@ -203,16 +241,19 @@ function Root () {
             style={styles.Switch_n9}
             color={theme.colors.primary}
             disabled={false}
-            onValueChange={remindersOn => {
+            onValueChange={(remindersOn) => {
               // this.setState({ remindersOn });
               // this.updateReminderTime(remindersOn);
-              console.log("attempted to run state switch");
-              }
-            }
+              console.log('attempted to run state switch');
+            }}
             value={1 /*this.state.remindersOn*/}
           />
         </Container>
-        <Container style={styles.Container_nw} elevation={0} useThemeGutterPadding={true}>
+        <Container
+          style={styles.Container_nw}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
           <Text
             style={[
               styles.Text_nb,
@@ -227,36 +268,35 @@ function Root () {
         </Container>
       </Container>
     </ScreenContainer>
-  )
+  );
 }
-
 
 const styles = StyleSheet.create({
   Container_nf: {
     minWidth: 0,
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
     paddingBottom: 15
-    },
+  },
   Container_ni: {
     minWidth: 0,
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
     paddingBottom: 15
   },
   Container_ns: {
-    alignItems: "flex-start"
+    alignItems: 'flex-start'
   },
   Container_nw: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row"
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   Container_nz: {
-    alignItems: "center",
-    marginTop: 20,
+    alignItems: 'center',
+    marginTop: 20
   },
   DatePicker_nl: {
     minWidth: 100,
@@ -264,29 +304,28 @@ const styles = StyleSheet.create({
     marginLeft: 0
   },
   Root_nd: {
-    justifyContent: "space-around",
-    backgroundColor: slumber_theme.colors.background,
+    justifyContent: 'space-around',
+    backgroundColor: slumber_theme.colors.background
   },
   Text_n1: {
-    textAlign: "center",
-    width: "100%"
+    textAlign: 'center',
+    width: '100%'
   },
   Text_nl: {
-    textAlign: "center",
-    width: "100%"
+    textAlign: 'center',
+    width: '100%'
   },
   Text_nc: {
-    textAlign: "center",
-    width: "100%"
+    textAlign: 'center',
+    width: '100%'
   },
   Touchable_n0: {
     paddingBottom: 15
   },
-  Icon_nf: {
-  }
-})
+  Icon_nf: {}
+});
 
-export default withTheme(Root)
+export default withTheme(Root);
 
 /* OLD TIME PICKER - this was causing a toLocaleTimeString error, which means I think it's a Draftbit error.
           <DatePicker
