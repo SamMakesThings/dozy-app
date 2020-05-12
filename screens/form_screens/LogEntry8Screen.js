@@ -9,17 +9,18 @@ import {
   TextField,
   Button,
 } from "@draftbit/ui"
-import { FbAuth, FbLib } from "../../config/firebaseConfig";
 import '@firebase/firestore';
 import Intl from 'intl';
 import * as SecureStore from 'expo-secure-store';
+import { FbLib } from "../../config/firebaseConfig";
+import GLOBAL from '../../global';
+
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/tr-TR');
   require('date-time-format-timezone');
   Intl.__disableRegExpRestore();/*For syntaxerror invalid regular expression unmatched parentheses*/
 }
-import GLOBAL from '../../global';
 
 class LogEntry8Screen extends React.Component {
   static navigationOptions = {
@@ -39,7 +40,7 @@ class LogEntry8Screen extends React.Component {
     
     var db = FbLib.firestore();
 
-    userId = await SecureStore.getItemAsync('userData');
+    let userId = await SecureStore.getItemAsync('userData');
 
     var docRef = db.collection("sleep-logs").doc(userId); //CHANGE THIS CALL
 
@@ -48,7 +49,7 @@ class LogEntry8Screen extends React.Component {
     var dd = String(todayDate.getDate()).padStart(2, '0');
     var mm = String(todayDate.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = todayDate.getFullYear();
-    todayDateString = yyyy + '-' + mm + '-' + dd;
+    const todayDateString = yyyy + '-' + mm + '-' + dd;
 
     // If bedtime/sleeptime are in the evening, change them to be the day before
     if (GLOBAL.bedTime > GLOBAL.wakeTime) {
@@ -82,7 +83,6 @@ class LogEntry8Screen extends React.Component {
         sleepDuration: sleepDuration,
         minsInBedTotal: minsInBedTotal,
         minsAwakeInBedTotal: minsAwakeInBedTotal,
-        sleepDuration: sleepDuration,
       },
     }).catch(function(error) {
         console.log("Error pushing sleep log data:", error);
