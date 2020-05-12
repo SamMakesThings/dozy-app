@@ -13,6 +13,14 @@ const LogEntry8Screen = props => {
     <TagSelectScreen
       theme={theme}
       navigation={props.navigation}
+      touchableTags={[
+        {label: "noise", icon: "sound"},
+        {label: "light", icon: "light-bulb"},
+        {label: "temp", icon: "adjust"},
+        {label: "stress", icon: "new"},
+        {label: "worry", icon: "emoji-sad"},
+        {label: "partner", icon: "users"},
+      ]}
       onFormSubmit={async res => {
         GLOBAL.notes = res.notes;
         GLOBAL.tags = res.tags;
