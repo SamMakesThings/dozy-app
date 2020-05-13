@@ -1,13 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import LogEntry1Screen from '../screens/form_screens/LogEntry1Screen';
-import LogEntry2Screen from '../screens/form_screens/LogEntry2Screen';
-import LogEntry3Screen from '../screens/form_screens/LogEntry3Screen';
-import LogEntry4Screen from '../screens/form_screens/LogEntry4Screen';
-import LogEntry5Screen from '../screens/form_screens/LogEntry5Screen';
-import LogEntry6Screen from '../screens/form_screens/LogEntry6Screen';
-import LogEntry7Screen from '../screens/form_screens/LogEntry7Screen';
-import LogEntry8Screen from '../screens/form_screens/LogEntry8Screen';
+import * as Screens from '../screens/DiaryEntryScreens';
 
 // Init and define the authentication flow for diary entry
 const DiaryEntryStack = createStackNavigator();
@@ -17,65 +10,65 @@ const DiaryEntryStack = createStackNavigator();
 export default function DiaryEntryNavigator() {
   return (
     <DiaryEntryStack.Navigator
-      initialRouteName="LogEntry1Screen"
+      initialRouteName="BedTimeInput"
       screenOptions={{
         headerShown: false
       }}
     >
       <DiaryEntryStack.Screen
-        name="LogEntry1Screen"
-        component={LogEntry1Screen}
+        name="BedTimeInput"
+        component={Screens.BedTimeInput}
         options={{
-          title: 'Log Entry 1'
+          title: 'Bedtime input'
         }}
       />
       <DiaryEntryStack.Screen
-        name="LogEntry2Screen"
-        component={LogEntry2Screen}
+        name="MinsToFallAsleepInput"
+        component={Screens.MinsToFallAsleepInput}
         options={{
-          title: 'Log Entry 2'
+          title: 'Minutes to fall asleep input'
         }}
       />
       <DiaryEntryStack.Screen
-        name="LogEntry3Screen"
-        component={LogEntry3Screen}
+        name="WakeCountInput"
+        component={Screens.WakeCountInput}
         options={{
-          title: 'Log Entry 3'
+          title: 'Wake count input'
         }}
       />
       <DiaryEntryStack.Screen
-        name="LogEntry4Screen"
-        component={LogEntry4Screen}
+        name="NightMinsAwakeInput"
+        component={Screens.NightMinsAwakeInput}
         options={{
-          title: 'Log Entry 4'
+          title: 'Night mins awake input'
         }}
       />
       <DiaryEntryStack.Screen
-        name="LogEntry5Screen"
-        component={LogEntry5Screen}
+        name="WakeTimeInput"
+        component={Screens.WakeTimeInput}
         options={{
-          title: 'Log Entry 5'
+          title: 'Wake time input'
         }}
       />
       <DiaryEntryStack.Screen
-        name="LogEntry6Screen"
-        component={LogEntry6Screen}
+        name="UpTimeInput"
+        component={Screens.UpTimeInput}
         options={{
-          title: 'Log Entry 6'
+          title: 'Up time input'
         }}
       />
       <DiaryEntryStack.Screen
-        name="LogEntry7Screen"
-        component={LogEntry7Screen}
+        name="SleepRatingInput"
+        component={Screens.SleepRatingInput}
         options={{
-          title: 'Log Entry 7'
+          title: 'Sleep rating input'
         }}
       />
       <DiaryEntryStack.Screen
-        name="LogEntry8Screen"
-        component={LogEntry8Screen}
+        name="TagsNotesInput"
+        component={Screens.TagsNotesInput}
         options={{
-          title: 'Log Entry 8'
+          title: 'Tags and notes input'
         }}
       />
     </DiaryEntryStack.Navigator>
