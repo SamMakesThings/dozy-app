@@ -1,12 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, Platform, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Platform,
+  View,
+  TextInput,
+  KeyboardAvoidingView
+} from 'react-native';
 import {
   withTheme,
   ScreenContainer,
   Container,
   IconButton,
   ProgressBar,
-  TextField,
   Button
 } from '@draftbit/ui';
 import '@firebase/firestore';
@@ -67,8 +73,9 @@ const TagSelectScreen = (props) => {
           />
         </Container>
       </Container>
-      <Container
+      <KeyboardAvoidingView
         style={styles.Container_n8t}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         elevation={0}
         useThemeGutterPadding={true}
       >
@@ -90,7 +97,8 @@ const TagSelectScreen = (props) => {
             justifyContent: 'space-around',
             flexWrap: 'wrap',
             alignContent: 'center',
-            alignItems: 'flex-start'
+            alignItems: 'flex-start',
+            backgroundColor: theme.colors.background
           }}
         >
           {touchableTags.map((tag) => {
@@ -119,18 +127,32 @@ const TagSelectScreen = (props) => {
             );
           })}
         </View>
-        <TextField
-          style={styles.TextField_no0}
-          type="underline"
-          label={props.inputLabel}
-          keyboardType="default"
-          leftIconMode="inset"
-          onChangeText={(value) => setNotes(value)}
-          onSubmitEditing={() => {
-            props.onFormSubmit({ notes: notes, tags: selectedTags });
-          }}
-        />
-      </Container>
+        <View
+          style={[
+            styles.View_TextInputContainer,
+            {
+              borderColor: theme.colors.medium,
+              backgroundColor: theme.colors.background
+            }
+          ]}
+        >
+          <TextInput
+            style={{
+              height: 40,
+              color: '#ffffff',
+              fontSize: 21,
+              paddingBottom: 12
+            }}
+            placeholder={props.inputLabel}
+            placeholderTextColor={theme.colors.light}
+            keyboardType="default"
+            keyboardAppearance="dark"
+            returnKeyType="done"
+            enablesReturnKeyAutomatically={true}
+            onChangeText={(value) => setNotes(value)}
+          />
+        </View>
+      </KeyboardAvoidingView>
       <Container
         style={styles.Container_nmw}
         elevation={0}
@@ -152,6 +174,13 @@ const TagSelectScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
+  View_TextInputContainer: {
+    marginTop: 0,
+    marginBottom: '7%',
+    width: '80%',
+    alignSelf: 'center',
+    borderBottomWidth: 1.5
+  },
   Button_n5c: {
     paddingTop: 0,
     marginTop: 8

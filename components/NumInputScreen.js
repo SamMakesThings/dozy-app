@@ -10,7 +10,7 @@ import {
 } from '@draftbit/ui';
 
 const NumInputScreen = (props) => {
-  const [selectedNum, setSelectedNum] = React.useState(0);
+  const [selectedNum, setSelectedNum] = React.useState(-1);
 
   const { theme } = props;
   return (
@@ -110,6 +110,7 @@ const NumInputScreen = (props) => {
             props.onQuestionSubmit(selectedNum);
           }}
           color={theme.colors.primary}
+          disabled={(!props.optional && selectedNum < 0) || selectedNum === ''}
         >
           Next
         </Button>

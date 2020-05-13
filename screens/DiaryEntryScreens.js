@@ -97,13 +97,13 @@ export const WakeTimeInput = () => {
   return (
     <TimePickerScreen
       theme={theme}
+      navigation={navigation}
+      progressBar
+      progressBarPercent={0.63}
       onQuestionSubmit={(value) => {
         GLOBAL.wakeTime = value;
         navigation.navigate('UpTimeInput');
       }}
-      navigation={navigation}
-      progressBar
-      progressBarPercent={0.63}
       questionLabel="What time did you wake up?"
       inputLabel="Wake time"
     />
@@ -115,13 +115,14 @@ export const UpTimeInput = () => {
   return (
     <TimePickerScreen
       theme={theme}
+      navigation={navigation}
+      progressBar
+      progressBarPercent={0.76}
       onQuestionSubmit={(value) => {
         GLOBAL.upTime = value;
         navigation.navigate('SleepRatingInput');
       }}
-      navigation={navigation}
-      progressBar
-      progressBarPercent={0.76}
+      defaultValue={GLOBAL.wakeTime}
       questionLabel="What time did you get up?"
       inputLabel="The time you got out of bed"
     />

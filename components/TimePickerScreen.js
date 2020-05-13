@@ -11,7 +11,9 @@ import {
 } from '@draftbit/ui';
 
 const TimePickerScreen = (props) => {
-  const [selectedTime, setSelectedTime] = React.useState(new Date());
+  const [selectedTime, setSelectedTime] = React.useState(
+    props.defaultValue ? props.defaultValue : new Date()
+  );
 
   const { theme } = props;
   return (
