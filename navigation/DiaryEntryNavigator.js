@@ -12,7 +12,8 @@ export default function DiaryEntryNavigator() {
     <DiaryEntryStack.Navigator
       initialRouteName="BedTimeInput"
       screenOptions={{
-        headerShown: false
+        headerShown: false,
+        animationEnabled: false
       }}
     >
       <DiaryEntryStack.Screen
