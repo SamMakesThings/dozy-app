@@ -178,14 +178,17 @@ export const TagsNotesInput = () => {
         // Initialize relevant Firebase values
         var db = FbLib.firestore();
         let userId = await SecureStore.getItemAsync('userData');
-        var docRef = db.collection('sleep-logs').doc(userId); //CHANGE THIS CALL
+        var sleepLogsRef = db
+          .collection('users')
+          .doc(userId)
+          .collection('sleepLogs');
 
         // Get today's date, turn it into a string
-        var todayDate = new Date();
+        /* var todayDate = new Date();
         var dd = String(todayDate.getDate()).padStart(2, '0');
         var mm = String(todayDate.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = todayDate.getFullYear();
-        const todayDateString = yyyy + '-' + mm + '-' + dd;
+        const todayDateString = yyyy + '-' + mm + '-' + dd; */
 
         // If bedtime/sleeptime are in the evening, change them to be the day before
         if (GLOBAL.bedTime > GLOBAL.wakeTime) {
@@ -211,25 +214,24 @@ export const TagsNotesInput = () => {
         var sleepEfficiency = +(sleepDuration / minsInBedTotal).toFixed(2);
 
         // Write the data to the user's sleep log document in Firebase
-        docRef
-          .update({
-            [todayDateString]: {
-              bedTime: GLOBAL.bedTime,
-              minsToFallAsleep: parseInt(GLOBAL.minsToFallAsleep),
-              wakeCount: GLOBAL.wakeCount,
-              nightMinsAwake: parseInt(GLOBAL.nightMinsAwake),
-              wakeTime: GLOBAL.wakeTime,
-              upTime: GLOBAL.upTime,
-              sleepRating: GLOBAL.sleepRating,
-              notes: GLOBAL.notes,
-              fallAsleepTime: new Date(
-                GLOBAL.bedTime.getTime() + GLOBAL.minsToFallAsleep * 60000
-              ),
-              sleepEfficiency: sleepEfficiency,
-              sleepDuration: sleepDuration,
-              minsInBedTotal: minsInBedTotal,
-              minsAwakeInBedTotal: minsAwakeInBedTotal
-            }
+        sleepLogsRef
+          .add({
+            bedTime: GLOBAL.bedTime,
+            minsToFallAsleep: parseInt(GLOBAL.minsToFallAsleep),
+            wakeCount: GLOBAL.wakeCount,
+            nightMinsAwake: parseInt(GLOBAL.nightMinsAwake),
+            wakeTime: GLOBAL.wakeTime,
+            upTime: GLOBAL.upTime,
+            sleepRating: GLOBAL.sleepRating,
+            notes: GLOBAL.notes,
+            fallAsleepTime: new Date(
+              GLOBAL.bedTime.getTime() + GLOBAL.minsToFallAsleep * 60000
+            ),
+            sleepEfficiency: sleepEfficiency,
+            sleepDuration: sleepDuration,
+            minsInBedTotal: minsInBedTotal,
+            minsAwakeInBedTotal: minsAwakeInBedTotal,
+            tags: GLOBAL.tags
           })
           .catch(function (error) {
             console.log('Error pushing sleep log data:', error);

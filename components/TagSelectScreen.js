@@ -127,7 +127,7 @@ const TagSelectScreen = (props) => {
           leftIconMode="inset"
           onChangeText={(value) => setNotes(value)}
           onSubmitEditing={() => {
-            props.onFormSubmit({ notes: notes });
+            props.onFormSubmit({ notes: notes, tags: selectedTags });
           }}
         />
       </Container>
@@ -140,7 +140,7 @@ const TagSelectScreen = (props) => {
           style={styles.Button_n5c}
           type="solid"
           onPress={() => {
-            props.onFormSubmit({ notes: notes });
+            props.onFormSubmit({ notes: notes, tags: selectedTags });
           }}
           color={theme.colors.primary}
         >
