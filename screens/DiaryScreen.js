@@ -448,7 +448,6 @@ class Root extends React.Component {
           let sleepLogs = [];
 
           // Check that theres >1 entry. If no, set state accordingly
-          console.log(res.size);
           if (res.size === 0) {
             this.setState({ logsLoading: false });
             return 0;
@@ -469,7 +468,6 @@ class Root extends React.Component {
     const fetchDataBound = fetchData.bind(this);
     colRef.onSnapshot(function () {
       fetchDataBound();
-      console.log('hey I detected a change');
     });
   };
 
