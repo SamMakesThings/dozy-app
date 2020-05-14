@@ -19,7 +19,6 @@ export const ExplainTest = () => {
   return (
     <IconExplainScreen
       theme={theme}
-      navigation={navigation}
       image
       textLabel="Welcome to Slumber! We'll get you sleeping better in no time."
       buttonLabel="Next"
@@ -39,7 +38,6 @@ export const BedTimeInput = () => {
         GLOBAL.bedTime = value;
         navigation.navigate('MinsToFallAsleepInput');
       }}
-      navigation={navigation}
       progressBar
       progressBarPercent={0.13}
       questionLabel="What time did you go to bed last night?"
@@ -57,7 +55,6 @@ export const MinsToFallAsleepInput = () => {
         GLOBAL.minsToFallAsleep = value;
         navigation.navigate('WakeCountInput');
       }}
-      navigation={navigation}
       progressBar
       progressBarPercent={0.26}
       questionLabel="Roughly how long did it take you to fall asleep?"
@@ -75,7 +72,6 @@ export const WakeCountInput = () => {
         GLOBAL.wakeCount = value;
         navigation.navigate('NightMinsAwakeInput');
       }}
-      navigation={navigation}
       buttonValues={[
         { label: "0 (didn't wake up)", value: 0 },
         { label: '1', value: 1 },
@@ -100,7 +96,6 @@ export const NightMinsAwakeInput = () => {
         GLOBAL.nightMinsAwake = value;
         navigation.navigate('WakeTimeInput');
       }}
-      navigation={navigation}
       progressBar
       progressBarPercent={0.5}
       questionLabel="Roughly how many minutes were you awake in the night in total?"
@@ -114,7 +109,6 @@ export const WakeTimeInput = () => {
   return (
     <TimePickerScreen
       theme={theme}
-      navigation={navigation}
       progressBar
       progressBarPercent={0.63}
       onQuestionSubmit={(value) => {
@@ -132,7 +126,6 @@ export const UpTimeInput = () => {
   return (
     <TimePickerScreen
       theme={theme}
-      navigation={navigation}
       progressBar
       progressBarPercent={0.76}
       onQuestionSubmit={(value) => {
@@ -155,7 +148,6 @@ export const SleepRatingInput = () => {
         GLOBAL.sleepRating = value;
         navigation.navigate('TagsNotesInput');
       }}
-      navigation={navigation}
       buttonValues={[
         { label: '1', value: 1 },
         { label: '2', value: 2 },
@@ -175,7 +167,6 @@ export const TagsNotesInput = () => {
   return (
     <TagSelectScreen
       theme={theme}
-      navigation={navigation}
       touchableTags={[
         { label: 'nothing', icon: 'emoji-happy' },
         { label: 'light', icon: 'light-bulb' },

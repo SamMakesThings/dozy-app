@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, Image, View } from 'react-native';
+import { StyleSheet, Text, Image, View } from 'react-native';
 import {
   withTheme,
   ScreenContainer,
@@ -8,20 +8,21 @@ import {
   ProgressBar,
   Button
 } from '@draftbit/ui';
+import { useNavigation } from '@react-navigation/native';
 import UndrawBed from '../assets/images/UndrawBed.png';
 
 const IconExplainScreen = (props) => {
-  const [selectedNum, setSelectedNum] = React.useState(-1);
-
   const { theme } = props;
+  const navigation = useNavigation();
+
   return (
     <ScreenContainer
       hasSafeArea={true}
       scrollable={false}
       style={styles.Root_n3a}
     >
-      <View
-        style={styles.Container_nh7}
+      <Container
+        style={styles.View_HeaderContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
@@ -31,7 +32,7 @@ const IconExplainScreen = (props) => {
           size={32}
           color={theme.colors.secondary}
           onPress={() => {
-            props.navigation.goBack();
+            navigation.goBack();
           }}
         />
         <Container
@@ -52,68 +53,42 @@ const IconExplainScreen = (props) => {
             unfilledColor={theme.colors.medium}
           />
         </Container>
-      </View>
+      </Container>
       <Container
-        style={styles.Container_nfw}
+        style={styles.View_ContentContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
+        <View style={{ flex: 4 }}>
+          <Image source={UndrawBed} style={styles.Image_Featured} />
+        </View>
         <Text
           style={[
             styles.Text_nlz,
-            theme.typography.headline5,
+            theme.typography.body1,
             {
-              color: theme.colors.secondary
+              color: theme.colors.secondary,
+              flex: 2
             }
           ]}
         >
-          {props.questionLabel}
+          {props.textLabel}
         </Text>
-        <Container
-          style={{
-            marginTop: 65,
-            marginBottom: 30,
-            width: '50%',
-            alignSelf: 'center',
-            borderBottomWidth: 1.5,
-            borderColor: theme.colors.medium
-          }}
-        >
-          <TextInput
-            style={{
-              height: 40,
-              color: '#ffffff',
-              fontSize: 21,
-              paddingBottom: 12
-            }}
-            placeholder={props.inputLabel}
-            placeholderTextColor={theme.colors.light}
-            keyboardType="number-pad"
-            keyboardAppearance="dark"
-            returnKeyType="done"
-            enablesReturnKeyAutomatically={true}
-            onChangeText={(inputValue) => setSelectedNum(inputValue)}
-            onSubmitEditing={(event) => {
-              props.onQuestionSubmit(event.nativeEvent.text);
-            }}
-          />
-        </Container>
       </Container>
       <Container
-        style={styles.Container_nrj}
+        style={styles.View_ButtonContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
         <Button
-          style={styles.Button_nqa}
+          style={styles.Button_Continue}
           type="solid"
           onPress={() => {
-            props.onQuestionSubmit(selectedNum);
+            props.onContinue();
           }}
           color={theme.colors.primary}
-          disabled={(!props.optional && selectedNum < 0) || selectedNum === ''}
         >
-          Next
+          {props.buttonLabel}
         </Button>
       </Container>
     </ScreenContainer>
@@ -121,23 +96,30 @@ const IconExplainScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  Button_nqa: {
+  Button_Continue: {
     paddingTop: 0,
     marginTop: 8
   },
-  Container_nfw: {
+  Image_Featured: {
+    flex: 1,
+    maxWidth: '80%',
+    maxHeight: '80%',
+    resizeMode: 'center'
+  },
+  View_ContentContainer: {
     height: '72%',
     justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 20
   },
-  Container_nh7: {
+  View_HeaderContainer: {
     width: '100%',
     height: '10%',
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: 20
   },
-  Container_nrj: {
+  View_ButtonContainer: {
     height: '15%'
   },
   Container_nzw: {

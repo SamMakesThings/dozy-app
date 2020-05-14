@@ -9,6 +9,7 @@ import {
   DatePicker,
   Button
 } from '@draftbit/ui';
+import { useNavigation } from '@react-navigation/native';
 
 const TimePickerScreen = (props) => {
   const [selectedTime, setSelectedTime] = React.useState(
@@ -16,6 +17,7 @@ const TimePickerScreen = (props) => {
   );
 
   const { theme } = props;
+  const navigation = useNavigation();
   return (
     <ScreenContainer
       style={{ backgroundColor: theme.colors.background }}
@@ -33,7 +35,7 @@ const TimePickerScreen = (props) => {
           size={32}
           color={theme.colors.secondary}
           onPress={() => {
-            props.navigation.goBack();
+            navigation.goBack();
           }}
         />
         <Container

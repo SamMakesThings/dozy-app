@@ -8,9 +8,12 @@ import {
   ProgressBar,
   Button
 } from '@draftbit/ui';
+import { useNavigation } from '@react-navigation/native';
 
 const MultiButtonScreen = (props) => {
   const { theme } = props;
+  const navigation = useNavigation();
+
   return (
     <ScreenContainer
       hasSafeArea={true}
@@ -28,7 +31,7 @@ const MultiButtonScreen = (props) => {
           size={32}
           color={theme.colors.secondary}
           onPress={() => {
-            props.navigation.goBack();
+            navigation.goBack();
           }}
         />
         <Container

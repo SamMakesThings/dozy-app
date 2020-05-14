@@ -8,11 +8,13 @@ import {
   ProgressBar,
   Button
 } from '@draftbit/ui';
+import { useNavigation } from '@react-navigation/native';
 
 const NumInputScreen = (props) => {
   const [selectedNum, setSelectedNum] = React.useState(-1);
 
   const { theme } = props;
+  const navigation = useNavigation();
   return (
     <ScreenContainer
       hasSafeArea={true}
@@ -30,7 +32,7 @@ const NumInputScreen = (props) => {
           size={32}
           color={theme.colors.secondary}
           onPress={() => {
-            props.navigation.goBack();
+            navigation.goBack();
           }}
         />
         <Container

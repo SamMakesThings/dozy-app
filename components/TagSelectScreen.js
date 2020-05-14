@@ -17,6 +17,7 @@ import {
 } from '@draftbit/ui';
 import '@firebase/firestore';
 import Intl from 'intl';
+import { useNavigation } from '@react-navigation/native';
 import ToggleTag from './ToggleTag';
 
 if (Platform.OS === 'android') {
@@ -29,6 +30,7 @@ if (Platform.OS === 'android') {
 const TagSelectScreen = (props) => {
   // Set the available tags and icons
   const { theme, touchableTags } = props;
+  const navigation = useNavigation();
 
   // Set up component state for tags and note field
   const [selectedTags, updateTags] = React.useState([]);
@@ -51,7 +53,7 @@ const TagSelectScreen = (props) => {
           size={32}
           color={theme.colors.secondary}
           onPress={() => {
-            props.navigation.goBack();
+            navigation.goBack();
           }}
         />
         <Container
