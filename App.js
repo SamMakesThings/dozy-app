@@ -106,7 +106,7 @@ export default function App() {
       let userToken;
 
       try {
-        userToken = await SecureStore.getItemAsync('userData');
+        userToken = await SecureStore.getItemAsync('userId');
       } catch (e) {
         // Restoring token failed
       }
@@ -139,7 +139,7 @@ export default function App() {
           );
           SecureStore.setItemAsync('idToken', result.credential.idToken);
           SecureStore.setItemAsync('providerId', result.credential.providerId);
-          SecureStore.setItemAsync('userData', result.user.uid);
+          SecureStore.setItemAsync('userId', result.user.uid);
 
           // Update app state accordingly thru context hook function
           dispatch({
@@ -162,7 +162,7 @@ export default function App() {
           );
           SecureStore.setItemAsync('idToken', result.credential.idToken);
           SecureStore.setItemAsync('providerId', result.credential.providerId);
-          SecureStore.setItemAsync('userData', result.user.uid);
+          SecureStore.setItemAsync('userId', result.user.uid);
 
           // Update app state accordingly thru context hook function
           dispatch({

@@ -25,7 +25,7 @@ const LogEntry8Screen = (props) => {
 
         // Initialize relevant Firebase values
         var db = FbLib.firestore();
-        let userId = await SecureStore.getItemAsync('userData');
+        let userId = await SecureStore.getItemAsync('userId');
         var docRef = db.collection('sleep-logs').doc(userId); //CHANGE THIS CALL
 
         // Get today's date, turn it into a string

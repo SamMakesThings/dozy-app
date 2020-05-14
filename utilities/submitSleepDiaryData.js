@@ -5,7 +5,7 @@ import GLOBAL from '../global';
 export default async function submitSleepDiaryData() {
   // Initialize relevant Firebase values
   var db = FbLib.firestore();
-  let userId = await SecureStore.getItemAsync('userData');
+  let userId = await SecureStore.getItemAsync('userId');
   var sleepLogsRef = db.collection('users').doc(userId).collection('sleepLogs');
 
   // Get today's date, turn it into a string

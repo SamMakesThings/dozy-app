@@ -51,7 +51,7 @@ function Root() {
       
       var db = FbLib.firestore();
   
-      let userId = await SecureStore.getItemAsync('userData');
+      let userId = await SecureStore.getItemAsync('userId');
   
       var docRef = db.collection("users").doc(userId);
     
@@ -70,7 +70,7 @@ function Root() {
   updateReminderTime = async (newSetting) => {
     // Define variables for the Firebase push
     var db = FbLib.firestore();
-    let userId = await SecureStore.getItemAsync('userData');
+    let userId = await SecureStore.getItemAsync('userId');
     var docRef = db.collection("users").doc(userId);
 
     // Write the new setting (reminder time) to Firebase
@@ -84,7 +84,7 @@ function Root() {
   updateRemindersOnOff = async (newSetting) => {
     // Define variables for the Firebase push
     var db = FbLib.firestore();
-    let userId = await SecureStore.getItemAsync('userData');
+    let userId = await SecureStore.getItemAsync('userId');
     var docRef = db.collection("users").doc(userId);
 
     // Write the new setting (turning reminders on/off) to Firebase
@@ -98,7 +98,7 @@ function Root() {
   componentDidMount = async () => {
     // Define variables for the Firebase pull
     var db = FbLib.firestore();
-    let userId = await SecureStore.getItemAsync('userData');
+    let userId = await SecureStore.getItemAsync('userId');
     var docRef = db.collection("users").doc(userId);
 
     // Update displayed settings based on current user settings

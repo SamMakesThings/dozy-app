@@ -49,13 +49,11 @@ class SleepLogEntryCard extends Component {
               }
             ]}
           >
-            {this.props.sleepLog.upTime
-              .toDate()
-              .toLocaleString('en-US', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric'
-              })}
+            {this.props.sleepLog.upTime.toDate().toLocaleString('en-US', {
+              weekday: 'long',
+              month: 'long',
+              day: 'numeric'
+            })}
           </Text>
         </Container>
         <Container
@@ -105,12 +103,10 @@ class SleepLogEntryCard extends Component {
                   }
                 ]}
               >
-                {this.props.sleepLog.bedTime
-                  .toDate()
-                  .toLocaleString('en-US', {
-                    hour: 'numeric',
-                    minute: 'numeric'
-                  })}
+                {this.props.sleepLog.bedTime.toDate().toLocaleString('en-US', {
+                  hour: 'numeric',
+                  minute: 'numeric'
+                })}
               </Text>
             </Container>
             <Text
@@ -169,12 +165,10 @@ class SleepLogEntryCard extends Component {
                   }
                 ]}
               >
-                {this.props.sleepLog.upTime
-                  .toDate()
-                  .toLocaleString('en-US', {
-                    hour: 'numeric',
-                    minute: 'numeric'
-                  })}
+                {this.props.sleepLog.upTime.toDate().toLocaleString('en-US', {
+                  hour: 'numeric',
+                  minute: 'numeric'
+                })}
               </Text>
             </Container>
           </Container>
@@ -404,7 +398,7 @@ class Root extends React.Component {
   };
 
   _fetchUidFromAsync = async () => {
-    let userId = await SecureStore.getItemAsync('userData');
+    let userId = await SecureStore.getItemAsync('userId');
     this.fetchSleepLogs();
     return userId;
   };
@@ -422,13 +416,11 @@ class Root extends React.Component {
     );
     var db = FbLib.firestore();
 
-    let userId = await SecureStore.getItemAsync('userData');
+    let userId = await SecureStore.getItemAsync('userId');
     console.log(userId);
 
     console.log('Attempting to pull the sleep diary collection from Firestore');
-    var docRef = db
-      .collection('sleep-logs')
-      .doc('eyzZSaIc4uWPgP5cZwrjYXx2lE03'); //CHANGE THIS CALL
+    var docRef = db.collection('sleep-logs').doc(userId); //CHANGE THIS CALL
     console.log(docRef);
 
     /*
