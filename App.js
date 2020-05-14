@@ -12,7 +12,7 @@ import { FbAuth, FbLib } from './config/firebaseConfig';
 import { slumber_theme } from './config/slumber_theme';
 import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
-import { AuthContext } from './authContext';
+import { AuthContext } from './utilities/authContext';
 
 // Root app component
 export default function App() {

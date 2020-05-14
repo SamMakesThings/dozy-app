@@ -40,8 +40,6 @@ function LoadingScreen() {
 
 // Export the navigation components and screens, with if/then for auth state
 export default function InitialAuthNavigator({ userToken, authLoading }) {
-  // const isLoggedIn = React.useContext(AuthContext); FIX THIS
-
   console.log('userToken received in AppNavigator: ');
   console.log(userToken);
 

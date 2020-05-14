@@ -1,7 +1,7 @@
 import React from 'react';
 import { withTheme } from '@draftbit/ui';
 import MultiButtonScreen from '../../components/MultiButtonScreen';
-import GLOBAL from '../../global';
+import GLOBAL from '../../utilities/global';
 
 const LogEntry3Screen = (props) => {
   const { theme } = props;

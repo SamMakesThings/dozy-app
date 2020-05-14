@@ -3,7 +3,7 @@ import { withTheme } from '@draftbit/ui';
 import * as SecureStore from 'expo-secure-store';
 import TagSelectScreen from '../../components/TagSelectScreen';
 import { FbLib } from '../../config/firebaseConfig';
-import GLOBAL from '../../global';
+import GLOBAL from '../../utilities/global';
 
 const LogEntry8Screen = (props) => {
   const { theme } = props;

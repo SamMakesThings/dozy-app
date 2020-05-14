@@ -6,7 +6,7 @@ import NumInputScreen from '../components/NumInputScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
 import TagSelectScreen from '../components/TagSelectScreen';
 import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
-import GLOBAL from '../global';
+import GLOBAL from '../utilities/global';
 import { slumber_theme } from '../config/slumber_theme';
 
 // Define the theme for the file globally

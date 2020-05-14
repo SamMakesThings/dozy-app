@@ -9,7 +9,7 @@ import {
 } from '@draftbit/ui';
 import { StyleSheet, Text } from 'react-native';
 import Images from '../config/Images';
-import { AuthContext } from '../authContext';
+import { AuthContext } from '../utilities/authContext';
 import { slumber_theme } from '../config/slumber_theme';
 
 function LoginScreen() {

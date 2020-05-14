@@ -8,7 +8,7 @@ import {
   ProgressBar,
   Button
 } from '@draftbit/ui';
-import GLOBAL from '../../global';
+import GLOBAL from '../../utilities/global';
 
 class LogEntry7Screen extends React.Component {
   static navigationOptions = {

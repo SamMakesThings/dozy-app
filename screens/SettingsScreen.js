@@ -13,7 +13,7 @@ import {
 // import * as SecureStore from 'expo-secure-store';
 // import { FbLib } from "../config/firebaseConfig";
 import { slumber_theme } from '../config/slumber_theme';
-import { AuthContext } from '../authContext';
+import { AuthContext } from '../utilities/authContext';
 
 function Root() {
   // state = {}

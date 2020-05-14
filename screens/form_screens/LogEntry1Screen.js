@@ -1,7 +1,7 @@
 import React from 'react';
 import { withTheme } from '@draftbit/ui';
 import TimePickerScreen from '../../components/TimePickerScreen';
-import GLOBAL from '../../global';
+import GLOBAL from '../../utilities/global';
 
 const LogEntry1Screen = (props) => {
   const { theme } = props;

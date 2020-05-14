@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { FbLib } from '../config/firebaseConfig';
-import GLOBAL from '../global';
+import GLOBAL from './global';
 
 export default async function submitSleepDiaryData() {
   // Initialize relevant Firebase values

@@ -9,7 +9,7 @@ import {
   TextField,
   Button
 } from '@draftbit/ui';
-import GLOBAL from '../../global';
+import GLOBAL from '../../utilities/global';
 
 class LogEntry4Screen extends React.Component {
   static navigationOptions = {
