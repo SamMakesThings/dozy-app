@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   StatusBar,
   ScrollView,
@@ -433,33 +433,44 @@ class Root extends React.Component {
 
   fetchSleepLogs = async () => {
     // Retrieving sleep logs from Firestore
-    var db = FbLib.firestore();
+    let db = FbLib.firestore();
     let userId = await SecureStore.getItemAsync('userId');
 
     // Pull the sleep diary collection from Firestore, array it
-    var colRef = db.collection('users').doc(userId).collection('sleepLogs');
-    colRef
-      .orderBy('upTime', 'desc')
-      .get()
-      .then((res) => {
-        let sleepLogs = [];
+    let colRef = db.collection('users').doc(userId).collection('sleepLogs');
 
-        // Check that theres >1 entry. If no, set state accordingly
-        console.log(res.size);
-        if (res.size === 0) {
-          this.setState({ logsLoading: false });
-          return 0;
-        }
+    // Function to retrieve the Firebase data, called in listener below
+    async function fetchData() {
+      colRef
+        .orderBy('upTime', 'desc')
+        .get()
+        .then((res) => {
+          let sleepLogs = [];
 
-        // Otherwise, arrange data and update state
-        res.forEach(function (doc) {
-          sleepLogs.push(doc.data());
+          // Check that theres >1 entry. If no, set state accordingly
+          console.log(res.size);
+          if (res.size === 0) {
+            this.setState({ logsLoading: false });
+            return 0;
+          }
+
+          // Otherwise, arrange data and update state
+          res.forEach(function (doc) {
+            sleepLogs.push(doc.data());
+          });
+          this.setState({ sleepLogs: sleepLogs, logsLoading: false });
+        })
+        .catch(function (error) {
+          console.log('Error getting sleep logs:', error);
         });
-        this.setState({ sleepLogs: sleepLogs, logsLoading: false });
-      })
-      .catch(function (error) {
-        console.log('Error getting sleep logs:', error);
-      });
+    }
+
+    // Setup a listener to fetch new logs from Firebase
+    const fetchDataBound = fetchData.bind(this);
+    colRef.onSnapshot(function () {
+      fetchDataBound();
+      console.log('hey I detected a change');
+    });
   };
 
   goToLogEntry = () => {
