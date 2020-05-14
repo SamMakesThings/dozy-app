@@ -5,13 +5,30 @@ import TimePickerScreen from '../components/TimePickerScreen';
 import NumInputScreen from '../components/NumInputScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
 import TagSelectScreen from '../components/TagSelectScreen';
-import IconExplainScreen from '../components/IconExplainScreen';
+import DateTimePickerScreen from '../components/DateTimePickerScreen';
 import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
 import GLOBAL from '../utilities/global';
 import { slumber_theme } from '../config/Themes';
 
 // Define the theme for the file globally
 const theme = slumber_theme;
+
+export const DateTimeInput = () => {
+  const navigation = useNavigation();
+  return (
+    <DateTimePickerScreen
+      theme={theme}
+      onQuestionSubmit={(value) => {
+        navigation.navigate('MinsToFallAsleepInput');
+      }}
+      progressBar
+      progressBarPercent={0.13}
+      mode="datetime"
+      questionLabel="When would you like to schedule your next check-in?"
+      inputLabel="Check-in date & time"
+    />
+  );
+};
 
 export const BedTimeInput = () => {
   const navigation = useNavigation();
