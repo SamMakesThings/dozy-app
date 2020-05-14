@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
 import '@firebase/firestore';
-import { slumber_theme } from '../config/slumber_theme';
+import { slumber_theme } from '../config/Themes';
 
 const SleepLogEntryCard = (props) => {
   const theme = slumber_theme;
@@ -77,7 +77,7 @@ const SleepLogEntryCard = (props) => {
           >
             <Text
               style={[
-                theme.typography.body1,
+                theme.typography.smallLabel,
                 {
                   color: theme.colors.secondary,
                   textAlign: 'center',
@@ -139,7 +139,7 @@ const SleepLogEntryCard = (props) => {
           >
             <Text
               style={[
-                theme.typography.body1,
+                theme.typography.smallLabel,
                 {
                   color: theme.colors.primary,
                   textAlign: 'center',

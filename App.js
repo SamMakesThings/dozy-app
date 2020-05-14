@@ -9,7 +9,7 @@ import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
 import { decode, encode } from 'base-64';
 import { FbAuth, FbLib } from './config/firebaseConfig';
-import { slumber_theme } from './config/slumber_theme';
+import { slumber_theme } from './config/Themes';
 import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './utilities/authContext';

@@ -14,6 +14,11 @@ export const slumber_theme = {
     button: 36
   },
   typography: {
+    smallLabel: {
+      fontSize: 16,
+      lineHeight: 26,
+      fontFamily: 'RubikRegular'
+    },
     body1: {
       fontSize: 16,
       lineHeight: 26,

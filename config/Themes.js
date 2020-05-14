@@ -14,6 +14,11 @@ export const slumber_theme = {
     button: 36
   },
   typography: {
+    smallLabel: {
+      fontSize: 16,
+      lineHeight: 26,
+      fontFamily: 'RubikRegular'
+    },
     body1: {
       fontSize: 16,
       lineHeight: 26,
@@ -55,14 +60,14 @@ export const slumber_theme = {
       fontFamily: 'RubikBold'
     },
     headline5: {
-      fontSize: 20,
+      fontSize: 24,
       lineHeight: 26,
-      fontFamily: 'RubikBold'
+      fontFamily: 'RubikMedium'
     },
     headline6: {
       fontSize: 16,
       lineHeight: 24,
-      fontFamily: 'RubikBold'
+      fontFamily: 'RubikMedium'
     },
     overline: {
       fontSize: 12,
@@ -97,7 +102,7 @@ export const slumber_theme = {
   },
   elevation: {
     '0': {
-      shadowColor: 'rgba(255, 255, 255, 1)',
+      shadowColor: 'rgba(18, 20, 44, 1)',
       shadowOffset: {
         width: 0,
         height: 0
@@ -105,11 +110,11 @@ export const slumber_theme = {
       shadowRadius: 0,
       shadowOpacity: 0,
       borderWidth: 0,
-      borderColor: 'rgba(255, 255, 255, 1)',
+      borderColor: 'rgba(18, 20, 44, 1)',
       borderOpacity: 0
     },
     '1': {
-      shadowColor: 'rgba(255, 255, 255, 1)',
+      shadowColor: 'rgba(18, 20, 44, 1)',
       shadowOffset: {
         width: 0,
         height: 2
@@ -117,11 +122,11 @@ export const slumber_theme = {
       shadowRadius: 4,
       shadowOpacity: 0.06,
       borderWidth: 1,
-      borderColor: 'rgba(255, 255, 255, 1)',
+      borderColor: 'rgba(18, 20, 44, 1)',
       borderOpacity: 0.06
     },
     '2': {
-      shadowColor: 'rgba(255, 255, 255, 1)',
+      shadowColor: 'rgba(18, 20, 44, 1)',
       shadowOffset: {
         width: 0,
         height: 2
@@ -129,11 +134,11 @@ export const slumber_theme = {
       shadowRadius: 4,
       shadowOpacity: 0.2,
       borderWidth: 0,
-      borderColor: 'rgba(255, 255, 255, 1)',
+      borderColor: 'rgba(18, 20, 44, 1)',
       borderOpacity: 0
     },
     '3': {
-      shadowColor: 'rgba(255, 255, 255, 1)',
+      shadowColor: 'rgba(18, 20, 44, 1)',
       shadowOffset: {
         width: 0,
         height: 6
@@ -141,7 +146,7 @@ export const slumber_theme = {
       shadowRadius: 6,
       shadowOpacity: 0.12,
       borderWidth: 0,
-      borderColor: 'rgba(255, 255, 255, 1)',
+      borderColor: 'rgba(18, 20, 44, 1)',
       borderOpacity: 0
     }
   }

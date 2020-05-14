@@ -8,7 +8,7 @@ import TagSelectScreen from '../components/TagSelectScreen';
 import IconExplainScreen from '../components/IconExplainScreen';
 import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
 import GLOBAL from '../utilities/global';
-import { slumber_theme } from '../config/slumber_theme';
+import { slumber_theme } from '../config/Themes';
 
 // Define the theme for the file globally
 const theme = slumber_theme;

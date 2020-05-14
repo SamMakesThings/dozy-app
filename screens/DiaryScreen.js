@@ -15,7 +15,7 @@ import { Entypo } from '@expo/vector-icons';
 import Intl from 'intl';
 import SleepLogEntryCard from '../components/SleepLogEntryCard';
 import { FbLib } from '../config/firebaseConfig';
-import { slumber_theme } from '../config/slumber_theme';
+import { slumber_theme } from '../config/Themes';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -75,7 +75,7 @@ const SleepLogsView = (props) => {
           />
           <Text
             style={[
-              theme.typography.body1,
+              theme.typography.smallLabel,
               {
                 color: theme.colors.medium,
                 textAlign: 'center',

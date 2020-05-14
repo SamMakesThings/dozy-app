@@ -12,7 +12,7 @@ import {
 // import * as Permissions from 'expo-permissions';
 // import * as SecureStore from 'expo-secure-store';
 // import { FbLib } from "../config/firebaseConfig";
-import { slumber_theme } from '../config/slumber_theme';
+import { slumber_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 
 function Root() {
@@ -177,7 +177,7 @@ function Root() {
             <Text
               style={[
                 styles.Text_nl,
-                theme.typography.body1,
+                theme.typography.smallLabel,
                 {
                   color: theme.colors.strong
                 }
@@ -205,7 +205,7 @@ function Root() {
             <Text
               style={[
                 styles.Text_nl,
-                theme.typography.body1,
+                theme.typography.smallLabel,
                 {
                   color: theme.colors.strong
                 }
@@ -229,7 +229,7 @@ function Root() {
           <Text
             style={[
               styles.Text_nv,
-              theme.typography.body1,
+              theme.typography.smallLabel,
               {
                 color: theme.colors.strong
               }
@@ -257,7 +257,7 @@ function Root() {
           <Text
             style={[
               styles.Text_nb,
-              theme.typography.body1,
+              theme.typography.smallLabel,
               {
                 color: theme.colors.strong
               }

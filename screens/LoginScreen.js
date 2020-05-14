@@ -10,7 +10,7 @@ import {
 import { StyleSheet, Text } from 'react-native';
 import Images from '../config/Images';
 import { AuthContext } from '../utilities/authContext';
-import { slumber_theme } from '../config/slumber_theme';
+import { slumber_theme } from '../config/Themes';
 
 function LoginScreen() {
   // Pull the theme manually
@@ -96,7 +96,7 @@ function LoginScreen() {
             <Text
               style={StyleSheet.flatten([
                 styles.textW2,
-                theme.typography.body1,
+                theme.typography.smallLabel,
                 { color: theme.colors.surface }
               ])}
             >
