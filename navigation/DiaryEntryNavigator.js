@@ -9,7 +9,7 @@ const DiaryEntryStack = createStackNavigator();
 export default function DiaryEntryNavigator() {
   return (
     <DiaryEntryStack.Navigator
-      initialRouteName="ExplainTest"
+      initialRouteName="BedTimeInput"
       screenOptions={{
         headerShown: false,
         animationEnabled: false
