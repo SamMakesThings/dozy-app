@@ -9,6 +9,7 @@ import IconExplainScreen from '../components/IconExplainScreen';
 import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
 import GLOBAL from '../utilities/global';
 import { slumber_theme } from '../config/Themes';
+import UndrawBed from '../assets/images/UndrawBed.png';
 
 // Define the theme for the file globally
 const theme = slumber_theme;
@@ -19,7 +20,7 @@ export const ExplainTest = () => {
   return (
     <IconExplainScreen
       theme={theme}
-      image
+      image={UndrawBed}
       textLabel="Welcome to Slumber! We'll get you sleeping better in no time."
       buttonLabel="Next"
       onContinue={() => {

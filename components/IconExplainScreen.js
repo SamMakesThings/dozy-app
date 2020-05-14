@@ -9,8 +9,8 @@ import {
   Button
 } from '@draftbit/ui';
 import { useNavigation } from '@react-navigation/native';
-import UndrawBed from '../assets/images/UndrawBed.png';
 
+// Wizard screen with a hero image (usually icon) and paragraph text
 const IconExplainScreen = (props) => {
   const { theme } = props;
   const navigation = useNavigation();
@@ -19,7 +19,7 @@ const IconExplainScreen = (props) => {
     <ScreenContainer
       hasSafeArea={true}
       scrollable={false}
-      style={styles.Root_n3a}
+      style={styles.RootContainer}
     >
       <Container
         style={styles.View_HeaderContainer}
@@ -27,7 +27,7 @@ const IconExplainScreen = (props) => {
         useThemeGutterPadding={true}
       >
         <IconButton
-          style={styles.IconButton_nmh}
+          style={styles.Nav_BackButton}
           icon="Ionicons/md-arrow-back"
           size={32}
           color={theme.colors.secondary}
@@ -36,13 +36,13 @@ const IconExplainScreen = (props) => {
           }}
         />
         <Container
-          style={styles.Container_nzw}
+          style={styles.View_BarContainer}
           elevation={0}
           useThemeGutterPadding={true}
         >
           <ProgressBar
             style={{
-              ...styles.ProgressBar_neb,
+              ...styles.ProgressBar,
               ...{ display: props.progressBar ? 'flex' : 'none' }
             }}
             color={theme.colors.primary}
@@ -59,16 +59,16 @@ const IconExplainScreen = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <View style={{ flex: 4 }}>
-          <Image source={UndrawBed} style={styles.Image_Featured} />
+        <View style={{ flex: 5 }}>
+          <Image source={props.image} style={styles.Image_Featured} />
         </View>
         <Text
           style={[
-            styles.Text_nlz,
+            styles.Text_Explainer,
             theme.typography.body1,
             {
               color: theme.colors.secondary,
-              flex: 2
+              flex: 3
             }
           ]}
         >
@@ -104,7 +104,8 @@ const styles = StyleSheet.create({
     flex: 1,
     maxWidth: '80%',
     maxHeight: '80%',
-    resizeMode: 'center'
+    resizeMode: 'center',
+    marginTop: 20
   },
   View_ContentContainer: {
     height: '72%',
@@ -122,23 +123,22 @@ const styles = StyleSheet.create({
   View_ButtonContainer: {
     height: '15%'
   },
-  Container_nzw: {
+  View_BarContainer: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center'
   },
-  IconButton_nmh: {
+  Nav_BackButton: {
     paddingRight: 0
   },
-  ProgressBar_neb: {
+  ProgressBar: {
     width: 250,
     height: 7,
     paddingRight: 0,
     marginRight: 0
   },
-  Root_n3a: {},
-  TextField_nw8: {},
-  Text_nlz: {
+  RootContainer: {},
+  Text_Explainer: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'flex-start',

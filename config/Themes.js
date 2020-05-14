@@ -20,9 +20,10 @@ export const slumber_theme = {
       fontFamily: 'RubikRegular'
     },
     body1: {
-      fontSize: 16,
+      fontSize: 20,
       lineHeight: 26,
-      fontFamily: 'RubikRegular'
+      fontFamily: 'RubikRegular',
+      letterSpacing: -0.25
     },
     body2: {
       fontSize: 14,
