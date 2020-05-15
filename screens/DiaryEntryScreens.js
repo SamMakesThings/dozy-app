@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import TimePickerScreen from '../components/TimePickerScreen';
 import NumInputScreen from '../components/NumInputScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
 import TagSelectScreen from '../components/TagSelectScreen';
@@ -13,27 +12,10 @@ import { slumber_theme } from '../config/Themes';
 // Define the theme for the file globally
 const theme = slumber_theme;
 
-export const DateTimeInput = () => {
-  const navigation = useNavigation();
-  return (
-    <DateTimePickerScreen
-      theme={theme}
-      onQuestionSubmit={(value) => {
-        navigation.navigate('MinsToFallAsleepInput');
-      }}
-      progressBar
-      progressBarPercent={0.13}
-      mode="datetime"
-      questionLabel="When would you like to schedule your next check-in?"
-      inputLabel="Check-in date & time"
-    />
-  );
-};
-
 export const BedTimeInput = () => {
   const navigation = useNavigation();
   return (
-    <TimePickerScreen
+    <DateTimePickerScreen
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.bedTime = value;
@@ -41,6 +23,7 @@ export const BedTimeInput = () => {
       }}
       progressBar
       progressBarPercent={0.13}
+      mode="time"
       questionLabel="What time did you go to bed last night?"
       inputLabel="Bedtime"
     />
@@ -108,7 +91,7 @@ export const NightMinsAwakeInput = () => {
 export const WakeTimeInput = () => {
   const navigation = useNavigation();
   return (
-    <TimePickerScreen
+    <DateTimePickerScreen
       theme={theme}
       progressBar
       progressBarPercent={0.63}
@@ -116,6 +99,7 @@ export const WakeTimeInput = () => {
         GLOBAL.wakeTime = value;
         navigation.navigate('UpTimeInput');
       }}
+      mode="time"
       questionLabel="What time did you wake up?"
       inputLabel="Wake time"
     />
@@ -125,7 +109,7 @@ export const WakeTimeInput = () => {
 export const UpTimeInput = () => {
   const navigation = useNavigation();
   return (
-    <TimePickerScreen
+    <DateTimePickerScreen
       theme={theme}
       progressBar
       progressBarPercent={0.76}
@@ -133,6 +117,7 @@ export const UpTimeInput = () => {
         GLOBAL.upTime = value;
         navigation.navigate('SleepRatingInput');
       }}
+      mode="time"
       defaultValue={GLOBAL.wakeTime}
       questionLabel="What time did you get up?"
       inputLabel="The time you got out of bed"
