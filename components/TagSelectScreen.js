@@ -64,7 +64,7 @@ const TagSelectScreen = (props) => {
           <ProgressBar
             style={{
               ...styles.ProgressBar_nn5,
-              ...{ display: props.progressBar ? 'flex' : 'none' }
+              ...{ display: props.progressBarPercent ? 'flex' : 'none' }
             }}
             color={theme.colors.primary}
             progress={props.progressBarPercent}

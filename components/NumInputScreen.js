@@ -43,7 +43,7 @@ const NumInputScreen = (props) => {
           <ProgressBar
             style={{
               ...styles.ProgressBar_neb,
-              ...{ display: props.progressBar ? 'flex' : 'none' }
+              ...{ display: props.progressBarPercent ? 'flex' : 'none' }
             }}
             color={theme.colors.primary}
             progress={props.progressBarPercent}

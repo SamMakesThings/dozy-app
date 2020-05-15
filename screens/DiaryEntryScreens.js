@@ -21,7 +21,6 @@ export const BedTimeInput = () => {
         GLOBAL.bedTime = value;
         navigation.navigate('MinsToFallAsleepInput');
       }}
-      progressBar
       progressBarPercent={0.13}
       mode="time"
       questionLabel="What time did you go to bed last night?"
@@ -39,7 +38,6 @@ export const MinsToFallAsleepInput = () => {
         GLOBAL.minsToFallAsleep = value;
         navigation.navigate('WakeCountInput');
       }}
-      progressBar
       progressBarPercent={0.26}
       questionLabel="Roughly how long did it take you to fall asleep?"
       inputLabel="(in minutes)"
@@ -64,7 +62,6 @@ export const WakeCountInput = () => {
         { label: '4', value: 4 },
         { label: '5+', value: 5 }
       ]}
-      progressBar
       progressBarPercent={0.38}
       questionLabel="After falling asleep, about how many times did you wake up in the night?"
     />
@@ -80,7 +77,6 @@ export const NightMinsAwakeInput = () => {
         GLOBAL.nightMinsAwake = value;
         navigation.navigate('WakeTimeInput');
       }}
-      progressBar
       progressBarPercent={0.5}
       questionLabel="Roughly how many minutes were you awake in the night in total?"
       inputLabel="(in minutes)"
@@ -93,7 +89,6 @@ export const WakeTimeInput = () => {
   return (
     <DateTimePickerScreen
       theme={theme}
-      progressBar
       progressBarPercent={0.63}
       onQuestionSubmit={(value) => {
         GLOBAL.wakeTime = value;
@@ -111,7 +106,6 @@ export const UpTimeInput = () => {
   return (
     <DateTimePickerScreen
       theme={theme}
-      progressBar
       progressBarPercent={0.76}
       onQuestionSubmit={(value) => {
         GLOBAL.upTime = value;
@@ -141,7 +135,6 @@ export const SleepRatingInput = () => {
         { label: '4', value: 4 },
         { label: '5', value: 5 }
       ]}
-      progressBar
       progressBarPercent={0.87}
       questionLabel="On a scale of 1-5, how would you rate the quality of your sleep last night?"
     />
@@ -177,7 +170,6 @@ export const TagsNotesInput = () => {
         // Navigate back to the main app
         navigation.navigate('App');
       }}
-      progressBar
       progressBarPercent={0.95}
       questionLabel="What, if anything, disturbed your sleep last night?"
       inputLabel="Anything else of note?"

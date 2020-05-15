@@ -43,7 +43,7 @@ const IconExplainScreen = (props) => {
           <ProgressBar
             style={{
               ...styles.ProgressBar,
-              ...{ display: props.progressBar ? 'flex' : 'none' }
+              ...{ display: props.progressBarPercent ? 'flex' : 'none' }
             }}
             color={theme.colors.primary}
             progress={props.progressBarPercent}
