@@ -1,6 +1,5 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
 import NumInputScreen from '../components/NumInputScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
 import TagSelectScreen from '../components/TagSelectScreen';
@@ -12,8 +11,7 @@ import { slumber_theme } from '../config/Themes';
 // Define the theme for the file globally
 const theme = slumber_theme;
 
-export const BedTimeInput = () => {
-  const navigation = useNavigation();
+export const BedTimeInput = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
@@ -29,8 +27,7 @@ export const BedTimeInput = () => {
   );
 };
 
-export const MinsToFallAsleepInput = () => {
-  const navigation = useNavigation();
+export const MinsToFallAsleepInput = ({ navigation }) => {
   return (
     <NumInputScreen
       theme={theme}
@@ -45,8 +42,7 @@ export const MinsToFallAsleepInput = () => {
   );
 };
 
-export const WakeCountInput = () => {
-  const navigation = useNavigation();
+export const WakeCountInput = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
@@ -68,8 +64,7 @@ export const WakeCountInput = () => {
   );
 };
 
-export const NightMinsAwakeInput = () => {
-  const navigation = useNavigation();
+export const NightMinsAwakeInput = ({ navigation }) => {
   return (
     <NumInputScreen
       theme={theme}
@@ -84,8 +79,7 @@ export const NightMinsAwakeInput = () => {
   );
 };
 
-export const WakeTimeInput = () => {
-  const navigation = useNavigation();
+export const WakeTimeInput = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
@@ -101,8 +95,7 @@ export const WakeTimeInput = () => {
   );
 };
 
-export const UpTimeInput = () => {
-  const navigation = useNavigation();
+export const UpTimeInput = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
@@ -119,8 +112,7 @@ export const UpTimeInput = () => {
   );
 };
 
-export const SleepRatingInput = () => {
-  const navigation = useNavigation();
+export const SleepRatingInput = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
@@ -141,8 +133,7 @@ export const SleepRatingInput = () => {
   );
 };
 
-export const TagsNotesInput = () => {
-  const navigation = useNavigation();
+export const TagsNotesInput = ({ navigation }) => {
   return (
     <TagSelectScreen
       theme={theme}
