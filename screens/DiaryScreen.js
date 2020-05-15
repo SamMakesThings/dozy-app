@@ -41,7 +41,16 @@ const SleepLogsView = (props) => {
         >
           How did you sleep last night?
         </Button>
-        <ActivityIndicator style={{ marginTop: '45%' }} />
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.primary}
+          style={{
+            width: 50,
+            height: 50,
+            marginTop: '45%',
+            alignSelf: 'center'
+          }}
+        />
       </View>
     );
   } else if (props.sleepLogs === null) {
