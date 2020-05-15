@@ -137,7 +137,8 @@ const DateTimePickerScreen = (props) => {
 
 const styles = StyleSheet.create({
   DatePicker: {
-    flex: 2
+    flex: 2,
+    alignItems: 'center'
   },
   DatePickerHalf: {
     margin: 15
