@@ -17,9 +17,11 @@ export const BedTimeInput = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.bedTime = value;
-        navigation.navigate('MinsToFallAsleepInput');
+        navigation.setParams({ progressBarPercent: 0.13 });
+        navigation.navigate('MinsToFallAsleepInput', {
+          progressBarPercent: 0.26
+        });
       }}
-      progressBarPercent={0.13}
       mode="time"
       questionLabel="What time did you go to bed last night?"
       inputLabel="Bedtime"
@@ -33,9 +35,8 @@ export const MinsToFallAsleepInput = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.minsToFallAsleep = value;
-        navigation.navigate('WakeCountInput');
+        navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
       }}
-      progressBarPercent={0.26}
       questionLabel="Roughly how long did it take you to fall asleep?"
       inputLabel="(in minutes)"
     />
@@ -48,7 +49,7 @@ export const WakeCountInput = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.wakeCount = value;
-        navigation.navigate('NightMinsAwakeInput');
+        navigation.navigate('NightMinsAwakeInput', { progressBarPercent: 0.5 });
       }}
       buttonValues={[
         { label: "0 (didn't wake up)", value: 0 },
@@ -58,7 +59,6 @@ export const WakeCountInput = ({ navigation }) => {
         { label: '4', value: 4 },
         { label: '5+', value: 5 }
       ]}
-      progressBarPercent={0.38}
       questionLabel="After falling asleep, about how many times did you wake up in the night?"
     />
   );
@@ -70,9 +70,8 @@ export const NightMinsAwakeInput = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.nightMinsAwake = value;
-        navigation.navigate('WakeTimeInput');
+        navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
       }}
-      progressBarPercent={0.5}
       questionLabel="Roughly how many minutes were you awake in the night in total?"
       inputLabel="(in minutes)"
     />
@@ -83,10 +82,9 @@ export const WakeTimeInput = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
-      progressBarPercent={0.63}
       onQuestionSubmit={(value) => {
         GLOBAL.wakeTime = value;
-        navigation.navigate('UpTimeInput');
+        navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
       }}
       mode="time"
       questionLabel="What time did you wake up?"
@@ -99,10 +97,9 @@ export const UpTimeInput = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
-      progressBarPercent={0.76}
       onQuestionSubmit={(value) => {
         GLOBAL.upTime = value;
-        navigation.navigate('SleepRatingInput');
+        navigation.navigate('SleepRatingInput', { progressBarPercent: 0.87 });
       }}
       mode="time"
       defaultValue={GLOBAL.wakeTime}
@@ -118,7 +115,7 @@ export const SleepRatingInput = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.sleepRating = value;
-        navigation.navigate('TagsNotesInput');
+        navigation.navigate('TagsNotesInput', { progressBarPercent: 0.95 });
       }}
       buttonValues={[
         { label: '1', value: 1 },
@@ -127,7 +124,6 @@ export const SleepRatingInput = ({ navigation }) => {
         { label: '4', value: 4 },
         { label: '5', value: 5 }
       ]}
-      progressBarPercent={0.87}
       questionLabel="On a scale of 1-5, how would you rate the quality of your sleep last night?"
     />
   );
@@ -161,7 +157,6 @@ export const TagsNotesInput = ({ navigation }) => {
         // Navigate back to the main app
         navigation.navigate('App');
       }}
-      progressBarPercent={0.95}
       questionLabel="What, if anything, disturbed your sleep last night?"
       inputLabel="Anything else of note?"
     />

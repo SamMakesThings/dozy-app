@@ -4,17 +4,14 @@ import {
   withTheme,
   ScreenContainer,
   Container,
-  IconButton,
   ProgressBar,
   Button
 } from '@draftbit/ui';
-import { useNavigation } from '@react-navigation/native';
 
 const NumInputScreen = (props) => {
   const [selectedNum, setSelectedNum] = React.useState(-1);
 
   const { theme } = props;
-  const navigation = useNavigation();
   return (
     <ScreenContainer
       hasSafeArea={true}
@@ -26,15 +23,6 @@ const NumInputScreen = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <IconButton
-          style={styles.IconButton_nmh}
-          icon="Ionicons/md-arrow-back"
-          size={32}
-          color={theme.colors.secondary}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
         <Container
           style={styles.Container_nzw}
           elevation={0}

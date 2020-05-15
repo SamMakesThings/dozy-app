@@ -4,16 +4,13 @@ import {
   withTheme,
   ScreenContainer,
   Container,
-  IconButton,
   ProgressBar,
   Button
 } from '@draftbit/ui';
-import { useNavigation } from '@react-navigation/native';
 
 // Wizard screen with a hero image (usually icon) and paragraph text
 const IconExplainScreen = (props) => {
   const { theme } = props;
-  const navigation = useNavigation();
 
   return (
     <ScreenContainer
@@ -26,15 +23,6 @@ const IconExplainScreen = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <IconButton
-          style={styles.Nav_BackButton}
-          icon="Ionicons/md-arrow-back"
-          size={32}
-          color={theme.colors.secondary}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
         <Container
           style={styles.View_BarContainer}
           elevation={0}

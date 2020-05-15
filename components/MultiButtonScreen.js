@@ -4,15 +4,12 @@ import {
   withTheme,
   ScreenContainer,
   Container,
-  IconButton,
   ProgressBar,
   Button
 } from '@draftbit/ui';
-import { useNavigation } from '@react-navigation/native';
 
 const MultiButtonScreen = (props) => {
   const { theme } = props;
-  const navigation = useNavigation();
 
   return (
     <ScreenContainer
@@ -25,15 +22,6 @@ const MultiButtonScreen = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <IconButton
-          style={styles.IconButton_not}
-          icon="Ionicons/md-arrow-back"
-          size={32}
-          color={theme.colors.secondary}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
         <Container
           style={styles.Container_n8l}
           elevation={0}

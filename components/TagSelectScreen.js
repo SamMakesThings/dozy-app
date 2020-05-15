@@ -11,13 +11,11 @@ import {
   withTheme,
   ScreenContainer,
   Container,
-  IconButton,
   ProgressBar,
   Button
 } from '@draftbit/ui';
 import '@firebase/firestore';
 import Intl from 'intl';
-import { useNavigation } from '@react-navigation/native';
 import ToggleTag from './ToggleTag';
 
 if (Platform.OS === 'android') {
@@ -30,7 +28,6 @@ if (Platform.OS === 'android') {
 const TagSelectScreen = (props) => {
   // Set the available tags and icons
   const { theme, touchableTags } = props;
-  const navigation = useNavigation();
 
   // Set up component state for tags and note field
   const [selectedTags, updateTags] = React.useState([]);
@@ -47,15 +44,6 @@ const TagSelectScreen = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <IconButton
-          style={styles.IconButton_n9u}
-          icon="Ionicons/md-arrow-back"
-          size={32}
-          color={theme.colors.secondary}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
         <Container
           style={styles.Container_nuv}
           elevation={0}

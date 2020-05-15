@@ -4,12 +4,9 @@ import {
   withTheme,
   ScreenContainer,
   Container,
-  IconButton,
-  ProgressBar,
   DatePicker,
   Button
 } from '@draftbit/ui';
-import { useNavigation } from '@react-navigation/native';
 
 // A unified date, time, and datetime picker screen. Has a label and input.
 const DateTimePickerScreen = (props) => {
@@ -18,7 +15,6 @@ const DateTimePickerScreen = (props) => {
   );
 
   const { theme } = props;
-  const navigation = useNavigation();
   return (
     <ScreenContainer
       style={{ backgroundColor: theme.colors.background }}
@@ -29,35 +25,7 @@ const DateTimePickerScreen = (props) => {
         style={styles.View_HeaderContainer}
         elevation={0}
         useThemeGutterPadding={true}
-      >
-        <IconButton
-          style={styles.Nav_BackButton}
-          icon="Ionicons/md-arrow-back"
-          size={32}
-          color={theme.colors.secondary}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        <Container
-          style={styles.View_ProgressBarContainer}
-          elevation={0}
-          useThemeGutterPadding={true}
-        >
-          <ProgressBar
-            style={{
-              ...styles.ProgressBar,
-              ...{ display: props.progressBarPercent ? 'flex' : 'none' }
-            }}
-            color={theme.colors.primary}
-            progress={props.progressBarPercent}
-            borderWidth={0}
-            borderRadius={10}
-            animationType="spring"
-            unfilledColor={theme.colors.medium}
-          />
-        </Container>
-      </Container>
+      ></Container>
       <Container
         style={styles.View_ContentContainer}
         elevation={0}
