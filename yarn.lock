@@ -964,27 +964,23 @@
     minimist "^1.2.0"
 
 "@draftbit/ui@^36.2.0":
-  version "36.2.0"
-  resolved "https://registry.yarnpkg.com/@draftbit/ui/-/ui-36.2.0.tgz#73a8c1c4590ab5b680ae3c60edc118cddd27b28e"
-  integrity sha512-V43OZD9yUcGhYpuiJIGp1maR4Oc7Ya43d4XH0gtng2F6RJI6c0c9e3XeZhKoWD2jgSMxluo8833g4m9Sn4Noww==
+  version "36.10.0"
+  resolved "https://registry.yarnpkg.com/@draftbit/ui/-/ui-36.10.0.tgz#125c399bc82a1a6b5ce4852ea1f51008d88b07cc"
+  integrity sha512-5pVnx7wDtr8IbLzDFWlV7tmmf7Hm7QvWCefcEcCoF7GVoBekgYoqY7wGsUL9uxdA3fdiZ0AfBNiKxA5CMda+TA==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.5"
-    "@expo/vector-icons" "~10.0.0"
+    "@expo/vector-icons" "~10.1.0"
     color "^3.1.2"
-    create-react-context "^0.3.0"
     dateformat "^3.0.3"
-    expo-av "~8.0.0"
-    expo-blur "~8.0.0"
-    expo-constants "~8.0.0"
-    react-lifecycles-compat "^3.0.4"
-    react-native-gesture-handler "1.5.0"
-    react-native-maps "0.26.1"
+    expo-av "~8.1.0"
+    expo-blur "~8.1.0"
+    expo-constants "~9.0.0"
+    react-native-maps "0.27.1"
     react-native-platform-touchable "^1.1.1"
-    react-native-progress "^3.6.0"
-    react-native-reanimated "~1.4.0"
+    react-native-progress "^4.1.2"
     react-native-slider "^0.11.0"
     react-native-step-indicator "^0.0.11"
-    react-native-webview "7.4.3"
+    react-native-webview "9.4.0"
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
@@ -1230,10 +1226,17 @@
   resolved "https://registry.yarnpkg.com/@expo/traveling-fastlane-linux/-/traveling-fastlane-linux-1.12.1.tgz#e9081b6fc092eaf2f79bf8f6d041f29f6b5fd135"
   integrity sha512-oJ4uNcuD0hd/5W3eGBVtaTvvn7n14RjN8Z8E+WUjDXhZMLFg25xLtb+uhC8AIaEdvofIgU5DShVkRBCLmLNHgw==
 
-"@expo/vector-icons@^10.0.0", "@expo/vector-icons@^10.0.2", "@expo/vector-icons@~10.0.0":
+"@expo/vector-icons@^10.0.0", "@expo/vector-icons@^10.0.2":
   version "10.0.6"
   resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-10.0.6.tgz#5718953ff0b97827d11dae5787976fa8ce5caaed"
   integrity sha512-qNlKPNdf073LpeEpyClxAh0D3mmIK4TGAQzeKR0HVwf14RIEe17+mLW5Z6Ka5Ho/lUtKMRPDHumSllFyKvpeGg==
+  dependencies:
+    lodash "^4.17.4"
+
+"@expo/vector-icons@~10.1.0":
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-10.1.0.tgz#3fb2517924b031c1b98f86fa51a2032a257759b0"
+  integrity sha512-6ikFslHORJgsb8wKeSgXYfZNNXsiTb3yQf5xaNyGUCYg4zqE7VchdhnH9yZKTI3Lu16jna52pHQZl+3jcOSAbQ==
   dependencies:
     lodash "^4.17.4"
 
@@ -2248,6 +2251,15 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
+
+"@react-native-community/art@^1.1.2":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/art/-/art-1.2.0.tgz#386d95393f6042d9006f9d4bc6063fb898794460"
+  integrity sha512-a+ZcRGl/BzLa89yi33Mbn5SHavsEXqKUMdbfLf3U8MDLElndPqUetoJyGkv63+BcPO49UMWiQRP1YUz6/zfJ+A==
+  dependencies:
+    art "^0.10.3"
+    invariant "^2.2.4"
+    prop-types "^15.7.2"
 
 "@react-native-community/cli-debugger-ui@^3.0.0":
   version "3.0.0"
@@ -3318,7 +3330,7 @@ arrify@^2.0.1:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
-art@^0.10.0:
+art@^0.10.0, art@^0.10.3:
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/art/-/art-0.10.3.tgz#b01d84a968ccce6208df55a733838c96caeeaea2"
   integrity sha512-HXwbdofRTiJT6qZX/FnchtldzJjS3vkLJxQilc3Xj+ma2MXjY4UAyQ0ls1XZYVnDvVIBiFZbC6QsvtW86TD6tQ==
@@ -5421,14 +5433,6 @@ create-react-class@^15.6.3:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
-create-react-context@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/create-react-context/-/create-react-context-0.3.0.tgz#546dede9dc422def0d3fc2fe03afe0bc0f4f7d8c"
-  integrity sha512-dNldIoSuNSvlTJ7slIKC/ZFGKexBMBrrcc+TTe1NdmROnaASuLPvqpwj9v4XS4uXZ8+YPu0sNmShX2rXI5LNsw==
-  dependencies:
-    gud "^1.0.0"
-    warning "^4.0.3"
-
 cross-spawn@6.0.5, cross-spawn@^6.0.0, cross-spawn@^6.0.5:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
@@ -6802,18 +6806,18 @@ expo-asset@~8.0.0:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
-expo-av@~8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-8.0.0.tgz#fc892a0e4ff7e1eff630002e0652da3125d18113"
-  integrity sha512-n1qOXi0jk6stY4q5RZqmQS90Rg9HDDGWE7EfLABhcyUA1EGJJbrupjpn75sxzNYMksad+oiGp0NULTHlKfa01A==
+expo-av@~8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-8.1.0.tgz#376e2a821168cd83e997c6dd84350fab6b293f10"
+  integrity sha512-owWxOCyK+dPyT3pF4rDOf2W8Sn8LSEvfw1HvU9xM0wzH7xF0bw3Zs3wcXxvtfhnXAZ5dCDQfvZI5cXk+lml+IQ==
   dependencies:
     lodash "^4.17.15"
     nullthrows "^1.1.0"
 
-expo-blur@~8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-8.0.0.tgz#79df808b266bda8b6a66d54567abda5738355ad0"
-  integrity sha512-aZhfT2clEc4D3y0tnCb8/mM1c1Gm8Fqk8xHwgJKV869+5lvtRcUKhlMhZTynspVmPzwHgWV7Q9VcOkzGs7N/5g==
+expo-blur@~8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-8.1.0.tgz#44823ddd1ed4db3864c20fa7d9b7b91b65af0d76"
+  integrity sha512-X7UUmRPV6I/f+oKJqsgKFJnKshqseK8MukwdLpIwBh7VNHiYp5gK0ynq5KlLGG6kb9zo68acjsD27DYlerARJQ==
   dependencies:
     prop-types "^15.6.0"
 
@@ -6885,6 +6889,11 @@ expo-constants@~8.0.0:
   integrity sha512-NGRwSWfhwNFA9WVLXwqnSDPJJ4DdXTqEkl9Fr9PcyW5VCoFgz7uke256E1YZsYhOE0Ph365lu/5jjZs+MRmRog==
   dependencies:
     ua-parser-js "^0.7.19"
+
+expo-constants@~9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.0.0.tgz#35c600079ee91d38fe4f56375caae6e90f122fdd"
+  integrity sha512-1kqZMM8Ez5JT3sTEx8I69fP6NYFLOJjeM6Z63dD/m2NiwvzSADiO5+BhghnWNGN1L3bxbgOjXS6EHtS7CdSfxA==
 
 expo-error-recovery@~1.0.0:
   version "1.0.0"
@@ -7981,11 +7990,6 @@ grpc@1.24.2, grpc@^1.20.2:
     node-pre-gyp "^0.14.0"
     protobufjs "^5.0.3"
 
-gud@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/gud/-/gud-1.0.0.tgz#a489581b17e6a70beca9abe3ae57de7a499852c0"
-  integrity sha512-zGEOVKFM5sVPPrYs7J5/hYEw2Pof8KCyOwyhG8sAF26mCAeUFAcYPu1mwB7hhpIP29zOIBaDqwuHdLp0jvZXjw==
-
 gzip-size@5.1.1, gzip-size@^5.0.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/gzip-size/-/gzip-size-5.1.1.tgz#cb9bee692f87c0612b232840a873904e4c135274"
@@ -7993,11 +7997,6 @@ gzip-size@5.1.1, gzip-size@^5.0.0:
   dependencies:
     duplexer "^0.1.1"
     pify "^4.0.1"
-
-hammerjs@^2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
-  integrity sha1-BO93hiz/K7edMPdpIJWTAiK/YPE=
 
 "hammerjs@https://github.com/naver/hammer.js.git":
   version "2.0.17-snapshot"
@@ -13005,25 +13004,15 @@ react-error-overlay@^6.0.1:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.6.tgz#ac4d9dc4c1b5c536c2c312bf66aa2b09bfa384e2"
   integrity sha512-Yzpno3enVzSrSCnnljmr4b/2KUQSMZaPuqmS26t9k4nW7uwJk6STWmH9heNjPuvqUTO3jOSPkHoKgO4+Dw7uIw==
 
-react-is@^16.12.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.9.0:
+react-is@^16.12.0, react-is@^16.8.4, react-is@^16.9.0:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
 
-react-lifecycles-compat@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
-  integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
-
-react-native-gesture-handler@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.5.0.tgz#df7dc5285c152e0656db70f55200fa632c4f45af"
-  integrity sha512-YUOXHsGLajK1cFReQ4Xh0H9GUTxDW9cUZEVu1q+dVqur2urSKi63KklAFB2l8Neob9nl1E/w0c5hGcBP9FMCIA==
-  dependencies:
-    hammerjs "^2.0.8"
-    hoist-non-react-statics "^2.3.1"
-    invariant "^2.2.4"
-    prop-types "^15.7.2"
+react-is@^16.7.0, react-is@^16.8.1:
+  version "16.13.1"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+  integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
 react-native-gesture-handler@~1.5.0:
   version "1.5.6"
@@ -13041,21 +13030,22 @@ react-native-iphone-x-helper@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
 
-react-native-maps@0.26.1:
-  version "0.26.1"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.26.1.tgz#6ec316259b38d259c8974448d894bd7a23101da4"
-  integrity sha512-p4VTB8YB5ZmOmDRCUpoHZkm05amZwhIo04AJMBbB9+JAR2PNNfpo0vceoWX0Mag4wnePkdzPomeWMplr/wimTg==
+react-native-maps@0.27.1:
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
+  integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
 
 react-native-platform-touchable@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
   integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
 
-react-native-progress@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-3.6.0.tgz#feaf37491f91bb421207fd761e20cb7258a2a3a6"
-  integrity sha512-zzTe595xaaskyfR5OzaGrU4O0R+YkgdEw+EspgGD7wh8Hu0fs6ue3xLW+HEbTjOCn62pCRivwi3NxbpWNBCC7Q==
+react-native-progress@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-4.1.2.tgz#ffb2264ddfeba409c730e36a9791bb7bbe07a00d"
+  integrity sha512-sFHs6k6npWDOyvQoL2NeyOyHb+q1s8iOAOeyzoObN77zkxOAsgJt9FcSJLRq70Mw7qSGNJMFDqCgvYR1huYRwQ==
   dependencies:
+    "@react-native-community/art" "^1.1.2"
     prop-types "^15.7.2"
 
 react-native-reanimated@~1.4.0:
@@ -13099,10 +13089,10 @@ react-native-view-shot@3.0.2:
   resolved "https://registry.yarnpkg.com/react-native-view-shot/-/react-native-view-shot-3.0.2.tgz#daccaec5b8038a680b17533ff7e72876e68c7d0d"
   integrity sha512-JZOkGo2jzSX2b7N6N2uDr0wQjSz+QmBtY8jzeo0XJY6bLOfaY5nmWyYxDmDRoSpKiFkGTCkyhUqNnjo6lXOtEw==
 
-react-native-webview@7.4.3:
-  version "7.4.3"
-  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-7.4.3.tgz#e00e92e17f7389d84d09f5900652501ff2665915"
-  integrity sha512-4n72B2D7n1xOQSoCSD1qk9D7JksyT4d6nk8QG9guZKZn3KXQL5EejwE2yhh1TxZRQpr+OD3a96rb+rA/UEnvrQ==
+react-native-webview@9.4.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-9.4.0.tgz#108da34a6c7e1c032dcabc942b7e4947ca1d8028"
+  integrity sha512-BBOFUuza0p04+7fNi7TJmB0arpDJzGxHYwTCgI4vj5n/fl7u4jbm7ETp88mf7lo9lP6C6HGLo38KnEy1aXCQkg==
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
@@ -15704,13 +15694,6 @@ walker@^1.0.7, walker@~1.0.5:
   integrity sha1-L3+bj9ENZ3JisYqITijRlhjgKPs=
   dependencies:
     makeerror "1.0.x"
-
-warning@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
-  integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==
-  dependencies:
-    loose-envify "^1.0.0"
 
 watchpack@^1.6.0:
   version "1.6.0"

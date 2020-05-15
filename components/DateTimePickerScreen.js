@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 import {
   withTheme,
   ScreenContainer,
@@ -11,6 +11,7 @@ import {
 } from '@draftbit/ui';
 import { useNavigation } from '@react-navigation/native';
 
+// A unified date, time, and datetime picker screen. Has a label and input.
 const DateTimePickerScreen = (props) => {
   const [selectedTime, setSelectedTime] = React.useState(
     props.defaultValue ? props.defaultValue : new Date()
@@ -75,18 +76,47 @@ const DateTimePickerScreen = (props) => {
             {props.questionLabel}
           </Text>
         </View>
-        <DatePicker
-          style={styles.DatePicker}
-          mode={props.mode}
-          type="underline"
-          error={false}
-          label={props.inputLabel}
-          disabled={false}
-          leftIconMode="inset"
-          format="dddd, mmmm dS, h:MM TT"
-          date={selectedTime}
-          onDateChange={(selectedTime) => setSelectedTime(selectedTime)}
-        />
+        {props.mode === 'datetime' && Platform.OS === 'android' ? (
+          <View style={styles.View_DateTimeAndroidContainer}>
+            <DatePicker
+              style={styles.DatePickerHalf}
+              mode="date"
+              type="underline"
+              error={false}
+              label="Date"
+              disabled={false}
+              leftIconMode="inset"
+              format="dddd, mmmm dS"
+              date={selectedTime}
+              onDateChange={(selectedTime) => setSelectedTime(selectedTime)}
+            />
+            <DatePicker
+              style={styles.DatePickerHalf}
+              mode="time"
+              type="underline"
+              error={false}
+              label="Time"
+              disabled={false}
+              leftIconMode="inset"
+              format="h:MM TT"
+              date={selectedTime}
+              onDateChange={(selectedTime) => setSelectedTime(selectedTime)}
+            />
+          </View>
+        ) : (
+          <DatePicker
+            style={styles.DatePicker}
+            mode={props.mode}
+            type="underline"
+            error={false}
+            label={props.inputLabel}
+            disabled={false}
+            leftIconMode="inset"
+            format="dddd, mmmm dS, h:MM TT"
+            date={selectedTime}
+            onDateChange={(selectedTime) => setSelectedTime(selectedTime)}
+          />
+        )}
       </Container>
       <Container elevation={0} useThemeGutterPadding={true}>
         <Button
@@ -108,6 +138,15 @@ const DateTimePickerScreen = (props) => {
 const styles = StyleSheet.create({
   DatePicker: {
     flex: 2
+  },
+  DatePickerHalf: {
+    margin: 15
+  },
+  View_DateTimeAndroidContainer: {
+    flex: 3,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center'
   },
   Button_Next: {
     paddingTop: 0,
