@@ -112,7 +112,9 @@ const DateTimePickerScreen = (props) => {
             label={props.inputLabel}
             disabled={false}
             leftIconMode="inset"
-            format="dddd, mmmm dS, h:MM TT"
+            format={
+              props.mode === 'datetime' ? 'dddd, mmmm dS, h:MM TT' : 'h:MM TT'
+            }
             date={selectedTime}
             onDateChange={(selectedTime) => setSelectedTime(selectedTime)}
           />
