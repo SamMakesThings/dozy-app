@@ -30,13 +30,11 @@ export default function App() {
     (prevState, action) => {
       switch (action.type) {
         case 'RESTORE_TOKEN':
-          console.log('Restoring token!');
           return {
             ...prevState,
             userToken: action.token
           };
         case 'SIGN_IN':
-          console.log('Signing in!');
           return {
             ...prevState,
             isSignout: false,
@@ -44,7 +42,6 @@ export default function App() {
             authLoading: action.isAuthLoading
           };
         case 'SIGN_OUT':
-          console.log('Signing out!');
           return {
             ...prevState,
             isSignout: true,

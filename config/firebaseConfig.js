@@ -5,10 +5,6 @@ import Constants from 'expo-constants';
 export const FbApp = !firebase.apps.length
   ? firebase.initializeApp(Constants.manifest.extra.firebase)
   : firebase.app();
-console.log(
-  "Oh hey we just attempted to initialize Firebase. Here's the config settings: "
-);
-console.log(Constants.manifest.extra.firebase);
 
 export const FbAuth = firebase.auth();
 
