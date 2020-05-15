@@ -26,12 +26,12 @@ const DateTimePickerScreen = (props) => {
       scrollable={false}
     >
       <Container
-        style={styles.Container_nt5}
+        style={styles.View_HeaderContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
         <IconButton
-          style={styles.IconButton_nei}
+          style={styles.Nav_BackButton}
           icon="Ionicons/md-arrow-back"
           size={32}
           color={theme.colors.secondary}
@@ -40,13 +40,13 @@ const DateTimePickerScreen = (props) => {
           }}
         />
         <Container
-          style={styles.Container_ngt}
+          style={styles.View_ProgressBarContainer}
           elevation={0}
           useThemeGutterPadding={true}
         >
           <ProgressBar
             style={{
-              ...styles.ProgressBar_nv3,
+              ...styles.ProgressBar,
               ...{ display: props.progressBarPercent ? 'flex' : 'none' }
             }}
             color={theme.colors.primary}
@@ -157,54 +157,37 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 15
   },
-  Container_n1m: {
-    justifyContent: 'space-between',
-    flexDirection: 'row'
-  },
   View_ContentContainer: {
     flex: 1,
     justifyContent: 'space-around',
     marginTop: 20
   },
-  Container_ngt: {
+  View_ProgressBarContainer: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center'
   },
-  Container_nno: {},
-  Container_nt5: {
+  View_HeaderContainer: {
     width: '100%',
     height: '10%',
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: 20
   },
-  IconButton_nei: {
+  Nav_BackButton: {
     paddingRight: 0
   },
-  ProgressBar_nv3: {
+  ProgressBar: {
     width: 250,
     height: 7,
     paddingRight: 0,
     marginRight: 0
-  },
-  TextField_n6f: {
-    minWidth: '40%',
-    maxWidth: '46%'
-  },
-  TextField_nrw: {
-    minWidth: '40%',
-    maxWidth: '46%'
   },
   Text_QuestionLabel: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'center',
     alignSelf: 'center'
-  },
-  Text_nct: {
-    textAlign: 'center',
-    alignSelf: 'flex-end'
   }
 });
 
