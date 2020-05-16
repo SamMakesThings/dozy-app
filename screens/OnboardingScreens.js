@@ -8,6 +8,7 @@ import DateTimePickerScreen from '../components/DateTimePickerScreen';
 import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
 import GLOBAL from '../utilities/global';
 import { slumber_theme } from '../config/Themes';
+import Images from '../config/Images';
 
 // Define the theme for the file globally
 const theme = slumber_theme;
@@ -16,6 +17,7 @@ export const Welcome = ({ navigation }) => {
   return (
     <IconExplainScreen
       theme={theme}
+      image={Images.WaveHello}
       onQuestionSubmit={() => {
         navigation.navigate('MinsToFallAsleepInput', {
           progressBarPercent: null
