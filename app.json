@@ -3,7 +3,6 @@
     "name": "Slumber",
     "slug": "slumber_app",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": ["ios", "android"],
     "primaryColor": "#00818A",
     "version": "0.4.3",
