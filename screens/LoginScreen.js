@@ -17,7 +17,7 @@ function LoginScreen() {
   const theme = slumber_theme;
 
   // Get my auth functions from hook
-  const { signIn, signUp } = React.useContext(AuthContext);
+  const { signIn } = React.useContext(AuthContext);
 
   return (
     <ScreenContainer
@@ -88,7 +88,7 @@ function LoginScreen() {
               styles.button9I,
               { borderRadius: theme.borderRadius.button }
             ])}
-            onPress={signUp}
+            onPress={signIn}
           >
             Get Started
           </Button>

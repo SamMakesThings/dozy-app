@@ -2,10 +2,11 @@ import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PropTypes from 'prop-types';
-
+import { slumber_theme } from '../config/Themes';
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import DiaryEntryNavigator from './DiaryEntryNavigator';
+import OnboardingNavigator from './OnboardingNavigator';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -26,7 +27,7 @@ function LoadingScreen() {
     >
       <ActivityIndicator
         size="large"
-        color="#ffffff"
+        color={slumber_theme.colors.primary}
         style={{
           width: 50,
           height: 50,
@@ -39,20 +40,30 @@ function LoadingScreen() {
 }
 
 // Export the navigation components and screens, with if/then for auth state
-export default function InitialAuthNavigator({ userToken, authLoading }) {
+export default function InitialAuthNavigator({
+  userToken,
+  authLoading,
+  onboardingComplete
+}) {
   if (authLoading) {
     return <LoadingScreen />;
   }
 
   return (
     <TopStack.Navigator
-      initialRouteName="App"
+      initialRouteName="Onboarding"
       screenOptions={{
         headerShown: false
       }}
     >
       {userToken != undefined ? (
         <>
+          {onboardingComplete === false && (
+            <TopStack.Screen
+              name="Onboarding"
+              component={OnboardingNavigator}
+            />
+          )}
           <TopStack.Screen
             name="App"
             component={BottomTabs /* If logged in, go to the tab navigator */}

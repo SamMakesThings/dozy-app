@@ -211,7 +211,7 @@ function Root() {
                 }
               ]}
             >
-              Test push notification key storage
+              Log out
             </Text>
             <Icon
               style={styles.Icon_nf}
