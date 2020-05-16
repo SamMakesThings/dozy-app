@@ -1,4 +1,4 @@
-import { systemWeights } from 'react-native-typography';
+/* eslint-disable import/prefer-default-export */
 
 export const slumber_theme = {
   disabledOpacity: 0.5,
@@ -92,7 +92,7 @@ export const slumber_theme = {
     divider: 'rgba(234, 237, 242, 1)',
     error: 'rgba(255, 69, 100, 1)',
     light: 'rgba(153, 172, 185, 1)',
-    lightInverse: 'rgba(255, 255, 255, 0.68)',
+    lightInverse: 'rgba(153, 172, 185, 0.3)',
     medium: 'rgba(64, 75, 105, 1)',
     mediumInverse: 'rgba(255, 255, 255, 0.87)',
     primary: 'rgba(0, 129, 138, 1)',

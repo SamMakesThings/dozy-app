@@ -26,13 +26,13 @@ const ToggleTag = (props) => {
                   borderColor: theme.colors.primary
                 }
               : {
-                  borderColor: theme.colors.light
+                  borderColor: theme.colors.lightInverse
                 }
           ]}
         >
           <Entypo
             name={props.entypoIcon}
-            size={38}
+            size={34}
             color={selected ? theme.colors.secondary : theme.colors.primary}
           />
         </View>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     margin: 5
   },
   View_IconContainer: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 100,
     width: 60,
     height: 60,
