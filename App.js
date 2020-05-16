@@ -24,8 +24,7 @@ export default function App() {
     global.atob = decode;
   }
 
-  // Copying auth functions from react-navigation guide
-  // Sticking it all inside render since Babel seems unable to parse class properties
+  // Using auth functions from react-navigation guide
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -101,7 +100,7 @@ export default function App() {
   }
 
   React.useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
+    // Fetch the token from storage then navigate to appropriate screen
     const bootstrapAsync = async () => {
       let userToken;
 
@@ -111,10 +110,7 @@ export default function App() {
         // Restoring token failed
       }
 
-      // After restoring token, we may need to validate it in production apps
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
+      // TODO: Add token validation
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
 
@@ -125,9 +121,8 @@ export default function App() {
   const authContext = React.useMemo(
     () => ({
       signIn: async () => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `AsyncStorage`
+        // Fetch and store the relevant auth token
+        // TODO: Handle errors if sign in fails
 
         // Use my previously defined login function to get user data and store the token
         _loginWithGoogle().then((result) => {
@@ -158,8 +153,7 @@ export default function App() {
   );
 
   const _handleLoadingError = (error) => {
-    // In this case, you might want to report the error to your error
-    // reporting service, for example Sentry
+    // TODO: Add error reporting here
     console.warn(error);
   };
 
@@ -171,7 +165,6 @@ export default function App() {
   // Load assets async w/Expo tools
   async function _loadResourcesAsync() {
     await Font.loadAsync({
-      // This is the font that we are using for our tab bar
       ...Icon.Ionicons.font,
       'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       RubikRegular: require('./assets/fonts/RubikRegular.ttf'),
