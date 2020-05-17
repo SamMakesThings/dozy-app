@@ -65,6 +65,8 @@ const IconExplainScreen = (props) => {
       <BottomNavButtons
         onContinue={props.onContinue}
         buttonLabel={props.buttonLabel}
+        bottomBackButton={props.bottomBackButton}
+        bbbDisabled={props.bbbDisabled}
         theme={theme}
       />
     </ScreenContainer>

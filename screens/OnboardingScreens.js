@@ -22,6 +22,7 @@ export const Welcome = ({ navigation }) => {
     <IconExplainScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
+      bbbDisabled
       image={
         <WaveHello
           width={imgSize * useWindowDimensions().width}
