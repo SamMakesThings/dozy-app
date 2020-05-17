@@ -21,7 +21,7 @@ export const Welcome = ({ navigation }) => {
   return (
     <IconExplainScreen
       theme={theme}
-      backButton={() => navigation.goBack()}
+      bottomBackButton={() => navigation.goBack()}
       image={
         <WaveHello
           width={imgSize * useWindowDimensions().width}

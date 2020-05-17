@@ -7,6 +7,7 @@ import {
   ProgressBar,
   Button
 } from '@draftbit/ui';
+import BottomNavButtons from './BottomNavButtons';
 
 // Wizard screen with a hero image (usually icon) and paragraph text
 const IconExplainScreen = (props) => {
@@ -61,22 +62,11 @@ const IconExplainScreen = (props) => {
           {props.textLabel}
         </Text>
       </Container>
-      <Container
-        style={styles.View_ButtonContainer}
-        elevation={0}
-        useThemeGutterPadding={true}
-      >
-        <Button
-          style={styles.Button_Continue}
-          type="solid"
-          onPress={() => {
-            props.onContinue();
-          }}
-          color={theme.colors.primary}
-        >
-          {props.buttonLabel}
-        </Button>
-      </Container>
+      <BottomNavButtons
+        onContinue={props.onContinue}
+        buttonLabel={props.buttonLabel}
+        theme={theme}
+      />
     </ScreenContainer>
   );
 };
