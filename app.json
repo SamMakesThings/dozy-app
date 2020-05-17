@@ -27,6 +27,22 @@
       "icon": "./assets/images/appleIcon.png",
       "versionCode": 3
     },
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "expo.ts",
+        "expo.tsx",
+        "expo.js",
+        "expo.jsx",
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json",
+        "wasm",
+        "svg"
+      ]
+    },
     "extra": {
       "firebase": {
         "apiKey": "AIzaSyDt4d8l9OnDz-sr3HhoMi9n7pB5EoDcCRo",

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, Image, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import {
   withTheme,
   ScreenContainer,
@@ -47,9 +47,7 @@ const IconExplainScreen = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <View style={{ flex: 5 }}>
-          <Image source={props.image} style={styles.Image_Featured} />
-        </View>
+        <View style={styles.View_ImageContainer}>{props.image}</View>
         <Text
           style={[
             styles.Text_Explainer,
@@ -94,6 +92,10 @@ const styles = StyleSheet.create({
     maxHeight: '80%',
     resizeMode: 'center',
     marginTop: 20
+  },
+  View_ImageContainer: {
+    flex: 5,
+    marginTop: '11%'
   },
   View_ContentContainer: {
     height: '72%',
