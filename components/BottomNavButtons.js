@@ -9,7 +9,7 @@ const BottomNavButtons = (props) => {
     <Container
       style={{
         ...styles.View_ButtonContainer,
-        justifyContent: bottomBackButton ? 'flex-end' : 'flex-start'
+        justifyContent: bottomBackButton ? 'flex-end' : 'center'
       }}
       elevation={0}
       useThemeGutterPadding={true}
@@ -18,7 +18,7 @@ const BottomNavButtons = (props) => {
         style={styles.Button_Continue}
         type="solid"
         onPress={() => {
-          props.onContinue();
+          props.onPress();
         }}
         color={theme.colors.primary}
       >

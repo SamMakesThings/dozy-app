@@ -7,6 +7,7 @@ import {
   DatePicker,
   Button
 } from '@draftbit/ui';
+import BottomNavButtons from './BottomNavButtons';
 
 // A unified date, time, and datetime picker screen. Has a label and input.
 const DateTimePickerScreen = (props) => {
@@ -88,19 +89,12 @@ const DateTimePickerScreen = (props) => {
           />
         )}
       </Container>
-      <Container elevation={0} useThemeGutterPadding={true}>
-        <Button
-          style={styles.Button_Next}
-          type="solid"
-          onPress={() => {
-            props.onQuestionSubmit(selectedTime);
-          }}
-          disabled={false}
-          color={theme.colors.primary}
-        >
-          Next
-        </Button>
-      </Container>
+      <BottomNavButtons
+        theme={theme}
+        onPress={() => {
+          props.onQuestionSubmit(selectedTime);
+        }}
+      />
     </ScreenContainer>
   );
 };
