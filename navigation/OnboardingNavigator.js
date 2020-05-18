@@ -50,6 +50,7 @@ export default function OnboardingNavigator() {
                         : null
                     }
                     navigation={navigation}
+                    backButtonDisabled
                   />
                 );
               },

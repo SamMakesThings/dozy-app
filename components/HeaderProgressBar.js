@@ -13,7 +13,10 @@ const HeaderProgressBar = (props) => {
       useThemeGutterPadding={true}
     >
       <IconButton
-        style={styles.Nav_BackButton}
+        style={{
+          ...styles.Nav_BackButton,
+          display: !props.backButtonDisabled ? 'flex' : 'none'
+        }}
         icon="Ionicons/md-arrow-back"
         size={32}
         color={theme.colors.secondary}

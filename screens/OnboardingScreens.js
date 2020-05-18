@@ -15,20 +15,16 @@ import WaveHello from '../assets/images/WaveHello.svg';
 const theme = slumber_theme;
 
 // Define square image size defaults as a percent of width
-const imgSize = 0.4;
+const imgSizePercent = 0.4;
 
 export const Welcome = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       bbbDisabled
-      image={
-        <WaveHello
-          width={imgSize * useWindowDimensions().width}
-          height={imgSize * useWindowDimensions().width}
-        />
-      }
+      image={<WaveHello width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('MinsToFallAsleepInput', {
           progressBarPercent: null
