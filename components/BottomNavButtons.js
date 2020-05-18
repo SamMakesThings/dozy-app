@@ -21,6 +21,7 @@ const BottomNavButtons = (props) => {
           props.onPress();
         }}
         color={theme.colors.primary}
+        disabled={props.disabled}
       >
         {props.buttonLabel ? props.buttonLabel : 'Next'}
       </Button>
@@ -54,12 +55,11 @@ const styles = StyleSheet.create({
     marginTop: 8
   },
   View_ButtonContainer: {
-    height: '15%'
+    marginBottom: 15
   },
   Touchable_BackButton: {
-    paddingTop: 25,
-    paddingBottom: 25,
-    marginBottom: 10
+    paddingTop: 20,
+    paddingBottom: 2
   },
   Text_BackButton: {
     textAlign: 'center'

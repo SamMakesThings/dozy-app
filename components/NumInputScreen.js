@@ -7,6 +7,7 @@ import {
   ProgressBar,
   Button
 } from '@draftbit/ui';
+import BottomNavButtons from './BottomNavButtons';
 
 const NumInputScreen = (props) => {
   const [selectedNum, setSelectedNum] = React.useState(-1);
@@ -19,12 +20,12 @@ const NumInputScreen = (props) => {
       style={styles.Root_n3a}
     >
       <Container
-        style={styles.Container_nh7}
+        style={styles.View_HeaderContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
         <Container
-          style={styles.Container_nzw}
+          style={styles.View_ProgressBarContainer}
           elevation={0}
           useThemeGutterPadding={true}
         >
@@ -43,13 +44,13 @@ const NumInputScreen = (props) => {
         </Container>
       </Container>
       <Container
-        style={styles.Container_nfw}
+        style={styles.View_ContentContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
         <Text
           style={[
-            styles.Text_nlz,
+            styles.Text_Question,
             theme.typography.headline5,
             {
               color: theme.colors.secondary
@@ -60,21 +61,12 @@ const NumInputScreen = (props) => {
         </Text>
         <Container
           style={{
-            marginTop: 65,
-            marginBottom: 30,
-            width: '50%',
-            alignSelf: 'center',
-            borderBottomWidth: 1.5,
+            ...styles.View_InputContainer,
             borderColor: theme.colors.medium
           }}
         >
           <TextInput
-            style={{
-              height: 40,
-              color: '#ffffff',
-              fontSize: 21,
-              paddingBottom: 12
-            }}
+            style={styles.TextInput}
             placeholder={props.inputLabel}
             placeholderTextColor={theme.colors.light}
             keyboardType="number-pad"
@@ -88,64 +80,44 @@ const NumInputScreen = (props) => {
           />
         </Container>
       </Container>
-      <Container
-        style={styles.Container_nrj}
-        elevation={0}
-        useThemeGutterPadding={true}
-      >
-        <Button
-          style={styles.Button_nqa}
-          type="solid"
-          onPress={() => {
-            props.onQuestionSubmit(selectedNum);
-          }}
-          color={theme.colors.primary}
-          disabled={(!props.optional && selectedNum < 0) || selectedNum === ''}
-        >
-          Next
-        </Button>
-      </Container>
+      <BottomNavButtons
+        theme={theme}
+        bottomBackButton={
+          props.bottomBackButton ? props.bottomBackButton : null
+        }
+        onPress={() => {
+          props.onQuestionSubmit(selectedNum);
+        }}
+        disabled={(!props.optional && selectedNum < 0) || selectedNum === ''}
+      />
     </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  Button_nqa: {
-    paddingTop: 0,
-    marginTop: 8
+  View_ContentContainer: {
+    flex: 6,
+    justifyContent: 'center'
   },
-  Container_nfw: {
-    height: '72%',
-    justifyContent: 'center',
-    marginTop: 20
-  },
-  Container_nh7: {
-    width: '100%',
-    height: '10%',
+  View_HeaderContainer: {
+    flex: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: 20
   },
-  Container_nrj: {
-    height: '15%'
+  View_InputContainer: {
+    marginTop: 65,
+    marginBottom: 30,
+    width: '50%',
+    alignSelf: 'center',
+    borderBottomWidth: 1.5
   },
-  Container_nzw: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
+  TextInput: {
+    color: '#ffffff',
+    fontSize: 21,
+    paddingBottom: 12
   },
-  IconButton_nmh: {
-    paddingRight: 0
-  },
-  ProgressBar_neb: {
-    width: 250,
-    height: 7,
-    paddingRight: 0,
-    marginRight: 0
-  },
-  Root_n3a: {},
-  TextField_nw8: {},
-  Text_nlz: {
+  Text_Question: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'flex-start',

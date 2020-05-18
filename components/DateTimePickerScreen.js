@@ -94,6 +94,9 @@ const DateTimePickerScreen = (props) => {
         onPress={() => {
           props.onQuestionSubmit(selectedTime);
         }}
+        bottomBackButton={
+          props.bottomBackButton ? props.bottomBackButton : null
+        }
       />
     </ScreenContainer>
   );
@@ -114,11 +117,6 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center'
   },
-  Button_Next: {
-    paddingTop: 0,
-    marginTop: 8,
-    marginBottom: 15
-  },
   View_ContentContainer: {
     flex: 1,
     justifyContent: 'space-around',
@@ -135,15 +133,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: 20
-  },
-  Nav_BackButton: {
-    paddingRight: 0
-  },
-  ProgressBar: {
-    width: 250,
-    height: 7,
-    paddingRight: 0,
-    marginRight: 0
   },
   Text_QuestionLabel: {
     textAlign: 'center',
