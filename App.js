@@ -193,7 +193,7 @@ export default function App() {
               <AppNavigator
                 userToken={state.userToken}
                 authLoading={state.authLoading}
-                onboardingComplete={false /*state.onboardingComplete*/}
+                onboardingComplete={state.onboardingComplete}
               />
             </ThemeProvider>
           </View>
