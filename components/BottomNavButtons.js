@@ -15,7 +15,10 @@ const BottomNavButtons = (props) => {
       useThemeGutterPadding={true}
     >
       <Button
-        style={styles.Button_Continue}
+        style={{
+          ...styles.Button_Continue,
+          display: props.onlyBackButton ? 'none' : 'flex'
+        }}
         type="solid"
         onPress={() => {
           props.onPress();

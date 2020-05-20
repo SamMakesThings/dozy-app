@@ -97,19 +97,65 @@ export const ISI1 = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
+      bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
         GLOBAL.ISI1 = value;
-        navigation.navigate('Welcome', { progressBarPercent: 0.28 });
+        navigation.navigate('ISI2', { progressBarPercent: 0.28 });
       }}
       buttonValues={[
-        { label: "0 (didn't wake up)", value: 0 },
-        { label: '1', value: 1 },
-        { label: '2', value: 2 },
-        { label: '3', value: 3 },
-        { label: '4', value: 4 },
-        { label: '5+', value: 5 }
+        { label: 'No difficulty', value: 0, solidColor: true },
+        { label: 'Mild difficulty', value: 1, solidColor: true },
+        { label: 'Moderate difficulty', value: 2, solidColor: true },
+        { label: 'Severe difficulty', value: 3, solidColor: true },
+        { label: 'Extreme difficulty', value: 4, solidColor: true }
       ]}
       questionLabel="How much difficulty do you have falling asleep?"
+    />
+  );
+};
+
+export const ISI2 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.ISI2 = value;
+        navigation.navigate('ISI3', { progressBarPercent: 0.42 });
+      }}
+      buttonValues={[
+        { label: 'No difficulty', value: 0, solidColor: true },
+        { label: 'Mild difficulty', value: 1, solidColor: true },
+        { label: 'Moderate difficulty', value: 2, solidColor: true },
+        { label: 'Severe difficulty', value: 3, solidColor: true },
+        { label: 'Extreme difficulty', value: 4, solidColor: true }
+      ]}
+      questionLabel="How much difficulty do you have *staying* asleep?"
+    />
+  );
+};
+
+export const ISI3 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.ISI3 = value;
+        navigation.navigate('ISI4', { progressBarPercent: 0.56 });
+      }}
+      buttonValues={[
+        { label: 'Not a problem', value: 0, solidColor: true },
+        { label: 'I sometimes wake up too early', value: 1, solidColor: true },
+        { label: 'I often wake up too early', value: 2, solidColor: true },
+        {
+          label: 'I almost always wake up too early',
+          value: 3,
+          solidColor: true
+        },
+        { label: 'I always wake up too early', value: 4, solidColor: true }
+      ]}
+      questionLabel="How much of a problem do you have with waking up too early?"
     />
   );
 };

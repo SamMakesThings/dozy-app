@@ -7,6 +7,7 @@ import {
   ProgressBar,
   Button
 } from '@draftbit/ui';
+import BottomNavButtons from './BottomNavButtons';
 
 const MultiButtonScreen = (props) => {
   const { theme } = props;
@@ -18,29 +19,10 @@ const MultiButtonScreen = (props) => {
       style={styles.Root_ne0}
     >
       <Container
-        style={styles.Container_n9i}
+        style={styles.View_HeaderContainer}
         elevation={0}
         useThemeGutterPadding={true}
-      >
-        <Container
-          style={styles.Container_n8l}
-          elevation={0}
-          useThemeGutterPadding={true}
-        >
-          <ProgressBar
-            style={{
-              ...styles.ProgressBar_nj7,
-              ...{ display: props.progressBarPercent ? 'flex' : 'none' }
-            }}
-            color={theme.colors.primary}
-            progress={props.progressBarPercent}
-            borderWidth={0}
-            borderRadius={10}
-            animationType="spring"
-            unfilledColor={theme.colors.medium}
-          />
-        </Container>
-      </Container>
+      ></Container>
       <Container
         style={styles.Container_nux}
         elevation={0}
@@ -60,21 +42,23 @@ const MultiButtonScreen = (props) => {
       </Container>
       <Container
         style={[
-          styles.Container_nh7,
-          { maxHeight: 50 + props.buttonValues.length * 50 }
+          styles.View_ButtonsContainer,
+          {
+            maxHeight: 50 + props.buttonValues.length * 50,
+            marginBotton: props.onlyBackButton ? 0 : 10
+          }
         ]}
         elevation={0}
         useThemeGutterPadding={true}
       >
         {props.buttonValues.map((val) => {
-          const label = val.label;
-          const value = val.value;
+          const { label, value, solidColor, color } = val;
           return (
             <Button
               key={value}
               style={styles.Button_nu5}
-              type="outline"
-              color={theme.colors.secondary}
+              type={solidColor ? 'solid' : 'outline'}
+              color={solidColor ? theme.colors.primary : theme.colors.secondary}
               loading={false}
               disabled={false}
               onPress={() => {
@@ -86,6 +70,13 @@ const MultiButtonScreen = (props) => {
           );
         })}
       </Container>
+      <BottomNavButtons
+        theme={theme}
+        bottomBackButton={
+          props.bottomBackButton ? props.bottomBackButton : null
+        }
+        onlyBackButton
+      />
     </ScreenContainer>
   );
 };
@@ -97,17 +88,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  Container_n9i: {
+  View_HeaderContainer: {
     width: '100%',
     height: '10%',
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: 20
   },
-  Container_nh7: {
+  View_ButtonsContainer: {
     flex: 5,
-    justifyContent: 'space-around',
-    marginBottom: 10
+    justifyContent: 'space-around'
   },
   Container_nux: {
     flex: 3,
