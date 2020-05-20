@@ -159,3 +159,87 @@ export const ISI3 = ({ navigation }) => {
     />
   );
 };
+
+export const ISI4 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.ISI4 = value;
+        navigation.navigate('ISI5', { progressBarPercent: 0.7 });
+      }}
+      buttonValues={[
+        { label: 'Very satisfied', value: 0, solidColor: true },
+        { label: 'Satisfied', value: 1, solidColor: true },
+        { label: 'Moderately satisfied', value: 2, solidColor: true },
+        { label: 'Dissatisfied', value: 3, solidColor: true },
+        { label: 'Very dissatisfied', value: 4, solidColor: true }
+      ]}
+      questionLabel="How satisfied/dissatisfied are you with your current sleep pattern?"
+    />
+  );
+};
+
+export const ISI5 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.ISI5 = value;
+        navigation.navigate('ISI6', { progressBarPercent: 0.84 });
+      }}
+      buttonValues={[
+        { label: 'Not at all noticeable', value: 0, solidColor: true },
+        { label: 'A little', value: 1, solidColor: true },
+        { label: 'Somewhat', value: 2, solidColor: true },
+        { label: 'Much', value: 3, solidColor: true },
+        { label: 'Very much noticeable', value: 4, solidColor: true }
+      ]}
+      questionLabel="How noticeable to others do you think your sleep problem is? (in terms of impairing the quality of your life)"
+    />
+  );
+};
+
+export const ISI6 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.ISI6 = value;
+        navigation.navigate('ISI7', { progressBarPercent: 0.95 });
+      }}
+      buttonValues={[
+        { label: 'Not at all worried', value: 0, solidColor: true },
+        { label: 'A little', value: 1, solidColor: true },
+        { label: 'Somewhat', value: 2, solidColor: true },
+        { label: 'Much', value: 3, solidColor: true },
+        { label: 'Very much worried', value: 4, solidColor: true }
+      ]}
+      questionLabel="How worried are you about your current sleep pattern?"
+    />
+  );
+};
+
+export const ISI7 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.IS7 = value;
+        navigation.navigate('ISI6', { progressBarPercent: null });
+      }}
+      buttonValues={[
+        { label: 'Not at all interfering', value: 0, solidColor: true },
+        { label: 'A little', value: 1, solidColor: true },
+        { label: 'Somewhat', value: 2, solidColor: true },
+        { label: 'Much', value: 3, solidColor: true },
+        { label: 'Very much interfering', value: 4, solidColor: true }
+      ]}
+      questionLabel="How much does your sleep problem interfere with your daily life? (e.g. tiredness, mood, ability to function at work, concentration, etc.)?"
+    />
+  );
+};

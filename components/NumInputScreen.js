@@ -4,8 +4,7 @@ import {
   withTheme,
   ScreenContainer,
   Container,
-  ProgressBar,
-  Button
+  ProgressBar
 } from '@draftbit/ui';
 import BottomNavButtons from './BottomNavButtons';
 

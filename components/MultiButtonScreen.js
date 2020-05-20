@@ -1,12 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import {
-  withTheme,
-  ScreenContainer,
-  Container,
-  ProgressBar,
-  Button
-} from '@draftbit/ui';
+import { withTheme, ScreenContainer, Container, Button } from '@draftbit/ui';
 import BottomNavButtons from './BottomNavButtons';
 
 const MultiButtonScreen = (props) => {
@@ -52,7 +46,7 @@ const MultiButtonScreen = (props) => {
         useThemeGutterPadding={true}
       >
         {props.buttonValues.map((val) => {
-          const { label, value, solidColor, color } = val;
+          const { label, value, solidColor } = val;
           return (
             <Button
               key={value}
