@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { useWindowDimensions, Text, StyleSheet } from 'react-native';
 import IconExplainScreen from '../components/IconExplainScreen';
 import NumInputScreen from '../components/NumInputScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
@@ -229,8 +229,11 @@ export const ISI7 = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
-        GLOBAL.IS7 = value;
-        navigation.navigate('ISI6', { progressBarPercent: null });
+        // Sum ISI scores, store value & navigate accordingly
+        const { ISI1, ISI2, ISI3, ISI4, ISI5, ISI6 } = GLOBAL;
+        GLOBAL.ISI7 = value;
+        GLOBAL.ISITotal = ISI1 + ISI2 + ISI3 + ISI4 + ISI5 + ISI6 + value;
+        navigation.navigate('ISIResults', { progressBarPercent: null });
       }}
       buttonValues={[
         { label: 'Not at all interfering', value: 0, solidColor: true },
@@ -243,3 +246,44 @@ export const ISI7 = ({ navigation }) => {
     />
   );
 };
+
+export const ISIResults = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  const severityText = () => {
+    if (GLOBAL.ISITotal <= 7) {
+      return 'no clinically significant insomnia';
+    } else if (GLOBAL.ISITotal <= 14) {
+      return 'clinically mild insomnia';
+    } else if (GLOBAL.ISITotal <= 21) {
+      return 'clinically moderate insomnia';
+    } else {
+      return 'clinically severe insomnia';
+    }
+  };
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<TiredFace width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('ISI1', {
+          progressBarPercent: null
+        });
+      }}
+      textLabel={
+        <Text>
+          Done! According to the Insomnia Severity Index, you’ve got{' '}
+          {GLOBAL.ISITotal >= 7 ? '\n' : null}{' '}
+          <Text style={styles.BoldLabelText}>{severityText()}</Text>
+        </Text>
+      }
+      buttonLabel="What's that mean?"
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  BoldLabelText: {
+    fontFamily: 'RubikBold'
+  }
+});
