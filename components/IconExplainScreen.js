@@ -62,7 +62,7 @@ const IconExplainScreen = (props) => {
         </Text>
       </Container>
       <BottomNavButtons
-        onPress={props.onPress}
+        onPress={props.onQuestionSubmit}
         buttonLabel={props.buttonLabel}
         bottomBackButton={props.bottomBackButton}
         bbbDisabled={props.bbbDisabled}
@@ -77,22 +77,14 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     marginTop: 8
   },
-  Image_Featured: {
-    flex: 1,
-    maxWidth: '80%',
-    maxHeight: '80%',
-    resizeMode: 'center',
-    marginTop: 20
-  },
   View_ImageContainer: {
     flex: 5,
-    marginTop: '11%'
+    justifyContent: 'center'
   },
   View_ContentContainer: {
-    height: '72%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   },
   View_HeaderContainer: {
     width: '100%',
@@ -100,9 +92,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: 20
-  },
-  View_ButtonContainer: {
-    height: '15%'
   },
   View_BarContainer: {
     width: '100%',
