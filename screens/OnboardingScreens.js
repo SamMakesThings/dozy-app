@@ -1,6 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { useWindowDimensions, Text, StyleSheet } from 'react-native';
+import {
+  useWindowDimensions,
+  Dimensions,
+  Text,
+  StyleSheet
+} from 'react-native';
 import IconExplainScreen from '../components/IconExplainScreen';
 import NumInputScreen from '../components/NumInputScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
@@ -13,6 +18,7 @@ import WaveHello from '../assets/images/WaveHello.svg';
 import LabCoat from '../assets/images/LabCoat.svg';
 import Clipboard from '../assets/images/Clipboard.svg';
 import TiredFace from '../assets/images/TiredFace.svg';
+import BarChart from '../assets/images/BarChart.svg';
 
 // Define the theme for the file globally
 const theme = slumber_theme;
@@ -264,16 +270,16 @@ export const ISIResults = ({ navigation }) => {
     <IconExplainScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      image={<TiredFace width={imgSize} height={imgSize} />}
+      image={<BarChart width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        navigation.navigate('ISI1', {
+        navigation.navigate('ISIResultsExplainer', {
           progressBarPercent: null
         });
       }}
       textLabel={
         <Text>
-          Done! According to the Insomnia Severity Index, you’ve got{' '}
-          {GLOBAL.ISITotal >= 7 ? '\n' : null}{' '}
+          Done! According to the Insomnia Severity Index, you’ve got
+          {GLOBAL.ISITotal >= 7 ? '\n' : null}
           <Text style={styles.BoldLabelText}>{severityText()}</Text>
         </Text>
       }
@@ -282,8 +288,46 @@ export const ISIResults = ({ navigation }) => {
   );
 };
 
+export const ISIResultsExplainer = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  console.log(Dimensions.get('window').width);
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<TiredFace width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('ISI1', {
+          progressBarPercent: 0.14
+        });
+      }}
+      textLabel={
+        <>
+          <Text style={styles.BoldLabelText}>
+            Clinically significant insomnia{'\n'}
+          </Text>
+          <Text
+            style={{
+              fontSize: 0.05 * useWindowDimensions().width,
+              lineHeight: 20
+            }}
+          >
+            Your insomnia is {GLOBAL.ISITotal >= 14 ? 'definitely' : 'likely'}{' '}
+            interfering with your life. However, there&apos;s good news:
+            You&apos;re exactly the person our app was designed to help! With
+            your support, Slumber can take you from severe insomnia to no
+            insomnia.
+          </Text>
+        </>
+      }
+      buttonLabel="Next"
+    />
+  );
+};
+
 const styles = StyleSheet.create({
   BoldLabelText: {
-    fontFamily: 'RubikBold'
+    fontFamily: 'RubikBold',
+    fontSize: 22
   }
 });
