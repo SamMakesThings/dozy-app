@@ -54,7 +54,8 @@ const IconExplainScreen = (props) => {
             theme.typography.body1,
             {
               color: theme.colors.secondary,
-              flex: 3
+              flex: props.longText ? null : 3,
+              marginBottom: 10
             }
           ]}
         >
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   },
   View_ContentContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   View_HeaderContainer: {
@@ -109,8 +110,8 @@ const styles = StyleSheet.create({
   },
   RootContainer: {},
   Text_Explainer: {
-    textAlign: 'center',
-    width: '100%',
+    textAlign: 'left',
+    width: '90%',
     alignItems: 'flex-start',
     alignSelf: 'center'
   }

@@ -7,11 +7,8 @@ import {
   StyleSheet
 } from 'react-native';
 import IconExplainScreen from '../components/IconExplainScreen';
-import NumInputScreen from '../components/NumInputScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
-import TagSelectScreen from '../components/TagSelectScreen';
 import DateTimePickerScreen from '../components/DateTimePickerScreen';
-import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
 import GLOBAL from '../utilities/global';
 import { slumber_theme } from '../config/Themes';
 import WaveHello from '../assets/images/WaveHello.svg';
@@ -19,6 +16,8 @@ import LabCoat from '../assets/images/LabCoat.svg';
 import Clipboard from '../assets/images/Clipboard.svg';
 import TiredFace from '../assets/images/TiredFace.svg';
 import BarChart from '../assets/images/BarChart.svg';
+import Expressionless from '../assets/images/Expressionless.svg';
+import MonocleEmoji from '../assets/images/MonocleEmoji.svg';
 
 // Define the theme for the file globally
 const theme = slumber_theme;
@@ -272,14 +271,17 @@ export const ISIResults = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       image={<BarChart width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        navigation.navigate('ISIResultsExplainer', {
-          progressBarPercent: null
-        });
+        navigation.navigate(
+          GLOBAL.ISITotal > 7 ? 'ISISignificant' : 'ISINoSignificant',
+          {
+            progressBarPercent: null
+          }
+        );
       }}
       textLabel={
         <Text>
           Done! According to the Insomnia Severity Index, you’ve got
-          {GLOBAL.ISITotal >= 7 ? '\n' : null}
+          {GLOBAL.ISITotal >= 7 ? '\n' : ' '}
           <Text style={styles.BoldLabelText}>{severityText()}</Text>
         </Text>
       }
@@ -288,7 +290,7 @@ export const ISIResults = ({ navigation }) => {
   );
 };
 
-export const ISIResultsExplainer = ({ navigation }) => {
+export const ISISignificant = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
   console.log(Dimensions.get('window').width);
   return (
@@ -297,8 +299,8 @@ export const ISIResultsExplainer = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       image={<TiredFace width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        navigation.navigate('ISI1', {
-          progressBarPercent: 0.14
+        navigation.navigate('SafetyIntro', {
+          progressBarPercent: null
         });
       }}
       textLabel={
@@ -320,7 +322,130 @@ export const ISIResultsExplainer = ({ navigation }) => {
           </Text>
         </>
       }
+      buttonLabel="Let's get started"
+    />
+  );
+};
+
+export const ISINoSignificant = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  console.log(Dimensions.get('window').width);
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<Expressionless width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('SafetyIntro', {
+          progressBarPercent: null
+        });
+      }}
+      longText
+      textLabel={
+        <>
+          <Text style={styles.BoldLabelText}>No significant insomna{'\n'}</Text>
+          <Text
+            style={{
+              fontSize: 0.05 * useWindowDimensions().width,
+              lineHeight: 20
+            }}
+          >
+            We&apos;re glad to tell you that you don&apos;t have serious
+            problems with insomnia. However, our app isn&apos;t designed for
+            you. Our techniques will disrupt your sleep and may not improve it
+            much. If you&apos;d still like to use it, be our guest, just be
+            warned that it&apos;s designed to help people with severe sleep
+            problems, and you may not get much out of it.
+          </Text>
+        </>
+      }
+      buttonLabel="Whatever, I'll use it anyway"
+    />
+  );
+};
+
+export const SafetyIntro = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<MonocleEmoji width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('SafetyPills', {
+          progressBarPercent: null
+        });
+      }}
+      textLabel="Great! Now let’s check whether it’s safe for you to use this therapy."
       buttonLabel="Next"
+    />
+  );
+};
+
+export const SafetyPills = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.pills = value;
+        navigation.navigate(
+          value == 'none' ? 'SafetyIllness' : 'SafetyPillsStop',
+          { progressBarPercent: null }
+        );
+      }}
+      buttonValues={[
+        { label: 'Nope', value: 'none', solidColor: true },
+        {
+          label: 'Yes, Benzodiazepines (e.g. Xanax)',
+          value: 'benzo',
+          solidColor: true
+        },
+        {
+          label: 'Yes, non-Benzodiazepines (e.g. Ambien, Lunesta)',
+          value: 'nonBenzo',
+          solidColor: true
+        },
+        { label: 'Yes, other or not sure', value: 'other', solidColor: true }
+      ]}
+      questionLabel="Are you currently taking any sleeping pills?"
+    />
+  );
+};
+
+export const SafetyPillsStop = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<MonocleEmoji width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('SafetyPills', {
+          progressBarPercent: null
+        });
+      }}
+      longText
+      textLabel="For Slumber to work best, it's strongly recommended to stop taking sleeping pills before treatment. DON'T DO THIS ON YOUR OWN, as stopping use can have withdrawal effects. Talk with your physician to plan tapering it off. Once you've done that, we can get started with fixing your insomnia permanently."
+      buttonLabel="Next"
+    />
+  );
+};
+
+export const SafetyIllness = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.ISI1 = value;
+        navigation.navigate('ISI2', { progressBarPercent: null });
+      }}
+      buttonValues={[
+        { label: 'Yes', value: true, solidColor: true },
+        { label: 'No', value: false, solidColor: true }
+      ]}
+      questionLabel="Do you have epilepsy, bipolar disorder, parasomnias, obstructive sleep apnea, or other illnesses that cause excessive daytime sleepiness on their own?"
     />
   );
 };
