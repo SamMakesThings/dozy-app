@@ -391,7 +391,7 @@ export const SafetyPills = ({ navigation }) => {
       onQuestionSubmit={(value) => {
         GLOBAL.pills = value;
         navigation.navigate(
-          value == 'none' ? 'SafetyIllness' : 'SafetyPillsStop',
+          value == 'none' ? 'SafetySnoring' : 'SafetyPillsStop',
           { progressBarPercent: null }
         );
       }}
@@ -423,7 +423,7 @@ export const SafetyPillsStop = ({ navigation }) => {
       image={<Stop width={imgSize} height={imgSize} />}
       onQuestionSubmit={(result) => {
         navigation.navigate(
-          result === 'Continue anyway' ? 'SafetyIllness' : 'SafetyPillsBye',
+          result === 'Continue anyway' ? 'SafetySnoring' : 'SafetyPillsBye',
           {
             progressBarPercent: null
           }
@@ -461,7 +461,7 @@ export const SafetyPillsBye = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       image={<WaveHello width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        navigation.navigate('SafetyPills', {
+        navigation.navigate('SafetySnoring', {
           progressBarPercent: null
         });
       }}
@@ -471,7 +471,61 @@ export const SafetyPillsBye = ({ navigation }) => {
   );
 };
 
-export const SafetyIllness = ({ navigation }) => {
+export const SafetySnoring = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.ISI1 = value;
+        navigation.navigate('SafetyLegs', { progressBarPercent: null });
+      }}
+      buttonValues={[
+        { label: 'Yes', value: true, solidColor: true },
+        { label: 'No', value: false, solidColor: true }
+      ]}
+      questionLabel="Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apnoeas)"
+    />
+  );
+};
+
+export const SafetyLegs = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.ISI1 = value;
+        navigation.navigate('SafetyParas', { progressBarPercent: null });
+      }}
+      buttonValues={[
+        { label: 'Yes', value: true, solidColor: true },
+        { label: 'No', value: false, solidColor: true }
+      ]}
+      questionLabel="Do you have unpleasant tingling or discomfort in the legs, which makes you need to kick or to move? (restless in the body rather than a racing mind)"
+    />
+  );
+};
+
+export const SafetyParas = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.ISI1 = value;
+        navigation.navigate('SafetyCatchall', { progressBarPercent: null });
+      }}
+      buttonValues={[
+        { label: 'Yes', value: true, solidColor: true },
+        { label: 'No', value: false, solidColor: true }
+      ]}
+      questionLabel="Do you have any history of nightmares, acting out of dreams, sleepwalking out of the bedroom?"
+    />
+  );
+};
+
+export const SafetyCatchall = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
