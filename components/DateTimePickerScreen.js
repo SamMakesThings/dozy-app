@@ -97,6 +97,7 @@ const DateTimePickerScreen = (props) => {
         bottomBackButton={
           props.bottomBackButton ? props.bottomBackButton : null
         }
+        bottomGreyButtonLabel={props.bottomGreyButtonLabel}
       />
     </ScreenContainer>
   );

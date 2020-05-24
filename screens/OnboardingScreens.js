@@ -19,6 +19,8 @@ import BarChart from '../assets/images/BarChart.svg';
 import Expressionless from '../assets/images/Expressionless.svg';
 import MonocleEmoji from '../assets/images/MonocleEmoji.svg';
 import Stop from '../assets/images/Stop.svg';
+import WarningTriangle from '../assets/images/WarningTriangle.svg';
+import TanBook from '../assets/images/TanBook.svg';
 
 // Define the theme for the file globally
 const theme = slumber_theme;
@@ -304,6 +306,7 @@ export const ISISignificant = ({ navigation }) => {
           progressBarPercent: null
         });
       }}
+      longText
       textLabel={
         <>
           <Text style={styles.BoldLabelText}>
@@ -377,7 +380,7 @@ export const SafetyIntro = ({ navigation }) => {
           progressBarPercent: null
         });
       }}
-      textLabel="Great! Now let’s check whether it’s safe for you to use this therapy."
+      textLabel="Now let’s check whether it’s safe for you to use this therapy."
       buttonLabel="Next"
     />
   );
@@ -477,14 +480,17 @@ export const SafetySnoring = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
-        GLOBAL.ISI1 = value;
-        navigation.navigate('SafetyLegs', { progressBarPercent: null });
+        GLOBAL.snoring = value;
+        navigation.navigate(!value ? 'SafetyLegs' : 'SafetyIllnessWarning', {
+          warnAbout: 'sleep apneas',
+          nextScreen: 'SafetyLegs'
+        });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
         { label: 'No', value: false, solidColor: true }
       ]}
-      questionLabel="Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apnoeas)"
+      questionLabel="Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apnoeas)?"
     />
   );
 };
@@ -495,14 +501,17 @@ export const SafetyLegs = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
-        GLOBAL.ISI1 = value;
-        navigation.navigate('SafetyParas', { progressBarPercent: null });
+        GLOBAL.rls = value;
+        navigation.navigate(!value ? 'SafetyParas' : 'SafetyIllnessWarning', {
+          warnAbout: 'Restless Leg Syndrome',
+          nextScreen: 'SafetyParas'
+        });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
         { label: 'No', value: false, solidColor: true }
       ]}
-      questionLabel="Do you have unpleasant tingling or discomfort in the legs, which makes you need to kick or to move? (restless in the body rather than a racing mind)"
+      questionLabel="Do you have unpleasant tingling or discomfort in the legs, which makes you need to kick or to move? (restless body rather than a racing mind)"
     />
   );
 };
@@ -513,8 +522,11 @@ export const SafetyParas = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
-        GLOBAL.ISI1 = value;
-        navigation.navigate('SafetyCatchall', { progressBarPercent: null });
+        GLOBAL.parasomnias = value;
+        navigation.navigate(
+          !value ? 'SafetyCatchall' : 'SafetyIllnessWarning',
+          { warnAbout: 'parasomnias', nextScreen: 'SafetyCatchall' }
+        );
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
@@ -532,13 +544,173 @@ export const SafetyCatchall = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
         GLOBAL.ISI1 = value;
-        navigation.navigate('ISI2', { progressBarPercent: null });
+        navigation.navigate(!value ? 'BaselineIntro' : 'SafetyIllnessWarning', {
+          warnAbout: 'such conditions',
+          nextScreen: 'BaselineIntro'
+        });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
         { label: 'No', value: false, solidColor: true }
       ]}
       questionLabel="Do you have epilepsy, bipolar disorder, parasomnias, obstructive sleep apnea, or other illnesses that cause excessive daytime sleepiness on their own?"
+    />
+  );
+};
+
+export const SafetyIllnessWarning = ({ navigation, route }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<TiredFace width={imgSize} height={imgSize} />}
+      onQuestionSubmit={(result) => {
+        navigation.navigate(
+          result === 'I understand the risks, continue anyway'
+            ? route.params.nextScreen
+            : 'SafetyPillsBye',
+          {
+            progressBarPercent: null
+          }
+        );
+      }}
+      longText
+      textLabel={
+        <>
+          <Text style={styles.BoldLabelText}>Risks of this therapy{'\n'}</Text>
+          <Text
+            style={{
+              fontSize: 0.05 * useWindowDimensions().width,
+              lineHeight: 20
+            }}
+          >
+            This therapy (CBT-i) in combination with {route.params.warnAbout}{' '}
+            can cause excessive daytime sleepiness to the degree that it becomes
+            dangerous to drive, operate machinery, or make important decisions.
+            We recommend you consult a human therapist instead of using the app.
+          </Text>
+        </>
+      }
+      buttonLabel="Help me find a human provider"
+      bottomGreyButtonLabel="I understand the risks, continue anyway"
+    />
+  );
+};
+
+export const BaselineIntro = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<WarningTriangle width={imgSize} height={imgSize} />}
+      onQuestionSubmit={(result) => {
+        navigation.navigate(
+          result === 'My sleep will be unusual, let’s postpone'
+            ? 'BaselineBye'
+            : 'DiaryIntro',
+          {
+            progressBarPercent: null
+          }
+        );
+      }}
+      longText
+      textLabel={
+        <Text
+          style={{
+            fontSize: 0.05 * useWindowDimensions().width,
+            lineHeight: 20
+          }}
+        >
+          An important note: This first week of sleep tracking is critical for
+          getting a baseline of your normal sleep patterns. If you&apos;re
+          traveling or doing some other unusual sleep-disturbing activity this
+          week, you should start this diary next week.
+        </Text>
+      }
+      buttonLabel="I’m ready - let’s start this week"
+      bottomGreyButtonLabel="My sleep will be unusual, let’s postpone"
+    />
+  );
+};
+
+export const BaselineBye = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<WaveHello width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('SafetySnoring', {
+          progressBarPercent: null
+        });
+      }}
+      textLabel="No worries! We’ll follow up with you in a week. If you’re ready to start before that, come back anytime and we’ll pick up where we left off."
+      onlyBackButton
+    />
+  );
+};
+
+export const DiaryIntro = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<TanBook width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('DiaryHabit', {
+          progressBarPercent: 0.2
+        });
+      }}
+      textLabel="Almost there! During treatment, we’ll be tracking your sleep with a sleep diary. It’s critical that you fill this out each morning."
+      buttonLabel="Got it - let’s make it easy to remember"
+    />
+  );
+};
+
+export const DiaryHabit = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.diaryHabitTrigger = value;
+        navigation.navigate('DiaryReminder', { progressBarPercent: 0.4 });
+      }}
+      buttonValues={[
+        { label: 'After waking up', value: 'onWake', solidColor: true },
+        {
+          label: 'After brushing my teeth',
+          value: 'onBrushTeeth',
+          solidColor: true
+        },
+        {
+          label: 'After eating breakfast',
+          value: 'onBreakfast',
+          solidColor: true
+        },
+        { label: 'After taking a shower', value: 'onShower', solidColor: true }
+      ]}
+      questionLabel="When would you like to log your sleep in the morning?"
+    />
+  );
+};
+
+export const DiaryReminder = ({ navigation }) => {
+  return (
+    <DateTimePickerScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        // TODO: enable not setting a reminder time
+        GLOBAL.diaryReminderTime = value;
+        navigation.navigate('ISI4', { progressBarPercent: 0.6 });
+      }}
+      questionLabel="What time do you usually do that? (we'll send you a gentle reminder)"
+      bottomGreyButtonLabel="Don't set a reminder"
     />
   );
 };
