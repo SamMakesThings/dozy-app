@@ -18,6 +18,7 @@ import TiredFace from '../assets/images/TiredFace.svg';
 import BarChart from '../assets/images/BarChart.svg';
 import Expressionless from '../assets/images/Expressionless.svg';
 import MonocleEmoji from '../assets/images/MonocleEmoji.svg';
+import Stop from '../assets/images/Stop.svg';
 
 // Define the theme for the file globally
 const theme = slumber_theme;
@@ -419,15 +420,53 @@ export const SafetyPillsStop = ({ navigation }) => {
     <IconExplainScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      image={<MonocleEmoji width={imgSize} height={imgSize} />}
+      image={<Stop width={imgSize} height={imgSize} />}
+      onQuestionSubmit={(result) => {
+        navigation.navigate(
+          result === 'Continue anyway' ? 'SafetyIllness' : 'SafetyPillsBye',
+          {
+            progressBarPercent: null
+          }
+        );
+      }}
+      longText
+      textLabel={
+        <>
+          <Text style={styles.BoldLabelText}>Hold on there{'\n'}</Text>
+          <Text
+            style={{
+              fontSize: 0.05 * useWindowDimensions().width,
+              lineHeight: 20
+            }}
+          >
+            For Slumber to work best, it&apos; strongly recommended to stop
+            taking sleeping pills before treatment. DON&apos;T DO THIS ON YOUR
+            OWN, as stopping use can have withdrawal effects. Talk with your
+            physician to plan tapering it off. Once you&apos;ve done that, we
+            can get started with fixing your insomnia permanently.
+          </Text>
+        </>
+      }
+      buttonLabel="I’ll contact my doctor - follow up w/me"
+      bottomGreyButtonLabel="Continue anyway"
+    />
+  );
+};
+
+export const SafetyPillsBye = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<WaveHello width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('SafetyPills', {
           progressBarPercent: null
         });
       }}
-      longText
-      textLabel="For Slumber to work best, it's strongly recommended to stop taking sleeping pills before treatment. DON'T DO THIS ON YOUR OWN, as stopping use can have withdrawal effects. Talk with your physician to plan tapering it off. Once you've done that, we can get started with fixing your insomnia permanently."
-      buttonLabel="Next"
+      textLabel="Great! We’ll email & ping you again in four weeks. If you’re off sleeping pills before that, come back anytime and we’ll pick up where we left off."
+      onlyBackButton
     />
   );
 };

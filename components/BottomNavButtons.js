@@ -28,6 +28,22 @@ const BottomNavButtons = (props) => {
       >
         {props.buttonLabel ? props.buttonLabel : 'Next'}
       </Button>
+      {props.bottomGreyButtonLabel && (
+        <Button
+          style={{
+            ...styles.Button_Continue,
+            display: props.onlyBackButton ? 'none' : 'flex'
+          }}
+          type="solid"
+          onPress={() => {
+            props.onPress(props.bottomGreyButtonLabel);
+          }}
+          color={theme.colors.medium}
+          disabled={props.disabled}
+        >
+          {props.bottomGreyButtonLabel}
+        </Button>
+      )}
       {props.bottomBackButton && (
         <TouchableOpacity
           disabled={bbbDisabled}

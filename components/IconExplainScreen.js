@@ -65,8 +65,10 @@ const IconExplainScreen = (props) => {
       <BottomNavButtons
         onPress={props.onQuestionSubmit}
         buttonLabel={props.buttonLabel}
+        bottomGreyButtonLabel={props.bottomGreyButtonLabel}
         bottomBackButton={props.bottomBackButton}
         bbbDisabled={props.bbbDisabled}
+        onlyBackButton={props.onlyBackButton}
         theme={theme}
       />
     </ScreenContainer>
