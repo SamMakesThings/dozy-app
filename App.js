@@ -58,6 +58,11 @@ export default function App() {
             ...prevState,
             isLoading: false
           };
+        case 'FINISH_ONBOARDING':
+          return {
+            ...prevState,
+            onboardingComplete: true
+          };
       }
     },
     {
@@ -148,6 +153,9 @@ export default function App() {
       signOut: () => {
         SecureStore.deleteItemAsync('userId');
         dispatch({ type: 'SIGN_OUT' });
+      },
+      finishOnboarding: () => {
+        dispatch({ type: 'FINISH_ONBOARDING' });
       }
     }),
     []

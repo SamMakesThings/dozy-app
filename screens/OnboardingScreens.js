@@ -23,6 +23,7 @@ import Stop from '../assets/images/Stop.svg';
 import WarningTriangle from '../assets/images/WarningTriangle.svg';
 import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
+import submitOnboardingData from '../utilities/submitOnboardingData';
 
 // Define the theme for the file globally
 const theme = slumber_theme;
@@ -297,7 +298,6 @@ export const ISIResults = ({ navigation }) => {
 
 export const ISISignificant = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
-  console.log(Dimensions.get('window').width);
   return (
     <IconExplainScreen
       theme={theme}
@@ -335,7 +335,6 @@ export const ISISignificant = ({ navigation }) => {
 
 export const ISINoSignificant = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
-  console.log(Dimensions.get('window').width);
   return (
     <IconExplainScreen
       theme={theme}
@@ -545,7 +544,7 @@ export const SafetyCatchall = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
-        GLOBAL.ISI1 = value;
+        GLOBAL.otherCondition = value;
         navigation.navigate(!value ? 'BaselineIntro' : 'SafetyIllnessWarning', {
           warnAbout: 'such conditions',
           nextScreen: 'BaselineIntro'
@@ -763,6 +762,7 @@ export const OnboardingEnd = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
+        submitOnboardingData();
         finishOnboarding();
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
