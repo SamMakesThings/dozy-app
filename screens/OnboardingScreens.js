@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet
 } from 'react-native';
+import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/IconExplainScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
 import DateTimePickerScreen from '../components/DateTimePickerScreen';
@@ -722,7 +723,7 @@ export const CheckinScheduling = ({ navigation }) => {
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      defaultValue={new Date().getTime() + 86400000 * 7}
+      defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
       onQuestionSubmit={(value) => {
         // TODO: Add validation to ensure date is far out enough for data colleciton
         GLOBAL.firstCheckinTime = value;
@@ -755,15 +756,14 @@ export const PaywallPlaceholder = ({ navigation }) => {
 
 export const OnboardingEnd = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
+  const { finishOnboarding } = React.useContext(AuthContext);
   return (
     <IconExplainScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        navigation.navigate('App', {
-          progressBarPercent: null
-        });
+        finishOnboarding();
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
       buttonLabel="Continue"
