@@ -4,8 +4,7 @@ import {
   withTheme,
   ScreenContainer,
   Container,
-  DatePicker,
-  Button
+  DatePicker
 } from '@draftbit/ui';
 import BottomNavButtons from './BottomNavButtons';
 
@@ -98,6 +97,7 @@ const DateTimePickerScreen = (props) => {
           props.bottomBackButton ? props.bottomBackButton : null
         }
         bottomGreyButtonLabel={props.bottomGreyButtonLabel}
+        buttonLabel={props.buttonLabel}
       />
     </ScreenContainer>
   );

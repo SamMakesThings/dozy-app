@@ -21,6 +21,7 @@ import MonocleEmoji from '../assets/images/MonocleEmoji.svg';
 import Stop from '../assets/images/Stop.svg';
 import WarningTriangle from '../assets/images/WarningTriangle.svg';
 import TanBook from '../assets/images/TanBook.svg';
+import RaisedHands from '../assets/images/RaisedHands.svg';
 
 // Define the theme for the file globally
 const theme = slumber_theme;
@@ -707,10 +708,65 @@ export const DiaryReminder = ({ navigation }) => {
       onQuestionSubmit={(value) => {
         // TODO: enable not setting a reminder time
         GLOBAL.diaryReminderTime = value;
-        navigation.navigate('ISI4', { progressBarPercent: 0.6 });
+        navigation.navigate('CheckinScheduling', { progressBarPercent: 0.6 });
       }}
       questionLabel="What time do you usually do that? (we'll send you a gentle reminder)"
       bottomGreyButtonLabel="Don't set a reminder"
+      mode="time"
+    />
+  );
+};
+
+export const CheckinScheduling = ({ navigation }) => {
+  return (
+    <DateTimePickerScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      defaultValue={new Date().getTime() + 86400000 * 7}
+      onQuestionSubmit={(value) => {
+        // TODO: Add validation to ensure date is far out enough for data colleciton
+        GLOBAL.firstCheckinTime = value;
+        navigation.navigate('PaywallPlaceholder', { progressBarPercent: 0.8 });
+      }}
+      questionLabel="When would you like to schedule your first weekly check-in? (Check-ins take 5-10 minutes and introduce you to new treatment techniques based on your sleep patterns.)"
+      buttonLabel="I've picked a date 7+ days from today"
+      mode="datetime"
+    />
+  );
+};
+
+export const PaywallPlaceholder = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<MonocleEmoji width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('OnboardingEnd', {
+          progressBarPercent: 1
+        });
+      }}
+      textLabel="...so this is where I'll put the 'get a subscription' message, but you don't need to pay that.  :)"
+      buttonLabel="Nice"
+    />
+  );
+};
+
+export const OnboardingEnd = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<RaisedHands width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('App', {
+          progressBarPercent: null
+        });
+      }}
+      textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
+      buttonLabel="Continue"
     />
   );
 };
