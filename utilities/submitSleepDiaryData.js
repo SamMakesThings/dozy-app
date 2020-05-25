@@ -8,13 +8,6 @@ export default async function submitSleepDiaryData() {
   let userId = await SecureStore.getItemAsync('userId');
   var sleepLogsRef = db.collection('users').doc(userId).collection('sleepLogs');
 
-  // Get today's date, turn it into a string
-  /* var todayDate = new Date();
-    var dd = String(todayDate.getDate()).padStart(2, '0');
-    var mm = String(todayDate.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = todayDate.getFullYear();
-    const todayDateString = yyyy + '-' + mm + '-' + dd; */
-
   // If bedtime/sleeptime are in the evening, change them to be the day before
   if (GLOBAL.bedTime > GLOBAL.wakeTime) {
     GLOBAL.bedTime = new Date(
