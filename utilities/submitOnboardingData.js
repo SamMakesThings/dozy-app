@@ -17,7 +17,7 @@ export default async function submitOnboardingData() {
   };
   // Also store reminder info & next check-in datetime
   userDocRef
-    .update({
+    .set({
       healthHistory: healthHistory,
       reminders: {
         sleepDiaryReminder: {

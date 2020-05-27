@@ -1,11 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import {
-  useWindowDimensions,
-  Dimensions,
-  Text,
-  StyleSheet
-} from 'react-native';
+import { useWindowDimensions, Text, StyleSheet } from 'react-native';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/IconExplainScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
