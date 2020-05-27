@@ -6,6 +6,7 @@ import {
   Container,
   ProgressBar
 } from '@draftbit/ui';
+import { scale } from 'react-native-size-matters';
 import BottomNavButtons from './BottomNavButtons';
 
 const NumInputScreen = (props) => {
@@ -102,19 +103,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: 20
+    marginTop: scale(16)
   },
   View_InputContainer: {
-    marginTop: 65,
-    marginBottom: 30,
+    marginTop: scale(60),
+    marginBottom: scale(27),
     width: '50%',
     alignSelf: 'center',
     borderBottomWidth: 1.5
   },
   TextInput: {
     color: '#ffffff',
-    fontSize: 21,
-    paddingBottom: 12
+    fontSize: scale(17),
+    paddingBottom: scale(9)
   },
   Text_Question: {
     textAlign: 'center',

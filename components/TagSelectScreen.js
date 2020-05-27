@@ -15,6 +15,7 @@ import {
   Button
 } from '@draftbit/ui';
 import '@firebase/firestore';
+import { scale } from 'react-native-size-matters';
 import Intl from 'intl';
 import ToggleTag from './ToggleTag';
 
@@ -43,26 +44,7 @@ const TagSelectScreen = (props) => {
         style={styles.Container_nof}
         elevation={0}
         useThemeGutterPadding={true}
-      >
-        <Container
-          style={styles.Container_nuv}
-          elevation={0}
-          useThemeGutterPadding={true}
-        >
-          <ProgressBar
-            style={{
-              ...styles.ProgressBar_nn5,
-              ...{ display: props.progressBarPercent ? 'flex' : 'none' }
-            }}
-            color={theme.colors.primary}
-            progress={props.progressBarPercent}
-            borderWidth={0}
-            borderRadius={10}
-            animationType="spring"
-            unfilledColor={theme.colors.medium}
-          />
-        </Container>
-      </Container>
+      ></Container>
       <KeyboardAvoidingView
         style={styles.Container_n8t}
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
@@ -128,10 +110,10 @@ const TagSelectScreen = (props) => {
         >
           <TextInput
             style={{
-              height: 40,
+              height: scale(35),
               color: '#ffffff',
-              fontSize: 21,
-              paddingBottom: 12
+              fontSize: scale(17),
+              paddingBottom: scale(10)
             }}
             placeholder={props.inputLabel}
             placeholderTextColor={theme.colors.light}
@@ -173,12 +155,12 @@ const styles = StyleSheet.create({
   },
   Button_n5c: {
     paddingTop: 0,
-    marginTop: 8
+    marginTop: scale(7)
   },
   Container_n8t: {
     height: '72%',
     justifyContent: 'center',
-    marginTop: 20
+    marginTop: scale(17)
   },
   Container_nmw: {
     height: '15%'
@@ -188,7 +170,7 @@ const styles = StyleSheet.create({
     height: '10%',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: 20
+    marginTop: scale(17)
   },
   Container_nuv: {
     width: '100%',
@@ -197,12 +179,6 @@ const styles = StyleSheet.create({
   },
   IconButton_n9u: {
     paddingRight: 0
-  },
-  ProgressBar_nn5: {
-    width: 250,
-    height: 7,
-    paddingRight: 0,
-    marginRight: 0
   },
   Root_nb1: {},
   TextField_no0: {

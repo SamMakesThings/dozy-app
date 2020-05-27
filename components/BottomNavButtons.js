@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { scale } from 'react-native-size-matters';
 import { Container, Button } from '@draftbit/ui';
 
 const BottomNavButtons = (props) => {
@@ -16,6 +17,7 @@ const BottomNavButtons = (props) => {
     >
       <Button
         style={{
+          ...theme.buttonLayout,
           ...styles.Button_Continue,
           display: props.onlyBackButton ? 'none' : 'flex'
         }}
@@ -31,6 +33,7 @@ const BottomNavButtons = (props) => {
       {props.bottomGreyButtonLabel && (
         <Button
           style={{
+            ...theme.buttonLayout,
             ...styles.Button_Continue,
             display: props.onlyBackButton ? 'none' : 'flex'
           }}
@@ -71,14 +74,14 @@ const BottomNavButtons = (props) => {
 const styles = StyleSheet.create({
   Button_Continue: {
     paddingTop: 0,
-    marginTop: 8
+    marginTop: scale(8)
   },
   View_ButtonContainer: {
-    marginBottom: 15
+    marginBottom: scale(15)
   },
   Touchable_BackButton: {
-    paddingTop: 20,
-    paddingBottom: 2
+    paddingTop: scale(18),
+    paddingBottom: scale(2)
   },
   Text_BackButton: {
     textAlign: 'center'

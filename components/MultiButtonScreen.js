@@ -50,7 +50,7 @@ const MultiButtonScreen = (props) => {
           return (
             <Button
               key={value}
-              style={styles.Button_nu5}
+              style={{ ...theme.buttonLayout, ...styles.Button_nu5 }}
               type={solidColor ? 'solid' : 'outline'}
               color={solidColor ? theme.colors.primary : theme.colors.secondary}
               loading={false}

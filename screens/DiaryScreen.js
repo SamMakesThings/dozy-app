@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { withTheme, ScreenContainer, Container, Button } from '@draftbit/ui';
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import PropTypes from 'prop-types';
 import '@firebase/firestore';
 import { Entypo } from '@expo/vector-icons';
