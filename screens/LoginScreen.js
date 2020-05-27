@@ -8,7 +8,7 @@ import {
   Touchable
 } from '@draftbit/ui';
 import { StyleSheet, Text } from 'react-native';
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 import Images from '../config/Images';
 import { AuthContext } from '../utilities/authContext';
 import { slumber_theme } from '../config/Themes';
@@ -24,40 +24,40 @@ function LoginScreen() {
     <ScreenContainer
       scrollable={false}
       hasSafeArea={false}
-      style={styles.screenContainer1D}
+      style={styles.View_RootContainer}
     >
       <Container
         backgroundImage={Images.DreamBgExtended}
         useThemeGutterPadding={false}
         backgroundImageResizeMode="contain"
         elevation={0}
-        style={styles.containerA6}
+        style={styles.View_ContentContainer}
       >
         <Container
           elevation={0}
           useThemeGutterPadding={false}
-          style={styles.containerG3}
+          style={styles.View_LogoContainer}
         >
           <Image
             source={Images.WordmarkTrans}
             resizeMode="contain"
-            style={styles.imagePQ}
+            style={styles.Image_Wordmark}
           />
         </Container>
         <Container
           elevation={0}
           useThemeGutterPadding={true}
-          style={styles.containerPi}
+          style={styles.View_HeroLogoText}
         >
           <Image
             source={Images.UndrawBed}
             resizeMode="contain"
-            style={styles.image6G}
+            style={styles.Image_FeaturedBed}
           />
           <Text
             allowFontScaling={false}
             style={StyleSheet.flatten([
-              styles.text94,
+              styles.Text_Hero1,
               theme.typography.headline3,
               { color: theme.colors.strongInverse }
             ])}
@@ -69,7 +69,7 @@ function LoginScreen() {
             adjustsFontSizeToFit={false}
             allowFontScaling={false}
             style={StyleSheet.flatten([
-              styles.textBw,
+              styles.Text_Hero2,
               theme.typography.headline3,
               { color: theme.colors.strongInverse }
             ])}
@@ -80,7 +80,7 @@ function LoginScreen() {
         <Container
           useThemeGutterPadding={true}
           elevation={0}
-          style={styles.containerGr}
+          style={styles.View_ButtonsContainer}
         >
           <Button
             type="solid"
@@ -93,10 +93,10 @@ function LoginScreen() {
           >
             Get Started
           </Button>
-          <Touchable style={styles.touchable64} onPress={signIn}>
+          <Touchable style={styles.Touchable_BackButton} onPress={signIn}>
             <Text
               style={StyleSheet.flatten([
-                styles.textW2,
+                styles.Text_SignIn,
                 theme.typography.smallLabel,
                 { color: theme.colors.surface }
               ])}
@@ -111,48 +111,48 @@ function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  containerA6: {
+  View_RootContainer: {},
+  View_ContentContainer: {
     flexGrow: 1,
     width: '100%',
     height: '60%',
     justifyContent: 'space-between'
   },
-  containerG3: {
+  View_LogoContainer: {
     height: '15%'
   },
-  textW2: {
+  Text_SignIn: {
     textAlign: 'center'
   },
-  image6G: {
+  Image_FeaturedBed: {
     width: '60%',
     alignSelf: 'center',
     height: '40%'
   },
-  imagePQ: {
+  Image_Wordmark: {
     alignSelf: 'flex-start',
     marginLeft: scale(12),
     width: '50%',
     height: '120%'
   },
-  containerPi: {
+  View_HeroLogoText: {
     height: '65%',
     justifyContent: 'flex-end'
   },
-  touchable64: {
+  Touchable_BackButton: {
     paddingTop: scale(25),
     paddingBottom: scale(25),
     marginBottom: scale(10)
   },
-  text94: {
+  Text_Hero1: {
     textAlign: 'center'
   },
-  textBw: {
+  Text_Hero2: {
     textAlign: 'center',
     marginBottom: scale(35)
   },
-  containerGr: {
-    justifyContent: 'flex-end',
-    height: '20%'
+  View_ButtonsContainer: {
+    justifyContent: 'flex-end'
   }
 });
 

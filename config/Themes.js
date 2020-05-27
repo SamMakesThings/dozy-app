@@ -56,7 +56,7 @@ export const slumber_theme = {
       fontFamily: 'RubikMedium'
     },
     headline3: {
-      fontSize: scale(34),
+      fontSize: scale(28),
       lineHeight: scale(35),
       fontFamily: 'RubikMedium'
     },
