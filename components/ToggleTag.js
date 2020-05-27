@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
 import { withTheme } from '@draftbit/ui';
 import '@firebase/firestore';
 import { Entypo } from '@expo/vector-icons';
+import { scale } from 'react-native-size-matters';
 
 // Component for the icon/button that toggles
 const ToggleTag = (props) => {
@@ -32,7 +33,7 @@ const ToggleTag = (props) => {
         >
           <Entypo
             name={props.entypoIcon}
-            size={34}
+            size={scale(25)}
             color={selected ? theme.colors.secondary : theme.colors.primary}
           />
         </View>
@@ -50,19 +51,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 5
+    margin: scale(4)
   },
   View_IconContainer: {
-    borderWidth: 1,
+    borderWidth: scale(1),
     borderRadius: 100,
-    width: 60,
-    height: 60,
+    width: scale(52),
+    height: scale(52),
     justifyContent: 'center',
     alignItems: 'center'
   },
   Text_ToggleLabel: {
     textAlign: 'center',
-    paddingTop: 2
+    paddingTop: scale(2)
   }
 });
 
