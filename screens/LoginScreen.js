@@ -8,6 +8,7 @@ import {
   Touchable
 } from '@draftbit/ui';
 import { StyleSheet, Text } from 'react-native';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import Images from '../config/Images';
 import { AuthContext } from '../utilities/authContext';
 import { slumber_theme } from '../config/Themes';
@@ -85,7 +86,7 @@ function LoginScreen() {
             type="solid"
             color={theme.colors.primary}
             style={StyleSheet.flatten([
-              styles.button9I,
+              theme.buttonLayout,
               { borderRadius: theme.borderRadius.button }
             ])}
             onPress={signIn}
@@ -110,13 +111,6 @@ function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  button9I: {
-    height: 55,
-    justifyContent: 'center'
-  },
-  screenContainer1D: {
-    // alignItems: 'auto', DELETE THIS LINE IF THINGS DON'T BREAK
-  },
   containerA6: {
     flexGrow: 1,
     width: '100%',
@@ -136,7 +130,7 @@ const styles = StyleSheet.create({
   },
   imagePQ: {
     alignSelf: 'flex-start',
-    marginLeft: 15,
+    marginLeft: scale(12),
     width: '50%',
     height: '120%'
   },
@@ -145,17 +139,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   touchable64: {
-    paddingTop: 25,
-    paddingBottom: 25,
-    marginBottom: 10
+    paddingTop: scale(25),
+    paddingBottom: scale(25),
+    marginBottom: scale(10)
   },
   text94: {
     textAlign: 'center'
   },
   textBw: {
-    marginTop: -10,
     textAlign: 'center',
-    marginBottom: 35
+    marginBottom: scale(35)
   },
   containerGr: {
     justifyContent: 'flex-end',

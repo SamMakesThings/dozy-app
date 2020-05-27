@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 export const slumber_theme = {
   disabledOpacity: 0.5,
@@ -13,77 +14,81 @@ export const slumber_theme = {
     global: 6,
     button: 36
   },
+  buttonLayout: {
+    height: scale(47),
+    justifyContent: 'center'
+  },
   typography: {
     smallLabel: {
-      fontSize: 16,
-      lineHeight: 26,
+      fontSize: scale(16),
+      lineHeight: scale(26),
       fontFamily: 'RubikRegular'
     },
     body1: {
-      fontSize: 20,
-      lineHeight: 26,
+      fontSize: scale(20),
+      lineHeight: scale(26),
       fontFamily: 'RubikRegular',
       letterSpacing: -0.25
     },
     body2: {
-      fontSize: 14,
-      lineHeight: 22,
+      fontSize: scale(14),
+      lineHeight: scale(22),
       fontFamily: 'RubikRegular'
     },
     button: {
-      fontSize: 16,
-      lineHeight: 16,
+      fontSize: scale(16),
+      lineHeight: scale(16),
       fontFamily: 'RubikRegular'
     },
     caption: {
-      fontSize: 12,
-      lineHeight: 16,
+      fontSize: scale(12),
+      lineHeight: scale(16),
       fontFamily: 'RubikRegular'
     },
     headline1: {
-      fontSize: 60,
-      lineHeight: 71,
+      fontSize: scale(60),
+      lineHeight: scale(71),
       fontFamily: 'RubikBold'
     },
     headline2: {
-      fontSize: 48,
-      lineHeight: 58,
+      fontSize: scale(48),
+      lineHeight: scale(58),
       fontFamily: 'RubikMedium'
     },
     headline3: {
-      fontSize: 38,
-      lineHeight: 55,
+      fontSize: scale(34),
+      lineHeight: scale(35),
       fontFamily: 'RubikMedium'
     },
     headline4: {
-      fontSize: 24,
-      lineHeight: 32,
+      fontSize: scale(24),
+      lineHeight: scale(32),
       fontFamily: 'RubikBold'
     },
     headline5: {
-      fontSize: 24,
-      lineHeight: 26,
+      fontSize: scale(22),
+      lineHeight: scale(26),
       fontFamily: 'RubikMedium'
     },
     headline6: {
-      fontSize: 16,
-      lineHeight: 24,
+      fontSize: scale(16),
+      lineHeight: scale(24),
       fontFamily: 'RubikMedium'
     },
     overline: {
-      fontSize: 12,
-      lineHeight: 16,
+      fontSize: scale(12),
+      lineHeight: scale(16),
       letterSpacing: 2,
       fontFamily: 'RubikRegular'
     },
     subtitle1: {
-      fontSize: 16,
-      lineHeight: 26,
+      fontSize: scale(16),
+      lineHeight: scale(26),
       fontFamily: 'RubikRegular'
     },
     subtitle2: {
-      fontSize: 14,
-      lineHeight: 22,
+      fontSize: scale(14),
+      lineHeight: scale(22),
       fontFamily: 'RubikRegular'
     }
   },
