@@ -7,13 +7,7 @@ import {
   TextInput,
   KeyboardAvoidingView
 } from 'react-native';
-import {
-  withTheme,
-  ScreenContainer,
-  Container,
-  ProgressBar,
-  Button
-} from '@draftbit/ui';
+import { withTheme, ScreenContainer, Container, Button } from '@draftbit/ui';
 import '@firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import Intl from 'intl';

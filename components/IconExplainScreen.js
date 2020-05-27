@@ -47,6 +47,7 @@ const IconExplainScreen = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
+        <View style={{ flex: 1 }} />
         <View style={styles.View_ImageContainer}>{props.image}</View>
         <Text
           style={[
@@ -76,10 +77,6 @@ const IconExplainScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  Button_Continue: {
-    paddingTop: 0,
-    marginTop: 8
-  },
   View_ImageContainer: {
     flex: 5,
     justifyContent: 'center'
@@ -89,13 +86,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  View_HeaderContainer: {
-    width: '100%',
-    height: '10%',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    marginTop: 20
-  },
   View_BarContainer: {
     width: '100%',
     justifyContent: 'center',
@@ -104,13 +94,6 @@ const styles = StyleSheet.create({
   Nav_BackButton: {
     paddingRight: 0
   },
-  ProgressBar: {
-    width: 250,
-    height: 7,
-    paddingRight: 0,
-    marginRight: 0
-  },
-  RootContainer: {},
   Text_Explainer: {
     textAlign: 'left',
     width: '90%',

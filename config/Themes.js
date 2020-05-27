@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 
 export const slumber_theme = {
   disabledOpacity: 0.5,
@@ -25,8 +25,8 @@ export const slumber_theme = {
       fontFamily: 'RubikRegular'
     },
     body1: {
-      fontSize: scale(20),
-      lineHeight: scale(26),
+      fontSize: scale(18),
+      lineHeight: scale(22),
       fontFamily: 'RubikRegular',
       letterSpacing: -0.25
     },

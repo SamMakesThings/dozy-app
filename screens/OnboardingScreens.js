@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { useWindowDimensions, Text, StyleSheet } from 'react-native';
+import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/IconExplainScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
@@ -309,12 +310,7 @@ export const ISISignificant = ({ navigation }) => {
           <Text style={styles.BoldLabelText}>
             Clinically significant insomnia{'\n'}
           </Text>
-          <Text
-            style={{
-              fontSize: 0.05 * useWindowDimensions().width,
-              lineHeight: 20
-            }}
-          >
+          <Text style={{ lineHeight: scale(18) }}>
             Your insomnia is {GLOBAL.ISITotal >= 14 ? 'definitely' : 'likely'}{' '}
             interfering with your life. However, there&apos;s good news:
             You&apos;re exactly the person our app was designed to help! With
@@ -344,12 +340,7 @@ export const ISINoSignificant = ({ navigation }) => {
       textLabel={
         <>
           <Text style={styles.BoldLabelText}>No significant insomna{'\n'}</Text>
-          <Text
-            style={{
-              fontSize: 0.05 * useWindowDimensions().width,
-              lineHeight: 20
-            }}
-          >
+          <Text style={{ lineHeight: scale(18) }}>
             We&apos;re glad to tell you that you don&apos;t have serious
             problems with insomnia. However, our app isn&apos;t designed for
             you. Our techniques will disrupt your sleep and may not improve it
@@ -432,12 +423,7 @@ export const SafetyPillsStop = ({ navigation }) => {
       textLabel={
         <>
           <Text style={styles.BoldLabelText}>Hold on there{'\n'}</Text>
-          <Text
-            style={{
-              fontSize: 0.05 * useWindowDimensions().width,
-              lineHeight: 20
-            }}
-          >
+          <Text style={{ lineHeight: scale(18) }}>
             For Slumber to work best, it&apos; strongly recommended to stop
             taking sleeping pills before treatment. DON&apos;T DO THIS ON YOUR
             OWN, as stopping use can have withdrawal effects. Talk with your
@@ -575,12 +561,7 @@ export const SafetyIllnessWarning = ({ navigation, route }) => {
       textLabel={
         <>
           <Text style={styles.BoldLabelText}>Risks of this therapy{'\n'}</Text>
-          <Text
-            style={{
-              fontSize: 0.05 * useWindowDimensions().width,
-              lineHeight: 20
-            }}
-          >
+          <Text style={{ lineHeight: scale(18) }}>
             This therapy (CBT-i) in combination with {route.params.warnAbout}{' '}
             can cause excessive daytime sleepiness to the degree that it becomes
             dangerous to drive, operate machinery, or make important decisions.
@@ -769,6 +750,6 @@ export const OnboardingEnd = ({ navigation }) => {
 const styles = StyleSheet.create({
   BoldLabelText: {
     fontFamily: 'RubikBold',
-    fontSize: 22
+    fontSize: scale(20)
   }
 });

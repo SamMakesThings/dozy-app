@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Container, IconButton, ProgressBar } from '@draftbit/ui';
+import { scale } from 'react-native-size-matters';
 import { slumber_theme } from '../config/Themes';
 
 const HeaderProgressBar = (props) => {
@@ -18,7 +19,7 @@ const HeaderProgressBar = (props) => {
           display: !props.backButtonDisabled ? 'flex' : 'none'
         }}
         icon="Ionicons/md-arrow-back"
-        size={32}
+        size={scale(26)}
         color={theme.colors.secondary}
         onPress={() => {
           props.navigation.goBack();
@@ -57,12 +58,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 50
+    marginTop: scale(42)
   },
   Nav_BackButton: {},
   ProgressBar: {
-    width: 250,
-    height: 7
+    width: scale(225),
+    height: scale(6)
   }
 });
 
