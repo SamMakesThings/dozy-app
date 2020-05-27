@@ -12,6 +12,7 @@ import '@firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import Intl from 'intl';
 import ToggleTag from './ToggleTag';
+import BottomNavButtons from './BottomNavButtons';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -119,22 +120,11 @@ const TagSelectScreen = (props) => {
           />
         </View>
       </KeyboardAvoidingView>
-      <Container
-        style={styles.Container_nmw}
-        elevation={0}
-        useThemeGutterPadding={true}
-      >
-        <Button
-          style={styles.Button_n5c}
-          type="solid"
-          onPress={() => {
-            props.onFormSubmit({ notes: notes, tags: selectedTags });
-          }}
-          color={theme.colors.primary}
-        >
-          Finish
-        </Button>
-      </Container>
+      <BottomNavButtons
+        theme={theme}
+        onPress={props.onFormSubmit}
+        buttonLabel="Finish"
+      />
     </ScreenContainer>
   );
 };

@@ -41,7 +41,7 @@ const MultiButtonScreen = (props) => {
         }
         buttonValues={props.buttonValues}
         onlyBackButton
-        onQuestionSubmit={props.onQuestionSubmit}
+        onPress={props.onQuestionSubmit}
       />
     </ScreenContainer>
   );

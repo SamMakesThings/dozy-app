@@ -29,7 +29,7 @@ const BottomNavButtons = (props) => {
               loading={false}
               disabled={false}
               onPress={() => {
-                props.onQuestionSubmit(value);
+                props.onPress(value);
               }}
             >
               {label}
