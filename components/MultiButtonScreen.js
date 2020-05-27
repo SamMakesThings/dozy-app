@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { withTheme, ScreenContainer, Container, Button } from '@draftbit/ui';
+import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import BottomNavButtons from './BottomNavButtons';
 
 const MultiButtonScreen = (props) => {
@@ -18,7 +18,7 @@ const MultiButtonScreen = (props) => {
         useThemeGutterPadding={true}
       ></Container>
       <Container
-        style={styles.Container_nux}
+        style={styles.View_ContentContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
@@ -34,49 +34,20 @@ const MultiButtonScreen = (props) => {
           {props.questionLabel}
         </Text>
       </Container>
-      <Container
-        style={[
-          styles.View_ButtonsContainer,
-          {
-            maxHeight: 50 + props.buttonValues.length * 50,
-            marginBotton: props.onlyBackButton ? 0 : 10
-          }
-        ]}
-        elevation={0}
-        useThemeGutterPadding={true}
-      >
-        {props.buttonValues.map((val) => {
-          const { label, value, solidColor } = val;
-          return (
-            <Button
-              key={value}
-              style={{ ...theme.buttonLayout, ...styles.Button_nu5 }}
-              type={solidColor ? 'solid' : 'outline'}
-              color={solidColor ? theme.colors.primary : theme.colors.secondary}
-              loading={false}
-              disabled={false}
-              onPress={() => {
-                props.onQuestionSubmit(value);
-              }}
-            >
-              {label}
-            </Button>
-          );
-        })}
-      </Container>
       <BottomNavButtons
         theme={theme}
         bottomBackButton={
           props.bottomBackButton ? props.bottomBackButton : null
         }
+        buttonValues={props.buttonValues}
         onlyBackButton
+        onQuestionSubmit={props.onQuestionSubmit}
       />
     </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  Button_nu5: {},
   Container_n8l: {
     width: '100%',
     justifyContent: 'center',
@@ -93,19 +64,10 @@ const styles = StyleSheet.create({
     flex: 5,
     justifyContent: 'space-around'
   },
-  Container_nux: {
+  View_ContentContainer: {
     flex: 3,
     justifyContent: 'center',
     marginTop: 20
-  },
-  IconButton_not: {
-    paddingRight: 0
-  },
-  ProgressBar_nj7: {
-    width: 250,
-    height: 7,
-    paddingRight: 0,
-    marginRight: 0
   },
   Root_ne0: {
     justifyContent: 'space-between'

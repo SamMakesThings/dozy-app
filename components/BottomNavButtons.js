@@ -3,6 +3,8 @@ import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { Container, Button } from '@draftbit/ui';
 
+// A catch-all component for buttons on the bottom of a screen.
+// TODO: Replace bottomGreyButton calls with buttonValues
 const BottomNavButtons = (props) => {
   const { theme, bottomBackButton, bbbDisabled } = props;
 
@@ -15,6 +17,25 @@ const BottomNavButtons = (props) => {
       elevation={0}
       useThemeGutterPadding={true}
     >
+      {props.buttonValues &&
+        props.buttonValues.map((val) => {
+          const { label, value, solidColor } = val;
+          return (
+            <Button
+              key={value}
+              style={{ ...theme.buttonLayout, ...styles.Button_Default }}
+              type={solidColor ? 'solid' : 'outline'}
+              color={solidColor ? theme.colors.primary : theme.colors.secondary}
+              loading={false}
+              disabled={false}
+              onPress={() => {
+                props.onQuestionSubmit(value);
+              }}
+            >
+              {label}
+            </Button>
+          );
+        })}
       <Button
         style={{
           ...theme.buttonLayout,
@@ -72,9 +93,12 @@ const BottomNavButtons = (props) => {
 };
 
 const styles = StyleSheet.create({
+  Button_Default: {
+    marginTop: scale(5)
+  },
   Button_Continue: {
     paddingTop: 0,
-    marginTop: scale(8)
+    marginTop: scale(5)
   },
   View_ButtonContainer: {
     marginBottom: scale(15)
