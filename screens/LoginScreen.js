@@ -8,7 +8,7 @@ import {
   Touchable
 } from '@draftbit/ui';
 import { StyleSheet, Text } from 'react-native';
-import { scale } from 'react-native-size-matters';
+import { scale, verticalScale } from 'react-native-size-matters';
 import Images from '../config/Images';
 import { AuthContext } from '../utilities/authContext';
 import { slumber_theme } from '../config/Themes';
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   Image_FeaturedBed: {
     width: '60%',
     alignSelf: 'center',
-    height: '40%'
+    height: verticalScale(200)
   },
   Image_Wordmark: {
     alignSelf: 'flex-start',
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   Text_Hero2: {
     textAlign: 'center',
-    marginBottom: scale(35)
+    marginBottom: verticalScale(40)
   },
   View_ButtonsContainer: {
     justifyContent: 'flex-end'
