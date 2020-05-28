@@ -64,6 +64,7 @@ export const WakeCountInput = ({ navigation }) => {
   );
 };
 
+// TODO: Skip this question if the answer to the previous one was zero
 export const NightMinsAwakeInput = ({ navigation }) => {
   return (
     <NumInputScreen

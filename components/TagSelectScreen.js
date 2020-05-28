@@ -7,7 +7,7 @@ import {
   TextInput,
   KeyboardAvoidingView
 } from 'react-native';
-import { withTheme, ScreenContainer, Container, Button } from '@draftbit/ui';
+import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import '@firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import Intl from 'intl';
@@ -122,7 +122,7 @@ const TagSelectScreen = (props) => {
       </KeyboardAvoidingView>
       <BottomNavButtons
         theme={theme}
-        onPress={props.onFormSubmit}
+        onPress={() => props.onFormSubmit({ notes: notes, tags: selectedTags })}
         buttonLabel="Finish"
       />
     </ScreenContainer>
