@@ -84,6 +84,7 @@ export const TreatmentScreen = () => {
                 <MaterialIcons
                   name={'check-box-outline-blank'}
                   size={scale(18)}
+                  color={theme.colors.secondary}
                 />
                 <Text
                   style={{ ...theme.typography.body2, ...styles.Text_TodoItem }}
@@ -159,6 +160,10 @@ const styles = StyleSheet.create({
     color: slumber_theme.colors.secondary,
     opacity: 0.6,
     lineHeight: scale(14)
+  },
+  Text_TodoItem: {
+    color: slumber_theme.colors.secondary,
+    marginLeft: scale(8)
   },
   Icon_Clipboard: {
     margin: scale(20)
