@@ -75,6 +75,11 @@ export const slumber_theme = {
       lineHeight: scale(24),
       fontFamily: 'RubikMedium'
     },
+    cardTitle: {
+      fontSize: scale(20),
+      lineHeight: scale(26),
+      fontFamily: 'RubikMedium'
+    },
     overline: {
       fontSize: scale(12),
       lineHeight: scale(16),
