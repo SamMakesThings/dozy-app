@@ -1,14 +1,9 @@
 import React from 'react';
-import {
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground
-} from 'react-native';
-import { withTheme, ScreenContainer, Container, Icon } from '@draftbit/ui';
-import { scale, verticalScale } from 'react-native-size-matters';
-import { Entypo, MaterialIcons } from '@expo/vector-icons';
+import { StyleSheet, Text, View } from 'react-native';
+import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
+import { scale } from 'react-native-size-matters';
+import { MaterialIcons } from '@expo/vector-icons';
+import { LinkCard } from '../components/LinkCard';
 import { slumber_theme } from '../config/Themes';
 import Images from '../config/Images';
 
@@ -47,38 +42,12 @@ export const TreatmentScreen = () => {
             </Text>
           </View>
           <View style={styles.View_CardContentContainer}>
-            <View style={styles.View_ContentLinkCard}>
-              <ImageBackground
-                source={Images.WomanInBed}
-                style={styles.Image_ContentLinkBackground}
-              >
-                <View style={styles.View_CardLinkImageOverlay}>
-                  <View style={{ maxWidth: '90%' }}>
-                    <Text
-                      style={{
-                        ...theme.typography.body1,
-                        ...styles.Text_ContentLinkTitle
-                      }}
-                    >
-                      Stimulus Control Therapy & SRT
-                    </Text>
-                    <Text
-                      style={{
-                        ...theme.typography.body1,
-                        ...styles.Text_ContentLinkSubtitle
-                      }}
-                    >
-                      Training your brain to sleep in bed
-                    </Text>
-                  </View>
-                  <Entypo
-                    name={'chevron-right'}
-                    size={scale(25)}
-                    color={theme.colors.secondary}
-                  />
-                </View>
-              </ImageBackground>
-            </View>
+            <LinkCard
+              bgImage={Images.WomanInBed}
+              titleLabel="Stimulus Control Therapy & SRT"
+              subtitleLabel="Training your brain to sleep in bed"
+              onPress={() => console.log('Pressed the link card')}
+            />
             <View style={styles.View_TodoContainer}>
               <View style={styles.View_TodoItem}>
                 <MaterialIcons
@@ -116,29 +85,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  View_ContentLinkCard: {
-    height: scale(80),
-    borderRadius: slumber_theme.borderRadius.global,
-    overflow: 'hidden'
-  },
-  View_CardLinkImageOverlay: {
-    backgroundColor: 'rgba(64, 75, 105, 0.8)',
-    width: '100%',
-    height: '100%',
-    padding: scale(6),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
   View_TodoItem: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
-  },
-  Image_ContentLinkBackground: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center'
   },
   Text_CardTitle: {
@@ -149,17 +98,6 @@ const styles = StyleSheet.create({
     fontSize: scale(17),
     color: slumber_theme.colors.secondary,
     opacity: 0.5
-  },
-  Text_ContentLinkTitle: {
-    fontSize: scale(15),
-    fontFamily: 'RubikMedium',
-    color: slumber_theme.colors.secondary
-  },
-  Text_ContentLinkSubtitle: {
-    fontSize: scale(15),
-    color: slumber_theme.colors.secondary,
-    opacity: 0.6,
-    lineHeight: scale(14)
   },
   Text_TodoItem: {
     color: slumber_theme.colors.secondary,
