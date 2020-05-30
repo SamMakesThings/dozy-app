@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
-import { MaterialIcons } from '@expo/vector-icons';
 import { LinkCard } from '../components/LinkCard';
+import { TodoItem } from '../components/TodoItem';
 import { slumber_theme } from '../config/Themes';
 import Images from '../config/Images';
 
@@ -43,24 +43,19 @@ export const TreatmentScreen = () => {
           </View>
           <View style={styles.View_CardContentContainer}>
             <LinkCard
+              style={styles.ItemMargin}
               bgImage={Images.WomanInBed}
               titleLabel="Stimulus Control Therapy & SRT"
               subtitleLabel="Training your brain to sleep in bed"
               onPress={() => console.log('Pressed the link card')}
             />
-            <View style={styles.View_TodoContainer}>
-              <View style={styles.View_TodoItem}>
-                <MaterialIcons
-                  name={'check-box-outline-blank'}
-                  size={scale(18)}
-                  color={theme.colors.secondary}
-                />
-                <Text
-                  style={{ ...theme.typography.body2, ...styles.Text_TodoItem }}
-                >
-                  Avoid electronics for an hour before bed
-                </Text>
-              </View>
+            <View
+              style={{ ...styles.ItemMargin, ...styles.View_TodoContainer }}
+            >
+              <TodoItem
+                completed={false}
+                label="Avoid electronics for an hour before bed"
+              />
             </View>
           </View>
         </View>
@@ -70,6 +65,9 @@ export const TreatmentScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  ItemMargin: {
+    marginTop: 11
+  },
   View_ContentContainer: {
     justifyContent: 'flex-start',
     alignItems: 'center'
@@ -77,17 +75,12 @@ const styles = StyleSheet.create({
   View_CardContainer: {
     backgroundColor: slumber_theme.colors.medium,
     width: '92%',
-    padding: scale(15),
+    padding: scale(12),
     borderRadius: slumber_theme.borderRadius.global
   },
   View_CardHeaderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  View_TodoItem: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   Text_CardTitle: {
@@ -98,10 +91,6 @@ const styles = StyleSheet.create({
     fontSize: scale(17),
     color: slumber_theme.colors.secondary,
     opacity: 0.5
-  },
-  Text_TodoItem: {
-    color: slumber_theme.colors.secondary,
-    marginLeft: scale(8)
   },
   Icon_Clipboard: {
     margin: scale(20)

@@ -14,7 +14,7 @@ import { slumber_theme } from '../config/Themes';
 export const LinkCard = (props) => {
   const theme = slumber_theme;
   return (
-    <View style={styles.View_ContentLinkCard}>
+    <View style={{ ...props.style, ...styles.View_ContentLinkCard }}>
       <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
         <ImageBackground
           source={props.bgImage}
