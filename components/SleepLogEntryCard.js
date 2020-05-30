@@ -3,14 +3,16 @@ import { Text } from 'react-native';
 import { Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
 import '@firebase/firestore';
+import { scale } from 'react-native-size-matters';
 import { slumber_theme } from '../config/Themes';
+import HighlightedTime from '../components/HighlightedTime';
 
 const SleepLogEntryCard = (props) => {
   const theme = slumber_theme;
   return (
     <Container
       style={{
-        marginTop: 20
+        marginTop: scale(18)
       }}
       elevation={0}
       useThemeGutterPadding={false}
@@ -18,8 +20,8 @@ const SleepLogEntryCard = (props) => {
       <Container
         style={{
           paddingLeft: 0,
-          marginLeft: 28,
-          marginBottom: 2
+          marginLeft: scale(24),
+          marginBottom: scale(2)
         }}
         elevation={0}
         useThemeGutterPadding={false}
@@ -43,10 +45,10 @@ const SleepLogEntryCard = (props) => {
       </Container>
       <Container
         style={{
-          minHeight: 200,
+          minHeight: scale(170),
           alignContent: 'flex-start',
           flexDirection: 'row',
-          paddingVertical: 10,
+          paddingVertical: scale(9),
           borderRadius: theme.borderRadius.global,
           overflow: 'hidden'
         }}
@@ -63,44 +65,20 @@ const SleepLogEntryCard = (props) => {
           elevation={0}
           useThemeGutterPadding={false}
         >
-          <Container
-            style={{
-              width: '94%',
-              alignSelf: 'flex-start',
-              marginHorizontal: 0,
-              borderRadius: theme.borderRadius.button,
-              overflow: 'hidden'
-            }}
-            elevation={0}
-            backgroundColor={theme.colors.primary}
-            useThemeGutterPadding={false}
-          >
-            <Text
-              style={[
-                theme.typography.smallLabel,
-                {
-                  color: theme.colors.secondary,
-                  textAlign: 'center',
-
-                  width: '100%',
-                  paddingVertical: 8,
-                  paddingHorizontal: 2
-                }
-              ]}
-            >
-              {props.sleepLog.bedTime.toDate().toLocaleString('en-US', {
-                hour: 'numeric',
-                minute: 'numeric'
-              })}
-            </Text>
-          </Container>
+          <HighlightedTime
+            textColor={theme.colors.secondary}
+            label={props.sleepLog.bedTime.toDate().toLocaleString('en-US', {
+              hour: 'numeric',
+              minute: 'numeric'
+            })}
+            bgColor={theme.colors.primary}
+          />
           <Text
             style={{
               color: theme.colors.light,
               textAlign: 'center',
-
               width: '100%',
-              paddingLeft: 50,
+              paddingLeft: scale(42),
               paddingTop: 1,
               paddingBottom: 0
             }}
@@ -114,10 +92,9 @@ const SleepLogEntryCard = (props) => {
             style={{
               color: theme.colors.light,
               textAlign: 'center',
-
               width: '100%',
-              paddingLeft: 50,
-              paddingTop: 12,
+              paddingLeft: scale(42),
+              paddingTop: scale(10),
               marginLeft: 0
             }}
           >
@@ -126,43 +103,21 @@ const SleepLogEntryCard = (props) => {
               .toLocaleString('en-US', { hour: 'numeric', minute: 'numeric' })
               .slice(0, -3)}
           </Text>
-          <Container
-            style={{
-              width: '94%',
-              alignSelf: 'flex-start',
-              borderRadius: theme.borderRadius.button,
-              overflow: 'hidden'
-            }}
-            elevation={0}
-            backgroundColor={theme.colors.secondary}
-            useThemeGutterPadding={false}
-          >
-            <Text
-              style={[
-                theme.typography.smallLabel,
-                {
-                  color: theme.colors.primary,
-                  textAlign: 'center',
-
-                  width: '100%',
-                  paddingVertical: 8,
-                  paddingHorizontal: 2
-                }
-              ]}
-            >
-              {props.sleepLog.upTime.toDate().toLocaleString('en-US', {
-                hour: 'numeric',
-                minute: 'numeric'
-              })}
-            </Text>
-          </Container>
+          <HighlightedTime
+            textColor={theme.colors.primary}
+            label={props.sleepLog.upTime.toDate().toLocaleString('en-US', {
+              hour: 'numeric',
+              minute: 'numeric'
+            })}
+            bgColor={theme.colors.secondary}
+          />
         </Container>
         <Container
           style={{
             width: '27%',
             justifyContent: 'space-between',
             alignItems: 'space-between',
-            paddingVertical: 8
+            paddingVertical: scale(7)
           }}
           elevation={0}
           useThemeGutterPadding={false}
@@ -173,7 +128,6 @@ const SleepLogEntryCard = (props) => {
               {
                 color: theme.colors.light,
                 textAlign: 'left',
-
                 width: '100%'
               }
             ]}
@@ -186,7 +140,6 @@ const SleepLogEntryCard = (props) => {
               {
                 color: theme.colors.light,
                 textAlign: 'left',
-
                 width: '100%'
               }
             ]}
@@ -199,7 +152,6 @@ const SleepLogEntryCard = (props) => {
               {
                 color: theme.colors.light,
                 textAlign: 'left',
-
                 width: '100%'
               }
             ]}
@@ -253,7 +205,7 @@ const SleepLogEntryCard = (props) => {
 
                 width: '100%',
                 paddingTop: 0,
-                marginTop: 20
+                marginTop: scale(19)
               }
             ]}
           >
@@ -269,7 +221,7 @@ const SleepLogEntryCard = (props) => {
                 width: '100%',
                 paddingBottom: 0,
                 marginTop: 0,
-                marginBottom: 17,
+                marginBottom: scale(16),
                 bottom: 0,
                 position: 'absolute'
               }
