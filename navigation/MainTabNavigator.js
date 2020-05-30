@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import TabBarIcon from '../components/TabBarIcon';
 import DiaryScreen from '../screens/DiaryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import Treatment from '../screens/TreatmentScreen';
+import { TreatmentScreen } from '../screens/TreatmentScreen';
 
 /*
 const HomeStack = createStackNavigator({
@@ -51,7 +51,7 @@ export default function BottomTabs() {
       {/* Main treatment info & check-in screen */}
       <Tab.Screen
         name="Home"
-        component={Treatment}
+        component={TreatmentScreen}
         options={{
           tabBarLabel: 'Home',
           // eslint-disable-next-line react/display-name
