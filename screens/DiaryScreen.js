@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import '@firebase/firestore';
 import { Entypo } from '@expo/vector-icons';
 import Intl from 'intl';
+import { scale } from 'react-native-size-matters';
 import SleepLogEntryCard from '../components/SleepLogEntryCard';
 import { FbLib } from '../config/firebaseConfig';
 import { slumber_theme } from '../config/Themes';
@@ -35,7 +36,7 @@ const SleepLogsView = (props) => {
           type="solid"
           color={theme.colors.primary}
           style={{
-            marginTop: 35
+            marginTop: scale(30)
           }}
           onPress={() => props.logEntryRedirect()}
         >
@@ -45,8 +46,8 @@ const SleepLogsView = (props) => {
           size="large"
           color={theme.colors.primary}
           style={{
-            width: 50,
-            height: 50,
+            width: scale(45),
+            height: scale(45),
             marginTop: '45%',
             alignSelf: 'center'
           }}
@@ -63,7 +64,7 @@ const SleepLogsView = (props) => {
             type="solid"
             color={theme.colors.primary}
             style={{
-              marginTop: 35
+              marginTop: scale(31)
             }}
             onPress={() => props.logEntryRedirect()}
           >
@@ -72,14 +73,14 @@ const SleepLogsView = (props) => {
         </View>
         <View
           style={{
-            height: 350,
+            height: scale(325),
             justifyContent: 'center',
             alignItems: 'center'
           }}
         >
           <Entypo
             name={'arrow-with-circle-up'}
-            size={56}
+            size={scale(51)}
             color={theme.colors.medium}
           />
           <Text
@@ -89,8 +90,8 @@ const SleepLogsView = (props) => {
                 color: theme.colors.medium,
                 textAlign: 'center',
                 width: '100%',
-                fontSize: 18,
-                marginTop: 20
+                fontSize: scale(16),
+                marginTop: scale(17)
               }
             ]}
           >
@@ -110,7 +111,7 @@ const SleepLogsView = (props) => {
           color={theme.colors.primary}
           style={{
             ...theme.buttonLayout,
-            marginTop: 35
+            marginTop: scale(31)
           }}
           onPress={() => props.logEntryRedirect()}
         >
@@ -211,7 +212,7 @@ class Root extends React.Component {
                   textAlign: 'center',
 
                   width: '100%',
-                  marginTop: 30
+                  marginTop: scale(26)
                 }
               ]}
             >
@@ -224,7 +225,7 @@ class Root extends React.Component {
             isLoading={this.state.logsLoading}
             sleepLogs={this.state.sleepLogs}
             logEntryRedirect={this.goToLogEntry}
-          ></SleepLogsView>
+          />
         </Container>
       </ScreenContainer>
     );

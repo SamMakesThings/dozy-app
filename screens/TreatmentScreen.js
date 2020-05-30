@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
+import { Entypo } from '@expo/vector-icons';
 import { LinkCard } from '../components/LinkCard';
 import { TodoItem } from '../components/TodoItem';
 import { CardContainer } from '../components/CardContainer';
@@ -86,7 +87,7 @@ export const TreatmentScreen = () => {
             </Text>
           </View>
           <View style={styles.View_CardContentContainer}>
-            <View style={styles.View_TargetSchedule}>
+            <View style={styles.View_CenteredRowContainer}>
               <CrescentMoon width={scale(30)} height={scale(30)} />
               <View style={styles.View_TimeContainer}>
                 <Text
@@ -123,6 +124,45 @@ export const TreatmentScreen = () => {
             </View>
           </View>
         </CardContainer>
+        <CardContainer>
+          <View style={styles.View_CardHeaderContainer}>
+            <View
+              style={{
+                ...styles.View_CardHeaderContainer,
+                flexDirection: 'column',
+                alignItems: 'flex-start'
+              }}
+            >
+              <Text
+                style={{
+                  ...theme.typography.cardTitle,
+                  ...styles.Text_CardTitle
+                }}
+              >
+                My treatment plan
+              </Text>
+              <Text
+                style={{
+                  ...theme.typography.body2,
+                  ...styles.Text_CardSubtitle
+                }}
+              >
+                Next weekly checkin: May 28
+              </Text>
+            </View>
+            <Entypo
+              name={'chevron-right'}
+              size={scale(28)}
+              color={theme.colors.secondary}
+            />
+          </View>
+          <View style={styles.View_CardContentContainer}>
+            <View style={styles.View_CenteredRowContainer}>
+              <Text>Progbar</Text>
+              <Text>TimeIndicator</Text>
+            </View>
+          </View>
+        </CardContainer>
       </View>
     </ScreenContainer>
   );
@@ -141,7 +181,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  View_TargetSchedule: {
+  View_CenteredRowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
