@@ -4,6 +4,7 @@ import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { LinkCard } from '../components/LinkCard';
 import { TodoItem } from '../components/TodoItem';
+import { CardContainer } from '../components/CardContainer';
 import { slumber_theme } from '../config/Themes';
 import Images from '../config/Images';
 import CrescentMoon from '../assets/images/CrescentMoon.svg';
@@ -25,7 +26,7 @@ export const TreatmentScreen = () => {
           size={scale(80)}
           color={theme.colors.primary}
         />
-        <View style={styles.View_CardContainer}>
+        <CardContainer>
           <View style={styles.View_CardHeaderContainer}>
             <Text
               style={{
@@ -61,8 +62,8 @@ export const TreatmentScreen = () => {
               />
             </View>
           </View>
-        </View>
-        <View style={styles.View_CardContainer}>
+        </CardContainer>
+        <CardContainer>
           <View
             style={{
               ...styles.View_CardHeaderContainer,
@@ -121,7 +122,7 @@ export const TreatmentScreen = () => {
               <YellowSun width={scale(30)} height={scale(30)} />
             </View>
           </View>
-        </View>
+        </CardContainer>
       </View>
     </ScreenContainer>
   );
@@ -134,13 +135,6 @@ const styles = StyleSheet.create({
   View_ContentContainer: {
     justifyContent: 'flex-start',
     alignItems: 'center'
-  },
-  View_CardContainer: {
-    backgroundColor: slumber_theme.colors.medium,
-    width: '92%',
-    padding: scale(12),
-    borderRadius: slumber_theme.borderRadius.global,
-    marginBottom: scale(15)
   },
   View_CardHeaderContainer: {
     flexDirection: 'row',
