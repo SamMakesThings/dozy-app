@@ -11,7 +11,8 @@ const HighlightedText = (props) => {
     <Container
       style={{
         ...styles.View_Container,
-        borderRadius: theme.borderRadius.button
+        borderRadius: theme.borderRadius.button,
+        ...props.style
       }}
       elevation={0}
       backgroundColor={props.bgColor}
@@ -32,7 +33,7 @@ const HighlightedText = (props) => {
 
 const styles = StyleSheet.create({
   View_Container: {
-    width: '94%',
+    maxWidth: '94%',
     alignSelf: 'flex-start',
     marginHorizontal: 0,
     overflow: 'hidden'

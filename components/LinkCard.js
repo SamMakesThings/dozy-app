@@ -20,7 +20,14 @@ export const LinkCard = (props) => {
           source={props.bgImage}
           style={styles.Image_ContentLinkBackground}
         >
-          <View style={styles.View_CardLinkImageOverlay}>
+          <View
+            style={{
+              ...styles.View_CardLinkImageOverlay,
+              backgroundColor: props.overlayColor
+                ? props.overlayColor
+                : 'rgba(64, 75, 105, 0.8)'
+            }}
+          >
             <View style={{ maxWidth: '90%' }}>
               <Text
                 style={{
@@ -58,7 +65,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   View_CardLinkImageOverlay: {
-    backgroundColor: 'rgba(64, 75, 105, 0.8)',
     width: '100%',
     height: '100%',
     padding: scale(6),

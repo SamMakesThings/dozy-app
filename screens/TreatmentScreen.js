@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { withTheme, ScreenContainer, Icon, ProgressBar } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { LinkCard } from '../components/LinkCard';
 import { TodoItem } from '../components/TodoItem';
 import { CardContainer } from '../components/CardContainer';
+import HighlightedText from '../components/HighlightedText';
 import { slumber_theme } from '../config/Themes';
 import Images from '../config/Images';
 import CrescentMoon from '../assets/images/CrescentMoon.svg';
@@ -17,7 +18,7 @@ export const TreatmentScreen = () => {
   return (
     <ScreenContainer
       hasSafeArea={true}
-      scrollable={false}
+      scrollable={true}
       style={styles.Root_n5}
     >
       <View style={styles.View_ContentContainer}>
@@ -125,44 +126,87 @@ export const TreatmentScreen = () => {
           </View>
         </CardContainer>
         <CardContainer>
-          <View style={styles.View_CardHeaderContainer}>
-            <View
-              style={{
-                ...styles.View_CardHeaderContainer,
-                flexDirection: 'column',
-                alignItems: 'flex-start'
-              }}
-            >
-              <Text
+          <TouchableOpacity
+            style={{ flex: 1 }}
+            onPress={() => console.log('Pressed Treatment plan')}
+          >
+            <View style={styles.View_CardHeaderContainer}>
+              <View
                 style={{
-                  ...theme.typography.cardTitle,
-                  ...styles.Text_CardTitle
+                  ...styles.View_CardHeaderContainer,
+                  flexDirection: 'column',
+                  alignItems: 'flex-start'
                 }}
               >
-                My treatment plan
-              </Text>
-              <Text
+                <Text
+                  style={{
+                    ...theme.typography.cardTitle,
+                    ...styles.Text_CardTitle
+                  }}
+                >
+                  My treatment plan
+                </Text>
+                <Text
+                  style={{
+                    ...theme.typography.body2,
+                    ...styles.Text_CardSubtitle
+                  }}
+                >
+                  Next weekly checkin: May 28
+                </Text>
+              </View>
+              <Entypo
+                name={'chevron-right'}
+                size={scale(28)}
+                color={theme.colors.secondary}
+              />
+            </View>
+            <View style={styles.View_CardContentContainer}>
+              <View
                 style={{
-                  ...theme.typography.body2,
-                  ...styles.Text_CardSubtitle
+                  ...styles.View_CenteredRowContainer,
+                  marginTop: scale(12)
                 }}
               >
-                Next weekly checkin: May 28
-              </Text>
+                <View>
+                  <ProgressBar
+                    style={styles.ProgressBar}
+                    color={theme.colors.secondary}
+                    progress={0.4}
+                    borderWidth={0}
+                    borderRadius={scale(9)}
+                    animationType="spring"
+                    unfilledColor={theme.colors.background}
+                  />
+                </View>
+                <HighlightedText
+                  label="33% done"
+                  textColor={theme.colors.primary}
+                  bgColor={theme.colors.secondary}
+                  style={{ maxWidth: '32%' }}
+                />
+              </View>
             </View>
-            <Entypo
-              name={'chevron-right'}
-              size={scale(28)}
-              color={theme.colors.secondary}
-            />
-          </View>
-          <View style={styles.View_CardContentContainer}>
-            <View style={styles.View_CenteredRowContainer}>
-              <Text>Progbar</Text>
-              <Text>TimeIndicator</Text>
-            </View>
-          </View>
+          </TouchableOpacity>
         </CardContainer>
+        <View style={styles.View_NoCard}>
+          <Text
+            style={{
+              ...theme.typography.cardTitle,
+              ...styles.Text_CardTitle
+            }}
+          >
+            Previous modules
+          </Text>
+          <LinkCard
+            style={styles.ItemMargin}
+            bgImage={Images.WomanInBed}
+            titleLabel="Muscle Relaxation w/PMR"
+            subtitleLabel="Relaxing muscles to relax the mind"
+            onPress={() => console.log('Pressed the link card')}
+            overlayColor={'rgba(0, 129, 138, 0.8)'}
+          />
+        </View>
       </View>
     </ScreenContainer>
   );
@@ -190,6 +234,11 @@ const styles = StyleSheet.create({
   View_TimeContainer: {
     marginTop: scale(8)
   },
+  View_NoCard: {
+    width: '92%',
+    marginTop: scale(15),
+    marginBottom: scale(15)
+  },
   Text_CardTitle: {
     color: slumber_theme.colors.secondary
   },
@@ -215,6 +264,9 @@ const styles = StyleSheet.create({
     color: slumber_theme.colors.secondary,
     opacity: 0.5,
     marginTop: scale(-6)
+  },
+  ProgressBar: {
+    width: scale(185)
   },
   Icon_Clipboard: {
     margin: scale(20)
