@@ -5,7 +5,7 @@ import '@firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import { slumber_theme } from '../config/Themes';
 
-const HighlightedTime = (props) => {
+const HighlightedText = (props) => {
   const theme = slumber_theme;
   return (
     <Container
@@ -45,4 +45,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HighlightedTime;
+export default HighlightedText;

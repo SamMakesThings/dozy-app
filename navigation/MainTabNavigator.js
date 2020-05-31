@@ -8,15 +8,6 @@ import DiaryScreen from '../screens/DiaryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import { TreatmentScreen } from '../screens/TreatmentScreen';
 
-/*
-const HomeStack = createStackNavigator({
-  Home: DiaryScreen,
-},
-{
-  headerMode: 'screen',
-  cardStyle: { backgroundColor: '#222222' },
-}); */
-
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import '@firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import { slumber_theme } from '../config/Themes';
-import HighlightedTime from '../components/HighlightedTime';
+import HighlightedText from './HighlightedText';
 
 const SleepLogEntryCard = (props) => {
   const theme = slumber_theme;
@@ -65,7 +65,7 @@ const SleepLogEntryCard = (props) => {
           elevation={0}
           useThemeGutterPadding={false}
         >
-          <HighlightedTime
+          <HighlightedText
             textColor={theme.colors.secondary}
             label={props.sleepLog.bedTime.toDate().toLocaleString('en-US', {
               hour: 'numeric',
@@ -103,7 +103,7 @@ const SleepLogEntryCard = (props) => {
               .toLocaleString('en-US', { hour: 'numeric', minute: 'numeric' })
               .slice(0, -3)}
           </Text>
-          <HighlightedTime
+          <HighlightedText
             textColor={theme.colors.primary}
             label={props.sleepLog.upTime.toDate().toLocaleString('en-US', {
               hour: 'numeric',
