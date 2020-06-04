@@ -79,11 +79,14 @@ export default function App() {
       // on these keys through the Google Cloud Console.
       const result = await Google.logInAsync({
         // TODO: Move these client IDs to the manifest or another file for cleaner code.
-        // TODO: Add standaloneAndroidClientId and iosStandaloneClientId
         androidClientId:
           '713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com',
         iosClientId:
           '713165282203-fr943kvhd9rbst5i5ss4g3htgjho143a.apps.googleusercontent.com',
+        standaloneAndroidClientId:
+          '713165282203-15rbcpiu517fikvak6c9okehpusbk84e.apps.googleusercontent.com',
+        iosStandaloneAppClientId:
+          '713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf.apps.googleusercontent.com',
         scopes: ['profile', 'email']
       });
 
