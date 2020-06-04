@@ -682,8 +682,7 @@ export const DiaryReminder = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
-        // TODO: enable not setting a reminder time
-        GLOBAL.diaryReminderTime = value;
+        value != false ? (GLOBAL.diaryReminderTime = value) : null;
         navigation.navigate('CheckinScheduling', { progressBarPercent: 0.6 });
       }}
       questionLabel="What time do you usually do that? (we'll send you a gentle reminder)"
@@ -701,6 +700,7 @@ export const CheckinScheduling = ({ navigation }) => {
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
       onQuestionSubmit={(value) => {
         // TODO: Add validation to ensure date is far out enough for data colleciton
+        // Another option - wait until 7 sleep logs are collected before allowing continue
         GLOBAL.firstCheckinTime = value;
         navigation.navigate('PaywallPlaceholder', { progressBarPercent: 0.8 });
       }}

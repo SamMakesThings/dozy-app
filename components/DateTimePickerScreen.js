@@ -90,8 +90,12 @@ const DateTimePickerScreen = (props) => {
       </Container>
       <BottomNavButtons
         theme={theme}
-        onPress={() => {
-          props.onQuestionSubmit(selectedTime);
+        onPress={(value) => {
+          if (value == props.bottomGreyButtonLabel) {
+            props.onQuestionSubmit(false);
+          } else {
+            props.onQuestionSubmit(selectedTime);
+          }
         }}
         bottomBackButton={
           props.bottomBackButton ? props.bottomBackButton : null

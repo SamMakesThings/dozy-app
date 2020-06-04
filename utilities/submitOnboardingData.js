@@ -12,6 +12,7 @@ export default async function submitOnboardingData() {
   const healthHistory = {
     pills: GLOBAL.pills,
     snoring: GLOBAL.snoring,
+    rls: GLOBAL.rls,
     parasomnias: GLOBAL.parasomnias,
     otherCondition: GLOBAL.otherCondition
   };
@@ -19,12 +20,14 @@ export default async function submitOnboardingData() {
   userDocRef
     .set({
       healthHistory: healthHistory,
-      reminders: {
-        sleepDiaryReminder: {
-          diaryHabitTrigger: GLOBAL.diaryHabitTrigger,
-          reminderTime: GLOBAL.diaryReminderTime
-        }
-      },
+      reminders: GLOBAL.reminderTime
+        ? {
+            sleepDiaryReminder: {
+              diaryHabitTrigger: GLOBAL.diaryHabitTrigger,
+              reminderTime: GLOBAL.diaryReminderTime
+            }
+          }
+        : {},
       nextCheckin: {
         nextCheckinDatetime: GLOBAL.firstCheckinTime,
         treatmentModule: 'SCTSRT'
