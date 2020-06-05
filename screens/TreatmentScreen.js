@@ -12,6 +12,7 @@ import Images from '../config/Images';
 import CrescentMoon from '../assets/images/CrescentMoon.svg';
 import TransRightArrow from '../assets/images/TransRightArrow.svg';
 import YellowSun from '../assets/images/YellowSun.svg';
+import GLOBAL from '../utilities/global';
 
 export const TreatmentScreen = () => {
   const theme = slumber_theme;
@@ -60,7 +61,7 @@ export const TreatmentScreen = () => {
             >
               <TodoItem
                 completed={false}
-                label="Avoid electronics for an hour before bed"
+                label="Record 7 nights of sleep in your sleep diary"
               />
             </View>
           </View>

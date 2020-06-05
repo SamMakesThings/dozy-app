@@ -31,6 +31,9 @@ export default async function submitOnboardingData() {
       nextCheckin: {
         nextCheckinDatetime: GLOBAL.firstCheckinTime,
         treatmentModule: 'SCTSRT'
+      },
+      currentTreatments: {
+        baselineCollection: true
       }
     })
     .catch(function (error) {
