@@ -69,7 +69,8 @@ export default function App() {
       isLoading: true,
       isSignout: false,
       userToken: null,
-      onboardingComplete: false
+      onboardingComplete: false,
+      profileData: null
     }
   );
 
@@ -159,6 +160,9 @@ export default function App() {
       },
       finishOnboarding: () => {
         dispatch({ type: 'FINISH_ONBOARDING' });
+      },
+      dispatch: (argsObject) => {
+        dispatch(argsObject);
       }
     }),
     []
