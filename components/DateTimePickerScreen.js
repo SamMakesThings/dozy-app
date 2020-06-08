@@ -91,7 +91,7 @@ const DateTimePickerScreen = (props) => {
       <BottomNavButtons
         theme={theme}
         onPress={(value) => {
-          if (value == props.bottomGreyButtonLabel) {
+          if (value && value == props.bottomGreyButtonLabel) {
             props.onQuestionSubmit(false);
           } else {
             props.onQuestionSubmit(selectedTime);
