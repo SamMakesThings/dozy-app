@@ -75,7 +75,11 @@ const NumInputScreen = (props) => {
             enablesReturnKeyAutomatically={true}
             onChangeText={(inputValue) => setSelectedNum(inputValue)}
             onSubmitEditing={(event) => {
-              props.onQuestionSubmit(event.nativeEvent.text);
+              if ((!props.optional && selectedNum < 0) || selectedNum === '') {
+                // TODO: Add a user visible error message saying a value is needed
+              } else {
+                props.onQuestionSubmit(event.nativeEvent.text);
+              }
             }}
           />
         </Container>
