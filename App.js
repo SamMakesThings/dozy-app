@@ -163,7 +163,8 @@ export default function App() {
       },
       dispatch: (argsObject) => {
         dispatch(argsObject);
-      }
+      },
+      state: state
     }),
     []
   );
