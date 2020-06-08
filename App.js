@@ -40,7 +40,8 @@ export default function App() {
             isSignout: false,
             userToken: action.token,
             onboardingComplete: action.onboardingComplete,
-            authLoading: action.isAuthLoading
+            authLoading: action.isAuthLoading,
+            profileData: action.profileData
           };
         case 'SIGN_OUT':
           return {
@@ -130,6 +131,10 @@ export default function App() {
   // Create authContext so relevant functions are available through the app
   const authContext = React.useMemo(
     () => ({
+      dispatch: (argsObject) => {
+        dispatch(argsObject);
+      },
+      state: state,
       signIn: async () => {
         // Fetch and store the relevant auth token
         // TODO: Handle errors if sign in fails
@@ -150,6 +155,7 @@ export default function App() {
             type: 'SIGN_IN',
             token: result.user.uid,
             onboardingComplete: !result.additionalUserInfo.isNewUser,
+            profileData: result.additionalUserInfo.profile,
             isAuthLoading: false
           });
         });
@@ -160,11 +166,7 @@ export default function App() {
       },
       finishOnboarding: () => {
         dispatch({ type: 'FINISH_ONBOARDING' });
-      },
-      dispatch: (argsObject) => {
-        dispatch(argsObject);
-      },
-      state: state
+      }
     }),
     []
   );
