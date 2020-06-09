@@ -49,6 +49,11 @@ export default function App() {
             isSignout: true,
             userToken: null
           };
+        case 'UPDATE_USERDATA':
+          return {
+            ...prevState,
+            userData: action.userData
+          };
         case 'AUTH_LOADING':
           return {
             ...prevState,
@@ -71,7 +76,8 @@ export default function App() {
       isSignout: false,
       userToken: null,
       onboardingComplete: false,
-      profileData: null
+      profileData: null,
+      userData: null
     }
   );
 
@@ -154,6 +160,18 @@ export default function App() {
           profileData: result.additionalUserInfo.profile,
           isAuthLoading: false
         });
+
+        // Update user's data from Firestore db
+        FbLib.firestore()
+          .collection('users')
+          .doc(result.user.uid)
+          .get()
+          .then((userData) => {
+            dispatch({
+              type: 'UPDATE_USERDATA',
+              userData: userData.data()
+            });
+          });
       });
     },
     signOut: () => {
