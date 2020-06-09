@@ -3,8 +3,9 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { withTheme, ScreenContainer, Icon, ProgressBar } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
+import { AuthContext } from '../utilities/authContext';
 import { LinkCard } from '../components/LinkCard';
-import { TodoItem } from '../components/TodoItem';
+import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
 import { CardContainer } from '../components/CardContainer';
 import HighlightedText from '../components/HighlightedText';
 import { slumber_theme } from '../config/Themes';
@@ -12,10 +13,11 @@ import Images from '../config/Images';
 import CrescentMoon from '../assets/images/CrescentMoon.svg';
 import TransRightArrow from '../assets/images/TransRightArrow.svg';
 import YellowSun from '../assets/images/YellowSun.svg';
-import GLOBAL from '../utilities/global';
 
 export const TreatmentScreen = () => {
   const theme = slumber_theme;
+  const { state } = React.useContext(AuthContext);
+
   return (
     <ScreenContainer
       hasSafeArea={true}
@@ -29,43 +31,7 @@ export const TreatmentScreen = () => {
           size={scale(80)}
           color={theme.colors.primary}
         />
-        <CardContainer>
-          <View style={styles.View_CardHeaderContainer}>
-            <Text
-              style={{
-                ...theme.typography.cardTitle,
-                ...styles.Text_CardTitle
-              }}
-            >
-              In progress
-            </Text>
-            <Text
-              style={{
-                ...theme.typography.cardTitle,
-                ...styles.Text_RightSubHeader
-              }}
-            >
-              50% complete
-            </Text>
-          </View>
-          <View style={styles.View_CardContentContainer}>
-            <LinkCard
-              style={styles.ItemMargin}
-              bgImage={Images.WomanInBed}
-              titleLabel="Stimulus Control Therapy & SRT"
-              subtitleLabel="Training your brain to sleep in bed"
-              onPress={() => console.log('Pressed the link card')}
-            />
-            <View
-              style={{ ...styles.ItemMargin, ...styles.View_TodoContainer }}
-            >
-              <TodoItem
-                completed={false}
-                label="Record 7 nights of sleep in your sleep diary"
-              />
-            </View>
-          </View>
-        </CardContainer>
+        <CurrentTreatmentsCard />
         <CardContainer>
           <View
             style={{
