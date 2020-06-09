@@ -76,8 +76,7 @@ export default function App() {
       isSignout: false,
       userToken: null,
       onboardingComplete: false,
-      profileData: null,
-      userData: null
+      profileData: null
     }
   );
 
@@ -129,6 +128,18 @@ export default function App() {
 
       // TODO: Add token validation
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+
+      // Update user's data from Firestore db
+      FbLib.firestore()
+        .collection('users')
+        .doc(userToken)
+        .get()
+        .then((userData) => {
+          dispatch({
+            type: 'UPDATE_USERDATA',
+            userData: userData.data()
+          });
+        });
     };
 
     bootstrapAsync();
