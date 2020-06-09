@@ -6,11 +6,26 @@ import { LinkCard } from './LinkCard';
 import { TodoItem } from './TodoItem';
 import { CardContainer } from './CardContainer';
 import { slumber_theme } from '../config/Themes';
-import Images from '../config/Images';
+import treatments from '../constants/Treatments';
 
 const CurrentTreatmentsCard = () => {
   const theme = slumber_theme;
   const { state } = React.useContext(AuthContext);
+
+  // Get the correct copy & image based on currentModule treatment code
+  const { title, subTitle, image } = treatments[
+    state.userData.currentTreatments.currentModule
+  ];
+
+  // Compute current module's progress percent based on dates
+  const progressPercent = ~~(
+    (100 *
+      (state.userData.nextCheckin.checkinDatetime.toDate().getTime() -
+        Date.now())) /
+    (state.userData.nextCheckin.checkinDatetime.toDate().getTime() -
+      state.userData.currentTreatments.lastCheckinDatetime.toDate().getTime())
+  );
+
   return (
     <CardContainer>
       <View style={styles.View_CardHeaderContainer}>
@@ -28,18 +43,15 @@ const CurrentTreatmentsCard = () => {
             ...styles.Text_RightSubHeader
           }}
         >
-          50% complete
+          {progressPercent}% complete
         </Text>
       </View>
       <View style={styles.View_CardContentContainer}>
         <LinkCard
           style={styles.ItemMargin}
-          bgImage={Images.WomanInBed}
-          titleLabel={
-            state.userData.currentTreatments
-              .currentModule /*"Stimulus Control Therapy & SRT"*/
-          }
-          subtitleLabel="Training your brain to sleep in bed"
+          bgImage={image}
+          titleLabel={title}
+          subtitleLabel={subTitle}
           onPress={() => console.log('Pressed the link card')}
         />
         <View style={{ ...styles.ItemMargin, ...styles.View_TodoContainer }}>
