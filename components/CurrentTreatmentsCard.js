@@ -55,10 +55,14 @@ const CurrentTreatmentsCard = () => {
           onPress={() => console.log('Pressed the link card')}
         />
         <View style={{ ...styles.ItemMargin, ...styles.View_TodoContainer }}>
-          <TodoItem
-            completed={false}
-            label="Record 7 nights of sleep in your sleep diary"
-          />
+          {
+            // Pull todos from treatments object, map them out
+            treatments[
+              state.userData.currentTreatments.currentModule
+            ].todos.map((todo) => {
+              return <TodoItem key={todo} completed={false} label={todo} />;
+            })
+          }
         </View>
       </View>
     </CardContainer>
