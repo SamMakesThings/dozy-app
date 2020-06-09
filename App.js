@@ -129,47 +129,41 @@ export default function App() {
   }, []);
 
   // Create authContext so relevant functions are available through the app
-  const authContext = React.useMemo(
-    () => ({
-      dispatch: (argsObject) => {
-        dispatch(argsObject);
-      },
-      state: state,
-      signIn: async () => {
-        // Fetch and store the relevant auth token
-        // TODO: Handle errors if sign in fails
+  const authContext = {
+    dispatch: (argsObject) => {
+      dispatch(argsObject);
+    },
+    state: state,
+    signIn: async () => {
+      // Fetch and store the relevant auth token
+      // TODO: Handle errors if sign in fails
 
-        // Use my previously defined login function to get user data and store the token
-        _loginWithGoogle().then((result) => {
-          // Store credentials in SecureStore
-          SecureStore.setItemAsync(
-            'accessToken',
-            result.credential.accessToken
-          );
-          SecureStore.setItemAsync('idToken', result.credential.idToken);
-          SecureStore.setItemAsync('providerId', result.credential.providerId);
-          SecureStore.setItemAsync('userId', result.user.uid);
+      // Use my previously defined login function to get user data and store the token
+      _loginWithGoogle().then((result) => {
+        // Store credentials in SecureStore
+        SecureStore.setItemAsync('accessToken', result.credential.accessToken);
+        SecureStore.setItemAsync('idToken', result.credential.idToken);
+        SecureStore.setItemAsync('providerId', result.credential.providerId);
+        SecureStore.setItemAsync('userId', result.user.uid);
 
-          // Update app state accordingly thru context hook function
-          dispatch({
-            type: 'SIGN_IN',
-            token: result.user.uid,
-            onboardingComplete: !result.additionalUserInfo.isNewUser,
-            profileData: result.additionalUserInfo.profile,
-            isAuthLoading: false
-          });
+        // Update app state accordingly thru context hook function
+        dispatch({
+          type: 'SIGN_IN',
+          token: result.user.uid,
+          onboardingComplete: !result.additionalUserInfo.isNewUser,
+          profileData: result.additionalUserInfo.profile,
+          isAuthLoading: false
         });
-      },
-      signOut: () => {
-        SecureStore.deleteItemAsync('userId');
-        dispatch({ type: 'SIGN_OUT' });
-      },
-      finishOnboarding: () => {
-        dispatch({ type: 'FINISH_ONBOARDING' });
-      }
-    }),
-    []
-  );
+      });
+    },
+    signOut: () => {
+      SecureStore.deleteItemAsync('userId');
+      dispatch({ type: 'SIGN_OUT' });
+    },
+    finishOnboarding: () => {
+      dispatch({ type: 'FINISH_ONBOARDING' });
+    }
+  };
 
   const _handleLoadingError = (error) => {
     // TODO: Add error reporting here
