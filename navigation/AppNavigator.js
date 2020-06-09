@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { slumber_theme } from '../config/Themes';
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
+import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
 import DiaryEntryNavigator from './DiaryEntryNavigator';
 import OnboardingNavigator from './OnboardingNavigator';
 
@@ -67,6 +68,10 @@ export default function InitialAuthNavigator({
           <TopStack.Screen
             name="App"
             component={BottomTabs /* If logged in, go to the tab navigator */}
+          />
+          <TopStack.Screen
+            name="TreatmentReview"
+            component={TreatmentReviewScreen}
           />
           <TopStack.Screen
             name="SleepDiaryEntry"

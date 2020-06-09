@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../utilities/authContext';
 import { LinkCard } from './LinkCard';
 import { TodoItem } from './TodoItem';
@@ -10,6 +11,7 @@ import treatments from '../constants/Treatments';
 
 const CurrentTreatmentsCard = () => {
   const theme = slumber_theme;
+  const navigation = useNavigation();
   const { state } = React.useContext(AuthContext);
 
   // Get the correct copy & image based on currentModule treatment code
@@ -21,7 +23,11 @@ const CurrentTreatmentsCard = () => {
   const progressPercent = ~~(
     (100 *
       (state.userData.nextCheckin.checkinDatetime.toDate().getTime() -
-        Date.now())) /
+        state.userData.currentTreatments.lastCheckinDatetime
+          .toDate()
+          .getTime() -
+        (state.userData.nextCheckin.checkinDatetime.toDate().getTime() -
+          Date.now()))) /
     (state.userData.nextCheckin.checkinDatetime.toDate().getTime() -
       state.userData.currentTreatments.lastCheckinDatetime.toDate().getTime())
   );
@@ -52,7 +58,10 @@ const CurrentTreatmentsCard = () => {
           bgImage={image}
           titleLabel={title}
           subtitleLabel={subTitle}
-          onPress={() => console.log('Pressed the link card')}
+          onPress={() => {
+            console.log('Pressed the link card');
+            navigation.navigate('TreatmentReview');
+          }}
         />
         <View style={{ ...styles.ItemMargin, ...styles.View_TodoContainer }}>
           {
