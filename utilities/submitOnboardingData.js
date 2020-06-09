@@ -33,7 +33,8 @@ export default async function submitOnboardingData() {
         treatmentModule: 'SCTSRT'
       },
       currentTreatments: {
-        baselineCollection: true
+        baselineCollection: true,
+        currentModule: 'BSL'
       }
     })
     .catch(function (error) {
