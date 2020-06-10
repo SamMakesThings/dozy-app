@@ -1,14 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { withTheme, ScreenContainer, Icon, ProgressBar } from '@draftbit/ui';
+import { StyleSheet, Text, View } from 'react-native';
+import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
-import { Entypo } from '@expo/vector-icons';
 import { AuthContext } from '../utilities/authContext';
 import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
 import TargetSleepScheduleCard from '../components/TargetSleepScheduleCard';
-import { CardContainer } from '../components/CardContainer';
-import HighlightedText from '../components/HighlightedText';
+import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
 import { slumber_theme } from '../config/Themes';
 import Images from '../config/Images';
 import treatments from '../constants/Treatments';
@@ -19,7 +17,6 @@ export const TreatmentScreen = ({ navigation }) => {
 
   // Get current treatment module string from state
   const currentModule = state.userData.currentTreatments.currentModule;
-  console.log(treatments[currentModule].title);
 
   // Compute current module's progress percent based on dates
   const nextCheckinTime = state.userData.nextCheckin.checkinDatetime
@@ -32,6 +29,26 @@ export const TreatmentScreen = ({ navigation }) => {
     (100 *
       (nextCheckinTime - lastCheckinTime - (nextCheckinTime - Date.now()))) /
     (nextCheckinTime - lastCheckinTime)
+  );
+
+  // Estimate treatment completion date based on 1 week per module
+  const estModulesRemaining =
+    10 - Object.keys(state.userData.currentTreatments).length;
+  const estCompletionSeconds =
+    new Date().getTime() + estModulesRemaining * 604800000;
+  const estCompletionDate = new Date(estCompletionSeconds).toLocaleString(
+    'en-US',
+    {
+      month: 'short',
+      day: 'numeric'
+    }
+  );
+
+  // Compute progress percent based on above estimate
+  const estCompletionDuration = 10 * 604800000; // 10 modules duration
+  const completionPercentProgress = ~~(
+    (100 * (estCompletionSeconds - Date.now())) /
+    estCompletionDuration
   );
 
   return (
@@ -54,7 +71,6 @@ export const TreatmentScreen = ({ navigation }) => {
           linkImage={treatments[currentModule].image}
           todosArray={treatments[currentModule].todos}
           onPress={() => {
-            console.log('Ya pressed link');
             navigation.navigate('TreatmentReview');
           }}
         />
@@ -85,70 +101,10 @@ export const TreatmentScreen = ({ navigation }) => {
             />
           )
         }
-        <CardContainer>
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => console.log('Pressed Treatment plan')}
-          >
-            <View style={styles.View_CardHeaderContainer}>
-              <View
-                style={{
-                  ...styles.View_CardHeaderContainer,
-                  flexDirection: 'column',
-                  alignItems: 'flex-start'
-                }}
-              >
-                <Text
-                  style={{
-                    ...theme.typography.cardTitle,
-                    ...styles.Text_CardTitle
-                  }}
-                >
-                  My treatment plan
-                </Text>
-                <Text
-                  style={{
-                    ...theme.typography.body2,
-                    ...styles.Text_CardSubtitle
-                  }}
-                >
-                  Next weekly checkin: May 28
-                </Text>
-              </View>
-              <Entypo
-                name={'chevron-right'}
-                size={scale(28)}
-                color={theme.colors.secondary}
-              />
-            </View>
-            <View style={styles.View_CardContentContainer}>
-              <View
-                style={{
-                  ...styles.View_CenteredRowContainer,
-                  marginTop: scale(12)
-                }}
-              >
-                <View>
-                  <ProgressBar
-                    style={styles.ProgressBar}
-                    color={theme.colors.secondary}
-                    progress={0.4}
-                    borderWidth={0}
-                    borderRadius={scale(9)}
-                    animationType="spring"
-                    unfilledColor={theme.colors.background}
-                  />
-                </View>
-                <HighlightedText
-                  label="33% done"
-                  textColor={theme.colors.primary}
-                  bgColor={theme.colors.secondary}
-                  style={{ maxWidth: '32%' }}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </CardContainer>
+        <TreatmentPlanCard
+          estCompletionDate={estCompletionDate}
+          completionPercentProgress={completionPercentProgress}
+        />
         <View style={styles.View_NoCard}>
           <Text
             style={{
@@ -180,17 +136,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center'
   },
-  View_CardHeaderContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  View_CenteredRowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: scale(5)
-  },
   View_NoCard: {
     width: '92%',
     marginTop: scale(15),
@@ -198,14 +143,6 @@ const styles = StyleSheet.create({
   },
   Text_CardTitle: {
     color: slumber_theme.colors.secondary
-  },
-  Text_CardSubtitle: {
-    color: slumber_theme.colors.secondary,
-    opacity: 0.5,
-    marginTop: scale(-5)
-  },
-  ProgressBar: {
-    width: scale(185)
   },
   Icon_Clipboard: {
     margin: scale(20)
