@@ -6,6 +6,7 @@ import { slumber_theme } from '../config/Themes';
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
+import { TreatmentPlanScreen } from '../screens/TreatmentPlanScreen';
 import DiaryEntryNavigator from './DiaryEntryNavigator';
 import OnboardingNavigator from './OnboardingNavigator';
 
@@ -72,6 +73,10 @@ export default function InitialAuthNavigator({
           <TopStack.Screen
             name="TreatmentReview"
             component={TreatmentReviewScreen}
+          />
+          <TopStack.Screen
+            name="TreatmentPlan"
+            component={TreatmentPlanScreen}
           />
           <TopStack.Screen
             name="SleepDiaryEntry"

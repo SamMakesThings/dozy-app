@@ -12,10 +12,7 @@ export const TreatmentPlanCard = (props) => {
 
   return (
     <CardContainer>
-      <TouchableOpacity
-        style={{ flex: 1 }}
-        onPress={() => console.log('Pressed Treatment plan')}
-      >
+      <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
         <View style={styles.View_CardHeaderContainer}>
           <View
             style={{

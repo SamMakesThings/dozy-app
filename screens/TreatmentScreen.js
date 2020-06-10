@@ -104,6 +104,9 @@ export const TreatmentScreen = ({ navigation }) => {
         <TreatmentPlanCard
           estCompletionDate={estCompletionDate}
           completionPercentProgress={completionPercentProgress}
+          onPress={() => {
+            navigation.navigate('TreatmentPlan');
+          }}
         />
         <View style={styles.View_NoCard}>
           <Text
