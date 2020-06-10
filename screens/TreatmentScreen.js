@@ -6,13 +6,11 @@ import { Entypo } from '@expo/vector-icons';
 import { AuthContext } from '../utilities/authContext';
 import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
+import TargetSleepScheduleCard from '../components/TargetSleepScheduleCard';
 import { CardContainer } from '../components/CardContainer';
 import HighlightedText from '../components/HighlightedText';
 import { slumber_theme } from '../config/Themes';
 import Images from '../config/Images';
-import CrescentMoon from '../assets/images/CrescentMoon.svg';
-import TransRightArrow from '../assets/images/TransRightArrow.svg';
-import YellowSun from '../assets/images/YellowSun.svg';
 
 export const TreatmentScreen = () => {
   const theme = slumber_theme;
@@ -32,66 +30,33 @@ export const TreatmentScreen = () => {
           color={theme.colors.primary}
         />
         <CurrentTreatmentsCard />
-        <CardContainer>
-          <View
-            style={{
-              ...styles.View_CardHeaderContainer,
-              flexDirection: 'column',
-              alignItems: 'flex-start'
-            }}
-          >
-            <Text
-              style={{
-                ...theme.typography.cardTitle,
-                ...styles.Text_CardTitle
-              }}
-            >
-              Target sleep schedule
-            </Text>
-            <Text
-              style={{ ...theme.typography.body2, ...styles.Text_CardSubtitle }}
-            >
-              Maintain for another 6 days
-            </Text>
-          </View>
-          <View style={styles.View_CardContentContainer}>
-            <View style={styles.View_CenteredRowContainer}>
-              <CrescentMoon width={scale(30)} height={scale(30)} />
-              <View style={styles.View_TimeContainer}>
-                <Text
-                  style={{ ...theme.typography.body1, ...styles.Text_Time }}
-                >
-                  11:00 pm
-                </Text>
-                <Text
-                  style={{
-                    ...theme.typography.body1,
-                    ...styles.Text_TimeLabel
-                  }}
-                >
-                  bedtime
-                </Text>
-              </View>
-              <TransRightArrow width={scale(25)} height={scale(15)} />
-              <View style={styles.View_TimeContainer}>
-                <Text
-                  style={{ ...theme.typography.body1, ...styles.Text_Time }}
-                >
-                  7:00 am
-                </Text>
-                <Text
-                  style={{
-                    ...theme.typography.body1,
-                    ...styles.Text_TimeLabel
-                  }}
-                >
-                  wake time
-                </Text>
-              </View>
-              <YellowSun width={scale(30)} height={scale(30)} />
-            </View>
-          </View>
-        </CardContainer>
+        {
+          // Display target sleep schedule card if defined in backend
+          state.userData.currentTreatments.bedTime && (
+            <TargetSleepScheduleCard
+              remainingDays={Math.round(
+                (state.userData.nextCheckin.checkinDatetime.toDate().getTime() -
+                  Date.now()) /
+                  1000 /
+                  60 /
+                  60 /
+                  24
+              )}
+              bedTime={state.userData.currentTreatments.bedTime
+                .toDate()
+                .toLocaleString('en-US', {
+                  hour: 'numeric',
+                  minute: 'numeric'
+                })}
+              wakeTime={state.userData.currentTreatments.wakeTime
+                .toDate()
+                .toLocaleString('en-US', {
+                  hour: 'numeric',
+                  minute: 'numeric'
+                })}
+            />
+          )
+        }
         <CardContainer>
           <TouchableOpacity
             style={{ flex: 1 }}
