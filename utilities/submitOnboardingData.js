@@ -20,6 +20,10 @@ export default async function submitOnboardingData() {
   userDocRef
     .set({
       healthHistory: healthHistory,
+      baselineInfo: {
+        baselineStartDate: new Date(),
+        isiTotal: GLOBAL.ISITotal
+      },
       reminders: GLOBAL.reminderTime
         ? {
             sleepDiaryReminder: {
