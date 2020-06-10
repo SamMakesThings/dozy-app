@@ -11,10 +11,28 @@ import { CardContainer } from '../components/CardContainer';
 import HighlightedText from '../components/HighlightedText';
 import { slumber_theme } from '../config/Themes';
 import Images from '../config/Images';
+import treatments from '../constants/Treatments';
 
-export const TreatmentScreen = () => {
+export const TreatmentScreen = ({ navigation }) => {
   const theme = slumber_theme;
   const { state } = React.useContext(AuthContext);
+
+  // Get current treatment module string from state
+  const currentModule = state.userData.currentTreatments.currentModule;
+  console.log(treatments[currentModule].title);
+
+  // Compute current module's progress percent based on dates
+  const nextCheckinTime = state.userData.nextCheckin.checkinDatetime
+    .toDate()
+    .getTime();
+  const lastCheckinTime = state.userData.currentTreatments.lastCheckinDatetime
+    .toDate()
+    .getTime();
+  const progressPercent = ~~(
+    (100 *
+      (nextCheckinTime - lastCheckinTime - (nextCheckinTime - Date.now()))) /
+    (nextCheckinTime - lastCheckinTime)
+  );
 
   return (
     <ScreenContainer
@@ -29,7 +47,17 @@ export const TreatmentScreen = () => {
           size={scale(80)}
           color={theme.colors.primary}
         />
-        <CurrentTreatmentsCard />
+        <CurrentTreatmentsCard
+          progressPercent={progressPercent}
+          linkTitle={treatments[currentModule].title}
+          linkSubtitle={treatments[currentModule].subTitle}
+          linkImage={treatments[currentModule].image}
+          todosArray={treatments[currentModule].todos}
+          onPress={() => {
+            console.log('Ya pressed link');
+            navigation.navigate('TreatmentReview');
+          }}
+        />
         {
           // Display target sleep schedule card if defined in backend
           state.userData.currentTreatments.bedTime && (
@@ -163,9 +191,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: scale(5)
   },
-  View_TimeContainer: {
-    marginTop: scale(8)
-  },
   View_NoCard: {
     width: '92%',
     marginTop: scale(15),
@@ -174,28 +199,10 @@ const styles = StyleSheet.create({
   Text_CardTitle: {
     color: slumber_theme.colors.secondary
   },
-  Text_RightSubHeader: {
-    fontFamily: 'RubikRegular',
-    fontSize: scale(17),
-    color: slumber_theme.colors.secondary,
-    opacity: 0.5
-  },
   Text_CardSubtitle: {
     color: slumber_theme.colors.secondary,
     opacity: 0.5,
     marginTop: scale(-5)
-  },
-  Text_Time: {
-    textAlign: 'center',
-    fontSize: scale(20),
-    color: slumber_theme.colors.secondary
-  },
-  Text_TimeLabel: {
-    textAlign: 'center',
-    fontSize: scale(12),
-    color: slumber_theme.colors.secondary,
-    opacity: 0.5,
-    marginTop: scale(-6)
   },
   ProgressBar: {
     width: scale(185)
