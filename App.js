@@ -119,15 +119,27 @@ export default function App() {
     // Fetch the token from storage then navigate to appropriate screen
     const bootstrapAsync = async () => {
       let userToken;
+      // let accessToken;
+      // let idToken;
+      // let providerId;
+      let profileData;
 
       try {
         userToken = await SecureStore.getItemAsync('userId');
+        // accessToken = await SecureStore.getItemAsync('accessToken');
+        // idToken = await SecureStore.getItemAsync('idToken');
+        // providerId = await SecureStore.getItemAsync('providerId');
+        profileData = await JSON.parse(SecureStore.getItemAsync('profileData'));
       } catch (e) {
         // Restoring token failed
       }
 
       // TODO: Add token validation
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      dispatch({
+        type: 'RESTORE_TOKEN',
+        token: userToken,
+        profileData: profileData
+      });
 
       // Update user's data from Firestore db
       FbLib.firestore()
@@ -162,6 +174,10 @@ export default function App() {
         SecureStore.setItemAsync('idToken', result.credential.idToken);
         SecureStore.setItemAsync('providerId', result.credential.providerId);
         SecureStore.setItemAsync('userId', result.user.uid);
+        SecureStore.setItemAsync(
+          'profileData',
+          JSON.stringify(result.additionalUserInfo.profile)
+        );
 
         // Update app state accordingly thru context hook function
         dispatch({
