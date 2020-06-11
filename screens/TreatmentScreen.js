@@ -8,7 +8,6 @@ import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
 import TargetSleepScheduleCard from '../components/TargetSleepScheduleCard';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
 import { slumber_theme } from '../config/Themes';
-import Images from '../config/Images';
 import treatments from '../constants/Treatments';
 
 export const TreatmentScreen = ({ navigation }) => {
@@ -71,7 +70,7 @@ export const TreatmentScreen = ({ navigation }) => {
           linkImage={treatments[currentModule].image}
           todosArray={treatments[currentModule].todos}
           onPress={() => {
-            navigation.navigate('TreatmentReview');
+            navigation.navigate('TreatmentReview', { module: currentModule });
           }}
         />
         {
@@ -117,14 +116,22 @@ export const TreatmentScreen = ({ navigation }) => {
           >
             Previous modules
           </Text>
-          <LinkCard
-            style={styles.ItemMargin}
-            bgImage={Images.WomanInBed}
-            titleLabel="Muscle Relaxation w/PMR"
-            subtitleLabel="Relaxing muscles to relax the mind"
-            onPress={() => console.log('Pressed the link card')}
-            overlayColor={'rgba(0, 129, 138, 0.8)'}
-          />
+          {Object.keys(state.userData.currentTreatments).map((item) => {
+            if (treatments[item]) {
+              return (
+                <LinkCard
+                  style={styles.ItemMargin}
+                  bgImage={treatments[item].image}
+                  titleLabel={treatments[item].title}
+                  subtitleLabel={treatments[item].subTitle}
+                  onPress={() =>
+                    navigation.navigate('TreatmentReview', { module: item })
+                  }
+                  overlayColor={'rgba(0, 129, 138, 0.8)'}
+                />
+              );
+            }
+          })}
         </View>
       </View>
     </ScreenContainer>
