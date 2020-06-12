@@ -48,7 +48,8 @@
     "react-native-screens": "~2.2.0",
     "react-native-size-matters": "^0.3.0",
     "react-native-svg": "11.0.1",
-    "react-native-typography": "^1.4.0"
+    "react-native-typography": "^1.4.0",
+    "react-native-webview": "^10.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
