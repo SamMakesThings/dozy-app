@@ -32,7 +32,8 @@ export default function App() {
           return {
             ...prevState,
             userToken: action.token,
-            onboardingComplete: true
+            onboardingComplete: true,
+            profileData: action.profileData
           };
         case 'SIGN_IN':
           return {
@@ -129,9 +130,11 @@ export default function App() {
         // accessToken = await SecureStore.getItemAsync('accessToken');
         // idToken = await SecureStore.getItemAsync('idToken');
         // providerId = await SecureStore.getItemAsync('providerId');
-        profileData = await JSON.parse(SecureStore.getItemAsync('profileData'));
+        profileData = await JSON.parse(
+          await SecureStore.getItemAsync('profileData')
+        );
       } catch (e) {
-        // Restoring token failed
+        console.log('Error in restoring token:', e);
       }
 
       // TODO: Add token validation
