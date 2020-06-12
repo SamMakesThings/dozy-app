@@ -5,7 +5,7 @@ import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
-import TargetSleepScheduleCard from '../components/TargetSleepScheduleCard';
+import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
 import { slumber_theme } from '../config/Themes';
 import treatments from '../constants/Treatments';
@@ -120,6 +120,7 @@ export const TreatmentScreen = ({ navigation }) => {
             if (treatments[item]) {
               return (
                 <LinkCard
+                  key={item}
                   style={styles.ItemMargin}
                   bgImage={treatments[item].image}
                   titleLabel={treatments[item].title}

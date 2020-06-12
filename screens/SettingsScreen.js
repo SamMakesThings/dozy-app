@@ -165,36 +165,6 @@ function Root() {
       >
         <Touchable
           style={styles.Touchable_n0}
-          onPress={() => {
-            Linking.openURL('mailto:sam@naritai.co');
-          }}
-        >
-          <Container
-            style={styles.Container_nf}
-            elevation={0}
-            useThemeGutterPadding={true}
-          >
-            <Text
-              style={[
-                styles.Text_nl,
-                theme.typography.smallLabel,
-                {
-                  color: theme.colors.strong
-                }
-              ]}
-            >
-              Get Help and Support
-            </Text>
-            <Icon
-              style={styles.Icon_nf}
-              name="Ionicons/md-mail"
-              size={36}
-              color={theme.colors.primary}
-            />
-          </Container>
-        </Touchable>
-        <Touchable
-          style={styles.Touchable_n0}
           onPress={signOut /* this.registerForPushNotificationsAsync() */}
         >
           <Container

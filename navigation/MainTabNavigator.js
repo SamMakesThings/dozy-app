@@ -2,11 +2,11 @@ import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import TabBarIcon from '../components/TabBarIcon';
 import DiaryScreen from '../screens/DiaryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import { TreatmentScreen } from '../screens/TreatmentScreen';
+import SupportChatScreen from '../screens/SupportChatScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -59,7 +59,7 @@ export default function BottomTabs() {
       {/* Support & FAQ screen */}
       <Tab.Screen
         name="Support"
-        component={SettingsScreen}
+        component={SupportChatScreen}
         options={{
           tabBarLabel: 'Support',
           // eslint-disable-next-line react/display-name
@@ -68,6 +68,21 @@ export default function BottomTabs() {
               focused={focused}
               color={color}
               name={Platform.OS === 'ios' ? 'ios-text' : 'md-text'}
+            />
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: 'Settings',
+          // eslint-disable-next-line react/display-name
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              focused={focused}
+              color={color}
+              name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
             />
           )
         }}
