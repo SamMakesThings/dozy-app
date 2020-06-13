@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Slumber",
-    "slug": "slumber_app",
+    "name": "Dozy",
+    "slug": "dozy_app",
     "privacy": "public",
     "platforms": ["ios", "android"],
     "primaryColor": "#00818A",
@@ -19,7 +19,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.slumbertech.slumber",
+      "bundleIdentifier": "com.dozyhealth.dozy",
       "icon": "./assets/images/appleIcon.png",
       "config": {
         "googleSignIn": {
@@ -28,7 +28,7 @@
       }
     },
     "android": {
-      "package": "com.slumbertech.slumber",
+      "package": "com.dozyhealth.dozy",
       "icon": "./assets/images/appleIcon.png",
       "versionCode": 3,
       "config": {
