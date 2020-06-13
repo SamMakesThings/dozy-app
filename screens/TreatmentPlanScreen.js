@@ -2,10 +2,10 @@
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import IconExplainScreen from '../components/IconExplainScreen';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 import LabCoat from '../assets/images/LabCoat.svg';
 
-const theme = slumber_theme;
+const theme = dozy_theme;
 
 export const TreatmentPlanScreen = ({ navigation }) => {
   let imgSize = 0.4 * useWindowDimensions().width;

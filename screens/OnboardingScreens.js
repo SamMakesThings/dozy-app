@@ -7,7 +7,7 @@ import IconExplainScreen from '../components/IconExplainScreen';
 import MultiButtonScreen from '../components/MultiButtonScreen';
 import DateTimePickerScreen from '../components/DateTimePickerScreen';
 import GLOBAL from '../utilities/global';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 import WaveHello from '../assets/images/WaveHello.svg';
 import LabCoat from '../assets/images/LabCoat.svg';
 import Clipboard from '../assets/images/Clipboard.svg';
@@ -22,7 +22,7 @@ import RaisedHands from '../assets/images/RaisedHands.svg';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 
 // Define the theme for the file globally
-const theme = slumber_theme;
+const theme = dozy_theme;
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;

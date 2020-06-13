@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { MaterialIcons } from '@expo/vector-icons';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 
 export const TodoItem = (props) => {
-  const theme = slumber_theme;
+  const theme = dozy_theme;
   return (
     <View style={styles.View_TodoItem}>
       <MaterialIcons
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   Text_TodoItem: {
-    color: slumber_theme.colors.secondary,
+    color: dozy_theme.colors.secondary,
     marginLeft: scale(8)
   }
 });

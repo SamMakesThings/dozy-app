@@ -9,10 +9,10 @@ import {
 import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 
 export const LinkCard = (props) => {
-  const theme = slumber_theme;
+  const theme = dozy_theme;
   return (
     <View style={{ ...props.style, ...styles.View_ContentLinkCard }}>
       <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
@@ -61,7 +61,7 @@ export const LinkCard = (props) => {
 const styles = StyleSheet.create({
   View_ContentLinkCard: {
     height: scale(80),
-    borderRadius: slumber_theme.borderRadius.global,
+    borderRadius: dozy_theme.borderRadius.global,
     overflow: 'hidden'
   },
   View_CardLinkImageOverlay: {
@@ -81,11 +81,11 @@ const styles = StyleSheet.create({
   Text_ContentLinkTitle: {
     fontSize: scale(15),
     fontFamily: 'RubikMedium',
-    color: slumber_theme.colors.secondary
+    color: dozy_theme.colors.secondary
   },
   Text_ContentLinkSubtitle: {
     fontSize: scale(15),
-    color: slumber_theme.colors.secondary,
+    color: dozy_theme.colors.secondary,
     opacity: 0.6,
     lineHeight: scale(14)
   }

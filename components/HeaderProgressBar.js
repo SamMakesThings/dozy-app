@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Container, IconButton, ProgressBar } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 
 const HeaderProgressBar = (props) => {
-  const theme = slumber_theme;
+  const theme = dozy_theme;
 
   return (
     <Container

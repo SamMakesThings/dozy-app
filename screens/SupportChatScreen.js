@@ -2,11 +2,11 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { WebView } from 'react-native-webview';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 
 const SupportChatScreen = () => {
-  const theme = slumber_theme;
+  const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
 
   const livechatJavascript = `

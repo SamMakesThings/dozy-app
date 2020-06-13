@@ -5,10 +5,10 @@ import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { CardContainer } from './CardContainer';
 import HighlightedText from './HighlightedText';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 
 export const TreatmentPlanCard = (props) => {
-  const theme = slumber_theme;
+  const theme = dozy_theme;
 
   return (
     <CardContainer>
@@ -100,10 +100,10 @@ const styles = StyleSheet.create({
     marginBottom: scale(15)
   },
   Text_CardTitle: {
-    color: slumber_theme.colors.secondary
+    color: dozy_theme.colors.secondary
   },
   Text_CardSubtitle: {
-    color: slumber_theme.colors.secondary,
+    color: dozy_theme.colors.secondary,
     opacity: 0.5,
     marginTop: scale(-5)
   },

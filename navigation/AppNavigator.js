@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PropTypes from 'prop-types';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
@@ -29,7 +29,7 @@ function LoadingScreen() {
     >
       <ActivityIndicator
         size="large"
-        color={slumber_theme.colors.primary}
+        color={dozy_theme.colors.primary}
         style={{
           width: 50,
           height: 50,

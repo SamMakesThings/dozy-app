@@ -11,11 +11,11 @@ import { StyleSheet, Text } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import Images from '../config/Images';
 import { AuthContext } from '../utilities/authContext';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 
 function LoginScreen() {
   // Pull the theme manually
-  const theme = slumber_theme;
+  const theme = dozy_theme;
 
   // Get my auth functions from hook
   const { signIn } = React.useContext(AuthContext);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar, StyleSheet, Text } from 'react-native';
 import { withTheme, ScreenContainer, Container, Icon } from '@draftbit/ui';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 
 class Root extends React.Component {
   state = {};
@@ -15,7 +15,7 @@ class Root extends React.Component {
   };
 
   render() {
-    const theme = slumber_theme;
+    const theme = dozy_theme;
     return (
       <ScreenContainer
         hasSafeArea={true}
@@ -84,12 +84,12 @@ const styles = StyleSheet.create({
   },
   Root_n5: {
     justifyContent: 'space-between',
-    backgroundColor: slumber_theme.colors.background
+    backgroundColor: dozy_theme.colors.background
   },
   Text_n1: {
     textAlign: 'center',
     width: '90%',
-    color: slumber_theme.colors.strong
+    color: dozy_theme.colors.strong
   },
   Text_ni: {
     textAlign: 'center',

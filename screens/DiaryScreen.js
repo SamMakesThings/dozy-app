@@ -16,7 +16,7 @@ import Intl from 'intl';
 import { scale } from 'react-native-size-matters';
 import SleepLogEntryCard from '../components/SleepLogEntryCard';
 import { FbLib } from '../config/firebaseConfig';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -26,7 +26,7 @@ if (Platform.OS === 'android') {
 }
 
 const SleepLogsView = (props) => {
-  const theme = slumber_theme;
+  const theme = dozy_theme;
   if (props.isLoading) {
     // If sleep logs haven't loaded, show indicator
     return (
@@ -195,7 +195,7 @@ class Root extends React.Component {
   };
 
   render() {
-    const theme = slumber_theme;
+    const theme = dozy_theme;
     return (
       <ScreenContainer
         style={{ backgroundColor: '#232B3F' }}

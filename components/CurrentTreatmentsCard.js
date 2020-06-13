@@ -4,10 +4,10 @@ import { scale } from 'react-native-size-matters';
 import { LinkCard } from './LinkCard';
 import { TodoItem } from './TodoItem';
 import { CardContainer } from './CardContainer';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 
 const CurrentTreatmentsCard = (props) => {
-  const theme = slumber_theme;
+  const theme = dozy_theme;
 
   return (
     <CardContainer>
@@ -60,12 +60,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   Text_CardTitle: {
-    color: slumber_theme.colors.secondary
+    color: dozy_theme.colors.secondary
   },
   Text_RightSubHeader: {
     fontFamily: 'RubikRegular',
     fontSize: scale(17),
-    color: slumber_theme.colors.secondary,
+    color: dozy_theme.colors.secondary,
     opacity: 0.5
   }
 });

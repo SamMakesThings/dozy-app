@@ -12,7 +12,7 @@ import {
 // import * as Permissions from 'expo-permissions';
 // import * as SecureStore from 'expo-secure-store';
 // import { FbLib } from "../config/firebaseConfig";
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 
 function Root() {
@@ -113,7 +113,7 @@ function Root() {
     })
   } */
 
-  const theme = slumber_theme;
+  const theme = dozy_theme;
 
   // Pass along the signOut function from the context provider
   const { signOut } = React.useContext(AuthContext);
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   },
   Root_nd: {
     justifyContent: 'space-around',
-    backgroundColor: slumber_theme.colors.background
+    backgroundColor: dozy_theme.colors.background
   },
   Text_n1: {
     textAlign: 'center',

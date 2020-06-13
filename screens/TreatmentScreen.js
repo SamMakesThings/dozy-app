@@ -7,11 +7,11 @@ import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 import treatments from '../constants/Treatments';
 
 export const TreatmentScreen = ({ navigation }) => {
-  const theme = slumber_theme;
+  const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
 
   // Get current treatment module string from state
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     marginBottom: scale(15)
   },
   Text_CardTitle: {
-    color: slumber_theme.colors.secondary
+    color: dozy_theme.colors.secondary
   },
   Icon_Clipboard: {
     margin: scale(20)

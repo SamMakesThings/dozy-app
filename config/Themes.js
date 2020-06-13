@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { scale } from 'react-native-size-matters';
 
-export const slumber_theme = {
+export const dozy_theme = {
   disabledOpacity: 0.5,
   spacing: {
     gutters: 16,

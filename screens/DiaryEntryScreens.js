@@ -6,10 +6,10 @@ import TagSelectScreen from '../components/TagSelectScreen';
 import DateTimePickerScreen from '../components/DateTimePickerScreen';
 import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
 import GLOBAL from '../utilities/global';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 
 // Define the theme for the file globally
-const theme = slumber_theme;
+const theme = dozy_theme;
 
 export const BedTimeInput = ({ navigation }) => {
   return (

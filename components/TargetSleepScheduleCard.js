@@ -2,13 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { CardContainer } from './CardContainer';
-import { slumber_theme } from '../config/Themes';
+import { dozy_theme } from '../config/Themes';
 import CrescentMoon from '../assets/images/CrescentMoon.svg';
 import TransRightArrow from '../assets/images/TransRightArrow.svg';
 import YellowSun from '../assets/images/YellowSun.svg';
 
 export const TargetSleepScheduleCard = (props) => {
-  const theme = slumber_theme;
+  const theme = dozy_theme;
 
   return (
     <CardContainer>
@@ -86,22 +86,22 @@ const styles = StyleSheet.create({
     marginTop: scale(8)
   },
   Text_CardTitle: {
-    color: slumber_theme.colors.secondary
+    color: dozy_theme.colors.secondary
   },
   Text_CardSubtitle: {
-    color: slumber_theme.colors.secondary,
+    color: dozy_theme.colors.secondary,
     opacity: 0.5,
     marginTop: scale(-5)
   },
   Text_Time: {
     textAlign: 'center',
     fontSize: scale(20),
-    color: slumber_theme.colors.secondary
+    color: dozy_theme.colors.secondary
   },
   Text_TimeLabel: {
     textAlign: 'center',
     fontSize: scale(12),
-    color: slumber_theme.colors.secondary,
+    color: dozy_theme.colors.secondary,
     opacity: 0.5,
     marginTop: scale(-6)
   }
