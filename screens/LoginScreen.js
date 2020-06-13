@@ -12,6 +12,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import Images from '../config/Images';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
+import WordmarkTrans from '../assets/images/WordmarkTrans.svg';
 
 function LoginScreen() {
   // Pull the theme manually
@@ -23,7 +24,7 @@ function LoginScreen() {
   return (
     <ScreenContainer
       scrollable={false}
-      hasSafeArea={false}
+      hasSafeArea={true}
       style={styles.View_RootContainer}
     >
       <Container
@@ -38,9 +39,9 @@ function LoginScreen() {
           useThemeGutterPadding={false}
           style={styles.View_LogoContainer}
         >
-          <Image
-            source={Images.WordmarkTrans}
-            resizeMode="contain"
+          <WordmarkTrans
+            width={scale(150)}
+            height={scale(71)}
             style={styles.Image_Wordmark}
           />
         </Container>
@@ -141,8 +142,7 @@ const styles = StyleSheet.create({
   },
   Touchable_BackButton: {
     paddingTop: scale(25),
-    paddingBottom: scale(25),
-    marginBottom: scale(10)
+    paddingBottom: scale(25)
   },
   Text_Hero1: {
     textAlign: 'center'
