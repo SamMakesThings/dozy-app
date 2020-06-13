@@ -40,7 +40,7 @@ export const Welcome = ({ navigation }) => {
           progressBarPercent: null
         });
       }}
-      textLabel="Welcome to Slumber! We'll get you sleeping better in no time."
+      textLabel="Welcome to Dozy! We'll get you sleeping better in no time."
       buttonLabel="Next"
     />
   );
@@ -314,8 +314,7 @@ export const ISISignificant = ({ navigation }) => {
             Your insomnia is {GLOBAL.ISITotal >= 14 ? 'definitely' : 'likely'}{' '}
             interfering with your life. However, there&apos;s good news:
             You&apos;re exactly the person our app was designed to help! With
-            your support, Slumber can take you from severe insomnia to no
-            insomnia.
+            your support, Dozy can take you from severe insomnia to no insomnia.
           </Text>
         </>
       }
@@ -424,11 +423,11 @@ export const SafetyPillsStop = ({ navigation }) => {
         <>
           <Text style={styles.BoldLabelText}>Hold on there{'\n'}</Text>
           <Text style={{ lineHeight: scale(18) }}>
-            For Slumber to work best, it&apos; strongly recommended to stop
-            taking sleeping pills before treatment. DON&apos;T DO THIS ON YOUR
-            OWN, as stopping use can have withdrawal effects. Talk with your
-            physician to plan tapering it off. Once you&apos;ve done that, we
-            can get started with fixing your insomnia permanently.
+            For Dozy to work best, it&apos; strongly recommended to stop taking
+            sleeping pills before treatment. DON&apos;T DO THIS ON YOUR OWN, as
+            stopping use can have withdrawal effects. Talk with your physician
+            to plan tapering it off. Once you&apos;ve done that, we can get
+            started with fixing your insomnia permanently.
           </Text>
         </>
       }

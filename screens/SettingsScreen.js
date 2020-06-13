@@ -155,7 +155,7 @@ function Root() {
             }
           ]}
         >
-          @slumberapp
+          @dozyapp
         </Text>
       </Container>
       <Container
