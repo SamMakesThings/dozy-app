@@ -11,8 +11,8 @@ import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import '@firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import Intl from 'intl';
-import ToggleTag from './ToggleTag';
-import BottomNavButtons from './BottomNavButtons';
+import ToggleTag from '../ToggleTag';
+import BottomNavButtons from '../BottomNavButtons';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');

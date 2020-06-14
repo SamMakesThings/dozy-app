@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
-import IconExplainScreen from '../components/IconExplainScreen';
+import IconExplainScreen from '../components/screens/IconExplainScreen';
 import { dozy_theme } from '../config/Themes';
 import LabCoat from '../assets/images/LabCoat.svg';
 

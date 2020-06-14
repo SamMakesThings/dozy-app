@@ -6,7 +6,7 @@ import {
   Container,
   ProgressBar
 } from '@draftbit/ui';
-import BottomNavButtons from './BottomNavButtons';
+import BottomNavButtons from '../BottomNavButtons';
 
 // Wizard screen with a hero image (usually icon) and paragraph text
 const IconExplainScreen = (props) => {

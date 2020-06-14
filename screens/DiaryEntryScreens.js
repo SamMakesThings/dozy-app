@@ -1,9 +1,9 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import NumInputScreen from '../components/NumInputScreen';
-import MultiButtonScreen from '../components/MultiButtonScreen';
-import TagSelectScreen from '../components/TagSelectScreen';
-import DateTimePickerScreen from '../components/DateTimePickerScreen';
+import NumInputScreen from '../components/screens/NumInputScreen';
+import MultiButtonScreen from '../components/screens/MultiButtonScreen';
+import TagSelectScreen from '../components/screens/TagSelectScreen';
+import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';

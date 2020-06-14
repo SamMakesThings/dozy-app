@@ -6,7 +6,7 @@ import {
   Container,
   DatePicker
 } from '@draftbit/ui';
-import BottomNavButtons from './BottomNavButtons';
+import BottomNavButtons from '../BottomNavButtons';
 
 // A unified date, time, and datetime picker screen. Has a label and input.
 const DateTimePickerScreen = (props) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
-import BottomNavButtons from './BottomNavButtons';
+import BottomNavButtons from '../BottomNavButtons';
 
 const MultiButtonScreen = (props) => {
   const { theme } = props;

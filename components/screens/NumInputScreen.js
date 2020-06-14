@@ -7,7 +7,7 @@ import {
   ProgressBar
 } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
-import BottomNavButtons from './BottomNavButtons';
+import BottomNavButtons from '../BottomNavButtons';
 
 const NumInputScreen = (props) => {
   const [selectedNum, setSelectedNum] = React.useState(-1);
