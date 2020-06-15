@@ -8,13 +8,14 @@ import {
   View
 } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { withTheme, ScreenContainer, Container, Button } from '@draftbit/ui';
+import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
 import '@firebase/firestore';
 import { Entypo } from '@expo/vector-icons';
 import Intl from 'intl';
 import { scale } from 'react-native-size-matters';
 import SleepLogEntryCard from '../components/SleepLogEntryCard';
+import AddSleepLogButton from '../components/AddSleepLogButton';
 import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
 
@@ -27,21 +28,23 @@ if (Platform.OS === 'android') {
 
 const SleepLogsView = (props) => {
   const theme = dozy_theme;
+  let loggedToday = false;
+
+  // Determine whether user has logged sleep for the previous night
+  // const loggedToday = props.sleepLogs[0].upTime.toDate().getDay() === new Date().getDay();
+  if (props.sleepLogs != null) {
+    loggedToday =
+      props.sleepLogs[0].upTime.toDate().getDay() === new Date().getDay();
+  }
+
   if (props.isLoading) {
     // If sleep logs haven't loaded, show indicator
     return (
       <View horizontal={false}>
-        <Button
-          icon="Ionicons/ios-add-circle"
-          type="solid"
-          color={theme.colors.primary}
-          style={{
-            marginTop: scale(30)
-          }}
+        <AddSleepLogButton
           onPress={() => props.logEntryRedirect()}
-        >
-          How did you sleep last night?
-        </Button>
+          notLoggedToday={!loggedToday}
+        />
         <ActivityIndicator
           size="large"
           color={theme.colors.primary}
@@ -59,17 +62,10 @@ const SleepLogsView = (props) => {
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <Button
-            icon="Ionicons/ios-add-circle"
-            type="solid"
-            color={theme.colors.primary}
-            style={{
-              marginTop: scale(31)
-            }}
+          <AddSleepLogButton
             onPress={() => props.logEntryRedirect()}
-          >
-            How did you sleep last night?
-          </Button>
+            notLoggedToday={!loggedToday}
+          />
         </View>
         <View
           style={{
@@ -105,18 +101,10 @@ const SleepLogsView = (props) => {
     var sleepLogs = props.sleepLogs;
     return (
       <ScrollView horizontal={false}>
-        <Button
-          icon="Ionicons/ios-add-circle"
-          type="solid"
-          color={theme.colors.primary}
-          style={{
-            ...theme.buttonLayout,
-            marginTop: scale(31)
-          }}
+        <AddSleepLogButton
           onPress={() => props.logEntryRedirect()}
-        >
-          How did you sleep last night?
-        </Button>
+          notLoggedToday={!loggedToday}
+        />
         {sleepLogs.map((log) => {
           return <SleepLogEntryCard sleepLog={log} key={log.upTime.seconds} />;
         })}
