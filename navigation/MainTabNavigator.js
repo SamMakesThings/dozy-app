@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import PropTypes from 'prop-types';
 import TabBarIcon from '../components/TabBarIcon';
-import DiaryScreen from '../screens/DiaryScreen';
+import DiaryEntriesScreen from '../screens/DiaryEntriesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import { TreatmentScreen } from '../screens/TreatmentScreen';
 import SupportChatScreen from '../screens/SupportChatScreen';
@@ -25,7 +25,7 @@ export default function BottomTabs() {
       {/* Sleep diary entries screen */}
       <Tab.Screen
         name="Sleep"
-        component={DiaryScreen}
+        component={DiaryEntriesScreen}
         options={{
           tabBarLabel: 'Sleep',
           // eslint-disable-next-line react/display-name
