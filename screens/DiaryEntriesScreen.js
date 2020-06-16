@@ -198,7 +198,6 @@ class Root extends React.Component {
                 {
                   color: theme.colors.secondary,
                   textAlign: 'center',
-
                   width: '100%',
                   marginTop: scale(26)
                 }
