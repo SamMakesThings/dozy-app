@@ -10,13 +10,26 @@ import { dozy_theme } from '../config/Themes';
 const Tab = createMaterialTopTabNavigator();
 
 function DiaryScreen() {
+  const theme = dozy_theme;
+
   return (
     <ScreenContainer
       hasSafeArea={true}
       scrollable={false}
       style={styles.Root_nd}
     >
-      <Tab.Navigator>
+      <Tab.Navigator
+        tabBarOptions={{
+          activeTintColor: theme.colors.secondary,
+          style: {
+            backgroundColor: theme.colors.medium
+          },
+          indicatorStyle: {
+            backgroundColor: theme.colors.secondary
+          }
+        }}
+        style={{ backgroundColor: theme.colors.primary }}
+      >
         <Tab.Screen name="Entries" component={DiaryEntriesScreen} />
         <Tab.Screen name="Stats" component={TreatmentPlaceholderScreen} />
       </Tab.Navigator>
@@ -25,57 +38,7 @@ function DiaryScreen() {
 }
 
 const styles = StyleSheet.create({
-  Container_nf: {
-    minWidth: 0,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingBottom: 15
-  },
-  Container_ni: {
-    minWidth: 0,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingBottom: 15
-  },
-  Container_ns: {
-    alignItems: 'flex-start'
-  },
-  Container_nw: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row'
-  },
-  Container_nz: {
-    alignItems: 'center',
-    marginTop: 20
-  },
-  DatePicker_nl: {
-    minWidth: 100,
-    paddingLeft: 0,
-    marginLeft: 0
-  },
-  Root_nd: {
-    justifyContent: 'space-around',
-    backgroundColor: dozy_theme.colors.background
-  },
-  Text_n1: {
-    textAlign: 'center',
-    width: '100%'
-  },
-  Text_nl: {
-    textAlign: 'center',
-    width: '100%'
-  },
-  Text_nc: {
-    textAlign: 'center',
-    width: '100%'
-  },
-  Touchable_n0: {
-    paddingBottom: 15
-  },
-  Icon_nf: {}
+  Container_nf: {}
 });
 
 export default withTheme(DiaryScreen);
