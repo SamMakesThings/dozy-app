@@ -187,26 +187,9 @@ class Root extends React.Component {
     return (
       <ScreenContainer
         style={{ backgroundColor: '#232B3F' }}
-        hasSafeArea={true}
+        hasSafeArea={false}
         scrollable={true}
       >
-        <Container elevation={0} useThemeGutterPadding={true}>
-          <Container elevation={0} useThemeGutterPadding={true}>
-            <Text
-              style={[
-                theme.typography.headline5,
-                {
-                  color: theme.colors.secondary,
-                  textAlign: 'center',
-                  width: '100%',
-                  marginTop: scale(26)
-                }
-              ]}
-            >
-              Sleep diary
-            </Text>
-          </Container>
-        </Container>
         <Container elevation={0} useThemeGutterPadding={true}>
           <SleepLogsView
             isLoading={this.state.logsLoading}
