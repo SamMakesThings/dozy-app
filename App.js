@@ -77,7 +77,8 @@ export default function App() {
       isSignout: false,
       userToken: null,
       onboardingComplete: false,
-      profileData: null
+      profileData: null,
+      selectedDataMonth: new Date().getMonth()
     }
   );
 
