@@ -14,6 +14,20 @@ import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './utilities/authContext';
 
+// A utility function to always return a valid date number given a starting date and a delta
+// TODO: Move this to its own file
+function alterMonthSelection(prevMonth, changeBy) {
+  const addedValue = prevMonth + changeBy;
+
+  if (addedValue === 13) {
+    return 1;
+  } else if (addedValue === 0) {
+    return 12;
+  } else {
+    return addedValue;
+  }
+}
+
 // Root app component
 export default function App() {
   // Temporary fix for the Firebase "can't find atob" error
@@ -55,6 +69,15 @@ export default function App() {
             ...prevState,
             userData: action.userData
           };
+        case 'CHANGE_SELECTED_MONTH':
+          console.log(prevState.selectedMonth);
+          return {
+            ...prevState,
+            selectedMonth: alterMonthSelection(
+              prevState.selectedMonth,
+              action.changeMonthBy
+            )
+          };
         case 'AUTH_LOADING':
           return {
             ...prevState,
@@ -78,7 +101,7 @@ export default function App() {
       userToken: null,
       onboardingComplete: false,
       profileData: null,
-      selectedDataMonth: new Date().getMonth()
+      selectedMonth: new Date().getMonth()
     }
   );
 
