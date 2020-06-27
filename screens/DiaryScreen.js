@@ -7,12 +7,22 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import DiaryEntriesScreen from './DiaryEntriesScreen';
 import TreatmentPlaceholderScreen from './TreatmentPlaceholderScreen';
 import { dozy_theme } from '../config/Themes';
+import { AuthContext } from '../utilities/authContext';
 
 // Create tab nav for switching between entries and stats
 const Tab = createMaterialTopTabNavigator();
 
 function DiaryScreen() {
   const theme = dozy_theme;
+  const { dispatch, state } = React.useContext(AuthContext);
+
+  // Set date value from selected month
+  const selectedDate = new Date();
+  selectedDate.setMonth(state.selectedMonth);
+  const currentMonthString = selectedDate.toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric'
+  });
 
   return (
     <ScreenContainer
@@ -21,7 +31,11 @@ function DiaryScreen() {
       style={styles.ScreenContainer}
     >
       <View style={styles.View_MonthSelectContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            dispatch({ type: 'CHANGE_SELECTED_MONTH', changeMonthBy: -1 })
+          }
+        >
           <Entypo
             name="chevron-left"
             size={scale(24)}
@@ -31,9 +45,13 @@ function DiaryScreen() {
         <Text
           style={{ ...theme.typography.headline5, ...styles.Text_MonthSelect }}
         >
-          June 2019
+          {currentMonthString}
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            dispatch({ type: 'CHANGE_SELECTED_MONTH', changeMonthBy: 1 })
+          }
+        >
           <Entypo
             name="chevron-right"
             size={scale(24)}
