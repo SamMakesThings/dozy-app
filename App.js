@@ -70,7 +70,6 @@ export default function App() {
             userData: action.userData
           };
         case 'CHANGE_SELECTED_MONTH':
-          console.log(prevState.selectedMonth);
           return {
             ...prevState,
             selectedMonth: alterMonthSelection(
