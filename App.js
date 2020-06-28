@@ -237,7 +237,7 @@ export default function App() {
   };
 
   const _handleLoadingError = (error) => {
-    // TODO: Add error reporting here
+    // Add error reporting here
     console.warn(error);
   };
 
