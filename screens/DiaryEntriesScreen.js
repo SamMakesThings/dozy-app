@@ -18,6 +18,7 @@ import SleepLogEntryCard from '../components/SleepLogEntryCard';
 import AddSleepLogButton from '../components/AddSleepLogButton';
 import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
+import { AuthContext } from '../utilities/authContext';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -28,13 +29,21 @@ if (Platform.OS === 'android') {
 
 const SleepLogsView = (props) => {
   const theme = dozy_theme;
+  const { state } = React.useContext(AuthContext);
   let loggedToday = false;
+  let selectedSleepLogs = [];
 
   // Determine whether user has logged sleep for the previous night
   // const loggedToday = props.sleepLogs[0].upTime.toDate().getDay() === new Date().getDay();
   if (props.sleepLogs != null) {
     loggedToday =
       props.sleepLogs[0].upTime.toDate().getDay() === new Date().getDay();
+
+    // Filter available sleep logs based on which month is selected in context
+    selectedSleepLogs = props.sleepLogs.filter((log) => {
+      console.log(log);
+      return log.upTime.toDate().getMonth() == state.selectedMonth;
+    });
   }
 
   if (props.isLoading) {
@@ -98,7 +107,7 @@ const SleepLogsView = (props) => {
     );
   } else {
     // Otherwise load sleep logs
-    var sleepLogs = props.sleepLogs;
+    var sleepLogs = selectedSleepLogs;
     return (
       <ScrollView horizontal={false}>
         <AddSleepLogButton
