@@ -41,7 +41,6 @@ const SleepLogsView = (props) => {
 
     // Filter available sleep logs based on which month is selected in context
     selectedSleepLogs = props.sleepLogs.filter((log) => {
-      console.log(log);
       return log.upTime.toDate().getMonth() == state.selectedMonth;
     });
   }
