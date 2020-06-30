@@ -34,10 +34,9 @@ const SleepLogsView = (props) => {
   let selectedSleepLogs = [];
 
   // Determine whether user has logged sleep for the previous night
-  // const loggedToday = props.sleepLogs[0].upTime.toDate().getDay() === new Date().getDay();
   if (props.sleepLogs != null) {
     loggedToday =
-      props.sleepLogs[0].upTime.toDate().getDay() === new Date().getDay();
+      props.sleepLogs[0].upTime.toDate().getDate() === new Date().getDate();
 
     // Filter available sleep logs based on which month is selected in context
     selectedSleepLogs = props.sleepLogs.filter((log) => {
