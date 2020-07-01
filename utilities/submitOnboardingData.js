@@ -29,7 +29,8 @@ export default async function submitOnboardingData() {
             sleepDiaryReminder: {
               diaryHabitTrigger: GLOBAL.diaryHabitTrigger,
               reminderTime: GLOBAL.diaryReminderTime
-            }
+            },
+            expoPushToken: GLOBAL.expoPushToken
           }
         : {},
       nextCheckin: {
@@ -38,7 +39,8 @@ export default async function submitOnboardingData() {
       },
       currentTreatments: {
         BSL: true,
-        currentModule: 'BSL'
+        currentModule: 'BSL',
+        lastCheckinDatetime: new Date()
       }
     })
     .catch(function (error) {

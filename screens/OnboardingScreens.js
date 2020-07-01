@@ -20,6 +20,7 @@ import WarningTriangle from '../assets/images/WarningTriangle.svg';
 import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import submitOnboardingData from '../utilities/submitOnboardingData';
+import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -681,7 +682,12 @@ export const DiaryReminder = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
-        value != false ? (GLOBAL.diaryReminderTime = value) : null;
+        if (value != false) {
+          GLOBAL.diaryReminderTime = value;
+          GLOBAL.expoPushToken = registerForPushNotificationsAsync();
+        } else {
+          null;
+        }
         navigation.navigate('CheckinScheduling', { progressBarPercent: 0.6 });
       }}
       questionLabel="What time do you usually do that? (we'll send you a gentle reminder)"

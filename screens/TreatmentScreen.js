@@ -18,7 +18,7 @@ export const TreatmentScreen = ({ navigation }) => {
   const currentModule = state.userData.currentTreatments.currentModule;
 
   // Compute current module's progress percent based on dates
-  const nextCheckinTime = state.userData.nextCheckin.checkinDatetime
+  const nextCheckinTime = state.userData.nextCheckin.nextCheckinDatetime
     .toDate()
     .getTime();
   const lastCheckinTime = state.userData.currentTreatments.lastCheckinDatetime
