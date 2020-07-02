@@ -3,7 +3,6 @@ import { FbLib } from '../config/firebaseConfig';
 
 export default async function refreshUserData(dispatch) {
   let userToken;
-  let onboardingComplete = false;
   // let accessToken;
   // let idToken;
   // let providerId;
@@ -11,8 +10,6 @@ export default async function refreshUserData(dispatch) {
 
   try {
     userToken = await SecureStore.getItemAsync('userId');
-    onboardingComplete =
-      (await SecureStore.getItemAsync('onboardingComplete')) === 'true';
     // accessToken = await SecureStore.getItemAsync('accessToken');
     // idToken = await SecureStore.getItemAsync('idToken');
     // providerId = await SecureStore.getItemAsync('providerId');
@@ -27,7 +24,6 @@ export default async function refreshUserData(dispatch) {
   dispatch({
     type: 'RESTORE_TOKEN',
     token: userToken,
-    onboardingComplete: onboardingComplete,
     profileData: profileData
   });
 

@@ -47,7 +47,6 @@ export default function App() {
           return {
             ...prevState,
             userToken: action.token,
-            onboardingComplete: action.onboardingComplete,
             profileData: action.profileData
           };
         case 'SIGN_IN':

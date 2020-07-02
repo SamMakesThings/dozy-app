@@ -64,9 +64,6 @@ export default async function submitOnboardingData(dispatch) {
     console.error('Error adding ISI data: ', error);
   });
 
-  // Store onboardingComplete value in async storage
-  SecureStore.setItemAsync('onboardingComplete', 'true');
-
   // Manually refresh user data in state once all the above has completed
   refreshUserData(dispatch);
 }
