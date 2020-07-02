@@ -18,7 +18,6 @@ export default async function registerForPushNotificationsAsync() {
       return;
     }
     const token = await Notifications.getExpoPushTokenAsync();
-    console.log(token);
     return token;
   } else {
     alert('Must use physical device for Push Notifications');
