@@ -67,7 +67,8 @@ export default function App() {
         case 'UPDATE_USERDATA':
           return {
             ...prevState,
-            userData: action.userData
+            userData: action.userData,
+            onboardingComplete: action.onboardingComplete
           };
         case 'CHANGE_SELECTED_MONTH':
           return {
@@ -98,7 +99,7 @@ export default function App() {
       isLoading: true,
       isSignout: false,
       userToken: null,
-      onboardingComplete: false,
+      onboardingComplete: true,
       profileData: null,
       selectedMonth: new Date().getMonth()
     }

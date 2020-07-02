@@ -35,7 +35,8 @@ export default async function refreshUserData(dispatch) {
     .then((userData) => {
       dispatch({
         type: 'UPDATE_USERDATA',
-        userData: userData.data()
+        userData: userData.data(),
+        onboardingComplete: userData.data() != undefined
       });
     });
 }
