@@ -25,11 +25,11 @@ export default async function submitOnboardingData(dispatch) {
         baselineStartDate: new Date(),
         isiTotal: GLOBAL.ISITotal
       },
-      reminders: GLOBAL.reminderTime
+      reminders: GLOBAL.diaryReminderTime
         ? {
             sleepDiaryReminder: {
               diaryHabitTrigger: GLOBAL.diaryHabitTrigger,
-              reminderTime: GLOBAL.diaryReminderTime
+              diaryReminderTime: GLOBAL.diaryReminderTime
             },
             expoPushToken: GLOBAL.expoPushToken
           }

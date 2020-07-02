@@ -682,9 +682,12 @@ export const DiaryReminder = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
+        async function setPushToken() {
+          GLOBAL.expoPushToken = await registerForPushNotificationsAsync();
+        }
         if (value != false) {
           GLOBAL.diaryReminderTime = value;
-          GLOBAL.expoPushToken = registerForPushNotificationsAsync();
+          setPushToken();
         } else {
           null;
         }
