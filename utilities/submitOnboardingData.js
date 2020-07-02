@@ -1,8 +1,9 @@
 import * as SecureStore from 'expo-secure-store';
 import { FbLib } from '../config/firebaseConfig';
 import GLOBAL from './global';
+import refreshUserData from './refreshUserData';
 
-export default async function submitOnboardingData() {
+export default async function submitOnboardingData(dispatch) {
   // Initialize relevant Firebase values
   let db = FbLib.firestore();
   let userId = await SecureStore.getItemAsync('userId');
@@ -62,4 +63,10 @@ export default async function submitOnboardingData() {
   }).catch(function (error) {
     console.error('Error adding ISI data: ', error);
   });
+
+  // Store onboardingComplete value in async storage
+  SecureStore.setItemAsync('onboardingComplete', 'true');
+
+  // Manually refresh user data in state once all the above has completed
+  refreshUserData(dispatch);
 }

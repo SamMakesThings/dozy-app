@@ -13,6 +13,7 @@ import { dozy_theme } from './config/Themes';
 import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './utilities/authContext';
+import refreshUserData from './utilities/refreshUserData';
 
 // A utility function to always return a valid date number given a starting date and a delta
 // TODO: Move this to its own file
@@ -46,7 +47,7 @@ export default function App() {
           return {
             ...prevState,
             userToken: action.token,
-            onboardingComplete: true,
+            onboardingComplete: action.onboardingComplete,
             profileData: action.profileData
           };
         case 'SIGN_IN':
@@ -140,47 +141,8 @@ export default function App() {
   }
 
   React.useEffect(() => {
-    // Fetch the token from storage then navigate to appropriate screen
-    const bootstrapAsync = async () => {
-      let userToken;
-      // let accessToken;
-      // let idToken;
-      // let providerId;
-      let profileData;
-
-      try {
-        userToken = await SecureStore.getItemAsync('userId');
-        // accessToken = await SecureStore.getItemAsync('accessToken');
-        // idToken = await SecureStore.getItemAsync('idToken');
-        // providerId = await SecureStore.getItemAsync('providerId');
-        profileData = await JSON.parse(
-          await SecureStore.getItemAsync('profileData')
-        );
-      } catch (e) {
-        console.log('Error in restoring token:', e);
-      }
-
-      // TODO: Add token validation
-      dispatch({
-        type: 'RESTORE_TOKEN',
-        token: userToken,
-        profileData: profileData
-      });
-
-      // Update user's data from Firestore db
-      FbLib.firestore()
-        .collection('users')
-        .doc(userToken)
-        .get()
-        .then((userData) => {
-          dispatch({
-            type: 'UPDATE_USERDATA',
-            userData: userData.data()
-          });
-        });
-    };
-
-    bootstrapAsync();
+    // Update user data from storage and Firebase, update state w/dispatch
+    refreshUserData(dispatch);
   }, []);
 
   // Create authContext so relevant functions are available through the app
@@ -215,16 +177,7 @@ export default function App() {
         });
 
         // Update user's data from Firestore db
-        FbLib.firestore()
-          .collection('users')
-          .doc(result.user.uid)
-          .get()
-          .then((userData) => {
-            dispatch({
-              type: 'UPDATE_USERDATA',
-              userData: userData.data()
-            });
-          });
+        refreshUserData(dispatch);
       });
     },
     signOut: () => {

@@ -736,14 +736,14 @@ export const PaywallPlaceholder = ({ navigation }) => {
 
 export const OnboardingEnd = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
-  const { finishOnboarding } = React.useContext(AuthContext);
+  const { dispatch, finishOnboarding } = React.useContext(AuthContext);
   return (
     <IconExplainScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        submitOnboardingData();
+        submitOnboardingData(dispatch);
         finishOnboarding();
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
