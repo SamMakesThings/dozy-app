@@ -682,6 +682,7 @@ export const DiaryReminder = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
+        // TODO: Can I just make the arrow function async instead of below
         async function setPushToken() {
           GLOBAL.expoPushToken = await registerForPushNotificationsAsync();
         }
