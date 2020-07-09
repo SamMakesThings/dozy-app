@@ -14,6 +14,7 @@ import {
 // import { FbLib } from "../config/firebaseConfig";
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
+import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 
 function Root() {
   // state = {}
@@ -163,10 +164,7 @@ function Root() {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <Touchable
-          style={styles.Touchable_n0}
-          onPress={signOut /* this.registerForPushNotificationsAsync() */}
-        >
+        <Touchable style={styles.Touchable_n0} onPress={signOut}>
           <Container
             style={styles.Container_nf}
             elevation={0}
@@ -182,6 +180,34 @@ function Root() {
               ]}
             >
               Log out
+            </Text>
+            <Icon
+              style={styles.Icon_nf}
+              name="Ionicons/md-mail"
+              size={36}
+              color={theme.colors.primary}
+            />
+          </Container>
+        </Touchable>
+        <Touchable
+          style={styles.Touchable_n0}
+          onPress={registerForPushNotificationsAsync}
+        >
+          <Container
+            style={styles.Container_nf}
+            elevation={0}
+            useThemeGutterPadding={true}
+          >
+            <Text
+              style={[
+                styles.Text_nl,
+                theme.typography.smallLabel,
+                {
+                  color: theme.colors.strong
+                }
+              ]}
+            >
+              Log Expo push notification key
             </Text>
             <Icon
               style={styles.Icon_nf}

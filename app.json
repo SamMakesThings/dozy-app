@@ -35,7 +35,8 @@
         "googleSignIn": {
           "certificateHash": "B087986717594DBC3D224ED28012CCAFA3F8BDDE94FB7287573B2DBBD72E250D"
         }
-      }
+      },
+      "googleServicesFile": "./google-services.json"
     },
     "packagerOpts": {
       "config": "metro.config.js",
