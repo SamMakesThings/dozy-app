@@ -1,17 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, Linking } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import {
   withTheme,
   ScreenContainer,
   Container,
   Icon,
   Switch,
-  Touchable
+  Touchable,
+  DatePicker
 } from '@draftbit/ui';
 // import { Notifications } from "expo";
 // import * as Permissions from 'expo-permissions';
 // import * as SecureStore from 'expo-secure-store';
-// import { FbLib } from "../config/firebaseConfig";
+import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
@@ -114,10 +115,89 @@ function Root() {
     })
   } */
 
+  // Pass along the signOut function from the context provider
+  const { state, signOut } = React.useContext(AuthContext);
+
+  // Get theme object
   const theme = dozy_theme;
 
-  // Pass along the signOut function from the context provider
-  const { signOut } = React.useContext(AuthContext);
+  let notifFbQuery;
+  let notifLogReminderRef;
+
+  // Get various Firebase refs for keeping settings updated
+  if (state.userToken !== null) {
+    const notifColRef = FbLib.firestore()
+      .collection('users')
+      .doc(state.userToken)
+      .collection('notifications');
+
+    notifLogReminderRef = notifColRef.doc(state.userData.logReminderId);
+
+    notifFbQuery = notifColRef.where('type', '==', 'DAILY_LOG');
+  }
+
+  // Add function to pull existing settings from Firebase, update state with them
+  function getSettings() {
+    console.log('Running getSettings()');
+
+    notifFbQuery
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((notif) => {
+          const notifData = notif.data();
+          dispatch({
+            type: 'SET_LOG_REMINDER_TIME',
+            time: notifData.time.toDate()
+          });
+          dispatch({
+            type: 'TOGGLE_LOG_NOTIFS',
+            enabledStatus: notifData.enabled
+          });
+          // setNotifsEnabled(notifData.enabled);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  // Add function to update notification in Firebase based on local state
+  function updateFbLogNotification(update) {
+    notifLogReminderRef.update(update);
+  }
+
+  // Set up a reducer to manage settings state & keep Firebase updated
+  const [settings, dispatch] = React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'TOGGLE_LOG_NOTIFS':
+          updateFbLogNotification({
+            enabled: action.enabledStatus
+          });
+          return {
+            ...prevState,
+            logNotifsEnabled: action.enabledStatus
+          };
+        case 'SET_LOG_REMINDER_TIME':
+          updateFbLogNotification({
+            time: action.time
+          });
+          return {
+            ...prevState,
+            logReminderTime: action.time
+          };
+      }
+    },
+    {
+      logReminderTime: new Date(),
+      logNotifsEnabled: false
+    }
+  );
+
+  // Make sure the screen uses updated state once it loads for the first time.
+  React.useEffect(() => {
+    getSettings();
+  }, []);
 
   return (
     <ScreenContainer
@@ -231,18 +311,19 @@ function Root() {
               }
             ]}
           >
-            Sleep Log Reminders
+            Sleep log reminders
           </Text>
           <Switch
             style={styles.Switch_n9}
             color={theme.colors.primary}
             disabled={false}
-            onValueChange={(remindersOn) => {
-              // this.setState({ remindersOn });
-              // this.updateReminderTime(remindersOn);
-              console.log('attempted to run state switch');
+            value={settings.logNotifsEnabled}
+            onValueChange={(value) => {
+              dispatch({
+                type: 'TOGGLE_LOG_NOTIFS',
+                enabledStatus: value
+              });
             }}
-            value={1 /*this.state.remindersOn*/}
           />
         </Container>
         <Container
@@ -259,8 +340,22 @@ function Root() {
               }
             ]}
           >
-            Reminder Time
+            Reminder time
           </Text>
+          <DatePicker
+            style={styles.DatePicker_nl}
+            mode="time"
+            type="solid"
+            error={false}
+            label="Time"
+            disabled={false}
+            leftIconMode="inset"
+            format="h:MM TT"
+            date={settings.logReminderTime}
+            onDateChange={(result) => {
+              dispatch({ type: 'SET_LOG_REMINDER_TIME', time: result });
+            }}
+          />
         </Container>
       </Container>
     </ScreenContainer>

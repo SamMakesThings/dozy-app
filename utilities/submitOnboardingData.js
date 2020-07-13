@@ -17,6 +17,20 @@ export default async function submitOnboardingData(dispatch) {
     parasomnias: GLOBAL.parasomnias,
     otherCondition: GLOBAL.otherCondition
   };
+
+  // Store the sleep diary notification settings, store generated ID in userData
+  const notifDocRef = userDocRef.collection('notifications').doc();
+  notifDocRef.set({
+    expoPushToken: GLOBAL.expoPushToken
+      ? GLOBAL.expoPushToken
+      : 'No push token provided',
+    title: 'How did you sleep?',
+    body: "Add last night's entry now",
+    type: 'DAILY_LOG',
+    time: GLOBAL.diaryReminderTime ? GLOBAL.diaryReminderTime : new Date(),
+    enabled: GLOBAL.diaryReminderTime ? true : false
+  });
+
   // Also store reminder info & next check-in datetime
   userDocRef
     .set({
@@ -42,7 +56,8 @@ export default async function submitOnboardingData(dispatch) {
         BSL: true,
         currentModule: 'BSL',
         lastCheckinDatetime: new Date()
-      }
+      },
+      logReminderId: notifDocRef.id
     })
     .catch(function (error) {
       console.error('Error adding health history data: ', error);
