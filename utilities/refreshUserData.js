@@ -16,27 +16,27 @@ export default async function refreshUserData(dispatch) {
     profileData = await JSON.parse(
       await SecureStore.getItemAsync('profileData')
     );
+
+    // TODO: Add token validation
+    dispatch({
+      type: 'RESTORE_TOKEN',
+      token: userToken,
+      profileData: profileData
+    });
+
+    // Update user's data from Firestore db
+    FbLib.firestore()
+      .collection('users')
+      .doc(userToken)
+      .get()
+      .then((userData) => {
+        dispatch({
+          type: 'UPDATE_USERDATA',
+          userData: userData.data(),
+          onboardingComplete: userData.data() != undefined
+        });
+      });
   } catch (e) {
     console.log('Error in restoring token:', e);
   }
-
-  // TODO: Add token validation
-  dispatch({
-    type: 'RESTORE_TOKEN',
-    token: userToken,
-    profileData: profileData
-  });
-
-  // Update user's data from Firestore db
-  FbLib.firestore()
-    .collection('users')
-    .doc(userToken)
-    .get()
-    .then((userData) => {
-      dispatch({
-        type: 'UPDATE_USERDATA',
-        userData: userData.data(),
-        onboardingComplete: userData.data() != undefined
-      });
-    });
 }
