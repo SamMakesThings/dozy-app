@@ -9,6 +9,7 @@ import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
 import { TreatmentPlanScreen } from '../screens/TreatmentPlanScreen';
 import DiaryEntryNavigator from './DiaryEntryNavigator';
 import OnboardingNavigator from './OnboardingNavigator';
+import HeaderProgressBar from '../components/HeaderProgressBar';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -73,6 +74,18 @@ export default function InitialAuthNavigator({
           <TopStack.Screen
             name="TreatmentReview"
             component={TreatmentReviewScreen}
+            options={() => ({
+              headerShown: true,
+              // eslint-disable-next-line react/display-name
+              header: ({ scene, navigation }) => {
+                return <HeaderProgressBar navigation={navigation} />;
+              },
+              headerStyle: {
+                height: 300
+              },
+              animationEnabled: true,
+              headerTransparent: true
+            })}
           />
           <TopStack.Screen
             name="TreatmentPlan"

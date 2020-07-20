@@ -8,7 +8,8 @@ export default {
     title: 'Baseline collection',
     subTitle: 'Gathering data for custom treatment',
     image: Images.WomanInBed,
-    todos: ['Record 7 nights of sleep in your sleep diary']
+    todos: ['Record 7 nights of sleep in your sleep diary'],
+    url: 'https://dozy.customerly.help/collecting-a-baseline-of-sleep-data/'
   },
   SCTSRT: {
     title: 'Stimulus Control Therapy and SRT',
@@ -18,6 +19,7 @@ export default {
       'Stick to your target sleep schedule',
       'Do nothing in bed besides sleeping (no phone!)',
       'If awake for 15+ mins, get up and return later'
-    ]
+    ],
+    url: 'https://dozy.customerly.help/collecting-a-baseline-of-sleep-data/'
   }
 };

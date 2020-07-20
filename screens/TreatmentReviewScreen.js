@@ -1,26 +1,16 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { useWindowDimensions } from 'react-native';
-import IconExplainScreen from '../components/screens/IconExplainScreen';
-import { dozy_theme } from '../config/Themes';
-import LabCoat from '../assets/images/LabCoat.svg';
+import { WebView } from 'react-native-webview';
+import treatments from '../constants/Treatments';
 
-const theme = dozy_theme;
-
-export const TreatmentReviewScreen = ({ navigation }) => {
-  let imgSize = 0.4 * useWindowDimensions().width;
+// Display a webview of the relevant knowledgebase collection or page
+export const TreatmentReviewScreen = ({ route }) => {
   return (
-    <IconExplainScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      image={<LabCoat width={imgSize} height={imgSize} />}
-      onQuestionSubmit={() => {
-        navigation.navigate('Asks', {
-          progressBarPercent: null
-        });
+    <WebView
+      source={{
+        // Get the module from nav params & URL from treatment constants
+        uri: treatments[route.params.module].url
       }}
-      textLabel="Placeholder for educational treatment content review"
-      buttonLabel="Next"
     />
   );
 };
