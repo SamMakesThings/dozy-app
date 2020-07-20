@@ -26,6 +26,7 @@ export default function DiaryEntryNavigator() {
       initialRouteName="BedTimeInput"
       screenOptions={{
         headerShown: true,
+        headerMode: 'screen',
         // eslint-disable-next-line react/display-name
         leftButton: () => <></>,
         animationEnabled: true
@@ -56,7 +57,7 @@ export default function DiaryEntryNavigator() {
               headerStyle: {
                 height: 300
               },
-              animationEnabled: Platform.OS === 'ios' ? true : false,
+              animationEnabled: true,
               headerTransparent: true,
               transitionSpec: {
                 open: animConfig,
