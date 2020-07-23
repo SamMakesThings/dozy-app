@@ -1,5 +1,4 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Screens from '../screens/DiaryEntryScreens';
 import HeaderProgressBar from '../components/HeaderProgressBar';
