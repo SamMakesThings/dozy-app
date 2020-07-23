@@ -15,7 +15,8 @@ import {
 import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
-import registerForPushNotificationsAsync from '../utilities/pushNotifications';
+// import registerForPushNotificationsAsync from '../utilities/pushNotifications';
+import planTreatmentModules from '../utilities/planTreatmentModules';
 
 function Root() {
   // state = {}
@@ -167,6 +168,7 @@ function Root() {
   }
 
   // Set up a reducer to manage settings state & keep Firebase updated
+  // TODO: Have enabling notifs recheck permissions / Expo token
   const [settings, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -269,10 +271,7 @@ function Root() {
             />
           </Container>
         </Touchable>
-        <Touchable
-          style={styles.Touchable_n0}
-          onPress={registerForPushNotificationsAsync}
-        >
+        <Touchable style={styles.Touchable_n0} onPress={planTreatmentModules}>
           <Container
             style={styles.Container_nf}
             elevation={0}
@@ -287,7 +286,7 @@ function Root() {
                 }
               ]}
             >
-              Log Expo push notification key
+              Log treatment object
             </Text>
             <Icon
               style={styles.Icon_nf}
