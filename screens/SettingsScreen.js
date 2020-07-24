@@ -139,8 +139,6 @@ function Root() {
 
   // Add function to pull existing settings from Firebase, update state with them
   function getSettings() {
-    console.log('Running getSettings()');
-
     notifFbQuery
       .get()
       .then((snapshot) => {
@@ -271,7 +269,7 @@ function Root() {
             />
           </Container>
         </Touchable>
-        <Touchable style={styles.Touchable_n0} onPress={planTreatmentModules}>
+        <Touchable style={styles.Touchable_n0} onPress={() => planTreatmentModules({currentTreatments: state.userData.currentTreatments})}>
           <Container
             style={styles.Container_nf}
             elevation={0}
