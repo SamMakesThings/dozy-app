@@ -1,11 +1,8 @@
 import '@firebase/firestore';
-import { FbLib } from '../config/firebaseConfig';
 
-async function fetchSleepLogs(userId) {
+async function fetchSleepLogs(db, userId) {
   // Retrieving sleep logs from Firestore
   return new Promise((resolve) => {
-    let db = FbLib.firestore();
-
     if (userId === undefined) {
       console.log('ERROR: userId passed to fetchSleepLogs is undefined');
     }
@@ -21,7 +18,7 @@ async function fetchSleepLogs(userId) {
 
         // Check that theres >1 entry. If no, set state accordingly
         if (res.size === 0) {
-          return 0;
+          resolve(res);
         }
 
         // Otherwise, arrange data and update state

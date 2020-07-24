@@ -1,8 +1,7 @@
 import moment from 'moment';
 import treatments from '../constants/Treatments';
-import fetchSleepLogs from './fetchSleepLogs';
 
-async function planTreatmentModules({ userId, currentTreatments }) {
+async function planTreatmentModules({ sleepLogs, currentTreatments }) {
   // sleepLogs should be an array of log objects
   // I should really just bite the bullet and learn TypeScript...
 
@@ -42,47 +41,44 @@ async function planTreatmentModules({ userId, currentTreatments }) {
   ];
   const stressStrings = ['worry', 'stress'];
 
-  console.log('Logging sleep logs from planTreatmentModules.js: ');
-  fetchSleepLogs(userId).then((sleepLogs) => {
-    // Count each day where tags are present
-    sleepLogs.forEach((log) => {
-      log.tags.some((r) => hygieneStrings.indexOf(r) >= 0)
-        ? daysDisturbedByHygiene++
-        : null;
-      log.tags.some((r) => stressStrings.indexOf(r) >= 0)
-        ? daysDisturbedByStress++
-        : null;
-    });
-
-    let defaultTreatmentOrder = Object.keys(treatments);
-
-    // Define a priority order based on the above tags
-    // Duplicates are filtered out so shouldn't matter
-    if (daysDisturbedByHygiene > daysDisturbedByStress + 4) {
-      defaultTreatmentOrder.splice(2, 0, 'HYG');
-    }
-
-    // Add the remaining treatments in priority order
-    let addDays = 2;
-    defaultTreatmentOrder.forEach((module) => {
-      if (
-        !treatmentPlan.some((item) => item.module === module) &&
-        treatments[module].optional === false
-      ) {
-        treatmentPlan.push({
-          module: module,
-          estDate: moment().add(addDays, 'days'),
-          started: false
-        });
-        addDays += 7;
-      }
-    });
-
-    console.log(treatmentPlan);
-
-    // Output should be an ordered array of objects
-    return treatmentPlan;
+  // Count each day where tags are present
+  sleepLogs.forEach((log) => {
+    log.tags.some((r) => hygieneStrings.indexOf(r) >= 0)
+      ? daysDisturbedByHygiene++
+      : null;
+    log.tags.some((r) => stressStrings.indexOf(r) >= 0)
+      ? daysDisturbedByStress++
+      : null;
   });
+
+  let defaultTreatmentOrder = Object.keys(treatments);
+
+  // Define a priority order based on the above tags
+  // Duplicates are filtered out so shouldn't matter
+  if (daysDisturbedByHygiene > daysDisturbedByStress + 4) {
+    defaultTreatmentOrder.splice(2, 0, 'HYG');
+  }
+
+  // Add the remaining treatments in priority order
+  let addDays = 2;
+  defaultTreatmentOrder.forEach((module) => {
+    if (
+      !treatmentPlan.some((item) => item.module === module) &&
+      treatments[module].optional === false
+    ) {
+      treatmentPlan.push({
+        module: module,
+        estDate: moment().add(addDays, 'days'),
+        started: false
+      });
+      addDays += 7;
+    }
+  });
+
+  console.log(treatmentPlan);
+
+  // Output should be an ordered array of objects
+  return treatmentPlan;
 }
 
 export default planTreatmentModules;
