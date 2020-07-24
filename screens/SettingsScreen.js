@@ -225,7 +225,7 @@ function Root() {
             }
           ]}
         >
-          User
+          {state.profileData.name}
         </Text>
         <Text
           style={[
@@ -269,7 +269,14 @@ function Root() {
             />
           </Container>
         </Touchable>
-        <Touchable style={styles.Touchable_n0} onPress={() => planTreatmentModules({currentTreatments: state.userData.currentTreatments})}>
+        <Touchable
+          style={styles.Touchable_n0}
+          onPress={() =>
+            planTreatmentModules({
+              currentTreatments: state.userData.currentTreatments
+            })
+          }
+        >
           <Container
             style={styles.Container_nf}
             elevation={0}
