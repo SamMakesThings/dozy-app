@@ -53,7 +53,7 @@ export default async function submitOnboardingData(dispatch) {
         treatmentModule: 'SCTSRT'
       },
       currentTreatments: {
-        BSL: true,
+        BSL: new Date(),
         currentModule: 'BSL',
         lastCheckinDatetime: new Date()
       },
