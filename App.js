@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, YellowBox } from 'react-native';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
@@ -14,6 +14,15 @@ import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './utilities/authContext';
 import refreshUserData from './utilities/refreshUserData';
+
+// Mute "setting a timer" firebase warnings in console
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = { ...console };
+console.warn = (message) => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
 
 // A utility function to always return a valid date number given a starting date and a delta
 // TODO: Move this to its own file
@@ -70,6 +79,11 @@ export default function App() {
             userData: action.userData,
             onboardingComplete: action.onboardingComplete
           };
+        case 'SET_SLEEPLOGS':
+          return {
+            ...prevState,
+            sleepLogs: action.sleepLogs
+          };
         case 'CHANGE_SELECTED_MONTH':
           return {
             ...prevState,
@@ -101,6 +115,7 @@ export default function App() {
       userToken: null,
       onboardingComplete: true,
       profileData: null,
+      sleepLogs: null,
       selectedMonth: new Date().getMonth()
     }
   );
