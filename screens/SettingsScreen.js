@@ -271,9 +271,10 @@ function Root() {
         </Touchable>
         <Touchable
           style={styles.Touchable_n0}
-          onPress={() =>
+          onPress={async () =>
             planTreatmentModules({
-              currentTreatments: state.userData.currentTreatments
+              currentTreatments: state.userData.currentTreatments,
+              userId: state.userToken
             })
           }
         >
