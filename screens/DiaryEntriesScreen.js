@@ -18,6 +18,7 @@ import SleepLogEntryCard from '../components/SleepLogEntryCard';
 import AddSleepLogButton from '../components/AddSleepLogButton';
 import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
+import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { AuthContext } from '../utilities/authContext';
 
 if (Platform.OS === 'android') {
@@ -120,58 +121,40 @@ const SleepLogsView = (props) => {
   }
 };
 
-class Root extends React.Component {
-  constructor(props) {
-    super(props);
+const SleepLogsScreen = (props) => {
+  // Get global state & dispatch
+  const { state, dispatch } = React.useContext(AuthContext);
 
-    this.state = {
-      sleepLogs: null,
-      logsLoading: true
-    };
+  // Set local state for loading/not loading
+  const [logsLoading, setLogsLoading] = React.useState(true);
+
+  let colRef;
+  let db;
+
+  // Set Firebase DB references if userToken is defined
+  if (state.userToken) {
+    db = FbLib.firestore();
+    colRef = db
+      .collection('users')
+      .doc(state.userToken)
+      .collection('sleepLogs');
   }
 
-  static navigationOptions = {
-    header: null
-  };
-
-  _fetchUidFromAsync = async () => {
-    let userId = await SecureStore.getItemAsync('userId');
-    this.fetchSleepLogs();
-    return userId;
-  };
-
-  componentDidMount = () => {
-    StatusBar.setBarStyle('light-content');
-    this._fetchUidFromAsync();
-  };
-
-  fetchSleepLogs = async () => {
-    // Retrieving sleep logs from Firestore
-    let db = FbLib.firestore();
-    let userId = await SecureStore.getItemAsync('userId');
-
-    // Pull the sleep diary collection from Firestore, array it
-    let colRef = db.collection('users').doc(userId).collection('sleepLogs');
-
-    // Function to retrieve the Firebase data, called in listener below
+  // Function to fetch sleep logs from Firebase and put them in global state
+  async function setSleepLogs() {
     async function fetchData() {
-      colRef
-        .orderBy('upTime', 'desc')
-        .get()
-        .then((res) => {
-          let sleepLogs = [];
-
+      // So fetchData is getting run, but fetchSleepLogs loads forever on Android.
+      fetchSleepLogs(db, state.userToken)
+        .then((sleepLogs) => {
           // Check that theres >1 entry. If no, set state accordingly
-          if (res.size === 0) {
-            this.setState({ logsLoading: false });
-            return 0;
+          if (sleepLogs.size === 0) {
+            setLogsLoading(false);
+          } else {
+            setLogsLoading(false);
+            dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
           }
 
-          // Otherwise, arrange data and update state
-          res.forEach(function (doc) {
-            sleepLogs.push(doc.data());
-          });
-          this.setState({ sleepLogs: sleepLogs, logsLoading: false });
+          return 0;
         })
         .catch(function (error) {
           console.log('Error getting sleep logs:', error);
@@ -183,39 +166,33 @@ class Root extends React.Component {
     colRef.onSnapshot(function () {
       fetchDataBound();
     });
-  };
-
-  goToLogEntry = () => {
-    this.props.navigation.navigate('SleepDiaryEntry');
-  };
-
-  render() {
-    const theme = dozy_theme;
-    return (
-      <ScreenContainer
-        style={{ backgroundColor: '#232B3F' }}
-        hasSafeArea={false}
-        scrollable={true}
-      >
-        <Container elevation={0} useThemeGutterPadding={true}>
-          <SleepLogsView
-            isLoading={this.state.logsLoading}
-            sleepLogs={this.state.sleepLogs}
-            logEntryRedirect={this.goToLogEntry}
-          />
-        </Container>
-      </ScreenContainer>
-    );
   }
-}
+
+  // Set sleep logs once upon loading
+  React.useEffect(() => {
+    setSleepLogs();
+  }, []);
+
+  return (
+    <ScreenContainer
+      style={{ backgroundColor: '#232B3F' }}
+      hasSafeArea={false}
+      scrollable={true}
+    >
+      <Container elevation={0} useThemeGutterPadding={true}>
+        <SleepLogsView
+          isLoading={logsLoading}
+          sleepLogs={state.sleepLogs}
+          logEntryRedirect={() => props.navigation.navigate('SleepDiaryEntry')}
+        />
+      </Container>
+    </ScreenContainer>
+  );
+};
 
 SleepLogsView.propTypes = {
   sleepLogs: PropTypes.array,
   logEntryRedirect: PropTypes.func
 };
 
-Root.propTypes = {
-  navigation: PropTypes.any
-};
-
-export default withTheme(Root);
+export default withTheme(SleepLogsScreen);
