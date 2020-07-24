@@ -274,7 +274,7 @@ function Root() {
           onPress={async () =>
             planTreatmentModules({
               currentTreatments: state.userData.currentTreatments,
-              userId: state.userToken
+              sleepLogs: state.sleepLogs
             })
           }
         >
