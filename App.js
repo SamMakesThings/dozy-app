@@ -168,7 +168,6 @@ export default function App() {
     state: state,
     signIn: async () => {
       // Fetch and store the relevant auth token
-      // TODO: Handle errors if sign in fails
 
       // Use my previously defined login function to get user data and store the token
       _loginWithGoogle().then((result) => {
@@ -180,7 +179,9 @@ export default function App() {
         SecureStore.setItemAsync(
           'profileData',
           JSON.stringify(result.additionalUserInfo.profile)
-        );
+        ).catch((error) => {
+          console.log('Error signing in: ' + error);
+        });
 
         // Update app state accordingly thru context hook function
         dispatch({

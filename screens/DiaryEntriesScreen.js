@@ -1,13 +1,11 @@
 import React from 'react';
 import {
-  StatusBar,
   ScrollView,
   Text,
   Platform,
   ActivityIndicator,
   View
 } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
 import '@firebase/firestore';
