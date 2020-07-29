@@ -6,7 +6,7 @@ import { dozy_theme } from '../config/Themes';
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
-import { TreatmentPlanScreen } from '../screens/TreatmentPlanScreen';
+import TreatmentPlanScreen from '../screens/TreatmentPlanScreen';
 import DiaryEntryNavigator from './DiaryEntryNavigator';
 import OnboardingNavigator from './OnboardingNavigator';
 import HeaderProgressBar from '../components/HeaderProgressBar';
@@ -77,7 +77,7 @@ export default function InitialAuthNavigator({
             options={() => ({
               headerShown: true,
               // eslint-disable-next-line react/display-name
-              header: ({ scene, navigation }) => {
+              header: ({ navigation }) => {
                 return <HeaderProgressBar navigation={navigation} />;
               },
               headerStyle: {
@@ -90,6 +90,18 @@ export default function InitialAuthNavigator({
           <TopStack.Screen
             name="TreatmentPlan"
             component={TreatmentPlanScreen}
+            options={() => ({
+              headerShown: true,
+              // eslint-disable-next-line react/display-name
+              header: ({ navigation }) => {
+                return <HeaderProgressBar navigation={navigation} />;
+              },
+              headerStyle: {
+                height: 300
+              },
+              animationEnabled: true,
+              headerTransparent: true
+            })}
           />
           <TopStack.Screen
             name="SleepDiaryEntry"

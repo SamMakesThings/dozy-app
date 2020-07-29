@@ -104,7 +104,10 @@ export const TreatmentScreen = ({ navigation }) => {
           estCompletionDate={estCompletionDate}
           completionPercentProgress={completionPercentProgress}
           onPress={() => {
-            navigation.navigate('TreatmentPlan');
+            navigation.navigate('TreatmentPlan', {
+              estCompletionDate: estCompletionDate,
+              completionPercentProgress: completionPercentProgress
+            });
           }}
         />
         <View style={styles.View_NoCard}>

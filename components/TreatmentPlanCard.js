@@ -12,7 +12,11 @@ export const TreatmentPlanCard = (props) => {
 
   return (
     <CardContainer>
-      <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
+      <TouchableOpacity
+        style={{ flex: 1 }}
+        onPress={props.onPress}
+        disabled={!props.onPress}
+      >
         <View style={styles.View_CardHeaderContainer}>
           <View
             style={{
@@ -27,7 +31,7 @@ export const TreatmentPlanCard = (props) => {
                 ...styles.Text_CardTitle
               }}
             >
-              My treatment plan
+              {props.title ? props.title : 'My treatment plan'}
             </Text>
             <Text
               style={{
@@ -42,6 +46,7 @@ export const TreatmentPlanCard = (props) => {
             name={'chevron-right'}
             size={scale(28)}
             color={theme.colors.secondary}
+            style={{ display: props.onPress ? 'flex' : 'none' }}
           />
         </View>
         <View style={styles.View_CardContentContainer}>
