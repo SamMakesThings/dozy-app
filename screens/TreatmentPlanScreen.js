@@ -2,10 +2,12 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
-import { scale, verticalScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
+import { LinkCard } from '../components/LinkCard';
 import { dozy_theme } from '../config/Themes';
 import { CardContainer } from '../components/CardContainer';
+import treatments from '../constants/Treatments';
 
 function TreatmentPlanScreen({ route }) {
   const theme = dozy_theme;
@@ -46,7 +48,19 @@ function TreatmentPlanScreen({ route }) {
               <Text>ProgBar</Text>
             </View>
             <View style={styles.View_PlanModulesContainer}>
-              <Text>Content</Text>
+              <View>
+                <Text>Date here</Text>
+                <LinkCard
+                  style={styles.ItemMargin}
+                  bgImage={treatments['SCTSRT'].image}
+                  titleLabel={treatments['SCTSRT'].title}
+                  subtitleLabel={treatments['SCTSRT'].subTitle}
+                  onPress={() => {
+                    // navigation.navigate('TreatmentReview', { module: item })
+                  }}
+                  overlayColor={'rgba(0, 129, 138, 0.8)'}
+                />
+              </View>
             </View>
           </View>
         </CardContainer>
@@ -74,6 +88,10 @@ const styles = StyleSheet.create({
   View_CardContentContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  View_VerticalProgBarContainer: {
+    width: scale(20),
+    marginRight: scale(10)
   },
   Text_CardTitle: {
     color: dozy_theme.colors.secondary
