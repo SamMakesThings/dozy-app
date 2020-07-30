@@ -61,12 +61,12 @@ export const LinkCard = (props) => {
 const styles = StyleSheet.create({
   View_ContentLinkCard: {
     height: scale(80),
+    flex: 1,
     borderRadius: dozy_theme.borderRadius.global,
     overflow: 'hidden'
   },
   View_CardLinkImageOverlay: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
     padding: scale(6),
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'stretch'
   },
   Text_ContentLinkTitle: {
     fontSize: scale(15),

@@ -93,6 +93,9 @@ const styles = StyleSheet.create({
     width: scale(20),
     marginRight: scale(10)
   },
+  View_PlanModulesContainer: {
+    flex: 1
+  },
   Text_CardTitle: {
     color: dozy_theme.colors.secondary
   },
