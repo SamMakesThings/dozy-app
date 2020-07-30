@@ -24,7 +24,7 @@ export default {
     url: 'https://dozy.customerly.help/collecting-a-baseline-of-sleep-data/',
     optional: false
   },
-  PMR: {
+  RLX: {
     title: 'Relaxation Training & PMR',
     subTitle: 'Relax the muscles to relax the mind',
     image: Images.WomanInBed,
