@@ -9,16 +9,13 @@ import { dozy_theme } from '../config/Themes';
 import { CardContainer } from '../components/CardContainer';
 import treatments from '../constants/Treatments';
 import { AuthContext } from '../utilities/authContext';
-import planTreatmentModules from '../utilities/planTreatmentModules';
+import GLOBAL from '../utilities/global';
 
 const theme = dozy_theme;
 
 function TreatmentPlanScreen({ navigation, route }) {
   const { state } = React.useContext(AuthContext);
-  const treatmentPlan = planTreatmentModules({
-    sleepLogs: state.sleepLogs,
-    currentTreatments: state.userData.currentTreatments
-  });
+  const treatmentPlan = GLOBAL.treatmentPlan;
 
   // Calculate flex value for the vertical progress bar
   const vProgBarFillFlex = treatmentPlan.filter(
@@ -35,6 +32,7 @@ function TreatmentPlanScreen({ navigation, route }) {
         <TreatmentPlanCard
           estCompletionDate={route.params.estCompletionDate}
           completionPercentProgress={route.params.completionPercentProgress}
+          nextCheckinDate={state.userData.nextCheckin.nextCheckinDatetime}
           title={'Progress so far'}
           titleOpacity={0.6}
         />
@@ -127,7 +125,7 @@ const styles = StyleSheet.create({
   },
   ItemMargin: {
     marginTop: scale(1),
-    marginBottom: scale(10)
+    marginBottom: scale(17)
   },
   View_ContentContainer: {
     justifyContent: 'flex-start',
@@ -165,7 +163,8 @@ const styles = StyleSheet.create({
   },
   Text_CardTitle: {
     color: dozy_theme.colors.secondary,
-    fontSize: scale(25)
+    fontSize: scale(25),
+    marginBottom: scale(12)
   },
   Icon_Clipboard: {
     margin: scale(20)

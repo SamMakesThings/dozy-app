@@ -40,7 +40,11 @@ export const TreatmentPlanCard = (props) => {
                 ...styles.Text_CardSubtitle
               }}
             >
-              Next weekly checkin: {props.estCompletionDate}
+              Next weekly checkin:{' '}
+              {props.nextCheckinDate.toDate().toLocaleString('en-US', {
+                month: 'long',
+                day: 'numeric'
+              })}
             </Text>
           </View>
           <Entypo
@@ -61,7 +65,7 @@ export const TreatmentPlanCard = (props) => {
               <ProgressBar
                 style={styles.ProgressBar}
                 color={theme.colors.secondary}
-                progress={props.completionPercentProgress / 100}
+                progress={props.completionPercentProgress}
                 borderWidth={0}
                 borderRadius={scale(9)}
                 animationType="spring"
@@ -69,7 +73,7 @@ export const TreatmentPlanCard = (props) => {
               />
             </View>
             <HighlightedText
-              label={props.completionPercentProgress + '% done'}
+              label={props.completionPercentProgress * 100 + '% done'}
               textColor={theme.colors.primary}
               bgColor={theme.colors.secondary}
               style={{ maxWidth: '32%' }}

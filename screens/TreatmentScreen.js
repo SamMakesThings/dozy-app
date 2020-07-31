@@ -9,10 +9,19 @@ import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
 import { dozy_theme } from '../config/Themes';
 import treatments from '../constants/Treatments';
+import planTreatmentModules from '../utilities/planTreatmentModules';
+import GLOBAL from '../utilities/global';
 
 export const TreatmentScreen = ({ navigation }) => {
   const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
+
+  // Calculate the full treatment plan and store it in static global state
+  const treatmentPlan = planTreatmentModules({
+    sleepLogs: state.sleepLogs,
+    currentTreatments: state.userData.currentTreatments
+  });
+  GLOBAL.treatmentPlan = treatmentPlan;
 
   // Get current treatment module string from state
   const currentModule = state.userData.currentTreatments.currentModule;
@@ -30,25 +39,12 @@ export const TreatmentScreen = ({ navigation }) => {
     (nextCheckinTime - lastCheckinTime)
   );
 
-  // Estimate treatment completion date based on 1 week per module
-  const estModulesRemaining =
-    10 - Object.keys(state.userData.currentTreatments).length;
-  const estCompletionSeconds =
-    new Date().getTime() + estModulesRemaining * 604800000;
-  const estCompletionDate = new Date(estCompletionSeconds).toLocaleString(
-    'en-US',
-    {
-      month: 'short',
-      day: 'numeric'
-    }
-  );
-
-  // Compute progress percent based on above estimate
-  const estCompletionDuration = 10 * 604800000; // 10 modules duration
-  const completionPercentProgress = ~~(
-    (100 * (estCompletionSeconds - Date.now())) /
-    estCompletionDuration
-  );
+  // Estimate treatment completion date & % progress based on treatmentPlan
+  const estCompletionDate = treatmentPlan[treatmentPlan.length - 1].estDate;
+  const modulesCompleted = treatmentPlan.filter(
+    (module) => module.started === true
+  ).length;
+  const percentTreatmentCompleted = modulesCompleted / treatmentPlan.length;
 
   return (
     <ScreenContainer
@@ -101,12 +97,12 @@ export const TreatmentScreen = ({ navigation }) => {
           )
         }
         <TreatmentPlanCard
-          estCompletionDate={estCompletionDate}
-          completionPercentProgress={completionPercentProgress}
+          completionPercentProgress={percentTreatmentCompleted}
+          nextCheckinDate={state.userData.nextCheckin.nextCheckinDatetime}
           onPress={() => {
             navigation.navigate('TreatmentPlan', {
               estCompletionDate: estCompletionDate,
-              completionPercentProgress: completionPercentProgress
+              completionPercentProgress: percentTreatmentCompleted
             });
           }}
         />
