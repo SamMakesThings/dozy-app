@@ -60,7 +60,9 @@ function planTreatmentModules({ sleepLogs, currentTreatments }) {
   }
 
   // Add the remaining treatments in priority order
-  let addDays = 2;
+  const nextCheckinDatetime = currentTreatments.nextCheckinDatetime.toDate();
+  let isNextCheckin = true;
+  let addDays = 0;
   defaultTreatmentOrder.forEach((module) => {
     if (
       !treatmentPlan.some((item) => item.module === module) &&
@@ -68,14 +70,15 @@ function planTreatmentModules({ sleepLogs, currentTreatments }) {
     ) {
       treatmentPlan.push({
         module: module,
-        estDate: moment().add(addDays, 'days').toDate(),
+        estDate: isNextCheckin
+          ? nextCheckinDatetime
+          : moment(nextCheckinDatetime).add(addDays, 'days').toDate(),
         started: false
       });
       addDays += 7;
+      isNextCheckin = false;
     }
   });
-
-  console.log(treatmentPlan);
 
   // Output should be an ordered array of objects
   return treatmentPlan;

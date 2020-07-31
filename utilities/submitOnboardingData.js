@@ -55,7 +55,9 @@ export default async function submitOnboardingData(dispatch) {
       currentTreatments: {
         BSL: new Date(),
         currentModule: 'BSL',
-        lastCheckinDatetime: new Date()
+        lastCheckinDatetime: new Date(),
+        nextCheckinDatetime: GLOBAL.firstCheckinTime,
+        nextTreatmentModule: 'SCTSRT'
       },
       logReminderId: notifDocRef.id
     })
