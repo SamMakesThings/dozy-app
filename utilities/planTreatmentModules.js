@@ -1,7 +1,7 @@
 import moment from 'moment';
 import treatments from '../constants/Treatments';
 
-async function planTreatmentModules({ sleepLogs, currentTreatments }) {
+function planTreatmentModules({ sleepLogs, currentTreatments }) {
   // sleepLogs should be an array of log objects
   // I should really just bite the bullet and learn TypeScript...
 
