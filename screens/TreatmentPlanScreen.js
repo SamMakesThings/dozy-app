@@ -8,10 +8,23 @@ import { LinkCard } from '../components/LinkCard';
 import { dozy_theme } from '../config/Themes';
 import { CardContainer } from '../components/CardContainer';
 import treatments from '../constants/Treatments';
+import { AuthContext } from '../utilities/authContext';
+import planTreatmentModules from '../utilities/planTreatmentModules';
 
 const theme = dozy_theme;
 
-function TreatmentPlanScreen({ route }) {
+function TreatmentPlanScreen({ navigation, route }) {
+  const { state } = React.useContext(AuthContext);
+  const treatmentPlan = planTreatmentModules({
+    sleepLogs: state.sleepLogs,
+    currentTreatments: state.userData.currentTreatments
+  });
+
+  // Calculate flex value for the vertical progress bar
+  const vProgBarFillFlex = treatmentPlan.filter(
+    (module) => module.started === true
+  ).length;
+
   return (
     <ScreenContainer
       hasSafeArea={true}
@@ -23,6 +36,7 @@ function TreatmentPlanScreen({ route }) {
           estCompletionDate={route.params.estCompletionDate}
           completionPercentProgress={route.params.completionPercentProgress}
           title={'Progress so far'}
+          titleOpacity={0.6}
         />
         <CardContainer>
           <View style={styles.View_CardHeaderContainer}>
@@ -46,39 +60,59 @@ function TreatmentPlanScreen({ route }) {
           <View style={styles.View_CardContentContainer}>
             <View style={styles.View_VerticalProgBarContainer}>
               <View style={styles.View_VerticalProgBarBg}>
-                <View style={styles.View_VerticalProgBarFill} />
-                <View style={styles.View_VerticalProgBarBlank} />
+                <View
+                  style={{
+                    ...styles.View_VerticalProgBarFill,
+                    flex: vProgBarFillFlex
+                  }}
+                />
+                <View
+                  style={{
+                    ...styles.View_VerticalProgBarBlank,
+                    flex: treatmentPlan.length - vProgBarFillFlex
+                  }}
+                />
               </View>
             </View>
             <View style={styles.View_PlanModulesContainer}>
-              <View>
-                <Text
-                  style={[
-                    theme.typography.headline6,
-                    {
-                      color: theme.colors.light,
-                      fontSize: scale(13),
-                      width: '100%'
-                    }
-                  ]}
-                >
-                  {new Date().toLocaleString('en-US', {
-                    weekday: 'long',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Text>
-                <LinkCard
-                  style={styles.ItemMargin}
-                  bgImage={treatments['SCTSRT'].image}
-                  titleLabel={treatments['SCTSRT'].title}
-                  subtitleLabel={treatments['SCTSRT'].subTitle}
-                  onPress={() => {
-                    // navigation.navigate('TreatmentReview', { module: item })
-                  }}
-                  overlayColor={'rgba(0, 129, 138, 0.8)'}
-                />
-              </View>
+              {treatmentPlan.map((module) => {
+                console.log(module.estDate);
+                return (
+                  <View key={module.module}>
+                    <Text
+                      style={[
+                        theme.typography.headline6,
+                        {
+                          color: theme.colors.light,
+                          fontSize: scale(13),
+                          width: '100%'
+                        }
+                      ]}
+                    >
+                      {module.estDate.toLocaleString('en-US', {
+                        weekday: 'long',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </Text>
+                    <LinkCard
+                      style={styles.ItemMargin}
+                      bgImage={treatments[module.module].image}
+                      titleLabel={treatments[module.module].title}
+                      subtitleLabel={treatments[module.module].subTitle}
+                      onPress={() => {
+                        navigation.navigate('TreatmentReview', {
+                          module: module.module
+                        });
+                      }}
+                      overlayColor={
+                        module.started ? 'rgba(0, 129, 138, 0.8)' : null
+                      }
+                      disabled={!module.started}
+                    />
+                  </View>
+                );
+              })}
             </View>
           </View>
         </CardContainer>
@@ -92,7 +126,8 @@ const styles = StyleSheet.create({
     paddingTop: scale(55)
   },
   ItemMargin: {
-    marginTop: scale(1)
+    marginTop: scale(1),
+    marginBottom: scale(10)
   },
   View_ContentContainer: {
     justifyContent: 'flex-start',
