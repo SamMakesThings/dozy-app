@@ -5,7 +5,7 @@
     "privacy": "public",
     "platforms": ["ios", "android"],
     "primaryColor": "#00818A",
-    "version": "0.4.3",
+    "version": "0.5.0",
     "orientation": "portrait",
     "icon": "./assets/images/appleIcon.png",
     "splash": {
@@ -18,9 +18,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.dozyhealth.dozy",
       "icon": "./assets/images/appleIcon.png",
+      "buildNumber": 4,
       "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf"
@@ -30,13 +31,14 @@
     "android": {
       "package": "com.dozyhealth.dozy",
       "icon": "./assets/images/appleIcon.png",
-      "versionCode": 3,
+      "versionCode": 4,
       "config": {
         "googleSignIn": {
           "certificateHash": "B087986717594DBC3D224ED28012CCAFA3F8BDDE94FB7287573B2DBBD72E250D"
         }
       },
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "permissions": []
     },
     "packagerOpts": {
       "config": "metro.config.js",
