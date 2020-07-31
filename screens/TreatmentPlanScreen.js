@@ -129,7 +129,10 @@ const styles = StyleSheet.create({
   },
   View_ContentContainer: {
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'stretch',
+    flex: 1,
+    paddingLeft: scale(10),
+    paddingRight: scale(10)
   },
   View_NoCard: {
     width: '92%',

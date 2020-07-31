@@ -104,11 +104,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: scale(5)
   },
-  View_NoCard: {
-    width: '92%',
-    marginTop: scale(15),
-    marginBottom: scale(15)
-  },
   Text_CardTitle: {
     color: dozy_theme.colors.secondary
   },

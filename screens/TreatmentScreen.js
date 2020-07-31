@@ -144,10 +144,12 @@ const styles = StyleSheet.create({
   },
   View_ContentContainer: {
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'stretch',
+    paddingLeft: scale(10),
+    paddingRight: scale(10)
   },
   View_NoCard: {
-    width: '92%',
+    flex: 1,
     marginTop: scale(15),
     marginBottom: scale(15)
   },
