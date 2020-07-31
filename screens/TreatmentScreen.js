@@ -40,11 +40,12 @@ export const TreatmentScreen = ({ navigation }) => {
   );
 
   // Estimate treatment completion date & % progress based on treatmentPlan
-  const estCompletionDate = treatmentPlan[treatmentPlan.length - 1].estDate;
+  // const estCompletionDate = treatmentPlan[treatmentPlan.length - 1].estDate;
   const modulesCompleted = treatmentPlan.filter(
     (module) => module.started === true
   ).length;
-  const percentTreatmentCompleted = modulesCompleted / treatmentPlan.length;
+  const percentTreatmentCompleted =
+    (modulesCompleted / treatmentPlan.length).toFixed(2) * 1;
 
   return (
     <ScreenContainer
@@ -101,7 +102,6 @@ export const TreatmentScreen = ({ navigation }) => {
           nextCheckinDate={state.userData.nextCheckin.nextCheckinDatetime}
           onPress={() => {
             navigation.navigate('TreatmentPlan', {
-              estCompletionDate: estCompletionDate,
               completionPercentProgress: percentTreatmentCompleted
             });
           }}
