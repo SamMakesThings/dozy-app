@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
+import { ScreenContainer } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
 import { LinkCard } from '../components/LinkCard';
@@ -9,9 +9,9 @@ import { dozy_theme } from '../config/Themes';
 import { CardContainer } from '../components/CardContainer';
 import treatments from '../constants/Treatments';
 
-function TreatmentPlanScreen({ route }) {
-  const theme = dozy_theme;
+const theme = dozy_theme;
 
+function TreatmentPlanScreen({ route }) {
   return (
     <ScreenContainer
       hasSafeArea={true}
@@ -45,11 +45,29 @@ function TreatmentPlanScreen({ route }) {
           </View>
           <View style={styles.View_CardContentContainer}>
             <View style={styles.View_VerticalProgBarContainer}>
-              <Text>ProgBar</Text>
+              <View style={styles.View_VerticalProgBarBg}>
+                <View style={styles.View_VerticalProgBarFill} />
+                <View style={styles.View_VerticalProgBarBlank} />
+              </View>
             </View>
             <View style={styles.View_PlanModulesContainer}>
               <View>
-                <Text>Date here</Text>
+                <Text
+                  style={[
+                    theme.typography.headline6,
+                    {
+                      color: theme.colors.light,
+                      fontSize: scale(13),
+                      width: '100%'
+                    }
+                  ]}
+                >
+                  {new Date().toLocaleString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </Text>
                 <LinkCard
                   style={styles.ItemMargin}
                   bgImage={treatments['SCTSRT'].image}
@@ -74,7 +92,7 @@ const styles = StyleSheet.create({
     paddingTop: scale(55)
   },
   ItemMargin: {
-    marginTop: scale(10)
+    marginTop: scale(1)
   },
   View_ContentContainer: {
     justifyContent: 'flex-start',
@@ -90,14 +108,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   View_VerticalProgBarContainer: {
-    width: scale(20),
-    marginRight: scale(10)
+    marginTop: scale(6),
+    width: scale(10),
+    marginRight: scale(12)
+  },
+  View_VerticalProgBarBg: {
+    backgroundColor: theme.colors.background,
+    flex: 1,
+    borderRadius: 100
+  },
+  View_VerticalProgBarFill: {
+    flex: 1,
+    backgroundColor: theme.colors.primary,
+    borderRadius: 100
+  },
+  View_VerticalProgBarBlank: {
+    flex: 1
   },
   View_PlanModulesContainer: {
     flex: 1
   },
   Text_CardTitle: {
-    color: dozy_theme.colors.secondary
+    color: dozy_theme.colors.secondary,
+    fontSize: scale(25)
   },
   Icon_Clipboard: {
     margin: scale(20)
