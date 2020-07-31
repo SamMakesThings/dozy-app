@@ -241,7 +241,7 @@ export default function App() {
         <NavigationContainer>
           <View style={styles.container}>
             <ThemeProvider theme={dozy_theme}>
-              {Platform.OS === 'ios' ? <StatusBar barStyle="default" /> : []}
+              {Platform.OS === 'ios' ? <StatusBar barStyle="light" /> : []}
               <AppNavigator
                 userToken={state.userToken}
                 authLoading={state.authLoading}

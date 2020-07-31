@@ -7,7 +7,7 @@ class Root extends React.Component {
   state = {};
 
   componentDidMount() {
-    StatusBar.setBarStyle('dark-content');
+    StatusBar.setBarStyle('light-content');
   }
 
   static navigationOptions = {
