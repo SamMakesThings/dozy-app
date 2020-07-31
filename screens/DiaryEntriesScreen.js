@@ -112,7 +112,7 @@ const SleepLogsView = (props) => {
           onPress={() => props.logEntryRedirect()}
           notLoggedToday={!loggedToday}
         />
-        {props.sleepLogs.length > 7 && (
+        {props.sleepLogs.length < 7 && (
           <BaselineProgressCard nightsLogged={props.sleepLogs.length} />
         )}
         {sleepLogs.map((log) => {
