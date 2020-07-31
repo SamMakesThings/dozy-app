@@ -15,7 +15,11 @@ export const LinkCard = (props) => {
   const theme = dozy_theme;
   return (
     <View style={{ ...props.style, ...styles.View_ContentLinkCard }}>
-      <TouchableOpacity style={{ flex: 1 }} onPress={props.onPress}>
+      <TouchableOpacity
+        style={{ flex: 1 }}
+        onPress={props.onPress}
+        disabled={props.disabled}
+      >
         <ImageBackground
           source={props.bgImage}
           style={styles.Image_ContentLinkBackground}
@@ -32,7 +36,8 @@ export const LinkCard = (props) => {
               <Text
                 style={{
                   ...theme.typography.body1,
-                  ...styles.Text_ContentLinkTitle
+                  ...styles.Text_ContentLinkTitle,
+                  opacity: props.disabled ? 0.5 : 1
                 }}
               >
                 {props.titleLabel}
@@ -81,7 +86,8 @@ const styles = StyleSheet.create({
   Text_ContentLinkTitle: {
     fontSize: scale(15),
     fontFamily: 'RubikMedium',
-    color: dozy_theme.colors.secondary
+    color: dozy_theme.colors.secondary,
+    lineHeight: scale(15)
   },
   Text_ContentLinkSubtitle: {
     fontSize: scale(15),
