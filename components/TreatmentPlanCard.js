@@ -28,7 +28,8 @@ export const TreatmentPlanCard = (props) => {
             <Text
               style={{
                 ...theme.typography.cardTitle,
-                ...styles.Text_CardTitle
+                ...styles.Text_CardTitle,
+                opacity: props.titleOpacity
               }}
             >
               {props.title ? props.title : 'My treatment plan'}
