@@ -68,7 +68,7 @@ function planTreatmentModules({ sleepLogs, currentTreatments }) {
     ) {
       treatmentPlan.push({
         module: module,
-        estDate: moment().add(addDays, 'days'),
+        estDate: moment().add(addDays, 'days').toDate(),
         started: false
       });
       addDays += 7;
