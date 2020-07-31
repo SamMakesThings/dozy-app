@@ -19,7 +19,8 @@ const AddSleepLogButton = (props) => {
           : theme.colors.medium,
         padding: scale(18),
         borderRadius: theme.borderRadius.global,
-        marginTop: scale(15)
+        marginTop: scale(15),
+        marginBottom: scale(15)
       }}
       onPress={props.onPress}
     >

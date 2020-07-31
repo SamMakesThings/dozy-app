@@ -13,6 +13,7 @@ import { Entypo } from '@expo/vector-icons';
 import Intl from 'intl';
 import { scale } from 'react-native-size-matters';
 import SleepLogEntryCard from '../components/SleepLogEntryCard';
+import { BaselineProgressCard } from '../components/BaselineProgressCard';
 import AddSleepLogButton from '../components/AddSleepLogButton';
 import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
@@ -111,6 +112,9 @@ const SleepLogsView = (props) => {
           onPress={() => props.logEntryRedirect()}
           notLoggedToday={!loggedToday}
         />
+        {props.sleepLogs.length > 7 && (
+          <BaselineProgressCard nightsLogged={props.sleepLogs.length} />
+        )}
         {sleepLogs.map((log) => {
           return <SleepLogEntryCard sleepLog={log} key={log.upTime.seconds} />;
         })}

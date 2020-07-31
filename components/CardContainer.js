@@ -5,7 +5,11 @@ import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
 export const CardContainer = (props) => {
-  return <View style={styles.View_CardContainer}>{props.children}</View>;
+  return (
+    <View style={{ ...styles.View_CardContainer, ...props.style }}>
+      {props.children}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
