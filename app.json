@@ -21,7 +21,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.dozyhealth.dozy",
       "icon": "./assets/images/appleIcon.png",
-      "buildNumber": 4,
+      "buildNumber": "4",
       "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf"
