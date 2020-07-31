@@ -157,7 +157,8 @@ const styles = StyleSheet.create({
     color: dozy_theme.colors.secondary
   },
   Icon_Clipboard: {
-    margin: scale(20)
+    margin: scale(20),
+    alignSelf: 'center'
   }
 });
 
