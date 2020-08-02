@@ -130,7 +130,7 @@ export default function App() {
           '713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com',
         iosClientId:
           '713165282203-fr943kvhd9rbst5i5ss4g3htgjho143a.apps.googleusercontent.com',
-        standaloneAndroidClientId:
+        androidStandaloneAppClientId:
           '713165282203-15rbcpiu517fikvak6c9okehpusbk84e.apps.googleusercontent.com',
         iosStandaloneAppClientId:
           '713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf.apps.googleusercontent.com',
