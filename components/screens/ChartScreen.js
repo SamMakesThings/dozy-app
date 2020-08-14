@@ -1,16 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {
-  withTheme,
-  ScreenContainer,
-  Container,
-  ProgressBar
-} from '@draftbit/ui';
+import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
+import { VictoryChart, VictoryTheme, VictoryLine } from 'victory-native';
 import BottomNavButtons from '../BottomNavButtons';
 
 // Wizard screen with a hero image (usually icon) and paragraph text
 const ChartScreen = (props) => {
   const { theme } = props;
+
+  // DELETE ME: Sample data for Victory js
+  const data = [
+    { quarter: 1, earnings: 13000 },
+    { quarter: 2, earnings: 16500 },
+    { quarter: 3, earnings: 14250 },
+    { quarter: 4, earnings: 19000 }
+  ];
+
+  const sleepLogs = props.sleepLogs;
+  console.log(sleepLogs);
 
   return (
     <ScreenContainer
@@ -22,33 +29,29 @@ const ChartScreen = (props) => {
         style={styles.View_HeaderContainer}
         elevation={0}
         useThemeGutterPadding={true}
-      >
-        <Container
-          style={styles.View_BarContainer}
-          elevation={0}
-          useThemeGutterPadding={true}
-        >
-          <ProgressBar
-            style={{
-              ...styles.ProgressBar,
-              ...{ display: props.progressBarPercent ? 'flex' : 'none' }
-            }}
-            color={theme.colors.primary}
-            progress={props.progressBarPercent}
-            borderWidth={0}
-            borderRadius={10}
-            animationType="spring"
-            unfilledColor={theme.colors.medium}
-          />
-        </Container>
-      </Container>
+      ></Container>
       <Container
         style={styles.View_ContentContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
         <View style={{ flex: 1 }} />
-        <View style={styles.View_ImageContainer}>{props.image}</View>
+        <View style={styles.View_ImageContainer}>
+          <VictoryChart width={350} theme={VictoryTheme.material}>
+            <VictoryLine
+              data={sleepLogs}
+              x="upTime"
+              y="sleepEfficiency"
+              style={{
+                data: {
+                  stroke: theme.colors.primary,
+                  strokeWidth: 6,
+                  strokeLinejoin: 'round'
+                }
+              }}
+            />
+          </VictoryChart>
+        </View>
         <Text
           style={[
             styles.Text_Explainer,

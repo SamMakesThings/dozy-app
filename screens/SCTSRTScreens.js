@@ -50,11 +50,13 @@ export const Welcome = ({ navigation }) => {
 
 export const SleepEfficiency = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
+  const { state } = React.useContext(AuthContext);
   return (
     <ChartScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<Clipboard width={imgSize} height={imgSize} />}
+      sleepLogs={state.sleepLogs}
       onQuestionSubmit={() => {
         navigation.navigate('ISIIntro', {
           progressBarPercent: null
