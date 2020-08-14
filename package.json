@@ -52,7 +52,8 @@
     "react-native-svg": "11.0.1",
     "react-native-tab-view": "^2.14.4",
     "react-native-typography": "^1.4.0",
-    "react-native-webview": "^10.2.3"
+    "react-native-webview": "^10.2.3",
+    "victory-native": "^35.0.1"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
