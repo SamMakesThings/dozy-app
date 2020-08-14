@@ -9,6 +9,7 @@ import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
 import TreatmentPlanScreen from '../screens/TreatmentPlanScreen';
 import DiaryEntryNavigator from './DiaryEntryNavigator';
 import OnboardingNavigator from './OnboardingNavigator';
+import SCTSRTNavigator from './SCTSRTNavigator';
 import HeaderProgressBar from '../components/HeaderProgressBar';
 
 // Create the main app auth navigation flow
@@ -107,6 +108,7 @@ export default function InitialAuthNavigator({
             name="SleepDiaryEntry"
             component={DiaryEntryNavigator}
           />
+          <TopStack.Screen name="SCTSRT" component={SCTSRTNavigator} />
         </>
       ) : (
         <TopStack.Screen

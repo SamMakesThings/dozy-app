@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
+import { withTheme, ScreenContainer, Icon, Button } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import { LinkCard } from '../components/LinkCard';
@@ -47,6 +47,10 @@ export const TreatmentScreen = ({ navigation }) => {
   const percentTreatmentCompleted =
     (modulesCompleted / treatmentPlan.length).toFixed(2) * 1;
 
+  // Strip time from next checkin datetime to determine whether to show checkin button
+  let nextCheckinDate = state.userData.currentTreatments.nextCheckinDatetime.toDate();
+  nextCheckinDate.setHours(0);
+
   return (
     <ScreenContainer
       hasSafeArea={true}
@@ -60,6 +64,18 @@ export const TreatmentScreen = ({ navigation }) => {
           size={scale(80)}
           color={theme.colors.primary}
         />
+        {nextCheckinDate < new Date() && (
+          <Button
+            style={{
+              ...theme.buttonLayout
+            }}
+            type="solid"
+            color={theme.colors.primary}
+            onPress={() => navigation.navigate('SCTSRT')}
+          >
+            Begin first check-in
+          </Button>
+        )}
         <CurrentTreatmentsCard
           progressPercent={progressPercent}
           linkTitle={treatments[currentModule].title}
