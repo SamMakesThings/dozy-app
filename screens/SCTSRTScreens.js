@@ -4,11 +4,13 @@ import { useWindowDimensions, Text, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
+import ChartScreen from '../components/screens/ChartScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import WaveHello from '../assets/images/WaveHello.svg';
+import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
 import LabCoat from '../assets/images/LabCoat.svg';
 import Clipboard from '../assets/images/Clipboard.svg';
 import TiredFace from '../assets/images/TiredFace.svg';
@@ -34,40 +36,22 @@ export const Welcome = ({ navigation }) => {
     <IconExplainScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      image={<WaveHello width={imgSize} height={imgSize} />}
+      image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
-        navigation.navigate('Overview', {
+        navigation.navigate('SleepEfficiency', {
           progressBarPercent: null
         });
       }}
-      textLabel="Welcome to Dozy! We'll get you sleeping better in no time."
+      textLabel="Welcome back! This’ll take 10-15 minutes. We’ll review your sleep over the last week, update your treatment plan, and get you started on your new treatment."
       buttonLabel="Next"
     />
   );
 };
 
-export const Overview = ({ navigation }) => {
+export const SleepEfficiency = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
-    <IconExplainScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      image={<LabCoat width={imgSize} height={imgSize} />}
-      onQuestionSubmit={() => {
-        navigation.navigate('Asks', {
-          progressBarPercent: null
-        });
-      }}
-      textLabel="We use a proven therapy treatment to get you sleeping again. It's drug-free, takes from 4-8 weeks, and is permanent."
-      buttonLabel="Next"
-    />
-  );
-};
-
-export const Asks = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <IconExplainScreen
+    <ChartScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<Clipboard width={imgSize} height={imgSize} />}
@@ -76,7 +60,7 @@ export const Asks = ({ navigation }) => {
           progressBarPercent: null
         });
       }}
-      textLabel="For this to work, we'll help you maintain a once-daily sleep log and a checkup once per week."
+      textLabel="Be better at sleep pls"
       buttonLabel="Next"
     />
   );
