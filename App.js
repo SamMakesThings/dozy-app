@@ -156,6 +156,8 @@ export default function App() {
   }
 
   React.useEffect(() => {
+    StatusBar.setBarStyle('light-content');
+
     // Update user data from storage and Firebase, update state w/dispatch
     refreshUserData(dispatch);
   }, []);
