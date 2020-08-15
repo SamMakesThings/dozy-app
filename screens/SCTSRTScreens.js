@@ -55,7 +55,8 @@ export const SleepEfficiency = ({ navigation }) => {
     <ChartScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      image={<Clipboard width={imgSize} height={imgSize} />}
+      chartWidth={scale(300)}
+      chartHeight={scale(300)}
       sleepLogs={state.sleepLogs}
       onQuestionSubmit={() => {
         navigation.navigate('ISIIntro', {

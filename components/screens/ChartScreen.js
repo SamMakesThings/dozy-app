@@ -1,23 +1,22 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
-import { VictoryChart, VictoryTheme, VictoryLine } from 'victory-native';
+import {
+  VictoryChart,
+  VictoryTheme,
+  VictoryLine,
+  VictoryAxis,
+  VictoryLabel
+} from 'victory-native';
+import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
 
-// Wizard screen with a hero image (usually icon) and paragraph text
+// Screen with a chart - mostly for sleep analysis
 const ChartScreen = (props) => {
-  const { theme } = props;
+  const { theme, sleepLogs } = props;
 
-  // DELETE ME: Sample data for Victory js
-  const data = [
-    { quarter: 1, earnings: 13000 },
-    { quarter: 2, earnings: 16500 },
-    { quarter: 3, earnings: 14250 },
-    { quarter: 4, earnings: 19000 }
-  ];
-
-  const sleepLogs = props.sleepLogs;
-  console.log(sleepLogs);
+  // Trim sleepLogs to only show most recent 10
+  const recentSleepLogs = sleepLogs.slice(0, 10);
 
   return (
     <ScreenContainer
@@ -37,18 +36,68 @@ const ChartScreen = (props) => {
       >
         <View style={{ flex: 1 }} />
         <View style={styles.View_ImageContainer}>
-          <VictoryChart width={350} theme={VictoryTheme.material}>
+          <VictoryChart
+            width={props.chartWidth ? props.chartWidth : scale(300)}
+            height={props.chartHeight ? props.chartHeight : scale(300)}
+            theme={VictoryTheme.material}
+            style={{
+              labels: {
+                fontSize: 30,
+                fill: theme.colors.primary
+              }
+            }}
+            labels={({ datum }) => {
+              console.log(datum);
+              return datum;
+            }}
+          >
+            {/*<VictoryAxis dependentAxis
+              width={props.chartWidth ? props.chartWidth : scale(300)}
+              height={props.chartHeight ? props.chartHeight : scale(300)}
+              standalone={false}
+              axisLabelComponent={<VictoryLabel
+                style={{
+                  fill: theme.colors.secondary
+                }}
+              />}
+            /> */}
             <VictoryLine
-              data={sleepLogs}
+              data={recentSleepLogs}
               x="upTime"
               y="sleepEfficiency"
               style={{
                 data: {
                   stroke: theme.colors.primary,
-                  strokeWidth: 6,
+                  strokeWidth: scale(4),
                   strokeLinejoin: 'round'
                 }
               }}
+              interpolation="monotoneX"
+            />
+            <VictoryAxis
+              dependentAxis
+              tickFormat={(tick) => tick * 100 + '%'}
+              style={{
+                tickLabels: {
+                  angle: -45
+                }
+              }}
+            />
+            <VictoryAxis
+              style={{
+                label: {
+                  fill: theme.colors.primary
+                },
+                tickLabels: {
+                  angle: -45
+                }
+              }}
+              tickFormat={(tick) =>
+                new Date(tick).toLocaleString('en-US', {
+                  month: 'short',
+                  day: 'numeric'
+                })
+              }
             />
           </VictoryChart>
         </View>
