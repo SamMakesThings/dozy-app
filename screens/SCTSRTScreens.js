@@ -51,19 +51,44 @@ export const Welcome = ({ navigation }) => {
 export const SleepEfficiency = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
   const { state } = React.useContext(AuthContext);
+
+  // Trim sleepLogs to only show most recent 10
+  const recentSleepLogs = state.sleepLogs.slice(0, 10);
+
+  // Calculate recent sleep efficiency average
+  const sleepEfficiencyAvg = Number(
+    (
+      (recentSleepLogs.reduce((a, b) => a + b.sleepEfficiency, 0) /
+        recentSleepLogs.length) *
+      100
+    ).toFixed(0)
+  );
+
   return (
     <ChartScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       chartWidth={scale(300)}
       chartHeight={scale(300)}
-      sleepLogs={state.sleepLogs}
+      sleepLogs={recentSleepLogs}
       onQuestionSubmit={() => {
         navigation.navigate('ISIIntro', {
           progressBarPercent: null
         });
       }}
-      textLabel="Be better at sleep pls"
+      textLabel={
+        'Your sleep efficiency has been ' +
+        (sleepEfficiencyAvg < 85 ? 'poor this week' : 'good this week') +
+        ', with an average of ' +
+        sleepEfficiencyAvg +
+        '% per night. ' +
+        (sleepEfficiencyAvg < 85 ? 'Not to worry' : 'Regardless') +
+        " - the techniques we'll be introducing today will " +
+        (sleepEfficiencyAvg < 85
+          ? 'focus on permanently boosting'
+          : 'still improve') +
+        ' sleep efficiency.'
+      }
       buttonLabel="Next"
     />
   );

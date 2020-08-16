@@ -15,9 +15,6 @@ import BottomNavButtons from '../BottomNavButtons';
 const ChartScreen = (props) => {
   const { theme, sleepLogs } = props;
 
-  // Trim sleepLogs to only show most recent 10
-  const recentSleepLogs = sleepLogs.slice(0, 10);
-
   return (
     <ScreenContainer
       hasSafeArea={true}
@@ -78,10 +75,10 @@ const ChartScreen = (props) => {
                   day: 'numeric'
                 });
               }}
-              tickCount={5}
+              tickCount={7}
             />
             <VictoryLine
-              data={recentSleepLogs}
+              data={sleepLogs}
               x={(d) => d.upTime.toDate()}
               y="sleepEfficiency"
               style={{
