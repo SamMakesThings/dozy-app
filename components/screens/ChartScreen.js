@@ -46,24 +46,43 @@ const ChartScreen = (props) => {
                 fill: theme.colors.primary
               }
             }}
-            labels={({ datum }) => {
-              console.log(datum);
-              return datum;
-            }}
+            scale={{ x: 'time' }}
           >
-            {/*<VictoryAxis dependentAxis
-              width={props.chartWidth ? props.chartWidth : scale(300)}
-              height={props.chartHeight ? props.chartHeight : scale(300)}
-              standalone={false}
-              axisLabelComponent={<VictoryLabel
-                style={{
-                  fill: theme.colors.secondary
-                }}
-              />}
-            /> */}
+            <VictoryAxis
+              dependentAxis
+              tickFormat={(tick) => tick * 100 + '%'}
+              style={{
+                tickLabels: {
+                  angle: -45,
+                  fontSize: scale(11)
+                },
+                grid: {
+                  stroke: theme.colors.medium
+                }
+              }}
+              tickCount={5}
+            />
+            <VictoryAxis
+              style={{
+                tickLabels: {
+                  angle: -45,
+                  fontSize: scale(11)
+                },
+                grid: {
+                  stroke: theme.colors.medium
+                }
+              }}
+              tickFormat={(tick) => {
+                return tick.toLocaleString('en-US', {
+                  month: 'short',
+                  day: 'numeric'
+                });
+              }}
+              tickCount={5}
+            />
             <VictoryLine
               data={recentSleepLogs}
-              x="upTime"
+              x={(d) => d.upTime.toDate()}
               y="sleepEfficiency"
               style={{
                 data: {
@@ -73,31 +92,6 @@ const ChartScreen = (props) => {
                 }
               }}
               interpolation="monotoneX"
-            />
-            <VictoryAxis
-              dependentAxis
-              tickFormat={(tick) => tick * 100 + '%'}
-              style={{
-                tickLabels: {
-                  angle: -45
-                }
-              }}
-            />
-            <VictoryAxis
-              style={{
-                label: {
-                  fill: theme.colors.primary
-                },
-                tickLabels: {
-                  angle: -45
-                }
-              }}
-              tickFormat={(tick) =>
-                new Date(tick).toLocaleString('en-US', {
-                  month: 'short',
-                  day: 'numeric'
-                })
-              }
             />
           </VictoryChart>
         </View>
