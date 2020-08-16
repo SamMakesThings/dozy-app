@@ -49,7 +49,6 @@ export const Welcome = ({ navigation }) => {
 };
 
 export const SleepEfficiency = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   const { state } = React.useContext(AuthContext);
 
   // Trim sleepLogs to only show most recent 10

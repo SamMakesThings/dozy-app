@@ -5,8 +5,7 @@ import {
   VictoryChart,
   VictoryTheme,
   VictoryLine,
-  VictoryAxis,
-  VictoryLabel
+  VictoryAxis
 } from 'victory-native';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
@@ -15,6 +14,25 @@ import BottomNavButtons from '../BottomNavButtons';
 const ChartScreen = (props) => {
   const { theme, sleepLogs } = props;
 
+  const chartStyles = {
+    axis: {
+      tickLabels: {
+        angle: -45,
+        fontSize: scale(11)
+      },
+      grid: {
+        stroke: theme.colors.medium
+      }
+    },
+    line: {
+      data: {
+        stroke: theme.colors.primary,
+        strokeWidth: scale(4),
+        strokeLinejoin: 'round'
+      }
+    }
+  };
+
   return (
     <ScreenContainer
       hasSafeArea={true}
@@ -22,53 +40,26 @@ const ChartScreen = (props) => {
       style={styles.RootContainer}
     >
       <Container
-        style={styles.View_HeaderContainer}
-        elevation={0}
-        useThemeGutterPadding={true}
-      ></Container>
-      <Container
         style={styles.View_ContentContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <View style={{ flex: 1 }} />
+        <View style={styles.View_TopPadding} />
         <View style={styles.View_ImageContainer}>
           <VictoryChart
             width={props.chartWidth ? props.chartWidth : scale(300)}
             height={props.chartHeight ? props.chartHeight : scale(300)}
             theme={VictoryTheme.material}
-            style={{
-              labels: {
-                fontSize: 30,
-                fill: theme.colors.primary
-              }
-            }}
             scale={{ x: 'time' }}
           >
             <VictoryAxis
               dependentAxis
               tickFormat={(tick) => tick * 100 + '%'}
-              style={{
-                tickLabels: {
-                  angle: -45,
-                  fontSize: scale(11)
-                },
-                grid: {
-                  stroke: theme.colors.medium
-                }
-              }}
+              style={chartStyles.axis}
               tickCount={5}
             />
             <VictoryAxis
-              style={{
-                tickLabels: {
-                  angle: -45,
-                  fontSize: scale(11)
-                },
-                grid: {
-                  stroke: theme.colors.medium
-                }
-              }}
+              style={chartStyles.axis}
               tickFormat={(tick) => {
                 return tick.toLocaleString('en-US', {
                   month: 'short',
@@ -81,13 +72,7 @@ const ChartScreen = (props) => {
               data={sleepLogs}
               x={(d) => d.upTime.toDate()}
               y="sleepEfficiency"
-              style={{
-                data: {
-                  stroke: theme.colors.primary,
-                  strokeWidth: scale(4),
-                  strokeLinejoin: 'round'
-                }
-              }}
+              style={chartStyles.line}
               interpolation="monotoneX"
             />
           </VictoryChart>
@@ -120,6 +105,9 @@ const ChartScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
+  View_TopPadding: {
+    flex: 1
+  },
   View_ImageContainer: {
     flex: 5,
     justifyContent: 'center'
