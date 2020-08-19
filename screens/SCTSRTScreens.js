@@ -2,9 +2,15 @@
 import React from 'react';
 import { useWindowDimensions, Text, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import {
+  VictoryChart,
+  VictoryTheme,
+  VictoryLine,
+  VictoryAxis
+} from 'victory-native';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
-import ChartScreen from '../components/screens/ChartScreen';
+import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import GLOBAL from '../utilities/global';
@@ -29,6 +35,30 @@ const theme = dozy_theme;
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
+
+// Define default chart styles
+const chartStyles = {
+  chart: {
+    width: scale(300),
+    height: scale(300)
+  },
+  axis: {
+    tickLabels: {
+      angle: -45,
+      fontSize: scale(11)
+    },
+    grid: {
+      stroke: theme.colors.medium
+    }
+  },
+  line: {
+    data: {
+      stroke: theme.colors.primary,
+      strokeWidth: scale(4),
+      strokeLinejoin: 'round'
+    }
+  }
+};
 
 export const Welcome = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
@@ -64,12 +94,9 @@ export const SleepEfficiency = ({ navigation }) => {
   );
 
   return (
-    <ChartScreen
+    <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      chartWidth={scale(300)}
-      chartHeight={scale(300)}
-      sleepLogs={recentSleepLogs}
       onQuestionSubmit={() => {
         navigation.navigate('ISIIntro', {
           progressBarPercent: null
@@ -89,7 +116,38 @@ export const SleepEfficiency = ({ navigation }) => {
         ' sleep efficiency.'
       }
       buttonLabel="Next"
-    />
+    >
+      <VictoryChart
+        width={chartStyles.chart.width}
+        height={chartStyles.chart.height}
+        theme={VictoryTheme.material}
+        scale={{ x: 'time' }}
+      >
+        <VictoryAxis
+          dependentAxis
+          tickFormat={(tick) => tick * 100 + '%'}
+          style={chartStyles.axis}
+          tickCount={5}
+        />
+        <VictoryAxis
+          style={chartStyles.axis}
+          tickFormat={(tick) => {
+            return tick.toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric'
+            });
+          }}
+          tickCount={7}
+        />
+        <VictoryLine
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="sleepEfficiency"
+          style={chartStyles.line}
+          interpolation="monotoneX"
+        />
+      </VictoryChart>
+    </WizardContentScreen>
   );
 };
 
