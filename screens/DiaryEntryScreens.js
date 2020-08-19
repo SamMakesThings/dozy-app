@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
+import moment from 'moment';
 import NumInputScreen from '../components/screens/NumInputScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import TagSelectScreen from '../components/screens/TagSelectScreen';
@@ -7,14 +8,24 @@ import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
+import { AuthContext } from '../utilities/authContext';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
 
 export const BedTimeInput = ({ navigation }) => {
+  // If there is a sleep log recorded, use the most recent
+  // bedtime value as a default
+  const { state } = React.useContext(AuthContext);
+  let defaultDate = moment().hour(22).minute(0).toDate();
+  if (state.sleepLogs.length > 0) {
+    defaultDate = state.sleepLogs[0].bedTime.toDate();
+  }
+
   return (
     <DateTimePickerScreen
       theme={theme}
+      defaultValue={defaultDate}
       onQuestionSubmit={(value) => {
         GLOBAL.bedTime = value;
         navigation.setParams({ progressBarPercent: 0.13 });
@@ -80,9 +91,18 @@ export const NightMinsAwakeInput = ({ navigation }) => {
 };
 
 export const WakeTimeInput = ({ navigation }) => {
+  // If there is a sleep log recorded, use the most recent
+  // wake time value as a default
+  const { state } = React.useContext(AuthContext);
+  let defaultDate = moment().hour(9).minute(0).toDate();
+  if (state.sleepLogs.length > 0) {
+    defaultDate = state.sleepLogs[0].wakeTime.toDate();
+  }
+
   return (
     <DateTimePickerScreen
       theme={theme}
+      defaultValue={defaultDate}
       onQuestionSubmit={(value) => {
         GLOBAL.wakeTime = value;
         navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
