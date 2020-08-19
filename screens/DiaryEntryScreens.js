@@ -19,7 +19,10 @@ export const BedTimeInput = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
   let defaultDate = moment().hour(22).minute(0).toDate();
   if (state.sleepLogs.length > 0) {
-    defaultDate = state.sleepLogs[0].bedTime.toDate();
+    defaultDate = moment()
+      .hour(state.sleepLogs[0].bedTime.toDate().getHours())
+      .minute(state.sleepLogs[0].bedTime.toDate().getMinutes())
+      .toDate();
   }
 
   return (
@@ -96,7 +99,10 @@ export const WakeTimeInput = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
   let defaultDate = moment().hour(9).minute(0).toDate();
   if (state.sleepLogs.length > 0) {
-    defaultDate = state.sleepLogs[0].wakeTime.toDate();
+    defaultDate = moment()
+      .hour(state.sleepLogs[0].wakeTime.toDate().getHours())
+      .minute(state.sleepLogs[0].wakeTime.toDate().getMinutes())
+      .toDate();
   }
 
   return (
