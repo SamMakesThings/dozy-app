@@ -227,7 +227,7 @@ const SleepLogEntryCard = (props) => {
               }
             ]}
           >
-            {props.sleepLog.sleepEfficiency.toString().slice(2)}%
+            {(props.sleepLog.sleepEfficiency * 100).toFixed(0).toString()}%
           </Text>
           <Text
             style={[
