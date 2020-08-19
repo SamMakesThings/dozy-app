@@ -154,10 +154,10 @@ export const ISI3 = ({ navigation }) => {
       }}
       buttonValues={[
         { label: 'Not a problem', value: 0, solidColor: true },
-        { label: 'I sometimes wake up too early', value: 1, solidColor: true },
-        { label: 'I often wake up too early', value: 2, solidColor: true },
+        { label: 'I rarely wake up too early', value: 1, solidColor: true },
+        { label: 'I sometimes wake up too early', value: 2, solidColor: true },
         {
-          label: 'I almost always wake up too early',
+          label: 'I often wake up too early',
           value: 3,
           solidColor: true
         },
@@ -180,7 +180,11 @@ export const ISI4 = ({ navigation }) => {
       buttonValues={[
         { label: 'Very satisfied', value: 0, solidColor: true },
         { label: 'Satisfied', value: 1, solidColor: true },
-        { label: 'Moderately satisfied', value: 2, solidColor: true },
+        {
+          label: 'Could be better, could be worse',
+          value: 2,
+          solidColor: true
+        },
         { label: 'Dissatisfied', value: 3, solidColor: true },
         { label: 'Very dissatisfied', value: 4, solidColor: true }
       ]}
