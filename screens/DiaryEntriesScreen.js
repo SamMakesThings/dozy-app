@@ -4,7 +4,8 @@ import {
   Text,
   Platform,
   ActivityIndicator,
-  View
+  View,
+  Alert
 } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
@@ -148,9 +149,19 @@ const SleepLogsScreen = (props) => {
       // So fetchData is getting run, but fetchSleepLogs loads forever on Android.
       fetchSleepLogs(db, state.userToken)
         .then((sleepLogs) => {
+          console.log(state.profileData);
           // Check that theres >1 entry. If no, set state accordingly
-          if (sleepLogs.size === 0) {
+          if (sleepLogs.length === 0) {
             setLogsLoading(false);
+          } else if (sleepLogs.length === 1) {
+            setLogsLoading(false);
+            dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
+            console.log("Hey it's the first log, trying an alert");
+            Alert.alert(
+              'Done for now',
+              "Once you've collected 7 nights of data, we'll get started on treatment.",
+              [{ text: 'Ok' }]
+            );
           } else {
             setLogsLoading(false);
             dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
