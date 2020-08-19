@@ -319,7 +319,8 @@ export const ISISignificant = ({ navigation }) => {
             Your insomnia is {GLOBAL.ISITotal >= 14 ? 'definitely' : 'likely'}{' '}
             interfering with your life. However, there&apos;s good news:
             You&apos;re exactly the person our app was designed to help! With
-            your support, Dozy can take you from severe insomnia to no insomnia.
+            your support, Dozy can take you from your current insomnia to no
+            insomnia.
           </Text>
         </>
       }
@@ -343,7 +344,9 @@ export const ISINoSignificant = ({ navigation }) => {
       longText
       textLabel={
         <>
-          <Text style={styles.BoldLabelText}>No significant insomna{'\n'}</Text>
+          <Text style={styles.BoldLabelText}>
+            No significant insomnia{'\n'}
+          </Text>
           <Text style={{ lineHeight: scale(18) }}>
             We&apos;re glad to tell you that you don&apos;t have serious
             problems with insomnia. However, our app isn&apos;t designed for
