@@ -40,7 +40,8 @@ const imgSizePercent = 0.4;
 const chartStyles = {
   chart: {
     width: scale(300),
-    height: scale(300)
+    height: scale(300),
+    domainPadding: { x: [3, 3], y: [35, 35] }
   },
   axis: {
     tickLabels: {
@@ -98,7 +99,7 @@ export const SleepEfficiency = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('ISIIntro', {
+        navigation.navigate('SleepOnset', {
           progressBarPercent: null
         });
       }}
@@ -122,6 +123,7 @@ export const SleepEfficiency = ({ navigation }) => {
         height={chartStyles.chart.height}
         theme={VictoryTheme.material}
         scale={{ x: 'time' }}
+        domainPadding={chartStyles.chart.domainPadding}
       >
         <VictoryAxis
           dependentAxis
@@ -143,6 +145,130 @@ export const SleepEfficiency = ({ navigation }) => {
           data={recentSleepLogs}
           x={(d) => d.upTime.toDate()}
           y="sleepEfficiency"
+          style={chartStyles.line}
+          interpolation="monotoneX"
+        />
+      </VictoryChart>
+    </WizardContentScreen>
+  );
+};
+
+export const SleepOnset = ({ navigation }) => {
+  const { state } = React.useContext(AuthContext);
+
+  // Trim sleepLogs to only show most recent 10
+  const recentSleepLogs = state.sleepLogs.slice(0, 10);
+
+  // Calculate recent sleep efficiency average
+  const sleepOnsetAvg = Number(
+    (
+      recentSleepLogs.reduce((a, b) => a + b.minsToFallAsleep, 0) /
+      recentSleepLogs.length
+    ).toFixed(0)
+  );
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SleepMaintenance', {
+          progressBarPercent: null
+        });
+      }}
+      textLabel={
+        'Your sleep onset latency (time it takes to fall asleep) has been ' +
+        (sleepOnsetAvg > 45 ? 'poor this week' : 'ok this week') +
+        " - you've been taking an average of " +
+        sleepOnsetAvg +
+        ' minutes to fall asleep. This number will improve along with sleep efficiency in the coming weeks.'
+      }
+      buttonLabel="Next"
+    >
+      <VictoryChart
+        width={chartStyles.chart.width}
+        height={chartStyles.chart.height}
+        theme={VictoryTheme.material}
+        scale={{ x: 'time' }}
+        domainPadding={chartStyles.chart.domainPadding}
+      >
+        <VictoryAxis dependentAxis style={chartStyles.axis} tickCount={5} />
+        <VictoryAxis
+          style={chartStyles.axis}
+          tickFormat={(tick) => {
+            return tick.toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric'
+            });
+          }}
+          tickCount={7}
+        />
+        <VictoryLine
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="minsToFallAsleep"
+          style={chartStyles.line}
+          interpolation="monotoneX"
+        />
+      </VictoryChart>
+    </WizardContentScreen>
+  );
+};
+
+export const SleepMaintenance = ({ navigation }) => {
+  const { state } = React.useContext(AuthContext);
+
+  // Trim sleepLogs to only show most recent 10
+  const recentSleepLogs = state.sleepLogs.slice(0, 10);
+
+  // Calculate recent sleep efficiency average
+  const nightMinsAwakeAvg = Number(
+    (
+      recentSleepLogs.reduce((a, b) => a + b.nightMinsAwake, 0) /
+      recentSleepLogs.length
+    ).toFixed(0)
+  );
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('ISIIntro', {
+          progressBarPercent: null
+        });
+      }}
+      textLabel={
+        'Your sleep maintenance (how easily you stay asleep) has been ' +
+        (nightMinsAwakeAvg > 45 ? 'poor this week' : 'ok this week') +
+        " - after initially falling sleep, you're awake " +
+        nightMinsAwakeAvg +
+        " minutes on average. This number will also improve with the techniques we're introducing today."
+      }
+      buttonLabel="Next"
+    >
+      <VictoryChart
+        width={chartStyles.chart.width}
+        height={chartStyles.chart.height}
+        theme={VictoryTheme.material}
+        scale={{ x: 'time' }}
+        domainPadding={chartStyles.chart.domainPadding}
+      >
+        <VictoryAxis dependentAxis style={chartStyles.axis} tickCount={5} />
+        <VictoryAxis
+          style={chartStyles.axis}
+          tickFormat={(tick) => {
+            return tick.toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric'
+            });
+          }}
+          tickCount={7}
+        />
+        <VictoryLine
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="nightMinsAwake"
           style={chartStyles.line}
           interpolation="monotoneX"
         />
