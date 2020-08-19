@@ -1,5 +1,12 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View, YellowBox } from 'react-native';
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  View,
+  YellowBox,
+  Text
+} from 'react-native';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
@@ -23,6 +30,10 @@ console.warn = (message) => {
     _console.warn(message);
   }
 };
+
+// Disable font scaling app-wide, enable on things it doesn't break
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
 
 // A utility function to always return a valid date number given a starting date and a delta
 // TODO: Move this to its own file

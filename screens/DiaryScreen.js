@@ -45,6 +45,7 @@ function DiaryScreen() {
         </TouchableOpacity>
         <Text
           style={{ ...theme.typography.headline5, ...styles.Text_MonthSelect }}
+          allowFontScaling={true}
         >
           {currentMonthString}
         </Text>
