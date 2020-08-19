@@ -349,11 +349,11 @@ export const ISINoSignificant = ({ navigation }) => {
           </Text>
           <Text style={{ lineHeight: scale(18) }}>
             We&apos;re glad to tell you that you don&apos;t have serious
-            problems with insomnia. However, our app isn&apos;t designed for
-            you. Our techniques will disrupt your sleep and may not improve it
-            much. If you&apos;d still like to use it, be our guest, just be
-            warned that it&apos;s designed to help people with severe sleep
-            problems, and you may not get much out of it.
+            problems with insomnia. That said, this app is designed for people
+            with more severe sleep problems. The techniques used may temporarily
+            disrupt your sleep and may not improve it much. If you&apos;d still
+            like to use the app, be our guest, just be aware that you may not
+            get much out of it.
           </Text>
         </>
       }
