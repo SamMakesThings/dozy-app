@@ -165,7 +165,8 @@ export const TagsNotesInput = ({ navigation }) => {
         { label: 'cold', icon: 'water' },
         { label: 'bad bed', icon: 'bug' },
         { label: 'worry', icon: 'emoji-sad' },
-        { label: 'stress', icon: 'new' }
+        { label: 'stress', icon: 'new' },
+        { label: 'pain', icon: 'flash' }
       ]}
       onFormSubmit={async (res) => {
         // Update global state with new values
