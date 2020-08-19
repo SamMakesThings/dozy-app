@@ -2,6 +2,7 @@
 import React from 'react';
 import { useWindowDimensions, Text, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import moment from 'moment';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -688,6 +689,7 @@ export const DiaryReminder = ({ navigation }) => {
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
+      defaultValue={moment().hour(9).minute(0).toDate()}
       onQuestionSubmit={(value) => {
         // TODO: Can I just make the arrow function async instead of below
         async function setPushToken() {
