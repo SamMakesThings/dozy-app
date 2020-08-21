@@ -27,6 +27,7 @@ import Stop from '../assets/images/Stop.svg';
 import WarningTriangle from '../assets/images/WarningTriangle.svg';
 import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
+import SCTSRTTreatmentPlan from '../assets/images/SCTSRTTreatmentPlan.svg';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 
@@ -234,7 +235,7 @@ export const SleepMaintenance = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('ISIIntro', {
+        navigation.navigate('TreatmentPlan', {
           progressBarPercent: null
         });
       }}
@@ -273,6 +274,29 @@ export const SleepMaintenance = ({ navigation }) => {
           interpolation="monotoneX"
         />
       </VictoryChart>
+    </WizardContentScreen>
+  );
+};
+
+export const TreatmentPlan = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('ISIIntro', {
+          progressBarPercent: null
+        });
+      }}
+      textLabel={
+        "Let's get started with Stimulus Control Therapy (SCT) and Sleep Restriction Therapy (SRT). We'll calculate your current sleep duration, use that to determine the amount of time you should spend in bed, then work with you to set a new sleep schedule designed to fix your insomnia."
+      }
+      buttonLabel="Next"
+      flexibleLayout
+    >
+      <SCTSRTTreatmentPlan width={imgSize * 2} height={imgSize} />
     </WizardContentScreen>
   );
 };
