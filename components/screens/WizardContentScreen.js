@@ -4,7 +4,9 @@ import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
 
-// Screen with a chart - mostly for sleep analysis
+// General use wizard screen layout. Pass images, charts, etc as a child
+// By default uses a kinda fixed layout for consistency. For screens with
+// lots of content, add the prop 'flexibleLayout' for maximum flex
 const WizardContentScreen = (props) => {
   const { theme } = props;
 
@@ -15,19 +17,35 @@ const WizardContentScreen = (props) => {
       style={styles.RootContainer}
     >
       <Container
-        style={styles.View_ContentContainer}
+        style={{
+          ...styles.View_ContentContainer,
+          justifyContent: props.flexibleLayout ? 'space-around' : 'center'
+        }}
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <View style={styles.View_TopPadding} />
-        <View style={styles.View_HeroContainer}>{props.children}</View>
+        <View
+          style={{
+            ...styles.View_TopPadding,
+            flex: props.flexibleLayout ? null : 1,
+            height: props.flexibleLayout ? scale(100) : null
+          }}
+        />
+        <View
+          style={{
+            ...styles.View_HeroContainer,
+            flex: props.flexibleLayout ? null : 5
+          }}
+        >
+          {props.children}
+        </View>
         <Text
           style={[
             styles.Text_Explainer,
             theme.typography.body1,
             {
               color: theme.colors.secondary,
-              flex: props.longText ? null : 3,
+              flex: props.flexibleLayout ? null : 3,
               marginBottom: 10
             }
           ]}
@@ -49,16 +67,11 @@ const WizardContentScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  View_TopPadding: {
-    flex: 1
-  },
   View_HeroContainer: {
-    flex: 5,
     justifyContent: 'center'
   },
   View_ContentContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center'
   },
   Text_Explainer: {
