@@ -75,7 +75,6 @@ export const Welcome = ({ navigation }) => {
         });
       }}
       textLabel="Welcome back! This’ll take 10-15 minutes. We’ll review your sleep over the last week, update your treatment plan, and get you started on your new treatment."
-      buttonLabel="Next"
     />
   );
 };
@@ -117,7 +116,6 @@ export const SleepEfficiency = ({ navigation }) => {
           : 'still improve') +
         ' sleep efficiency.'
       }
-      buttonLabel="Next"
     >
       <VictoryChart
         width={chartStyles.chart.width}
@@ -184,7 +182,6 @@ export const SleepOnset = ({ navigation }) => {
         sleepOnsetAvg +
         ' minutes to fall asleep. This number will improve along with sleep efficiency in the coming weeks.'
       }
-      buttonLabel="Next"
     >
       <VictoryChart
         width={chartStyles.chart.width}
@@ -246,7 +243,7 @@ export const SleepMaintenance = ({ navigation }) => {
         nightMinsAwakeAvg +
         " minutes on average. This number will also improve with the techniques we're introducing today."
       }
-      buttonLabel="Next"
+      buttonLabel="This week's treatment"
     >
       <VictoryChart
         width={chartStyles.chart.width}
@@ -286,12 +283,35 @@ export const TreatmentPlan = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('ISIIntro', {
+        navigation.navigate('TreatmentPlanContinued', {
           progressBarPercent: null
         });
       }}
       textLabel={
         "Let's get started with Stimulus Control Therapy (SCT) and Sleep Restriction Therapy (SRT). We'll calculate your current sleep duration, use that to determine the amount of time you should spend in bed, then work with you to set a new sleep schedule designed to fix your insomnia."
+      }
+      buttonLabel="Next"
+      flexibleLayout
+    >
+      <SCTSRTTreatmentPlan width={imgSize * 2} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const TreatmentPlanContinued = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('ISIIntro', {
+          progressBarPercent: null
+        });
+      }}
+      textLabel={
+        "By sacrificing some short-term comfort, these two techniques will help you fall asleep quickly and stay asleep. To start, we'll talk about how sleep works, why these techniques help, and how to use them."
       }
       buttonLabel="Next"
       flexibleLayout
