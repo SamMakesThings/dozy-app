@@ -63,7 +63,15 @@ export const WakeCountInput = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.wakeCount = value;
-        navigation.navigate('NightMinsAwakeInput', { progressBarPercent: 0.5 });
+        // If user didn't wake in the night, skip asking how long they were awake
+        if (value === 0) {
+          navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
+          GLOBAL.nightMinsAwake = 0;
+        } else {
+          navigation.navigate('NightMinsAwakeInput', {
+            progressBarPercent: 0.5
+          });
+        }
       }}
       buttonValues={[
         { label: "0 (didn't wake up)", value: 0 },
