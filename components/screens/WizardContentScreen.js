@@ -39,33 +39,39 @@ const WizardContentScreen = (props) => {
         >
           {props.children}
         </View>
-        {props.titleLabel && (
+        <View
+          style={{
+            ...styles.View_TextContainer,
+            flex: props.flexibleLayout ? null : 3
+          }}
+        >
+          {props.titleLabel && (
+            <Text
+              style={[
+                styles.Text_Explainer,
+                theme.typography.headline5,
+                {
+                  color: theme.colors.secondary,
+                  marginBottom: scale(10)
+                }
+              ]}
+            >
+              {props.titleLabel}
+            </Text>
+          )}
           <Text
             style={[
               styles.Text_Explainer,
-              theme.typography.headline5,
+              theme.typography.body1,
               {
                 color: theme.colors.secondary,
-                flex: props.flexibleLayout ? null : 1
+                marginBottom: 10
               }
             ]}
           >
-            {props.titleLabel}
+            {props.textLabel}
           </Text>
-        )}
-        <Text
-          style={[
-            styles.Text_Explainer,
-            theme.typography.body1,
-            {
-              color: theme.colors.secondary,
-              flex: props.flexibleLayout ? null : props.titleLabel ? 2 : 3,
-              marginBottom: 10
-            }
-          ]}
-        >
-          {props.textLabel}
-        </Text>
+        </View>
       </Container>
       <BottomNavButtons
         onPress={props.onQuestionSubmit}
@@ -88,11 +94,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center'
   },
+  View_TextContainer: {
+    width: '90%'
+  },
   Text_Explainer: {
     textAlign: 'left',
-    width: '90%',
-    alignItems: 'flex-start',
-    alignSelf: 'center'
+    alignItems: 'flex-start'
   }
 });
 
