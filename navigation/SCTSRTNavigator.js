@@ -57,7 +57,7 @@ export default function SCTSRTNavigator() {
               headerStyle: {
                 height: 300
               },
-              animationEnabled: Platform.OS === 'ios' ? true : false,
+              animationEnabled: true,
               headerTransparent: true,
               transitionSpec: {
                 open: animConfig,

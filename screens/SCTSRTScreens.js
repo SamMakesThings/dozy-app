@@ -28,8 +28,11 @@ import WarningTriangle from '../assets/images/WarningTriangle.svg';
 import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import SCTSRTTreatmentPlan from '../assets/images/SCTSRTTreatmentPlan.svg';
+import BadCycleIllustration from '../assets/images/BadCycleIllustration.svg';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
+
+// TODO: Add progress bar percentages to each screen
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -327,7 +330,7 @@ export const DriversOfSleep = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('ISI1', {
+        navigation.navigate('WhySleepDrives', {
           progressBarPercent: 0.14
         });
       }}
@@ -344,7 +347,111 @@ export const DriversOfSleep = ({ navigation }) => {
       flexibleLayout
       buttonLabel="Why does this matter?"
     >
-      <TiredFace width={imgSize} height={imgSize} />
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const WhySleepDrives = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('FragmentedSleep', {
+          progressBarPercent: 0.14
+        });
+      }}
+      textLabel={
+        'By making both your circadian and homeostatic sleep drives stronger, we help you fall asleep faster and stay asleep longer.'
+      }
+      buttonLabel="Great!"
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const FragmentedSleep = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('ConsolidatingSleep', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel="Right now, your sleep is pretty fragmented."
+      textLabel="That is to say, most of the time you spend in bed isn't spent sleeping - the actual sleep time is scattered in chunks in the night. Our first step in treatment is to fix that."
+      flexibleLayout
+      buttonLabel="How do I fix it?"
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const ConsolidatingSleep = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('ReduceTimeInBed', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel="We fix it by consolidating your sleep into one chunk."
+      textLabel="This raises your sleep efficiency back over 85%, where it should be. Once your sleep is mostly in one efficient chunk again, we carefully increase your time in bed until you can sleep the whole night through."
+      flexibleLayout
+      buttonLabel="How does one consolidate sleep?"
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const ReduceTimeInBed = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SCTSRTIntro', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel="Consolidate sleep by reducing time spent in bed."
+      textLabel="Weirdly, staying in bed can be bad for sleep! By extending time in bed, there’s less pressure to sleep the next night. To compensate, you stay in bed longer, which further reduces ability to sleep. It’s a vicious cycle!"
+      flexibleLayout
+      buttonLabel="What do I need to do?"
+    >
+      <BadCycleIllustration width={imgSize * 1.5} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SCTSRTIntro = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('ISI1', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel="This is where SCT and SRT come in."
+      textLabel="By following 3 simple rules, we can break the vicious cycle, boost your homeostatic sleep drive, and start improving your sleep."
+      buttonLabel="What are the 3 rules?"
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
