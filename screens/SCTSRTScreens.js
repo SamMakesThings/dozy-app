@@ -29,6 +29,9 @@ import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import SCTSRTTreatmentPlan from '../assets/images/SCTSRTTreatmentPlan.svg';
 import BadCycleIllustration from '../assets/images/BadCycleIllustration.svg';
+import AlarmClock from '../assets/images/AlarmClock.svg';
+import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
+import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 
@@ -443,15 +446,74 @@ export const SCTSRTIntro = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('ISI1', {
+        navigation.navigate('Rule1', {
           progressBarPercent: 0.14
         });
       }}
       titleLabel="This is where SCT and SRT come in."
       textLabel="By following 3 simple rules, we can break the vicious cycle, boost your homeostatic sleep drive, and start improving your sleep."
-      buttonLabel="What are the 3 rules?"
+      buttonLabel="What's the first rule?"
     >
-      <FemaleDoctor width={imgSize} height={imgSize} />
+      <Clipboard width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const Rule1 = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('Rule2', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel="1st, maintain the sleep restricted schedule."
+      textLabel="That means going to bed and getting out of bed at specific times we'll pick with you."
+      buttonLabel="What's the second rule?"
+    >
+      <AlarmClock width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const Rule2 = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('Rule3', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel="2nd, if you're unable to sleep for 15+ minutes, get out of bed..."
+      textLabel="...and go do some other relaxing activity. Return to bed when you're sleepy again."
+      buttonLabel="What's the third rule?"
+    >
+      <Rule2Illustration width={imgSize * 1.5} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const Rule3 = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('ISI1', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel="3rd, don't do anything in bed besides sleeping."
+      textLabel="That means no reading, no phone use, no TV, and no daytime naps. "
+    >
+      <Rule3Illustration width={imgSize * 1.2} height={imgSize} />
     </WizardContentScreen>
   );
 };
