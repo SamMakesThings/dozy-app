@@ -306,7 +306,7 @@ export const TreatmentPlanContinued = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('ISIIntro', {
+        navigation.navigate('DriversOfSleep', {
           progressBarPercent: null
         });
       }}
@@ -314,28 +314,38 @@ export const TreatmentPlanContinued = ({ navigation }) => {
         "By sacrificing some short-term comfort, these two techniques will help you fall asleep quickly and stay asleep. To start, we'll talk about how sleep works, why these techniques help, and how to use them."
       }
       buttonLabel="Next"
-      flexibleLayout
     >
       <SCTSRTTreatmentPlan width={imgSize * 2} height={imgSize} />
     </WizardContentScreen>
   );
 };
 
-export const ISIIntro = ({ navigation }) => {
+export const DriversOfSleep = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
-    <IconExplainScreen
+    <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      image={<TiredFace width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('ISI1', {
           progressBarPercent: 0.14
         });
       }}
-      textLabel="To get started, we'll ask you 7 questions to determine the size of your insomnia problem."
-      buttonLabel="Next"
-    />
+      titleLabel="The two main drivers of human sleep"
+      textLabel={
+        <Text>
+          Are <Text style={styles.BoldLabelText}>circadian sleep drive</Text>{' '}
+          and <Text style={styles.BoldLabelText}>homeostatic sleep drive.</Text>{' '}
+          Homeostatic sleep drive means the longer you&apos;ve been awake, the
+          sleepier you become. Circadian sleep drive is your body&apos;s
+          internal clock - it controls your energy with the day/night cycle.
+        </Text>
+      }
+      flexibleLayout
+      buttonLabel="Why does this matter?"
+    >
+      <TiredFace width={imgSize} height={imgSize} />
+    </WizardContentScreen>
   );
 };
 
@@ -996,7 +1006,7 @@ export const OnboardingEnd = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   BoldLabelText: {
-    fontFamily: 'RubikBold',
+    fontFamily: 'RubikMedium',
     fontSize: scale(20)
   }
 });
