@@ -39,13 +39,27 @@ const WizardContentScreen = (props) => {
         >
           {props.children}
         </View>
+        {props.titleLabel && (
+          <Text
+            style={[
+              styles.Text_Explainer,
+              theme.typography.headline5,
+              {
+                color: theme.colors.secondary,
+                flex: props.flexibleLayout ? null : 1
+              }
+            ]}
+          >
+            {props.titleLabel}
+          </Text>
+        )}
         <Text
           style={[
             styles.Text_Explainer,
             theme.typography.body1,
             {
               color: theme.colors.secondary,
-              flex: props.flexibleLayout ? null : 3,
+              flex: props.flexibleLayout ? null : props.titleLabel ? 2 : 3,
               marginBottom: 10
             }
           ]}
