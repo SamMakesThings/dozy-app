@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Screens from '../screens/SCTSRTScreens';
 import HeaderProgressBar from '../components/HeaderProgressBar';
+import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
 
 // Init and define the authentication flow for diary entry
 const SCTSRTStack = createStackNavigator();
@@ -67,6 +68,22 @@ export default function SCTSRTNavigator() {
           />
         );
       })}
+      <SCTSRTStack.Screen
+        name="TreatmentReview"
+        component={TreatmentReviewScreen}
+        options={() => ({
+          headerShown: true,
+          // eslint-disable-next-line react/display-name
+          header: ({ navigation }) => {
+            return <HeaderProgressBar navigation={navigation} />;
+          },
+          headerStyle: {
+            height: 300
+          },
+          animationEnabled: true,
+          headerTransparent: true
+        })}
+      />
     </SCTSRTStack.Navigator>
   );
 }

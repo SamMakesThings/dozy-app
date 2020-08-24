@@ -23,6 +23,7 @@ import BadCycleIllustration from '../assets/images/BadCycleIllustration.svg';
 import AlarmClock from '../assets/images/AlarmClock.svg';
 import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
 import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
+import BarChart from '../assets/images/BarChart.svg';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 
@@ -516,7 +517,7 @@ export const RulesRecap = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('ISI1', {
+        navigation.navigate('WhatToExpect', {
           progressBarPercent: 0.14
         });
       }}
@@ -553,6 +554,76 @@ export const RulesRecap = ({ navigation }) => {
         <Rule2Illustration width={imgSize * 1.2} height={imgSize} />
         <Rule3Illustration width={imgSize * 0.7} height={imgSize * 0.7} />
       </View>
+    </WizardContentScreen>
+  );
+};
+
+export const WhatToExpect = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('UnderstandingAsk', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel="What to expect"
+      textLabel="For most, sleep efficiency starts improving after 2-6 days of this schedule. Once efficiency is over 90%, we'll increase your time in bed by 15 minutes every week until you sleep through the night reliably."
+      flexibleLayout
+      buttonLabel="Makes sense"
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const UnderstandingAsk = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res) => {
+        if (res === 'I have some questions or concerns') {
+          navigation.navigate('TreatmentReview', {
+            module: 'SCTSRT'
+          });
+        } else {
+          navigation.navigate('SRTCalibrationIntro', {
+            progressBarPercent: 0.14
+          });
+        }
+      }}
+      textLabel="In other words, by following this program, you're trading a week or two of reduced sleep for a lifetime without insomnia. Short-term pain for long term gain."
+      flexibleLayout
+      buttonLabel="I understand, let's start"
+      bottomGreyButtonLabel="I have some questions or concerns"
+    >
+      <BarChart width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+// TreatmentReview screen is defined in the SCTSRTNavigator.js file!
+
+export const SRTCalibrationIntro = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('UnderstandingAsk', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel="Treatment calibration"
+      textLabel="Ok - now we'll customize the treatment for you. Let’s set your bedtime and out-of-bed time targets."
+      buttonLabel="Makes sense"
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
