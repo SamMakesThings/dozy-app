@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { useWindowDimensions, Text, StyleSheet } from 'react-native';
+import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import {
   VictoryChart,
@@ -15,17 +15,8 @@ import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
-import WaveHello from '../assets/images/WaveHello.svg';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
-import LabCoat from '../assets/images/LabCoat.svg';
 import Clipboard from '../assets/images/Clipboard.svg';
-import TiredFace from '../assets/images/TiredFace.svg';
-import BarChart from '../assets/images/BarChart.svg';
-import Expressionless from '../assets/images/Expressionless.svg';
-import MonocleEmoji from '../assets/images/MonocleEmoji.svg';
-import Stop from '../assets/images/Stop.svg';
-import WarningTriangle from '../assets/images/WarningTriangle.svg';
-import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import SCTSRTTreatmentPlan from '../assets/images/SCTSRTTreatmentPlan.svg';
 import BadCycleIllustration from '../assets/images/BadCycleIllustration.svg';
@@ -506,7 +497,7 @@ export const Rule3 = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('ISI1', {
+        navigation.navigate('RulesRecap', {
           progressBarPercent: 0.14
         });
       }}
@@ -514,6 +505,54 @@ export const Rule3 = ({ navigation }) => {
       textLabel="That means no reading, no phone use, no TV, and no daytime naps. "
     >
       <Rule3Illustration width={imgSize * 1.2} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const RulesRecap = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('ISI1', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel="A quick recap:"
+      textLabel={
+        <>
+          <Text>
+            <Text style={styles.BoldLabelText}>1.</Text> Maintain the target
+            sleep schedule,
+          </Text>
+          {'\n'}
+          <Text>
+            <Text style={styles.BoldLabelText}>2.</Text> Get out of bed if
+            unable to sleep for 15+ minutes (and return once sleepy again), and
+          </Text>
+          {'\n'}
+          <Text>
+            <Text style={styles.BoldLabelText}>3.</Text> Don&apos;t do anything
+            in bed besides sleeping (including naps).
+          </Text>
+        </>
+      }
+      flexibleLayout
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'space-around',
+          alignItems: 'center'
+        }}
+      >
+        <AlarmClock width={imgSize * 0.5} height={imgSize * 0.5} />
+        <Rule2Illustration width={imgSize * 1.2} height={imgSize} />
+        <Rule3Illustration width={imgSize * 0.7} height={imgSize * 0.7} />
+      </View>
     </WizardContentScreen>
   );
 };
