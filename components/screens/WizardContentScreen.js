@@ -28,7 +28,7 @@ const WizardContentScreen = (props) => {
           style={{
             ...styles.View_TopPadding,
             flex: props.flexibleLayout ? null : 1,
-            height: props.flexibleLayout ? scale(60) : null
+            height: props.flexibleLayout ? scale(20) : null
           }}
         />
         <View
