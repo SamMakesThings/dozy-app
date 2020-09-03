@@ -1,8 +1,11 @@
 import '@firebase/firestore';
+import * as firebase from 'firebase';
+import { DebugPromiseLike } from 'react-test-renderer';
 
-interface sleepLogObject {}
-
-async function fetchSleepLogs(db: any, userId: string) {
+async function fetchSleepLogs(
+  db: firebase.firestore.Firestore,
+  userId: string
+) {
   // Retrieving sleep logs from Firestore
   return new Promise((resolve) => {
     if (userId === undefined) {
@@ -15,7 +18,7 @@ async function fetchSleepLogs(db: any, userId: string) {
     colRef
       .orderBy('upTime', 'desc')
       .get()
-      .then((res: any) => {
+      .then((res: firebase.firestore.QuerySnapshot) => {
         let sleepLogs: object[] = [];
 
         // Check that theres >1 entry. If no, set state accordingly
@@ -24,7 +27,7 @@ async function fetchSleepLogs(db: any, userId: string) {
         }
 
         // Otherwise, arrange data and update state
-        res.forEach(function (doc: any) {
+        res.forEach(function (doc: firebase.firestore.QueryDocumentSnapshot) {
           sleepLogs.push(doc.data());
         });
         resolve(sleepLogs);
