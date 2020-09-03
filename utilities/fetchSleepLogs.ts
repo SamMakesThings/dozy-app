@@ -1,6 +1,8 @@
 import '@firebase/firestore';
 
-async function fetchSleepLogs(db, userId) {
+interface sleepLogObject {}
+
+async function fetchSleepLogs(db: any, userId: string) {
   // Retrieving sleep logs from Firestore
   return new Promise((resolve) => {
     if (userId === undefined) {
@@ -13,8 +15,8 @@ async function fetchSleepLogs(db, userId) {
     colRef
       .orderBy('upTime', 'desc')
       .get()
-      .then((res) => {
-        let sleepLogs = [];
+      .then((res: any) => {
+        let sleepLogs: object[] = [];
 
         // Check that theres >1 entry. If no, set state accordingly
         if (res.size === 0) {
@@ -22,12 +24,12 @@ async function fetchSleepLogs(db, userId) {
         }
 
         // Otherwise, arrange data and update state
-        res.forEach(function (doc) {
+        res.forEach(function (doc: any) {
           sleepLogs.push(doc.data());
         });
         resolve(sleepLogs);
       })
-      .catch(function (error) {
+      .catch(function (error: object) {
         console.log('Error getting sleep logs:', error);
       });
   });

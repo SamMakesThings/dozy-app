@@ -18,7 +18,7 @@ import { BaselineProgressCard } from '../components/BaselineProgressCard';
 import AddSleepLogButton from '../components/AddSleepLogButton';
 import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
-import fetchSleepLogs from '../utilities/fetchSleepLogs';
+import fetchSleepLogs from '../utilities/fetchSleepLogs.ts';
 import { AuthContext } from '../utilities/authContext';
 
 if (Platform.OS === 'android') {
