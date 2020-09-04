@@ -84,7 +84,7 @@ const BottomNavButtons = (props) => {
               }
             ])}
           >
-            Back
+            {props.bottomBackButtonLabel ? props.bottomBackButtonLabel : 'Back'}
           </Text>
         </TouchableOpacity>
       )}

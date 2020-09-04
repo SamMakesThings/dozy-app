@@ -78,6 +78,7 @@ const WizardContentScreen = (props) => {
         buttonLabel={props.buttonLabel}
         bottomGreyButtonLabel={props.bottomGreyButtonLabel}
         bottomBackButton={props.bottomBackButton}
+        bottomBackButtonLabel={props.bottomBackButtonLabel}
         bbbDisabled={props.bbbDisabled}
         onlyBackButton={props.onlyBackButton}
         theme={theme}
