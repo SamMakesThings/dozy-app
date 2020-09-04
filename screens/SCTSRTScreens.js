@@ -27,7 +27,7 @@ import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import BarChart from '../assets/images/BarChart.svg';
 import YellowRuler from '../assets/images/YellowRuler.svg';
 import ManInBed from '../assets/images/ManInBed.svg';
-import submitOnboardingData from '../utilities/submitOnboardingData';
+import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 
 // TODO: Add progress bar percentages to each screen
@@ -727,15 +727,15 @@ export const TargetBedtime = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   // Calculate target bedtime based on TIB and wake time
-  GLOBAL.SCTSRTTimeInBedTarget;
-
   const targetBedTime = moment(GLOBAL.SCTSRTWakeTime)
     .subtract(GLOBAL.SCTSRTTimeInBedTarget, 'minutes')
     .toDate();
+  GLOBAL.SCTSRTBedTime = targetBedTime;
   const targetBedTimeDisplayString = targetBedTime.toLocaleString('en-US', {
     hour: 'numeric',
     minute: 'numeric'
   });
+  GLOBAL.targetBedTimeDisplayString = targetBedTimeDisplayString;
   const targetWakeTimeDisplayString = GLOBAL.SCTSRTWakeTime.toLocaleString(
     'en-US',
     {
@@ -743,13 +743,14 @@ export const TargetBedtime = ({ navigation }) => {
       minute: 'numeric'
     }
   );
+  GLOBAL.targetWakeTimeDisplayString = targetWakeTimeDisplayString;
 
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('WakeTimeSetting', {
+        navigation.navigate('PrescriptionSummary', {
           progressBarPercent: 0.14
         });
       }}
@@ -762,6 +763,40 @@ export const TargetBedtime = ({ navigation }) => {
       buttonLabel="Next"
     >
       <ManInBed width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const PrescriptionSummary = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('WakeTimeSetting', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel={'Your target sleep schedule'}
+      textLabel={
+        'The plan is to get in bed at ' +
+        GLOBAL.targetBedTimeDisplayString +
+        ' and get out of bed at ' +
+        GLOBAL.targetWakeTimeDisplayString +
+        ", regardless of how sleepy you feel. Within that window, you're to get out of bed if unable to sleep. Next week, once your sleep efficiency has jumped, we'll increase your time in bed by 15 minutes."
+      }
+      buttonLabel="Next"
+      flexibleLayout
+    >
+      <View style={{ maxHeight: scale(150) }}>
+        <TargetSleepScheduleCard
+          bedTime={GLOBAL.targetBedTimeDisplayString}
+          wakeTime={GLOBAL.targetWakeTimeDisplayString}
+          styles={{ minWidth: scale(300) }}
+        />
+      </View>
     </WizardContentScreen>
   );
 };
@@ -794,8 +829,8 @@ export const OnboardingEnd = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        submitOnboardingData(dispatch);
-        finishOnboarding();
+        // submitOnboardingData(dispatch);
+        // finishOnboarding();
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
       buttonLabel="Continue"
