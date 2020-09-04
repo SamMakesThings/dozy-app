@@ -43,6 +43,20 @@ const DateTimePickerScreen = (props) => {
           >
             {props.questionLabel}
           </Text>
+          {props.questionSubtitle && (
+            <Text
+              style={[
+                styles.Text_QuestionLabel,
+                theme.typography.body1,
+                styles.Text_QuestionSubtitle,
+                {
+                  color: theme.colors.secondary
+                }
+              ]}
+            >
+              {props.questionSubtitle}
+            </Text>
+          )}
         </View>
         {props.mode === 'datetime' && Platform.OS === 'android' ? (
           <View style={styles.View_DateTimeAndroidContainer}>
@@ -144,6 +158,10 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     alignSelf: 'center'
+  },
+  Text_QuestionSubtitle: {
+    fontWeight: 'normal',
+    opacity: 0.7
   }
 });
 
