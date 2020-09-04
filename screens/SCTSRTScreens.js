@@ -8,6 +8,7 @@ import {
   VictoryLine,
   VictoryAxis
 } from 'victory-native';
+import moment from 'moment';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
@@ -25,6 +26,7 @@ import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
 import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import BarChart from '../assets/images/BarChart.svg';
 import YellowRuler from '../assets/images/YellowRuler.svg';
+import ManInBed from '../assets/images/ManInBed.svg';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 
@@ -636,7 +638,9 @@ export const WakeTimeSetting = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
         GLOBAL.SCTSRTWakeTime = value;
-        navigation.navigate('SleepDuration', { progressBarPercent: 0.6 });
+        navigation.navigate('SleepDurationCalculation', {
+          progressBarPercent: 0.6
+        });
       }}
       questionLabel="What time do you want to get up every morning this week?"
       questionSubtitle="Pick a consistent time and try to stick to it - our treatments won't be as effective if you change your hours on the weekend."
@@ -645,7 +649,7 @@ export const WakeTimeSetting = ({ navigation }) => {
   );
 };
 
-export const SleepDuration = ({ navigation }) => {
+export const SleepDurationCalculation = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
 
   // Trim sleepLogs to only show most recent 10
@@ -667,13 +671,14 @@ export const SleepDuration = ({ navigation }) => {
   } else {
     timeInBedTarget = 15 * Math.round(sleepDurationAvg / 15);
   }
+  GLOBAL.SCTSRTTimeInBedTarget = timeInBedTarget;
 
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('SleepMaintenance', {
+        navigation.navigate('TargetBedtime', {
           progressBarPercent: null
         });
       }}
@@ -714,6 +719,49 @@ export const SleepDuration = ({ navigation }) => {
           interpolation="monotoneX"
         />
       </VictoryChart>
+    </WizardContentScreen>
+  );
+};
+
+export const TargetBedtime = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  // Calculate target bedtime based on TIB and wake time
+  GLOBAL.SCTSRTTimeInBedTarget;
+
+  const targetBedTime = moment(GLOBAL.SCTSRTWakeTime)
+    .subtract(GLOBAL.SCTSRTTimeInBedTarget, 'minutes')
+    .toDate();
+  const targetBedTimeDisplayString = targetBedTime.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric'
+  });
+  const targetWakeTimeDisplayString = GLOBAL.SCTSRTWakeTime.toLocaleString(
+    'en-US',
+    {
+      hour: 'numeric',
+      minute: 'numeric'
+    }
+  );
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('WakeTimeSetting', {
+          progressBarPercent: 0.14
+        });
+      }}
+      titleLabel={'Your target bedtime is ' + targetBedTimeDisplayString}
+      textLabel={
+        'Calculated from your target Time in Bed (TIB) and preferred wake time of ' +
+        targetWakeTimeDisplayString +
+        '.'
+      }
+      buttonLabel="Next"
+    >
+      <ManInBed width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
