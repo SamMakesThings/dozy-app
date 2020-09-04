@@ -842,7 +842,7 @@ export const AddressingConcerns = ({ navigation }) => {
             module: 'SCTSRT'
           });
         } else {
-          GLOBAL.SCTSRTPostponed = true;
+          GLOBAL.checkinPostponed = true;
           navigation.navigate('CheckinScheduling');
         }
       }}
