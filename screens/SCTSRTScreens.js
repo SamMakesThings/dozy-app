@@ -24,6 +24,7 @@ import AlarmClock from '../assets/images/AlarmClock.svg';
 import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
 import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import BarChart from '../assets/images/BarChart.svg';
+import YellowRuler from '../assets/images/YellowRuler.svg';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 
@@ -615,7 +616,7 @@ export const SRTCalibrationIntro = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('UnderstandingAsk', {
+        navigation.navigate('WakeTimeSetting', {
           progressBarPercent: 0.14
         });
       }}
@@ -623,31 +624,22 @@ export const SRTCalibrationIntro = ({ navigation }) => {
       textLabel="Ok - now we'll customize the treatment for you. Let’s set your bedtime and out-of-bed time targets."
       buttonLabel="Makes sense"
     >
-      <FemaleDoctor width={imgSize} height={imgSize} />
+      <YellowRuler width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
 
-export const DiaryReminder = ({ navigation }) => {
+export const WakeTimeSetting = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
-        // TODO: Can I just make the arrow function async instead of below
-        async function setPushToken() {
-          GLOBAL.expoPushToken = await registerForPushNotificationsAsync();
-        }
-        if (value != false) {
-          GLOBAL.diaryReminderTime = value;
-          setPushToken();
-        } else {
-          null;
-        }
+        GLOBAL.SCTSRTWakeTime = value;
         navigation.navigate('CheckinScheduling', { progressBarPercent: 0.6 });
       }}
-      questionLabel="What time do you usually do that? (we'll send you a gentle reminder)"
-      bottomGreyButtonLabel="Don't set a reminder"
+      questionLabel="What time do you want to get up every morning this week?"
+      questionSubtitle="Pick a consistent time and try to stick to it - our treatments won't be as effective if you change your hours on the weekend."
       mode="time"
     />
   );
