@@ -812,7 +812,7 @@ export const DeprivationWarning = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(val) => {
         if (val !== 'Wait, I have some concerns') {
-          navigation.navigate('WakeTimeSetting', {
+          navigation.navigate('CheckinScheduling', {
             progressBarPercent: 0.14
           });
         } else {
@@ -837,12 +837,13 @@ export const AddressingConcerns = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(val) => {
-        if (val !== 'Wait, I have some concerns') {
+        if (val !== 'Postpone, not a good time') {
           navigation.navigate('TreatmentReview', {
             module: 'SCTSRT'
           });
         } else {
-          // TODO: Navigate to a postpone screen
+          GLOBAL.SCTSRTPostponed = true;
+          navigation.navigate('CheckinScheduling');
         }
       }}
       titleLabel="What's up?"
@@ -866,31 +867,35 @@ export const CheckinScheduling = ({ navigation }) => {
       onQuestionSubmit={(value) => {
         // TODO: Add validation to ensure date is far out enough for data colleciton
         // Another option - wait until 7 sleep logs are collected before allowing continue
-        GLOBAL.firstCheckinTime = value;
-        navigation.navigate('PaywallPlaceholder', { progressBarPercent: 0.8 });
+        GLOBAL.nextCheckinTime = value;
+        navigation.navigate('SCTSRTEnd', { progressBarPercent: 0.8 });
       }}
-      questionLabel="When would you like to schedule your first weekly check-in? (Check-ins take 5-10 minutes and introduce you to new treatment techniques based on your sleep patterns.)"
+      questionLabel="Last step: When would you like your next weekly check-in?"
+      questionSubtitle="Check-ins take 5-10 minutes and adjust treatments based on your sleep patterns. A new technique is usually introduced weekly."
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"
     />
   );
 };
 
-export const OnboardingEnd = ({ navigation }) => {
+export const SCTSRTEnd = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
   const { dispatch, finishOnboarding } = React.useContext(AuthContext);
   return (
-    <IconExplainScreen
+    <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
+        // TODO: Write a function to submit checkin data to Firebase
         // submitOnboardingData(dispatch);
         // finishOnboarding();
       }}
-      textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
-      buttonLabel="Continue"
-    />
+      textLabel="Weekly check-in completed!"
+      buttonLabel="Finish"
+    >
+      <RaisedHands width={imgSize} height={imgSize} />
+    </WizardContentScreen>
   );
 };
 
