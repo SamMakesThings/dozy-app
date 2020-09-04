@@ -636,12 +636,87 @@ export const WakeTimeSetting = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
         GLOBAL.SCTSRTWakeTime = value;
-        navigation.navigate('CheckinScheduling', { progressBarPercent: 0.6 });
+        navigation.navigate('SleepDuration', { progressBarPercent: 0.6 });
       }}
       questionLabel="What time do you want to get up every morning this week?"
       questionSubtitle="Pick a consistent time and try to stick to it - our treatments won't be as effective if you change your hours on the weekend."
       mode="time"
     />
+  );
+};
+
+export const SleepDuration = ({ navigation }) => {
+  const { state } = React.useContext(AuthContext);
+
+  // Trim sleepLogs to only show most recent 10
+  const recentSleepLogs = state.sleepLogs.slice(0, 10);
+
+  // Calculate recent sleep efficiency average
+  const sleepDurationAvg = Number(
+    (
+      recentSleepLogs.reduce((a, b) => a + b.sleepDuration, 0) /
+      recentSleepLogs.length
+    ).toFixed(0)
+  );
+
+  // Calculate Time in Bed (TIB) target
+  // Round it to the nearest multiple of 15. Min value 5h (300 mins)
+  let timeInBedTarget;
+  if (sleepDurationAvg < 300) {
+    timeInBedTarget = 315;
+  } else {
+    timeInBedTarget = 15 * Math.round(sleepDurationAvg / 15);
+  }
+
+  console.log(timeInBedTarget);
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SleepMaintenance', {
+          progressBarPercent: null
+        });
+      }}
+      titleLabel={
+        'Your average time asleep is ' +
+        (sleepDurationAvg / 60).toFixed(1) +
+        ' hours.'
+      }
+      textLabel={
+        "Based on this, we'll set your time in bed at " +
+        timeInBedTarget / 60 +
+        ' hours to start. Time in bed is the total time you spend laying in bed, including time awake.'
+      }
+    >
+      <VictoryChart
+        width={chartStyles.chart.width}
+        height={chartStyles.chart.height}
+        theme={VictoryTheme.material}
+        scale={{ x: 'time' }}
+        domainPadding={chartStyles.chart.domainPadding}
+      >
+        <VictoryAxis dependentAxis style={chartStyles.axis} tickCount={5} />
+        <VictoryAxis
+          style={chartStyles.axis}
+          tickFormat={(tick) => {
+            return tick.toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric'
+            });
+          }}
+          tickCount={7}
+        />
+        <VictoryLine
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="sleepDuration"
+          style={chartStyles.line}
+          interpolation="monotoneX"
+        />
+      </VictoryChart>
+    </WizardContentScreen>
   );
 };
 
