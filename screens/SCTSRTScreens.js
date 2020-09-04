@@ -668,8 +668,6 @@ export const SleepDuration = ({ navigation }) => {
     timeInBedTarget = 15 * Math.round(sleepDurationAvg / 15);
   }
 
-  console.log(timeInBedTarget);
-
   return (
     <WizardContentScreen
       theme={theme}
