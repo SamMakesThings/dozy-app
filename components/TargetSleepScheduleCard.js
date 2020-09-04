@@ -11,7 +11,7 @@ export const TargetSleepScheduleCard = (props) => {
   const theme = dozy_theme;
 
   return (
-    <CardContainer>
+    <CardContainer style={{ ...props.styles }}>
       <View
         style={{
           ...styles.View_CardHeaderContainer,
@@ -30,7 +30,10 @@ export const TargetSleepScheduleCard = (props) => {
         <Text
           style={{ ...theme.typography.body2, ...styles.Text_CardSubtitle }}
         >
-          Maintain for another {props.remainingDays} days
+          Maintain for{' '}
+          {props.remainingDays
+            ? 'another ' + props.remainingDays + ' days'
+            : 'a week'}
         </Text>
       </View>
       <View style={styles.View_CardContentContainer}>
