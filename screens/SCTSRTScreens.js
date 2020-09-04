@@ -637,6 +637,7 @@ export const WakeTimeSetting = ({ navigation }) => {
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
+      defaultValue={moment().hour(9).minute(0).toDate()}
       onQuestionSubmit={(value) => {
         GLOBAL.SCTSRTWakeTime = value;
         navigation.navigate('SleepDurationCalculation', {
