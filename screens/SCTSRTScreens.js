@@ -27,6 +27,7 @@ import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import BarChart from '../assets/images/BarChart.svg';
 import YellowRuler from '../assets/images/YellowRuler.svg';
 import ManInBed from '../assets/images/ManInBed.svg';
+import RaisedEyebrowFace from '../assets/images/RaisedEyebrowFace.svg';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 
@@ -760,7 +761,7 @@ export const TargetBedtime = ({ navigation }) => {
         targetWakeTimeDisplayString +
         '.'
       }
-      buttonLabel="Next"
+      buttonLabel="Got it"
     >
       <ManInBed width={imgSize} height={imgSize} />
     </WizardContentScreen>
@@ -775,7 +776,7 @@ export const PrescriptionSummary = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('WakeTimeSetting', {
+        navigation.navigate('DeprivationWarning', {
           progressBarPercent: 0.14
         });
       }}
@@ -797,6 +798,60 @@ export const PrescriptionSummary = ({ navigation }) => {
           styles={{ minWidth: scale(300) }}
         />
       </View>
+    </WizardContentScreen>
+  );
+};
+
+export const DeprivationWarning = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(val) => {
+        if (val !== 'Wait, I have some concerns') {
+          navigation.navigate('WakeTimeSetting', {
+            progressBarPercent: 0.14
+          });
+        } else {
+          navigation.navigate('AddressingConcerns');
+        }
+      }}
+      textLabel="Note that this treatment will cause a temporary reduction in sleep before it starts kicking in. You’ll get less sleep than you normally would for 1-3 weeks, in exchange for permanent improvement. Are you ready to commit to following these rules this week?"
+      buttonLabel="Yes! I will do it this week"
+      bottomGreyButtonLabel="Wait, I have some concerns"
+      flexibleLayout
+    >
+      <RaisedEyebrowFace width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const AddressingConcerns = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(val) => {
+        if (val !== 'Wait, I have some concerns') {
+          navigation.navigate('TreatmentReview', {
+            module: 'SCTSRT'
+          });
+        } else {
+          // TODO: Navigate to a postpone screen
+        }
+      }}
+      titleLabel="What's up?"
+      textLabel="We can answer any questions you may have, or if this week isn’t ideal (e.g. important test, presentation, etc), then we can postpone starting treatment to next week."
+      buttonLabel="I have questions"
+      bottomGreyButtonLabel="Postpone, not a good time"
+      bottomBackButtonLabel="I'm good, let's get started"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
