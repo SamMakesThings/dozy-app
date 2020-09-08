@@ -29,7 +29,8 @@ import YellowRuler from '../assets/images/YellowRuler.svg';
 import ManInBed from '../assets/images/ManInBed.svg';
 import RaisedEyebrowFace from '../assets/images/RaisedEyebrowFace.svg';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
-import registerForPushNotificationsAsync from '../utilities/pushNotifications';
+import submitCheckinData from '../utilities/submitCheckinData';
+import refreshUserData from '../utilities/refreshUserData';
 
 // TODO: Add progress bar percentages to each screen
 
@@ -838,6 +839,7 @@ export const AddressingConcerns = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(val) => {
         if (val !== 'Postpone, not a good time') {
+          GLOBAL.checkinPostponed = false;
           navigation.navigate('TreatmentReview', {
             module: 'SCTSRT'
           });
@@ -880,15 +882,28 @@ export const CheckinScheduling = ({ navigation }) => {
 
 export const SCTSRTEnd = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
-  const { dispatch, finishOnboarding } = React.useContext(AuthContext);
+  const { state, dispatch } = React.useContext(AuthContext);
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        // TODO: Write a function to submit checkin data to Firebase
-        // submitOnboardingData(dispatch);
+        // Submit checkin data, refresh app state
+        submitCheckinData({
+          userId: state.userToken,
+          checkinPostponed: GLOBAL.checkinPostponed,
+          nextCheckinDatetime: GLOBAL.nextCheckinDatetime,
+          lastCheckinDatetime: new Date(),
+          nextCheckinModule:
+            state.userData.currentTreatments.nextTreatmentModule,
+          lastCheckinModule: 'SCTSRT',
+          targetBedTime: GLOBAL.targetBedTime,
+          targetWakeTime: GLOBAL.targetWakeTime,
+          targetTimeInBed: GLOBAL.targetTimeInBed
+        });
+        console.log('Data submitted to Firebase!');
+        refreshUserData(dispatch);
         // finishOnboarding();
       }}
       textLabel="Weekly check-in completed!"
