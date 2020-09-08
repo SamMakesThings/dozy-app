@@ -893,14 +893,15 @@ export const SCTSRTEnd = ({ navigation }) => {
         submitCheckinData({
           userId: state.userToken,
           checkinPostponed: GLOBAL.checkinPostponed,
-          nextCheckinDatetime: GLOBAL.nextCheckinDatetime,
+          nextCheckinDatetime: GLOBAL.nextCheckinTime,
           lastCheckinDatetime: new Date(),
-          nextCheckinModule:
-            state.userData.currentTreatments.nextTreatmentModule,
+          nextCheckinModule: GLOBAL.treatmentPlan.filter(
+            (v) => v.started === false
+          )[0].module,
           lastCheckinModule: 'SCTSRT',
-          targetBedTime: GLOBAL.targetBedTime,
-          targetWakeTime: GLOBAL.targetWakeTime,
-          targetTimeInBed: GLOBAL.targetTimeInBed
+          targetBedTime: GLOBAL.SCTSRTBedTime,
+          targetWakeTime: GLOBAL.SCTSRTWakeTime,
+          targetTimeInBed: GLOBAL.SCTSRTTimeInBedTarget
         });
         console.log('Data submitted to Firebase!');
         refreshUserData(dispatch);
