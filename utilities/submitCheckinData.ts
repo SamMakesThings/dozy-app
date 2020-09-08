@@ -17,7 +17,7 @@ interface Args {
 // Function that updates currentTreatments, nextCheckin, and treatmentsHistory in Firebase
 // Mandatory inputs: dates re: next checkin, SRT changes, treatment to be added to
 // ...currentTreatments, and data to be added to treatmentsHistory.
-async function submitCheckinData({
+export default function submitCheckinData({
   userId,
   checkinPostponed,
   nextCheckinDatetime,
