@@ -890,6 +890,8 @@ export const SCTSRTEnd = ({ navigation }) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
+        // TODO: Get the treatments screen to update when
+        // ...finished with checkin
         submitCheckinData({
           userId: state.userToken,
           checkinPostponed: GLOBAL.checkinPostponed,
@@ -904,8 +906,8 @@ export const SCTSRTEnd = ({ navigation }) => {
           targetTimeInBed: GLOBAL.SCTSRTTimeInBedTarget
         });
         console.log('Data submitted to Firebase!');
+        navigation.navigate('App');
         refreshUserData(dispatch);
-        // finishOnboarding();
       }}
       textLabel="Weekly check-in completed!"
       buttonLabel="Finish"
