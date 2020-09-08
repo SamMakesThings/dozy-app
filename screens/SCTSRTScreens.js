@@ -74,7 +74,7 @@ export const Welcome = ({ navigation }) => {
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
         navigation.navigate('SleepEfficiency', {
-          progressBarPercent: null
+          progressBarPercent: 0.03
         });
       }}
       textLabel="Welcome back! This’ll take 10-15 minutes. We’ll review your sleep over the last week, update your treatment plan, and get you started on your new treatment."
@@ -103,7 +103,7 @@ export const SleepEfficiency = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SleepOnset', {
-          progressBarPercent: null
+          progressBarPercent: 0.07
         });
       }}
       textLabel={
@@ -175,7 +175,7 @@ export const SleepOnset = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SleepMaintenance', {
-          progressBarPercent: null
+          progressBarPercent: 0.11
         });
       }}
       textLabel={
@@ -236,7 +236,7 @@ export const SleepMaintenance = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('TreatmentPlan', {
-          progressBarPercent: null
+          progressBarPercent: 0.14
         });
       }}
       textLabel={
@@ -287,7 +287,7 @@ export const TreatmentPlan = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('TreatmentPlanContinued', {
-          progressBarPercent: null
+          progressBarPercent: 0.18
         });
       }}
       textLabel={
@@ -310,7 +310,7 @@ export const TreatmentPlanContinued = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('DriversOfSleep', {
-          progressBarPercent: null
+          progressBarPercent: 0.22
         });
       }}
       textLabel={
@@ -331,7 +331,7 @@ export const DriversOfSleep = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('WhySleepDrives', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.25
         });
       }}
       titleLabel="The two main drivers of human sleep"
@@ -360,7 +360,7 @@ export const WhySleepDrives = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('FragmentedSleep', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.29
         });
       }}
       textLabel={
@@ -381,7 +381,7 @@ export const FragmentedSleep = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('ConsolidatingSleep', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.33
         });
       }}
       titleLabel="Right now, your sleep is pretty fragmented."
@@ -402,7 +402,7 @@ export const ConsolidatingSleep = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('ReduceTimeInBed', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.37
         });
       }}
       titleLabel="We fix it by consolidating your sleep into one chunk."
@@ -423,7 +423,7 @@ export const ReduceTimeInBed = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SCTSRTIntro', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.4
         });
       }}
       titleLabel="Consolidate sleep by reducing time spent in bed."
@@ -444,7 +444,7 @@ export const SCTSRTIntro = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('Rule1', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.44
         });
       }}
       titleLabel="This is where SCT and SRT come in."
@@ -464,7 +464,7 @@ export const Rule1 = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('Rule2', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.48
         });
       }}
       titleLabel="1st, maintain the sleep restricted schedule."
@@ -484,7 +484,7 @@ export const Rule2 = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('Rule3', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.51
         });
       }}
       titleLabel="2nd, if you're unable to sleep for 15+ minutes, get out of bed..."
@@ -504,7 +504,7 @@ export const Rule3 = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('RulesRecap', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.55
         });
       }}
       titleLabel="3rd, don't do anything in bed besides sleeping."
@@ -523,7 +523,7 @@ export const RulesRecap = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('WhatToExpect', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.59
         });
       }}
       titleLabel="A quick recap:"
@@ -571,7 +571,7 @@ export const WhatToExpect = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('UnderstandingAsk', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.62
         });
       }}
       titleLabel="What to expect"
@@ -597,7 +597,7 @@ export const UnderstandingAsk = ({ navigation }) => {
           });
         } else {
           navigation.navigate('SRTCalibrationIntro', {
-            progressBarPercent: 0.14
+            progressBarPercent: 0.66
           });
         }
       }}
@@ -621,7 +621,7 @@ export const SRTCalibrationIntro = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('WakeTimeSetting', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.7
         });
       }}
       titleLabel="Treatment calibration"
@@ -642,7 +642,7 @@ export const WakeTimeSetting = ({ navigation }) => {
       onQuestionSubmit={(value) => {
         GLOBAL.SCTSRTWakeTime = value;
         navigation.navigate('SleepDurationCalculation', {
-          progressBarPercent: 0.6
+          progressBarPercent: 0.74
         });
       }}
       questionLabel="What time do you want to get up every morning this week?"
@@ -682,7 +682,7 @@ export const SleepDurationCalculation = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('TargetBedtime', {
-          progressBarPercent: null
+          progressBarPercent: 0.78
         });
       }}
       titleLabel={
@@ -754,7 +754,7 @@ export const TargetBedtime = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PrescriptionSummary', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.81
         });
       }}
       titleLabel={'Your target bedtime is ' + targetBedTimeDisplayString}
@@ -779,7 +779,7 @@ export const PrescriptionSummary = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('DeprivationWarning', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.85
         });
       }}
       titleLabel={'Your target sleep schedule'}
@@ -814,7 +814,7 @@ export const DeprivationWarning = ({ navigation }) => {
       onQuestionSubmit={(val) => {
         if (val !== 'Wait, I have some concerns') {
           navigation.navigate('CheckinScheduling', {
-            progressBarPercent: 0.14
+            progressBarPercent: 0.88
           });
         } else {
           navigation.navigate('AddressingConcerns');
@@ -841,7 +841,8 @@ export const AddressingConcerns = ({ navigation }) => {
         if (val !== 'Postpone, not a good time') {
           GLOBAL.checkinPostponed = false;
           navigation.navigate('TreatmentReview', {
-            module: 'SCTSRT'
+            module: 'SCTSRT',
+            progressBarPercent: 0.95
           });
         } else {
           GLOBAL.checkinPostponed = true;
@@ -870,7 +871,7 @@ export const CheckinScheduling = ({ navigation }) => {
         // TODO: Add validation to ensure date is far out enough for data colleciton
         // Another option - wait until 7 sleep logs are collected before allowing continue
         GLOBAL.nextCheckinTime = value;
-        navigation.navigate('SCTSRTEnd', { progressBarPercent: 0.8 });
+        navigation.navigate('SCTSRTEnd', { progressBarPercent: 1 });
       }}
       questionLabel="Last step: When would you like your next weekly check-in?"
       questionSubtitle="Check-ins take 5-10 minutes and adjust treatments based on your sleep patterns. A new technique is usually introduced weekly."
