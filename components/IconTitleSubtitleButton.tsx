@@ -1,11 +1,23 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
-import { withTheme } from '@draftbit/ui';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  GestureResponderEvent
+} from 'react-native';
+// import { withTheme } from '@draftbit/ui';
 import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
-const IconTitleSubtitleButton = (props) => {
+interface Props {
+  titleLabel: string;
+  subtitleLabel: string;
+  notLoggedToday: boolean;
+  onPress: ((event: GestureResponderEvent) => void) | undefined;
+}
+
+const IconTitleSubtitleButton: React.FC<Props> = (props) => {
   const theme = dozy_theme;
   // TODO: Hide or grey log sleep button if logged today
   return (
@@ -50,4 +62,4 @@ const IconTitleSubtitleButton = (props) => {
   );
 };
 
-export default withTheme(IconTitleSubtitleButton);
+export default IconTitleSubtitleButton;

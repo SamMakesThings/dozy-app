@@ -52,6 +52,8 @@ const SleepLogsView = (props) => {
         <IconTitleSubtitleButton
           onPress={() => props.logEntryRedirect()}
           notLoggedToday={!loggedToday}
+          titleLabel="How did you sleep last night?"
+          subtitleLabel="A consistent log improves treatment"
         />
         <ActivityIndicator
           size="large"
@@ -73,6 +75,8 @@ const SleepLogsView = (props) => {
           <IconTitleSubtitleButton
             onPress={() => props.logEntryRedirect()}
             notLoggedToday={!loggedToday}
+            titleLabel="How did you sleep last night?"
+            subtitleLabel="A consistent log improves treatment"
           />
         </View>
         <View
@@ -112,6 +116,8 @@ const SleepLogsView = (props) => {
         <IconTitleSubtitleButton
           onPress={() => props.logEntryRedirect()}
           notLoggedToday={!loggedToday}
+          titleLabel="How did you sleep last night?"
+          subtitleLabel="A consistent log improves treatment"
         />
         {props.sleepLogs.length < 7 && (
           <BaselineProgressCard nightsLogged={props.sleepLogs.length} />
