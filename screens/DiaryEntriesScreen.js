@@ -115,7 +115,9 @@ const SleepLogsView = (props) => {
       <ScrollView horizontal={false}>
         <IconTitleSubtitleButton
           onPress={() => props.logEntryRedirect()}
-          notLoggedToday={!loggedToday}
+          backgroundColor={
+            !loggedToday ? theme.colors.primary : theme.colors.medium
+          }
           titleLabel="How did you sleep last night?"
           subtitleLabel="A consistent log improves treatment"
         />

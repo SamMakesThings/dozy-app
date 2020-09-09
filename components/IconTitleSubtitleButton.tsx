@@ -13,8 +13,8 @@ import { dozy_theme } from '../config/Themes';
 interface Props {
   titleLabel: string;
   subtitleLabel: string;
-  notLoggedToday: boolean;
-  onPress: ((event: GestureResponderEvent) => void) | undefined;
+  backgroundColor?: string;
+  onPress?: ((event: GestureResponderEvent) => void) | undefined;
 }
 
 const IconTitleSubtitleButton: React.FC<Props> = (props) => {
@@ -26,9 +26,7 @@ const IconTitleSubtitleButton: React.FC<Props> = (props) => {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: props.notLoggedToday
-          ? theme.colors.primary
-          : theme.colors.medium,
+        backgroundColor: props.backgroundColor || theme.colors.medium,
         padding: scale(18),
         borderRadius: theme.borderRadius.global,
         marginTop: scale(15),
@@ -45,7 +43,7 @@ const IconTitleSubtitleButton: React.FC<Props> = (props) => {
         <Text
           style={{ ...theme.typography.body1, color: theme.colors.secondary }}
         >
-          How did you sleep last night?
+          {props.titleLabel}
         </Text>
         <Text
           style={{
@@ -55,7 +53,7 @@ const IconTitleSubtitleButton: React.FC<Props> = (props) => {
             marginTop: scale(-5)
           }}
         >
-          A consistent log improves treatment
+          {props.subtitleLabel}
         </Text>
       </View>
     </TouchableOpacity>
