@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
-const AddSleepLogButton = (props) => {
+const IconTitleSubtitleButton = (props) => {
   const theme = dozy_theme;
   // TODO: Hide or grey log sleep button if logged today
   return (
@@ -50,4 +50,4 @@ const AddSleepLogButton = (props) => {
   );
 };
 
-export default withTheme(AddSleepLogButton);
+export default withTheme(IconTitleSubtitleButton);

@@ -15,7 +15,7 @@ import Intl from 'intl';
 import { scale } from 'react-native-size-matters';
 import SleepLogEntryCard from '../components/SleepLogEntryCard';
 import { BaselineProgressCard } from '../components/BaselineProgressCard';
-import AddSleepLogButton from '../components/AddSleepLogButton';
+import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
 import fetchSleepLogs from '../utilities/fetchSleepLogs.ts';
@@ -49,7 +49,7 @@ const SleepLogsView = (props) => {
     // If sleep logs haven't loaded, show indicator
     return (
       <View horizontal={false}>
-        <AddSleepLogButton
+        <IconTitleSubtitleButton
           onPress={() => props.logEntryRedirect()}
           notLoggedToday={!loggedToday}
         />
@@ -70,7 +70,7 @@ const SleepLogsView = (props) => {
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <AddSleepLogButton
+          <IconTitleSubtitleButton
             onPress={() => props.logEntryRedirect()}
             notLoggedToday={!loggedToday}
           />
@@ -109,7 +109,7 @@ const SleepLogsView = (props) => {
     var sleepLogs = selectedSleepLogs;
     return (
       <ScrollView horizontal={false}>
-        <AddSleepLogButton
+        <IconTitleSubtitleButton
           onPress={() => props.logEntryRedirect()}
           notLoggedToday={!loggedToday}
         />
