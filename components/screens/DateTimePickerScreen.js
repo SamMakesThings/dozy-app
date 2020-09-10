@@ -11,7 +11,7 @@ import BottomNavButtons from '../BottomNavButtons';
 // A unified date, time, and datetime picker screen. Has a label and input.
 const DateTimePickerScreen = (props) => {
   const [selectedTime, setSelectedTime] = React.useState(
-    props.defaultValue ? props.defaultValue : new Date()
+    props.defaultValue || new Date()
   );
 
   const { theme } = props;
@@ -111,9 +111,7 @@ const DateTimePickerScreen = (props) => {
             props.onQuestionSubmit(selectedTime);
           }
         }}
-        bottomBackButton={
-          props.bottomBackButton ? props.bottomBackButton : null
-        }
+        bottomBackButton={props.bottomBackButton || null}
         bottomGreyButtonLabel={props.bottomGreyButtonLabel}
         buttonLabel={props.buttonLabel}
       />

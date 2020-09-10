@@ -32,7 +32,7 @@ export const TreatmentPlanCard = (props) => {
                 opacity: props.titleOpacity
               }}
             >
-              {props.title ? props.title : 'My treatment plan'}
+              {props.title || 'My treatment plan'}
             </Text>
             <Text
               style={{

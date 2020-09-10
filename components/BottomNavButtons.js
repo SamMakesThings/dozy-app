@@ -49,7 +49,7 @@ const BottomNavButtons = (props) => {
         color={theme.colors.primary}
         disabled={props.disabled}
       >
-        {props.buttonLabel ? props.buttonLabel : 'Next'}
+        {props.buttonLabel || 'Next'}
       </Button>
       {props.bottomGreyButtonLabel && (
         <Button
@@ -84,7 +84,7 @@ const BottomNavButtons = (props) => {
               }
             ])}
           >
-            {props.bottomBackButtonLabel ? props.bottomBackButtonLabel : 'Back'}
+            {props.bottomBackButtonLabel || 'Back'}
           </Text>
         </TouchableOpacity>
       )}

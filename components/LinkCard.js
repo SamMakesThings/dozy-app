@@ -27,9 +27,7 @@ export const LinkCard = (props) => {
           <View
             style={{
               ...styles.View_CardLinkImageOverlay,
-              backgroundColor: props.overlayColor
-                ? props.overlayColor
-                : 'rgba(64, 75, 105, 0.8)'
+              backgroundColor: props.overlayColor || 'rgba(64, 75, 105, 0.8)'
             }}
           >
             <View style={{ maxWidth: '90%' }}>

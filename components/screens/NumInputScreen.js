@@ -86,9 +86,7 @@ const NumInputScreen = (props) => {
       </Container>
       <BottomNavButtons
         theme={theme}
-        bottomBackButton={
-          props.bottomBackButton ? props.bottomBackButton : null
-        }
+        bottomBackButton={props.bottomBackButton || null}
         onPress={() => {
           props.onQuestionSubmit(selectedNum);
         }}

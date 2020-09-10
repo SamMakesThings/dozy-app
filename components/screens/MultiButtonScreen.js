@@ -36,9 +36,7 @@ const MultiButtonScreen = (props) => {
       </Container>
       <BottomNavButtons
         theme={theme}
-        bottomBackButton={
-          props.bottomBackButton ? props.bottomBackButton : null
-        }
+        bottomBackButton={props.bottomBackButton || null}
         buttonValues={props.buttonValues}
         onlyBackButton
         onPress={props.onQuestionSubmit}
