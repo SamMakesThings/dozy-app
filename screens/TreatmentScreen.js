@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { withTheme, ScreenContainer, Icon, Button } from '@draftbit/ui';
+import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
+import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../utilities/authContext';
 import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
+import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
 import { dozy_theme } from '../config/Themes';
 import treatments from '../constants/Treatments';
@@ -65,16 +67,20 @@ export const TreatmentScreen = ({ navigation }) => {
           color={theme.colors.primary}
         />
         {nextCheckinDate < new Date() && (
-          <Button
-            style={{
-              ...theme.buttonLayout
-            }}
-            type="solid"
-            color={theme.colors.primary}
+          <IconTitleSubtitleButton
+            titleLabel="Check in now!"
+            subtitleLabel="Press here to begin the next module"
+            backgroundColor={theme.colors.primary}
+            icon={
+              <Ionicons
+                name="ios-clipboard"
+                size={scale(35)}
+                color={theme.colors.secondary}
+              />
+            }
+            badge
             onPress={() => navigation.navigate('SCTSRT')}
-          >
-            Begin first check-in
-          </Button>
+          />
         )}
         <CurrentTreatmentsCard
           progressPercent={progressPercent}
