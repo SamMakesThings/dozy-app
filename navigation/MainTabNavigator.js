@@ -7,10 +7,17 @@ import DiaryScreen from '../screens/DiaryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import { TreatmentScreen } from '../screens/TreatmentScreen';
 import SupportChatScreen from '../screens/SupportChatScreen';
+import { AuthContext } from '../utilities/authContext';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {
+  const { state } = React.useContext(AuthContext);
+
+  // Strip time from next checkin datetime to determine whether to show checkin badge
+  let nextCheckinDate = state.userData.currentTreatments.nextCheckinDatetime.toDate();
+  nextCheckinDate.setHours(0);
+
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -51,6 +58,7 @@ export default function BottomTabs() {
               focused={focused}
               color={color}
               name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'}
+              badge={nextCheckinDate < new Date()}
             />
           )
         }}
