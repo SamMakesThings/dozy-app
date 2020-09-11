@@ -39,7 +39,15 @@ const IconTitleSubtitleButton: React.FC<Props> = (props) => {
       )}
       {props.badge && ( // Add red circle badge if "badge" passed
         <View style={styles.View_BadgeContainer}>
-          <Text style={{ color: theme.colors.secondary }}>1</Text>
+          <Text
+            style={{
+              color: theme.colors.secondary,
+              fontSize: scale(12),
+              lineHeight: scale(14)
+            }}
+          >
+            1
+          </Text>
         </View>
       )}
 
