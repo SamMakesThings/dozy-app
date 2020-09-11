@@ -14,6 +14,7 @@ interface Props {
   titleLabel: string;
   subtitleLabel: string;
   backgroundColor?: string;
+  icon?: object;
   onPress?: ((event: GestureResponderEvent) => void) | undefined;
 }
 
@@ -34,11 +35,15 @@ const IconTitleSubtitleButton: React.FC<Props> = (props) => {
       }}
       onPress={props.onPress}
     >
-      <Ionicons
-        name="ios-add-circle"
-        size={scale(35)}
-        color={theme.colors.secondary}
-      />
+      {props.icon ? (
+        props.icon
+      ) : (
+        <Ionicons
+          name="ios-add-circle"
+          size={scale(35)}
+          color={theme.colors.secondary}
+        />
+      )}
       <View>
         <Text
           style={{ ...theme.typography.body1, color: theme.colors.secondary }}
