@@ -15,8 +15,13 @@ export default function BottomTabs() {
   const { state } = React.useContext(AuthContext);
 
   // Strip time from next checkin datetime to determine whether to show checkin badge
-  let nextCheckinDate = state.userData.currentTreatments.nextCheckinDatetime.toDate();
+  // If userData isn't defined yet, set an old date so things don't break
+  // TODO: Rig state so it's never undefined. Maybe store a version in async?
+  let nextCheckinDate = state.userData
+    ? state.userData.currentTreatments.nextCheckinDatetime.toDate()
+    : new Date(0);
   nextCheckinDate.setHours(0);
+  console.log(nextCheckinDate);
 
   return (
     <Tab.Navigator
