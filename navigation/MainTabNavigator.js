@@ -21,7 +21,6 @@ export default function BottomTabs() {
     ? state.userData.currentTreatments.nextCheckinDatetime.toDate()
     : new Date(0);
   nextCheckinDate.setHours(0);
-  console.log(nextCheckinDate);
 
   return (
     <Tab.Navigator
