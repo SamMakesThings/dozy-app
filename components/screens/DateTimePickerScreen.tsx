@@ -8,8 +8,39 @@ import {
 } from '@draftbit/ui';
 import BottomNavButtons from '../BottomNavButtons';
 
+// TODO: Define possible states w/a TypeScript enum
+
+// Define types for props
+interface Props {
+  defaultValue: Date;
+  questionLabel: string;
+  questionSubtitle?: string;
+  inputLabel: string;
+  onQuestionSubmit: Function;
+  buttonLabel?: string;
+  bottomBackButton: boolean;
+  bottomGreyButtonLabel: string;
+  mode: string;
+  theme: {
+    colors: {
+      background: string;
+      secondary: string;
+    };
+    typography: {
+      body1: object;
+      headline5: object;
+    };
+  };
+}
+
+// Define types for theme (define it here, eventually make a file for it)
+interface Theme {
+  typography: object;
+  colors: object;
+}
+
 // A unified date, time, and datetime picker screen. Has a label and input.
-const DateTimePickerScreen = (props) => {
+const DateTimePickerScreen: React.FC<Props> = (props) => {
   const [selectedTime, setSelectedTime] = React.useState(
     props.defaultValue || new Date()
   );
@@ -70,7 +101,9 @@ const DateTimePickerScreen = (props) => {
               leftIconMode="inset"
               format="dddd, mmmm dS"
               date={selectedTime}
-              onDateChange={(selectedTime) => setSelectedTime(selectedTime)}
+              onDateChange={(selectedTime: Date) =>
+                setSelectedTime(selectedTime)
+              }
             />
             <DatePicker
               style={styles.DatePickerHalf}
@@ -82,7 +115,9 @@ const DateTimePickerScreen = (props) => {
               leftIconMode="inset"
               format="h:MM TT"
               date={selectedTime}
-              onDateChange={(selectedTime) => setSelectedTime(selectedTime)}
+              onDateChange={(selectedTime: Date) =>
+                setSelectedTime(selectedTime)
+              }
             />
           </View>
         ) : (
@@ -98,13 +133,13 @@ const DateTimePickerScreen = (props) => {
               props.mode === 'datetime' ? 'dddd, mmmm dS, h:MM TT' : 'h:MM TT'
             }
             date={selectedTime}
-            onDateChange={(selectedTime) => setSelectedTime(selectedTime)}
+            onDateChange={(selectedTime: Date) => setSelectedTime(selectedTime)}
           />
         )}
       </Container>
       <BottomNavButtons
         theme={theme}
-        onPress={(value) => {
+        onPress={(value: string) => {
           if (value && value == props.bottomGreyButtonLabel) {
             props.onQuestionSubmit(false);
           } else {
