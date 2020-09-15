@@ -13,6 +13,7 @@ import Images from '../config/Images';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
 import WordmarkTrans from '../assets/images/WordmarkTrans.svg';
+import UndrawBed from '../assets/images/UndrawBed.svg';
 
 function LoginScreen() {
   // Pull the theme manually
@@ -50,9 +51,9 @@ function LoginScreen() {
           useThemeGutterPadding={true}
           style={styles.View_HeroLogoText}
         >
-          <Image
-            source={Images.UndrawBed}
-            resizeMode="contain"
+          <UndrawBed
+            width={scale(200)}
+            height={verticalScale(200)}
             style={styles.Image_FeaturedBed}
           />
           <Text
