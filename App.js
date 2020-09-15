@@ -225,7 +225,12 @@ export default function App() {
 
   // Trigger the switch from the loading screen to the app
   function _handleFinishLoading() {
-    dispatch({ type: 'FINISH_LOADING' });
+    // TODO: Why TF does this work?? How can I make it not this??
+    // Getting AppLoading errors when the dispatch isn't in a setTimeout.
+    // Doesn't seem to wait 4 seconds though... confused what's happening
+    setTimeout(() => dispatch({ type: 'FINISH_LOADING' }, 4000));
+    // dispatch({ type: 'FINISH_LOADING' });
+    console.log('Wait, did loading finish???????????');
   }
 
   // Load assets async w/Expo tools

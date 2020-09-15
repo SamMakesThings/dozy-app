@@ -10,6 +10,8 @@ export const FbAuth = firebase.auth();
 
 export const FbLib = firebase;
 
+export const FbDb = firebase.firestore();
+
 // Need projectId, apiKey, appId and messagingSenderId
 
 // Google sign-in functionality

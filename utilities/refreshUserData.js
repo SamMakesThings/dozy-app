@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { FbLib } from '../config/firebaseConfig';
+import { FbLib, FbDb } from '../config/firebaseConfig';
 
 export default async function refreshUserData(dispatch) {
   let userToken;
@@ -25,8 +25,7 @@ export default async function refreshUserData(dispatch) {
     });
 
     // Update user's data from Firestore db
-    FbLib.firestore()
-      .collection('users')
+    FbDb.collection('users')
       .doc(userToken)
       .get()
       .then((userData) => {
