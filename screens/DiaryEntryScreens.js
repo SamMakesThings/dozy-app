@@ -36,6 +36,12 @@ export const BedTimeInput = ({ navigation }) => {
           progressBarPercent: 0.26
         });
       }}
+      validInputChecker={(val) => {
+        // Make sure the selected time isn't between 8:00 and 18:00, a likely sign of AM/PM mixup
+        return !(moment(val).hour() > 8 && moment(val).hour() < 18)
+          ? true
+          : 'Did you set AM/PM correctly? Selected time is unusual for a bedtime';
+      }}
       mode="time"
       questionLabel="What time did you go to bed last night?"
       inputLabel="Bedtime"
