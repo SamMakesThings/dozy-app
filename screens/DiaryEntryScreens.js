@@ -57,6 +57,15 @@ export const MinsToFallAsleepInput = ({ navigation }) => {
         GLOBAL.minsToFallAsleep = value;
         navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
       }}
+      validInputChecker={(val) => {
+        if (val < 0) {
+          return 'Please enter a non-negative number';
+        } else if (val > 1200) {
+          return 'Entered number of minutes is too large. Is this a typo?';
+        } else {
+          return true;
+        }
+      }}
       questionLabel="Roughly how long did it take you to fall asleep?"
       inputLabel="(in minutes)"
     />
