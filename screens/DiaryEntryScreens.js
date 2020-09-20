@@ -109,6 +109,15 @@ export const NightMinsAwakeInput = ({ navigation }) => {
         GLOBAL.nightMinsAwake = value;
         navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
       }}
+      validInputChecker={(val) => {
+        if (val < 0) {
+          return 'Please enter a non-negative number';
+        } else if (val > 1000) {
+          return 'Entered number of minutes is too large. Is this a typo?';
+        } else {
+          return true;
+        }
+      }}
       questionLabel="Roughly how many minutes were you awake in the night in total?"
       inputLabel="(in minutes)"
     />
