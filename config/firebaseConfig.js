@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import '@firebase/firestore';
+import 'firebase/firestore';
 import Constants from 'expo-constants';
 
 export const FbApp = !firebase.apps.length
