@@ -74,7 +74,6 @@ function TreatmentPlanScreen({ navigation, route }) {
             </View>
             <View style={styles.View_PlanModulesContainer}>
               {treatmentPlan.map((module) => {
-                console.log(module.estDate);
                 return (
                   <View key={module.module}>
                     <Text

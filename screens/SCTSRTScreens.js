@@ -924,7 +924,6 @@ export const SCTSRTEnd = ({ navigation }) => {
           targetWakeTime: GLOBAL.SCTSRTWakeTime,
           targetTimeInBed: GLOBAL.SCTSRTTimeInBedTarget
         });
-        console.log('Data submitted to Firebase!');
         navigation.navigate('App');
         refreshUserData(dispatch);
       }}
