@@ -2,6 +2,7 @@
 import React from 'react';
 import moment from 'moment';
 import NumInputScreen from '../components/screens/NumInputScreen';
+import TextInputScreen from '../components/screens/TextInputScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import TagSelectScreen from '../components/screens/TagSelectScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -73,13 +74,18 @@ export const MinsToFallAsleepInput = ({ navigation }) => {
 };
 
 export const WakeCountInput = ({ navigation }) => {
+  const { state } = React.useContext(AuthContext);
+
   return (
     <MultiButtonScreen
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.wakeCount = value;
+        // If SCTSRT has started, navigate to SCT questions
         // If user didn't wake in the night, skip asking how long they were awake
-        if (value === 0) {
+        if (state.userData.currentTreatments.SCTSRT) {
+          navigation.navigate('SCTUpCountInput', { progressBarPercent: 0.5 });
+        } else if (value === 0) {
           navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
           GLOBAL.nightMinsAwake = 0;
         } else {
@@ -97,6 +103,93 @@ export const WakeCountInput = ({ navigation }) => {
         { label: '5+', value: 5 }
       ]}
       questionLabel="After falling asleep, about how many times did you wake up in the night?"
+    />
+  );
+};
+
+// If SCTSRT started, show SCT question screens
+export const SCTUpCountInput = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      onQuestionSubmit={(value) => {
+        GLOBAL.SCTUpCount = value;
+        navigation.navigate('SCTAnythingNonSleepInBedInput', {
+          progressBarPercent: 0.55
+        });
+      }}
+      buttonValues={[
+        { label: "0 (didn't get up)", value: 0 },
+        { label: '1', value: 1 },
+        { label: '2', value: 2 },
+        { label: '3', value: 3 },
+        { label: '4', value: 4 },
+        { label: '5+', value: 5 }
+      ]}
+      questionLabel="(SCT) Following rule 2, how many times did you get out of bed when unable to sleep for more than 15 minutes?"
+    />
+  );
+};
+
+// If SCTSRT started, show SCT question screens
+export const SCTAnythingNonSleepInBedInput = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      onQuestionSubmit={(value) => {
+        GLOBAL.SCTAnythingNonSleepInBed = value === 1;
+        // If user says they did something not sleep in bed, ask what (text input)
+        if (value === 1) {
+          navigation.navigate('SCTNonSleepActivitiesInput', {
+            progressBarPercent: 0.6
+          });
+        } else {
+          navigation.navigate('SCTDaytimeNapsInput', {
+            progressBarPercent: 0.6
+          });
+        }
+      }}
+      buttonValues={[
+        { label: 'Yes', value: 1 },
+        { label: 'No', value: 0 }
+      ]}
+      questionLabel="(SCT) Did you do anything in bed besides sleeping? (e.g. use phone, watch tv, read a book. Sex excluded 🙈)"
+    />
+  );
+};
+
+export const SCTNonSleepActivitiesInput = ({ navigation }) => {
+  return (
+    <TextInputScreen
+      theme={theme}
+      onQuestionSubmit={(value) => {
+        GLOBAL.SCTNonSleepActivities = value;
+        navigation.navigate('SCTDaytimeNapsInput', {
+          progressBarPercent: 0.63
+        });
+      }}
+      questionLabel="(SCT) What were you doing besides sleeping?"
+      inputLabel="(e.g. reading, using phone)"
+    />
+  );
+};
+
+export const SCTDaytimeNapsInput = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      onQuestionSubmit={(value) => {
+        GLOBAL.SCTDaytimeNaps = value === 1;
+        // If user says they did something not sleep in bed, ask what (text input)
+        navigation.navigate('NightMinsAwakeInput', {
+          progressBarPercent: 0.63
+        });
+      }}
+      buttonValues={[
+        { label: 'Yes', value: 1 },
+        { label: 'No', value: 0 }
+      ]}
+      questionLabel="(SCT) Did you take any daytime naps longer than 30 minutes yesterday?"
     />
   );
 };

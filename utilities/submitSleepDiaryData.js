@@ -47,7 +47,11 @@ export default async function submitSleepDiaryData() {
       sleepDuration: sleepDuration,
       minsInBedTotal: minsInBedTotal,
       minsAwakeInBedTotal: minsAwakeInBedTotal,
-      tags: GLOBAL.tags
+      tags: GLOBAL.tags,
+      SCTUpCount: GLOBAL.SCTUpTimeCount || null, // Add SCT data if available, otherwise undefined
+      SCTAnythingNonSleepInBed: GLOBAL.SCTAnythingNonSleepInBed || null,
+      SCTNonSleepActivities: GLOBAL.SCTNonSleepActivities || null,
+      SCTDaytimeNaps: GLOBAL.SCTDaytimeNaps || null
     })
     .catch(function (error) {
       console.log('Error pushing sleep log data:', error);
