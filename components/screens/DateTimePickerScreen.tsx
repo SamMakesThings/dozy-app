@@ -7,19 +7,7 @@ import {
   DatePicker
 } from '@draftbit/ui';
 import BottomNavButtons from '../BottomNavButtons';
-
-// Define types for theme (define it here, eventually make a file for it)
-interface Theme {
-  colors: {
-    background: string;
-    secondary: string;
-    error: string;
-  };
-  typography: {
-    body1: object;
-    headline5: object;
-  };
-}
+import { Theme } from '../../types/theme';
 
 // Define types for props
 interface Props {
