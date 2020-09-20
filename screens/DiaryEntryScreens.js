@@ -92,7 +92,6 @@ export const WakeCountInput = ({ navigation }) => {
   );
 };
 
-// TODO: Skip this question if the answer to the previous one was zero
 export const NightMinsAwakeInput = ({ navigation }) => {
   return (
     <NumInputScreen
@@ -127,6 +126,12 @@ export const WakeTimeInput = ({ navigation }) => {
         GLOBAL.wakeTime = value;
         navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
       }}
+      validInputChecker={(val) => {
+        // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
+        return moment(val).hour() < 17
+          ? true
+          : 'Did you set AM/PM correctly? Selected time is late for a wake time.';
+      }}
       mode="time"
       questionLabel="What time did you wake up?"
       inputLabel="Wake time"
@@ -141,6 +146,17 @@ export const UpTimeInput = ({ navigation }) => {
       onQuestionSubmit={(value) => {
         GLOBAL.upTime = value;
         navigation.navigate('SleepRatingInput', { progressBarPercent: 0.87 });
+      }}
+      validInputChecker={(val) => {
+        // Make sure the selected time is before 18:00, otherwise it's a likely sign of AM/PM mixup
+        // Also make sure up time is after or equal to wake time
+        if (moment(val).hour() > 18) {
+          return 'Did you set AM/PM correctly? Selected time is late for a wake time.';
+        } else if (moment(val).add(1, 'minutes').toDate() < GLOBAL.wakeTime) {
+          return 'Selected up time is earlier than selected wake time. Did you set AM/PM correctly?';
+        } else {
+          return true;
+        }
       }}
       mode="time"
       defaultValue={GLOBAL.wakeTime}
