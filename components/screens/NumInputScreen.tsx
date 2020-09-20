@@ -12,6 +12,7 @@ import { Theme } from '../../types/theme';
 
 interface Props {
   questionLabel: string;
+  questionSubtitle?: string;
   inputLabel: string;
   progressBarPercent?: number;
   onQuestionSubmit: Function;
@@ -45,7 +46,7 @@ const NumInputScreen: React.FC<Props> = (props) => {
     if (isNaN(val) && !props.optional) {
       setScreenState(States.Empty);
     } else if (
-      (props.validInputChecker && props.validInputChecker(val)) ||
+      (props.validInputChecker && props.validInputChecker(val) === true) ||
       props.validInputChecker === undefined ||
       (isNaN(val) && props.optional)
     ) {
@@ -84,6 +85,23 @@ const NumInputScreen: React.FC<Props> = (props) => {
         >
           {props.questionLabel}
         </Text>
+        {(props.questionSubtitle || screenState === States.Invalid) && ( // If invalid input, replace subtitle with error message
+          <Text
+            style={[
+              styles.Text_QuestionLabel,
+              theme.typography.body1,
+              styles.Text_QuestionSubtitle,
+              {
+                color:
+                  screenState === States.Invalid
+                    ? theme.colors.error
+                    : theme.colors.secondary
+              }
+            ]}
+          >
+            {screenState === States.Invalid ? errorMsg : props.questionSubtitle}
+          </Text>
+        )}
         <Container
           style={{
             ...styles.View_InputContainer,
@@ -154,6 +172,16 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'flex-start',
     alignSelf: 'center'
+  },
+  Text_QuestionLabel: {
+    textAlign: 'center',
+    width: '100%',
+    alignItems: 'center',
+    alignSelf: 'center'
+  },
+  Text_QuestionSubtitle: {
+    fontWeight: 'normal',
+    opacity: 0.7
   }
 });
 
