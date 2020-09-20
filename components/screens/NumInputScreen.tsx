@@ -8,40 +8,65 @@ import {
 } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
+import { Theme } from '../../types/theme';
 
-const NumInputScreen = (props) => {
-  const [selectedNum, setSelectedNum] = React.useState(-1);
+interface Props {
+  questionLabel: string;
+  inputLabel: string;
+  progressBarPercent?: number;
+  onQuestionSubmit: Function;
+  optional?: boolean;
+  bottomBackButton?: boolean;
+  validInputChecker?: Function;
+  theme: Theme;
+}
+
+// Define possible states w/a TypeScript enum
+enum States {
+  Empty = 0,
+  Invalid = 1,
+  Valid = 2
+}
+
+const NumInputScreen: React.FC<Props> = (props) => {
+  const [selectedNum, setSelectedNum] = React.useState(NaN);
+
+  // Create state to manage possible screen states
+  const [screenState, setScreenState] = React.useState(States.Empty);
+  const [errorMsg, setErrorMsg] = React.useState('Error');
+
+  // Function to update screen state when data changes
+  function checkDataValidity(val: number) {
+    // Use a passed-in function to validate input value.
+    // If no function passed, all is valid
+    // If valid, passed function should return true.
+    // If invalid, function should return an error string to display.
+
+    if (isNaN(val) && !props.optional) {
+      setScreenState(States.Empty);
+    } else if (
+      (props.validInputChecker && props.validInputChecker(val)) ||
+      props.validInputChecker === undefined ||
+      (isNaN(val) && props.optional)
+    ) {
+      setScreenState(States.Valid);
+    } else {
+      setScreenState(States.Invalid);
+      setErrorMsg(
+        props.validInputChecker ? props.validInputChecker(val) : 'Error'
+      );
+    }
+  }
 
   const { theme } = props;
   return (
-    <ScreenContainer
-      hasSafeArea={true}
-      scrollable={false}
-      style={styles.Root_n3a}
-    >
+    <ScreenContainer hasSafeArea={true} scrollable={false}>
       <Container
         style={styles.View_HeaderContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <Container
-          style={styles.View_ProgressBarContainer}
-          elevation={0}
-          useThemeGutterPadding={true}
-        >
-          <ProgressBar
-            style={{
-              ...styles.ProgressBar_neb,
-              ...{ display: props.progressBarPercent ? 'flex' : 'none' }
-            }}
-            color={theme.colors.primary}
-            progress={props.progressBarPercent}
-            borderWidth={0}
-            borderRadius={10}
-            animationType="spring"
-            unfilledColor={theme.colors.medium}
-          />
-        </Container>
+        <Container elevation={0} useThemeGutterPadding={true}></Container>
       </Container>
       <Container
         style={styles.View_ContentContainer}
@@ -73,11 +98,16 @@ const NumInputScreen = (props) => {
             keyboardAppearance="dark"
             returnKeyType="done"
             enablesReturnKeyAutomatically={true}
-            onChangeText={(inputValue) => setSelectedNum(inputValue)}
+            onChangeText={(inputValue) => {
+              setSelectedNum(parseInt(inputValue));
+              checkDataValidity(parseInt(inputValue));
+            }}
             onSubmitEditing={(event) => {
-              if ((!props.optional && selectedNum < 0) || selectedNum === '') {
+              if (screenState !== States.Valid) {
                 // TODO: Add a user visible error message saying a value is needed
+                setSelectedNum(parseInt(event.nativeEvent.text));
               } else {
+                setSelectedNum(parseInt(event.nativeEvent.text));
                 props.onQuestionSubmit(event.nativeEvent.text);
               }
             }}
@@ -90,7 +120,7 @@ const NumInputScreen = (props) => {
         onPress={() => {
           props.onQuestionSubmit(selectedNum);
         }}
-        disabled={(!props.optional && selectedNum < 0) || selectedNum === ''}
+        disabled={screenState !== States.Valid}
       />
     </ScreenContainer>
   );
