@@ -9,113 +9,12 @@ import {
   Touchable,
   DatePicker
 } from '@draftbit/ui';
-// import { Notifications } from "expo";
-// import * as Permissions from 'expo-permissions';
-// import * as SecureStore from 'expo-secure-store';
 import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
-// import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 import planTreatmentModules from '../utilities/planTreatmentModules';
 
 function Root() {
-  // state = {}
-  /*
-
-  registerForPushNotificationsAsync = async() => {
-    console.log("ATTEMPTING TO DO A PUSH NOTIFICATION TOKEN THING...")
-
-    const { status: existingStatus } = await Permissions.getAsync(
-      Permissions.NOTIFICATIONS
-    );
-    let finalStatus = existingStatus;
-  
-    // only ask if permissions have not already been determined, because
-    // iOS won't necessarily prompt the user a second time.
-    if (existingStatus !== 'granted') {
-      // Android remote notification permissions are granted during the app
-      // install, so this will only ask on iOS
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
-    }
-  
-    // Stop here if the user did not grant permissions
-    if (finalStatus !== 'granted') {
-      return;
-    }
-  
-    // Get the token that uniquely identifies this device
-    let token = await Notifications.getExpoPushTokenAsync();
-
-    let pushExpoTokenToFirebase = async () => {
-      // Pushing our generated Expo token (for push notifications) into Firestore
-
-      console.log("attempting to push an expo token to Firebase");
-      
-      var db = FbLib.firestore();
-  
-      let userId = await SecureStore.getItemAsync('userId');
-  
-      var docRef = db.collection("users").doc(userId);
-    
-      // Write the token to the user's data document in Firebase
-      docRef.update({
-        "expoToken": token
-      }).catch(function(error) {
-          console.log("Error pushing Expo token to Firebase:", error);
-      });
-    };
-
-    pushExpoTokenToFirebase();
-
-  }
-
-  updateReminderTime = async (newSetting) => {
-    // Define variables for the Firebase push
-    var db = FbLib.firestore();
-    let userId = await SecureStore.getItemAsync('userId');
-    var docRef = db.collection("users").doc(userId);
-
-    // Write the new setting (reminder time) to Firebase
-    docRef.update({
-      "reminderTime": newSetting
-    }).catch(function(error) {
-      console.log("Error pushing updated reminder time to Firebase:", error);
-    })
-  }
-
-  updateRemindersOnOff = async (newSetting) => {
-    // Define variables for the Firebase push
-    var db = FbLib.firestore();
-    let userId = await SecureStore.getItemAsync('userId');
-    var docRef = db.collection("users").doc(userId);
-
-    // Write the new setting (turning reminders on/off) to Firebase
-    docRef.update({
-      "remindersOn": newSetting
-    }).catch(function(error) {
-      console.log("Error pushing reminder on/off to Firebase:", error);
-    })
-  }
-
-  componentDidMount = async () => {
-    // Define variables for the Firebase pull
-    var db = FbLib.firestore();
-    let userId = await SecureStore.getItemAsync('userId');
-    var docRef = db.collection("users").doc(userId);
-
-    // Update displayed settings based on current user settings
-    docRef.get().then((userData) => {
-      console.log("updating settings from firebase");
-      console.log(userData);
-      let reminderTime = userData.reminderTime;
-      this.setState({ reminderTime });
-      console.log(this.state);
-    }).catch(function(error) {
-      console.log("Error getting settings from Firebase:", error);
-    })
-  } */
-
   // Pass along the signOut function from the context provider
   const { state, signOut } = React.useContext(AuthContext);
 
@@ -422,23 +321,3 @@ const styles = StyleSheet.create({
 });
 
 export default withTheme(Root);
-
-/* OLD TIME PICKER - this was causing a toLocaleTimeString error, which means I think it's a Draftbit error.
-          <DatePicker
-            style={styles.DatePicker_nl}
-            mode="time"
-            type="solid"
-            error={false}
-            label="Date"
-            disabled={false}
-            leftIconMode="inset"
-            date={this.state.reminderTime}
-            onDateChange={reminderTime => {
-              // this.setState({ reminderTime });
-              // this.updateRemindersOnOff(reminderTime);
-              // console.log(this.state);
-              console.log("attempted to set push notifs time change");
-              }
-            }
-          />
-*/
