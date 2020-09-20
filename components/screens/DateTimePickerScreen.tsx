@@ -33,7 +33,7 @@ interface Props {
   bottomGreyButtonLabel: string;
   mode: string;
   theme: Theme;
-  validInputChecker: Function;
+  validInputChecker?: Function;
 }
 
 // Define possible states w/a TypeScript enum
