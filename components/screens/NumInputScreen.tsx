@@ -122,7 +122,6 @@ const NumInputScreen: React.FC<Props> = (props) => {
             }}
             onSubmitEditing={(event) => {
               if (screenState !== States.Valid) {
-                // TODO: Add a user visible error message saying a value is needed
                 setSelectedNum(parseInt(event.nativeEvent.text));
               } else {
                 setSelectedNum(parseInt(event.nativeEvent.text));
