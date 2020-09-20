@@ -35,7 +35,7 @@ const SleepLogsView = (props) => {
   let selectedSleepLogs = [];
 
   // Determine whether user has logged sleep for the previous night
-  if (props.sleepLogs != null) {
+  if (props.sleepLogs != null && props.sleepLogs[0]) {
     loggedToday =
       props.sleepLogs[0].upTime.toDate().getDate() === new Date().getDate();
 
