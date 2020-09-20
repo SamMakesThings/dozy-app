@@ -722,6 +722,18 @@ export const CheckinScheduling = ({ navigation }) => {
         GLOBAL.firstCheckinTime = value;
         navigation.navigate('PaywallPlaceholder', { progressBarPercent: 0.8 });
       }}
+      validInputChecker={(val) => {
+        // Make sure the selected date is 7+ days from today
+        // Make sure it's within 14 days
+        // Otherwise, mark it valid by returning true
+        if (moment().add(7, 'days').hour(0).toDate() > val) {
+          return 'Please select a day 7 or more days from today';
+        } else if (moment().add(14, 'days').hour(0).toDate() < val) {
+          return 'Please select a day within 14 days of today';
+        } else {
+          return true;
+        }
+      }}
       questionLabel="When would you like to schedule your first weekly check-in? (Check-ins take 5-10 minutes and introduce you to new treatment techniques based on your sleep patterns.)"
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"

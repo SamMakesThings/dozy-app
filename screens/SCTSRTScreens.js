@@ -645,6 +645,12 @@ export const WakeTimeSetting = ({ navigation }) => {
           progressBarPercent: 0.74
         });
       }}
+      validInputChecker={(val) => {
+        // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
+        return moment(val).hour() < 17
+          ? true
+          : 'Did you set AM/PM correctly? Selected time is late for a wake time.';
+      }}
       questionLabel="What time do you want to get up every morning this week?"
       questionSubtitle="Pick a consistent time and try to stick to it - our treatments won't be as effective if you change your hours on the weekend."
       mode="time"
@@ -872,6 +878,18 @@ export const CheckinScheduling = ({ navigation }) => {
         // Another option - wait until 7 sleep logs are collected before allowing continue
         GLOBAL.nextCheckinTime = value;
         navigation.navigate('SCTSRTEnd', { progressBarPercent: 1 });
+      }}
+      validInputChecker={(val) => {
+        // Make sure the selected date is 7+ days from today
+        // Make sure it's within 14 days
+        // Otherwise, mark it valid by returning true
+        if (moment().add(7, 'days').hour(0).toDate() > val) {
+          return 'Please select a day 7 or more days from today';
+        } else if (moment().add(14, 'days').hour(0).toDate() < val) {
+          return 'Please select a day within 14 days of today';
+        } else {
+          return true;
+        }
       }}
       questionLabel="Last step: When would you like your next weekly check-in?"
       questionSubtitle="Check-ins take 5-10 minutes and adjust treatments based on your sleep patterns. A new technique is usually introduced weekly."
