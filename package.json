@@ -41,7 +41,7 @@
     "expo-google-app-auth": "^8.0.1",
     "expo-permissions": "~9.0.1",
     "expo-secure-store": "~9.0.1",
-    "firebase": "^7.20.0",
+    "firebase": "7.9.0",
     "grpc": "^1.20.2",
     "intl": "^1.2.5",
     "moment": "^2.27.0",
