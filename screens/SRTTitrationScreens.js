@@ -83,7 +83,7 @@ export const SleepEfficiency = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('SleepOnset', {
+        navigation.navigate('SRTTitration', {
           progressBarPercent: 0.07
         });
       }}
@@ -137,6 +137,21 @@ export const SleepEfficiency = ({ navigation }) => {
 };
 
 // TODO: Add SRT titration screen here
+
+export const SRTTitration = ({ navigation }) => {
+  const { state } = React.useContext(AuthContext);
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SleepOnset', { progressBarPercent: 0.09 });
+      }}
+      textLabel="Titration screen"
+    ></WizardContentScreen>
+  );
+};
 
 export const SleepOnset = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
