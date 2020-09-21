@@ -28,7 +28,10 @@ export default {
     title: 'Relaxation Training & PMR',
     subTitle: 'Relax the muscles to relax the mind',
     image: Images.WomanInBed,
-    todos: ['Practice PMR during the day', 'Use PMR before trying to sleep'],
+    todos: [
+      'Practice PMR once during the day',
+      'Use PMR before trying to sleep'
+    ],
     url: 'https://dozy.customerly.help',
     optional: false
   },
