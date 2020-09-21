@@ -5,7 +5,14 @@ import '@firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
-const HighlightedText = (props) => {
+interface Props {
+  label: string;
+  textColor: string;
+  bgColor: string;
+  style: object;
+}
+
+const HighlightedText: React.FC<Props> = (props) => {
   const theme = dozy_theme;
   return (
     <Container
