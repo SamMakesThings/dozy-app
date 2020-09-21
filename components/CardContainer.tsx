@@ -4,7 +4,11 @@ import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
-export const CardContainer = (props) => {
+interface Props {
+  style?: object;
+}
+
+export const CardContainer: React.FC<Props> = (props) => {
   return (
     <View style={{ ...styles.View_CardContainer, ...props.style }}>
       {props.children}
