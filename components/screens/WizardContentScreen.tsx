@@ -3,19 +3,30 @@ import { StyleSheet, Text, View } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
+import { Theme } from '../../types/theme';
+
+interface Props {
+  theme: Theme;
+  flexibleLayout?: boolean;
+  textLabel: string;
+  titleLabel?: string;
+  onQuestionSubmit: Function;
+  buttonLabel?: string;
+  bottomBackButtonLabel?: string;
+  bottomGreyButtonLabel?: string;
+  bottomBackButton?: Function;
+  bbbDisabled?: boolean;
+  onlyBackButton?: boolean;
+}
 
 // General use wizard screen layout. Pass images, charts, etc as a child
 // By default uses a kinda fixed layout for consistency. For screens with
 // lots of content, add the prop 'flexibleLayout' for maximum flex
-const WizardContentScreen = (props) => {
+const WizardContentScreen: React.FC<Props> = (props) => {
   const { theme } = props;
 
   return (
-    <ScreenContainer
-      hasSafeArea={true}
-      scrollable={false}
-      style={styles.RootContainer}
-    >
+    <ScreenContainer hasSafeArea={true} scrollable={false}>
       <Container
         style={{
           ...styles.View_ContentContainer,
@@ -26,15 +37,14 @@ const WizardContentScreen = (props) => {
       >
         <View
           style={{
-            ...styles.View_TopPadding,
-            flex: props.flexibleLayout ? null : 1,
-            height: props.flexibleLayout ? scale(20) : null
+            flex: props.flexibleLayout ? undefined : 1,
+            height: props.flexibleLayout ? scale(20) : undefined
           }}
         />
         <View
           style={{
             ...styles.View_HeroContainer,
-            flex: props.flexibleLayout ? null : 5
+            flex: props.flexibleLayout ? undefined : 5
           }}
         >
           {props.children}
@@ -42,7 +52,7 @@ const WizardContentScreen = (props) => {
         <View
           style={{
             ...styles.View_TextContainer,
-            flex: props.flexibleLayout ? null : 3
+            flex: props.flexibleLayout ? undefined : 3
           }}
         >
           {props.titleLabel && (
