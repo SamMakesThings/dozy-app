@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Ionicons } from '@expo/vector-icons';
@@ -55,9 +55,11 @@ export const TreatmentScreen = ({ navigation }) => {
 
   return (
     <ScreenContainer
-      hasSafeArea={true}
+      hasSafeArea={
+        false /* Turning this off b/c it added bottom padding on iOS. Added styles to fix, remove if patched */
+      }
       scrollable={true}
-      style={styles.Root_n5}
+      style={styles.Root}
     >
       <View style={styles.View_ContentContainer}>
         <Icon
@@ -161,6 +163,9 @@ export const TreatmentScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  Root: {
+    marginTop: Platform.OS === 'ios' ? scale(40) : scale(20) // TODO: Does this work ok on non-notch iPhones?
+  },
   ItemMargin: {
     marginTop: scale(10)
   },
