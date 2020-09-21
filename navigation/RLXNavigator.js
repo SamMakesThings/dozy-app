@@ -1,7 +1,8 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as Screens from '../screens/SCTSRTScreens';
+import * as TreatmentScreens from '../screens/RLXScreens';
+import * as SRTTitrationScreens from '../screens/SRTTitrationScreens';
 import HeaderProgressBar from '../components/HeaderProgressBar';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
 
@@ -20,8 +21,12 @@ const animConfig = {
   }
 };
 
+const Screens = { ...TreatmentScreens, ...SRTTitrationScreens };
+
 // Create a stack screen for each component defined in DiaryEntryScreens
 export default function SCTSRTNavigator() {
+  console.log(Screens);
+
   return (
     <SCTSRTStack.Navigator
       initialRouteName="Welcome"
