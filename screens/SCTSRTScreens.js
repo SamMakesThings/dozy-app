@@ -32,8 +32,6 @@ import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 
-// TODO: Add progress bar percentages to each screen
-
 // Define the theme for the file globally
 const theme = dozy_theme;
 
