@@ -81,7 +81,9 @@ export const TreatmentScreen = ({ navigation }) => {
               />
             }
             badge
-            onPress={() => navigation.navigate('SCTSRT')}
+            onPress={() =>
+              navigation.navigate(state.userData.nextCheckin.treatmentModule)
+            }
           />
         )}
         <CurrentTreatmentsCard
