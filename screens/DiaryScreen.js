@@ -27,8 +27,8 @@ function DiaryScreen() {
 
   return (
     <ScreenContainer
-      hasSafeArea={false}
-      scrollable={true}
+      hasSafeArea={true}
+      scrollable={false}
       style={styles.ScreenContainer}
     >
       <View style={styles.View_MonthSelectContainer}>
@@ -96,9 +96,7 @@ const styles = StyleSheet.create({
     paddingBottom: scale(5)
   },
   ScreenContainer: {
-    backgroundColor: dozy_theme.colors.medium,
-    paddingTop: Platform.OS === 'ios' ? scale(40) : scale(20), // TODO: Does this work ok on non-notch iPhones?
-    marginBottom: Platform.OS === 'ios' ? scale(50) : scale(25) // TODO: Does this work ok on non-notch iPhones?
+    backgroundColor: dozy_theme.colors.medium
   },
   Text_MonthSelect: {
     color: dozy_theme.colors.secondary
