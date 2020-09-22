@@ -1591,19 +1591,17 @@
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@draftbit/ui@^37.4.4":
-  version "37.4.4"
-  resolved "https://registry.yarnpkg.com/@draftbit/ui/-/ui-37.4.4.tgz#343a4be07189cdbb9c70e9c9fdded9125ab3c7ec"
-  integrity sha512-1QUQYsrl624TwM1J9rJcQ6QtU9H9AU9Ih3NGDqNvAHtialglDOvkkFX+Orix9lHOC6WPaXkh1kzcqH0qGVuECw==
+"@draftbit/ui@^37.3.0":
+  version "37.3.0"
+  resolved "https://registry.yarnpkg.com/@draftbit/ui/-/ui-37.3.0.tgz#58c50f852c0775b83399796cfdde0d77c6c8db64"
+  integrity sha512-xYhW91Ty5Koimbxnx7IcmenSjFuS3DvxhkF8Wq7tV9Rl0J0Mn+bzlDPjZ/kW3Do6wcHPVYYBWcAZ2V61vXbigQ==
   dependencies:
     "@draftbit/react-theme-provider" "^2.1.1"
     color "^3.1.2"
     dateformat "^3.0.3"
     expo-font "^8.1.1"
     expo-step-indicator "0.1.2"
-    react-native-safe-area-context "~3.0.7"
     react-native-slider "^0.11.0"
-    react-native-typography "^1.4.1"
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
@@ -8460,7 +8458,15 @@ expo-file-system@~9.0.1:
   dependencies:
     uuid "^3.4.0"
 
-expo-font@^8.1.1, expo-font@~8.2.1:
+expo-font@^8.1.1:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/expo-font/-/expo-font-8.3.0.tgz#f41955d1f1bbb2fe706bf97fc94aa89f7e599a0a"
+  integrity sha512-WK3Oh3JwLjH/y94w1GPhE1Ix59WEJ9hTUKJBuvsM9SYqdN4N0DDb2VKhCH218HPdLURfyZnhMi2KrVycUWIUEQ==
+  dependencies:
+    fbjs "1.0.0"
+    fontfaceobserver "^2.1.0"
+
+expo-font@~8.2.1:
   version "8.2.2"
   resolved "https://registry.yarnpkg.com/expo-font/-/expo-font-8.2.2.tgz#c67ee8d3841921a907464d67e8098baeed92bacf"
   integrity sha512-p/a7Ve+3LiR9ofn77U0UuuE6ZQiLVu3M1btiKUDe5efAp48D9GG41AevKQ7YnkfxTDdGJa0ACAtJAVsAD30jGA==
@@ -15025,7 +15031,7 @@ react-native-tab-view@^2.14.4:
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.14.4.tgz#740007e62c8723c6813b8c8a05caaaf82c816620"
   integrity sha512-oqkCflPFuZwDTbyY2WaN0377akSsmcttuYACR9LT7htZfO/tKR2Z/ynj1tbv2cz2esGuVICoga9cetN1lPimog==
 
-react-native-typography@^1.4.0, react-native-typography@^1.4.1:
+react-native-typography@^1.4.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/react-native-typography/-/react-native-typography-1.4.1.tgz#2d05cb5935a2f7fdb6b43bbde93d60f1324578e3"
   integrity sha512-dc9Zfs4jUdq4ygx4/KwO6jKTERBu6cRrfPJGntw/pA+D6BMjlWfMNuhZ/69vf4Zpsnt9s4AGe+Z/V1QFYaCXAA==
