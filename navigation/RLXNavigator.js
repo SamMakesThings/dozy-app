@@ -25,8 +25,6 @@ const Screens = { ...TreatmentScreens, ...SRTTitrationScreens };
 
 // Create a stack screen for each component defined in DiaryEntryScreens
 export default function SCTSRTNavigator() {
-  console.log(Screens);
-
   return (
     <SCTSRTStack.Navigator
       initialRouteName="Welcome"
