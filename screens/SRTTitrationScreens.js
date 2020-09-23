@@ -17,6 +17,7 @@ import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
+import ThumbsUp from '../assets/images/ThumbsUp.svg';
 import Clipboard from '../assets/images/Clipboard.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import SCTSRTTreatmentPlan from '../assets/images/SCTSRTTreatmentPlan.svg';
@@ -65,9 +66,7 @@ const chartStyles = {
 
 export const SRTTitrationStart = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
-
   let imgSize = imgSizePercent * useWindowDimensions().width;
-
   // Trim sleepLogs to only show most recent 7
   const recentSleepLogs = state.sleepLogs.slice(0, 7);
 
@@ -82,11 +81,11 @@ export const SRTTitrationStart = ({ navigation }) => {
 
   function getSRTTitrationLabel(sleepEffiencyAvg) {
     if (sleepEffiencyAvg < 85) {
-      return `Great job sticking to your restricted sleep schedule! Your sleep data may indicate that more action is needed.`;
+      return `Good job sticking to your target sleep schedule! However, your sleep data may indicate that more action is needed.`;
     } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
-      return `Great job sticking to your restricted sleep schedule! Your sleep is starting to show signs of improvement.`;
+      return `Great job sticking to your target sleep schedule! Your sleep is starting to show signs of improvement.`;
     } else {
-      return 'Great job sticking to your restricted sleep schedule!! Thanks to your efforts, your sleep efficiency has been going up.';
+      return 'Great job sticking to your target sleep schedule!! Thanks to your efforts, your sleep efficiency has been going up.';
     }
   }
 
@@ -98,9 +97,9 @@ export const SRTTitrationStart = ({ navigation }) => {
         navigation.navigate('SleepEfficiency', { progressBarPercent: 0.09 });
       }}
       textLabel={getSRTTitrationLabel(sleepEfficiencyAvg)}
-      flexibleLayout
+      buttonLabel="Got it - what does that mean?"
     >
-      <FemaleDoctor width={imgSize} height={imgSize} />
+      <ThumbsUp width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
@@ -108,8 +107,8 @@ export const SRTTitrationStart = ({ navigation }) => {
 export const SleepEfficiency = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
 
-  // Trim sleepLogs to only show most recent 10
-  const recentSleepLogs = state.sleepLogs.slice(0, 10);
+  // Trim sleepLogs to only show most recent 7
+  const recentSleepLogs = state.sleepLogs.slice(0, 7);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -120,15 +119,17 @@ export const SleepEfficiency = ({ navigation }) => {
     ).toFixed(0)
   );
 
-  // TODO: Pull baseline sleep numbers from state
+  // Pull baseline from state
+  const sleepEfficiencyAvgBaseline =
+    state.userData.baselineInfo.sleepEfficiencyAvg;
 
   function getLabel(sleepEffiencyAvg) {
     if (sleepEffiencyAvg < 85) {
-      return `Your sleep efficiency is ok, but with an average of ${sleepEffiencyAvg} it's not quite where we need it to be yet. More action may be needed.`;
+      return `Your sleep efficiency is ok, but with an average of ${sleepEffiencyAvg}% (previously ${sleepEfficiencyAvgBaseline}%) it's not quite where we need it to be yet. More action may be needed.`;
     } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
-      return `Your sleep is starting to show signs of improvement. You previously had an average sleep efficiency of ${20}, and it has since been around to ${sleepEfficiencyAvg}! You're making progress!`;
+      return `Your sleep is starting to show signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since been around to ${sleepEfficiencyAvg}%! You're making progress!`;
     } else {
-      return `Your sleep is showing signs of improvement. You previously had an average sleep efficiency of ${20}, and it has since risen to ${sleepEfficiencyAvg}! You're making great progress.`;
+      return `Your sleep is showing signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since risen to ${sleepEfficiencyAvg}%! You're making great progress.`;
     }
   }
 
@@ -201,7 +202,7 @@ export const SRTTitration = ({ navigation }) => {
     } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
       return `Based on your sleep efficiency, we should maintain the same bedtime & wake time this week. For most people, sleep efficiency climbs over 90% by the next week, and we can start allotting more time in bed. From there, it's adding 15 minutes to bedtime each week until you're sleeping the whole night through.`;
     } else {
-      return 'high avg';
+      return 'Based on this result, we can increase time in bed by 15 minutes for the next week. Your new target bedtime is (TIME). ';
     }
   }
 
