@@ -74,7 +74,7 @@ export const Welcome = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
-        navigation.navigate('SleepEfficiency', {
+        navigation.navigate('SRTTitrationStart', {
           progressBarPercent: 0.03
         });
       }}
@@ -84,7 +84,7 @@ export const Welcome = ({ navigation }) => {
 };
 
 // SRT titration screens are defined in the navigator file for modularity.
-// First screen to navigate to is 'SleepEfficiency'
+// First screen to navigate to is 'SRTTitrationStart'
 // Screen it targets for return navigation is 'TreatmentPlan'
 
 export const TreatmentPlan = ({ navigation }) => {

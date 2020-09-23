@@ -63,6 +63,48 @@ const chartStyles = {
   }
 };
 
+export const SRTTitrationStart = ({ navigation }) => {
+  const { state } = React.useContext(AuthContext);
+
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  // Trim sleepLogs to only show most recent 7
+  const recentSleepLogs = state.sleepLogs.slice(0, 7);
+
+  // Calculate recent sleep efficiency average
+  const sleepEfficiencyAvg = Number(
+    (
+      (recentSleepLogs.reduce((a, b) => a + b.sleepEfficiency, 0) /
+        recentSleepLogs.length) *
+      100
+    ).toFixed(0)
+  );
+
+  function getSRTTitrationLabel(sleepEffiencyAvg) {
+    if (sleepEffiencyAvg < 85) {
+      return `Great job sticking to your restricted sleep schedule! Your sleep data may indicate that more action is needed.`;
+    } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
+      return `Great job sticking to your restricted sleep schedule! Your sleep is starting to show signs of improvement.`;
+    } else {
+      return 'Great job sticking to your restricted sleep schedule!! Thanks to your efforts, your sleep efficiency has been going up.';
+    }
+  }
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SleepEfficiency', { progressBarPercent: 0.09 });
+      }}
+      textLabel={getSRTTitrationLabel(sleepEfficiencyAvg)}
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
 export const SleepEfficiency = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
 
@@ -78,6 +120,18 @@ export const SleepEfficiency = ({ navigation }) => {
     ).toFixed(0)
   );
 
+  // TODO: Pull baseline sleep numbers from state
+
+  function getLabel(sleepEffiencyAvg) {
+    if (sleepEffiencyAvg < 85) {
+      return `Your sleep efficiency is ok, but with an average of ${sleepEffiencyAvg} it's not quite where we need it to be yet. More action may be needed.`;
+    } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
+      return `Your sleep is starting to show signs of improvement. You previously had an average sleep efficiency of ${20}, and it has since been around to ${sleepEfficiencyAvg}! You're making progress!`;
+    } else {
+      return `Your sleep is showing signs of improvement. You previously had an average sleep efficiency of ${20}, and it has since risen to ${sleepEfficiencyAvg}! You're making great progress.`;
+    }
+  }
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -87,19 +141,7 @@ export const SleepEfficiency = ({ navigation }) => {
           progressBarPercent: 0.07
         });
       }}
-      textLabel={
-        'Your sleep efficiency has been ' +
-        (sleepEfficiencyAvg < 85 ? 'poor this week' : 'good this week') +
-        ', with an average of ' +
-        sleepEfficiencyAvg +
-        '% per night. ' +
-        (sleepEfficiencyAvg < 85 ? 'Not to worry' : 'Regardless') +
-        " - the techniques we'll be introducing today will " +
-        (sleepEfficiencyAvg < 85
-          ? 'focus on permanently boosting'
-          : 'still improve') +
-        ' sleep efficiency.'
-      }
+      textLabel={getLabel(sleepEfficiencyAvg)}
     >
       <VictoryChart
         width={chartStyles.chart.width}
@@ -136,10 +178,32 @@ export const SleepEfficiency = ({ navigation }) => {
   );
 };
 
-// TODO: Add SRT titration screen here
-
 export const SRTTitration = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
+
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  // Trim sleepLogs to only show most recent 7
+  const recentSleepLogs = state.sleepLogs.slice(0, 7);
+
+  // Calculate recent sleep efficiency average
+  const sleepEfficiencyAvg = Number(
+    (
+      (recentSleepLogs.reduce((a, b) => a + b.sleepEfficiency, 0) /
+        recentSleepLogs.length) *
+      100
+    ).toFixed(0)
+  );
+
+  function getSRTTitrationLabel(sleepEffiencyAvg) {
+    if (sleepEffiencyAvg < 85) {
+      return `Based on your sleep efficiency, we should maintain the same bedtime & wake time this week. For most people, sleep efficiency climbs over 90% by the next week, and we can start allotting more time in bed. From there, it's adding 15 minutes to bedtime each week until you're sleeping the whole night through.`;
+    } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
+      return `Based on your sleep efficiency, we should maintain the same bedtime & wake time this week. For most people, sleep efficiency climbs over 90% by the next week, and we can start allotting more time in bed. From there, it's adding 15 minutes to bedtime each week until you're sleeping the whole night through.`;
+    } else {
+      return 'high avg';
+    }
+  }
 
   return (
     <WizardContentScreen
@@ -148,8 +212,11 @@ export const SRTTitration = ({ navigation }) => {
       onQuestionSubmit={() => {
         navigation.navigate('SleepOnset', { progressBarPercent: 0.09 });
       }}
-      textLabel="Titration screen"
-    ></WizardContentScreen>
+      textLabel={getSRTTitrationLabel(sleepEfficiencyAvg)}
+      flexibleLayout
+    >
+      <AlarmClock width={imgSize} height={imgSize} />
+    </WizardContentScreen>
   );
 };
 
@@ -159,7 +226,7 @@ export const SleepOnset = ({ navigation }) => {
   // Trim sleepLogs to only show most recent 10
   const recentSleepLogs = state.sleepLogs.slice(0, 10);
 
-  // Calculate recent sleep efficiency average
+  // Calculate recent sleep onset average
   const sleepOnsetAvg = Number(
     (
       recentSleepLogs.reduce((a, b) => a + b.minsToFallAsleep, 0) /
@@ -220,7 +287,7 @@ export const SleepMaintenance = ({ navigation }) => {
   // Trim sleepLogs to only show most recent 10
   const recentSleepLogs = state.sleepLogs.slice(0, 10);
 
-  // Calculate recent sleep efficiency average
+  // Calculate recent night mins awake average
   const nightMinsAwakeAvg = Number(
     (
       recentSleepLogs.reduce((a, b) => a + b.nightMinsAwake, 0) /
