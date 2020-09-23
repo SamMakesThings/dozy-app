@@ -900,6 +900,40 @@ export const CheckinScheduling = ({ navigation }) => {
 export const SCTSRTEnd = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
   const { state, dispatch } = React.useContext(AuthContext);
+
+  // Calculate some baseline statistics for later reference
+  const sleepLogs = state.sleepLogs;
+
+  // Calculate baseline sleep efficiency average
+  const sleepEfficiencyAvg = Number(
+    (
+      (sleepLogs.reduce((a, b) => a + b.sleepEfficiency, 0) /
+        sleepLogs.length) *
+      100
+    ).toFixed(0)
+  );
+
+  // Calculate baseline sleep onset average
+  const sleepOnsetAvg = Number(
+    (
+      sleepLogs.reduce((a, b) => a + b.minsToFallAsleep, 0) / sleepLogs.length
+    ).toFixed(0)
+  );
+
+  // Calculate baseline night mins awake average
+  const nightMinsAwakeAvg = Number(
+    (
+      sleepLogs.reduce((a, b) => a + b.nightMinsAwake, 0) / sleepLogs.length
+    ).toFixed(0)
+  );
+
+  // Calculate baseline sleep duration average
+  const sleepDurationAvg = Number(
+    (
+      sleepLogs.reduce((a, b) => a + b.sleepDuration, 0) / sleepLogs.length
+    ).toFixed(0)
+  );
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -920,7 +954,11 @@ export const SCTSRTEnd = ({ navigation }) => {
           lastCheckinModule: 'SCTSRT',
           targetBedTime: GLOBAL.SCTSRTBedTime,
           targetWakeTime: GLOBAL.SCTSRTWakeTime,
-          targetTimeInBed: GLOBAL.SCTSRTTimeInBedTarget
+          targetTimeInBed: GLOBAL.SCTSRTTimeInBedTarget,
+          sleepEfficiencyAvgBaseline: sleepEfficiencyAvg,
+          sleepOnsetAvgBaseline: sleepOnsetAvg,
+          nightMinsAwakeAvgBaseline: nightMinsAwakeAvg,
+          sleepDurationAvgBaseline: sleepDurationAvg
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
