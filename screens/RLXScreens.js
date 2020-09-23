@@ -78,7 +78,7 @@ export const Welcome = ({ navigation }) => {
           progressBarPercent: 0.03
         });
       }}
-      textLabel="Welcome back! This’ll take 10-15 minutes. We’ll review your sleep over the last week, update your treatment plan, and get you started on your new treatment."
+      textLabel="Welcome back! This week, we’ll review your sleep data, update your treatment plan, and get started with some relaxation techniques to help you sleep."
     />
   );
 };
