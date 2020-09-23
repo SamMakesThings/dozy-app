@@ -12,6 +12,10 @@ interface Args {
   targetTimeInBed: number;
   targetBedTime: Date;
   targetWakeTime: Date;
+  sleepEfficiencyAvgBaseline?: number;
+  sleepOnsetAvgBaseline?: number;
+  nightMinsAwakeAvgBaseline?: number;
+  sleepDurationAvgBaseline?: number;
 }
 
 // Function that updates currentTreatments, nextCheckin, and treatmentsHistory in Firebase
@@ -26,7 +30,11 @@ export default function submitCheckinData({
   lastCheckinModule,
   targetBedTime,
   targetWakeTime,
-  targetTimeInBed
+  targetTimeInBed,
+  sleepEfficiencyAvgBaseline,
+  sleepOnsetAvgBaseline,
+  nightMinsAwakeAvgBaseline,
+  sleepDurationAvgBaseline
 }: Args) {
   try {
     // Initialize relevant Firebase values
@@ -52,6 +60,16 @@ export default function submitCheckinData({
       'currentTreatments.nextTreatmentModule': nextCheckinModule,
       ['currentTreatments.' + lastCheckinModule]: lastCheckinDatetime
     });
+
+    // If SCTSRT checkin, add baseline stats for easy reference
+    if (lastCheckinModule === 'SCTSRT') {
+      userDocRef.update({
+        'baselineInfo.sleepEfficiencyAvg': sleepEfficiencyAvgBaseline,
+        'baselineInfo.sleepOnsetAvgBaseline': sleepOnsetAvgBaseline,
+        'baselineInfo.nightMinsAwakeAvgBaseline': nightMinsAwakeAvgBaseline,
+        'baselineInfo.sleepDurationAvgBaseline': sleepDurationAvgBaseline
+      });
+    }
 
     // Update treatmentsHistory collection by adding doc for module
     userTreatmentsColRef.doc(lastCheckinModule).set({
