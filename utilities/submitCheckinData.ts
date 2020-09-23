@@ -65,9 +65,9 @@ export default function submitCheckinData({
     if (lastCheckinModule === 'SCTSRT') {
       userDocRef.update({
         'baselineInfo.sleepEfficiencyAvg': sleepEfficiencyAvgBaseline,
-        'baselineInfo.sleepOnsetAvgBaseline': sleepOnsetAvgBaseline,
-        'baselineInfo.nightMinsAwakeAvgBaseline': nightMinsAwakeAvgBaseline,
-        'baselineInfo.sleepDurationAvgBaseline': sleepDurationAvgBaseline
+        'baselineInfo.sleepOnsetAvg': sleepOnsetAvgBaseline,
+        'baselineInfo.nightMinsAwakeAvg': nightMinsAwakeAvgBaseline,
+        'baselineInfo.sleepDurationAvg': sleepDurationAvgBaseline
       });
     }
 
