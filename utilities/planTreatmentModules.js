@@ -20,7 +20,7 @@ function planTreatmentModules({ sleepLogs, currentTreatments }) {
 
   // TODO: Sort the already-completed treatments by date
 
-  // So there are 3 main treatment paths (with additions if noncompliance or jet lag):
+  // At the moment, there are 3 main treatment paths (with additions if noncompliance or jet lag):
   // Relaxation, cognitive, then hygiene is the default
   // If sleep log tags often contain temperature, light, or noise, then hygiene goes first
   // If user complains of tension, stress, or anxiety, then start w/relaxation
