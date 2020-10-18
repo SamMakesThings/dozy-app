@@ -98,23 +98,25 @@ export const TreatmentScreen = ({ navigation }) => {
         />
         {
           // Display target sleep schedule card if defined in backend
-          state.userData.currentTreatments.bedTime && (
+          state.userData.currentTreatments.targetBedTime && (
             <TargetSleepScheduleCard
               remainingDays={Math.round(
-                (state.userData.nextCheckin.checkinDatetime.toDate().getTime() -
+                (state.userData.nextCheckin.nextCheckinDatetime
+                  .toDate()
+                  .getTime() -
                   Date.now()) /
                   1000 /
                   60 /
                   60 /
                   24
               )}
-              bedTime={state.userData.currentTreatments.bedTime
+              bedTime={state.userData.currentTreatments.targetBedTime
                 .toDate()
                 .toLocaleString('en-US', {
                   hour: 'numeric',
                   minute: 'numeric'
                 })}
-              wakeTime={state.userData.currentTreatments.wakeTime
+              wakeTime={state.userData.currentTreatments.targetWakeTime
                 .toDate()
                 .toLocaleString('en-US', {
                   hour: 'numeric',
