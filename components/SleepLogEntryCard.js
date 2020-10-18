@@ -6,6 +6,7 @@ import '@firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 import HighlightedText from './HighlightedText';
+import { formatDateAsTime } from '../utilities/formatDateAsTime.ts';
 
 const SleepLogEntryCard = (props) => {
   const theme = dozy_theme;
@@ -67,10 +68,7 @@ const SleepLogEntryCard = (props) => {
         >
           <HighlightedText
             textColor={theme.colors.secondary}
-            label={props.sleepLog.bedTime.toDate().toLocaleString('en-US', {
-              hour: 'numeric',
-              minute: 'numeric'
-            })}
+            label={formatDateAsTime(props.sleepLog.bedTime.toDate())}
             bgColor={theme.colors.primary}
           />
           <Text
@@ -105,10 +103,7 @@ const SleepLogEntryCard = (props) => {
           </Text>
           <HighlightedText
             textColor={theme.colors.primary}
-            label={props.sleepLog.upTime.toDate().toLocaleString('en-US', {
-              hour: 'numeric',
-              minute: 'numeric'
-            })}
+            label={formatDateAsTime(props.sleepLog.upTime.toDate())}
             bgColor={theme.colors.secondary}
           />
         </Container>

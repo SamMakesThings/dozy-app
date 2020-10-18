@@ -11,6 +11,7 @@ import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
 import { dozy_theme } from '../config/Themes';
 import treatments from '../constants/Treatments';
+import { formatDateAsTime } from '../utilities/formatDateAsTime.ts';
 import planTreatmentModules from '../utilities/planTreatmentModules';
 import GLOBAL from '../utilities/global';
 
@@ -110,18 +111,12 @@ export const TreatmentScreen = ({ navigation }) => {
                   60 /
                   24
               )}
-              bedTime={state.userData.currentTreatments.targetBedTime
-                .toDate()
-                .toLocaleString('en-US', {
-                  hour: 'numeric',
-                  minute: 'numeric'
-                })}
-              wakeTime={state.userData.currentTreatments.targetWakeTime
-                .toDate()
-                .toLocaleString('en-US', {
-                  hour: 'numeric',
-                  minute: 'numeric'
-                })}
+              bedTime={formatDateAsTime(
+                state.userData.currentTreatments.targetBedTime.toDate()
+              )}
+              wakeTime={formatDateAsTime(
+                state.userData.currentTreatments.targetWakeTime.toDate()
+              )}
             />
           )
         }

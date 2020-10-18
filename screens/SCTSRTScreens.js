@@ -29,6 +29,7 @@ import YellowRuler from '../assets/images/YellowRuler.svg';
 import ManInBed from '../assets/images/ManInBed.svg';
 import RaisedEyebrowFace from '../assets/images/RaisedEyebrowFace.svg';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
+import { formatDateAsTime } from '../utilities/formatDateAsTime.ts';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 
@@ -738,18 +739,9 @@ export const TargetBedtime = ({ navigation }) => {
     .subtract(GLOBAL.SCTSRTTimeInBedTarget, 'minutes')
     .toDate();
   GLOBAL.SCTSRTBedTime = targetBedTime;
-  const targetBedTimeDisplayString = targetBedTime.toLocaleString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric'
-  });
+  const targetBedTimeDisplayString = formatDateAsTime(targetBedTime);
   GLOBAL.targetBedTimeDisplayString = targetBedTimeDisplayString;
-  const targetWakeTimeDisplayString = GLOBAL.SCTSRTWakeTime.toLocaleString(
-    'en-US',
-    {
-      hour: 'numeric',
-      minute: 'numeric'
-    }
-  );
+  const targetWakeTimeDisplayString = formatDateAsTime(GLOBAL.SCTSRTWakeTime);
   GLOBAL.targetWakeTimeDisplayString = targetWakeTimeDisplayString;
 
   return (
