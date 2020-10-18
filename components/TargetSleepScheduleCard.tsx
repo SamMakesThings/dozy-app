@@ -7,7 +7,14 @@ import CrescentMoon from '../assets/images/CrescentMoon.svg';
 import TransRightArrow from '../assets/images/TransRightArrow.svg';
 import YellowSun from '../assets/images/YellowSun.svg';
 
-export const TargetSleepScheduleCard = (props) => {
+interface Props {
+  styles: object;
+  remainingDays: number;
+  bedTime: string;
+  wakeTime: string;
+}
+
+export const TargetSleepScheduleCard: React.FC<Props> = (props) => {
   const theme = dozy_theme;
 
   return (
@@ -79,6 +86,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
+  View_CardContentContainer: {},
   View_CenteredRowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
