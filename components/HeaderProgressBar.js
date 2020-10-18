@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Container, IconButton, ProgressBar } from '@draftbit/ui';
+import { Container, IconButton } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
+import { ProgressBar } from './ProgressBar';
 import { dozy_theme } from '../config/Themes';
 
 const HeaderProgressBar = (props) => {
