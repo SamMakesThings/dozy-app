@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { withTheme, ProgressBar } from '@draftbit/ui';
+import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { CardContainer } from './CardContainer';
 import HighlightedText from './HighlightedText';
+import { ProgressBar } from './ProgressBar';
 import { dozy_theme } from '../config/Themes';
 
 export const TreatmentPlanCard = (props) => {
@@ -66,9 +67,7 @@ export const TreatmentPlanCard = (props) => {
                 style={styles.ProgressBar}
                 color={theme.colors.secondary}
                 progress={props.completionPercentProgress}
-                borderWidth={0}
                 borderRadius={scale(9)}
-                animationType="spring"
                 unfilledColor={theme.colors.background}
               />
             </View>
