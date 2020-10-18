@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { withTheme, ProgressBar } from '@draftbit/ui';
+import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
+import { ProgressBar } from './ProgressBar';
 import { CardContainer } from './CardContainer';
 import HighlightedText from './HighlightedText';
 import { dozy_theme } from '../config/Themes';
@@ -64,9 +65,7 @@ export const BaselineProgressCard = (props) => {
                 style={styles.ProgressBar}
                 color={theme.colors.primary}
                 progress={props.nightsLogged / baselineLogsRequired}
-                borderWidth={0}
                 borderRadius={scale(9)}
-                animationType="spring"
                 unfilledColor={theme.colors.background}
               />
             </View>

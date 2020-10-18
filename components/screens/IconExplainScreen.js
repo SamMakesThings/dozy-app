@@ -1,11 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {
-  withTheme,
-  ScreenContainer,
-  Container,
-  ProgressBar
-} from '@draftbit/ui';
+import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
+import { ProgressBar } from '../ProgressBar';
 import BottomNavButtons from '../BottomNavButtons';
 
 // Wizard screen with a hero image (usually icon) and paragraph text
@@ -35,9 +31,7 @@ const IconExplainScreen = (props) => {
             }}
             color={theme.colors.primary}
             progress={props.progressBarPercent}
-            borderWidth={0}
             borderRadius={10}
-            animationType="spring"
             unfilledColor={theme.colors.medium}
           />
         </Container>
