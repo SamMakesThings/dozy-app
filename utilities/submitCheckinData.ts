@@ -58,7 +58,9 @@ export default function submitCheckinData({
     userDocRef.update({
       'currentTreatments.currentModule': lastCheckinModule,
       'currentTreatments.nextTreatmentModule': nextCheckinModule,
-      ['currentTreatments.' + lastCheckinModule]: lastCheckinDatetime
+      ['currentTreatments.' + lastCheckinModule]: lastCheckinDatetime,
+      'currentTreatments.targetBedTime': targetBedTime,
+      'currentTreatments.targetWakeTime': targetWakeTime
     });
 
     // If SCTSRT checkin, add baseline stats for easy reference
