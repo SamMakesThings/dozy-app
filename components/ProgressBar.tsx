@@ -14,7 +14,7 @@ interface Props {
 
 // A progress bar component. By default expands to available horizontal space in its parent container.
 export const ProgressBar: React.FC<Props> = ({
-  progress,
+  progress = 0.01,
   style,
   color = dozy_theme.colors.primary,
   unfilledColor = dozy_theme.colors.medium,
