@@ -96,22 +96,47 @@ export const TreatmentPlan = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('TreatmentPlanContinued', {
-          progressBarPercent: 0.18
+        navigation.navigate('WhyPMR', {
+          progressBarPercent: 0.15
         });
       }}
+      titleLabel="This week's treatment: Progressive Muscle Relaxation"
       textLabel={
-        "Let's get started with Stimulus Control Therapy (SCT) and Sleep Restriction Therapy (SRT). We'll calculate your current sleep duration, use that to determine the amount of time you should spend in bed, then work with you to set a new sleep schedule designed to fix your insomnia."
+        "Based on your sleep data, the next step is to give you some new tools to address stress & tension. We'll do this by learning a technique called Progressive Muscle Relaxation (PMR)."
       }
       buttonLabel="Next"
       flexibleLayout
     >
-      <SCTSRTTreatmentPlan width={imgSize * 2} height={imgSize} />
+      <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
 
-export const TreatmentPlanContinued = ({ navigation }) => {
+export const WhyPMR = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('PMROverview', {
+          progressBarPercent: 0.22
+        });
+      }}
+      titleLabel="Why PMR?"
+      textLabel={
+        "Worry and muscular tension that we're not even aware of can often prevent us from falling sleep. By learning physical relaxation techniques, we can also improve mental relaxation, thereby falling asleep faster. (How?)"
+      }
+      buttonLabel="Next"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const PMROverview = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
@@ -123,12 +148,18 @@ export const TreatmentPlanContinued = ({ navigation }) => {
           progressBarPercent: 0.22
         });
       }}
-      textLabel={
-        "By sacrificing some short-term comfort, these two techniques will help you fall asleep quickly and stay asleep. To start, we'll talk about how sleep works, why these techniques help, and how to use them."
-      }
-      buttonLabel="Next"
+      titleLabel="There are 3 main steps."
+      textLabel={`1. Tense the muscles in your forehead for 5ish seconds. Feel what tension there feels like. 
+
+2. Release the tension with a deep outbreath. Continue breathing deeply through the whole process. 
+
+3. Repeat steps 1 and 2 for every major muscle group in the body.
+
+It's all about noticing & releasing muscular tension.`}
+      buttonLabel="Let's try it"
+      flexibleLayout
     >
-      <SCTSRTTreatmentPlan width={imgSize * 2} height={imgSize} />
+      <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
