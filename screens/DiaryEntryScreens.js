@@ -180,10 +180,15 @@ export const SCTDaytimeNapsInput = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.SCTDaytimeNaps = value === 1;
-        // If user says they did something not sleep in bed, ask what (text input)
-        navigation.navigate('NightMinsAwakeInput', {
-          progressBarPercent: 0.63
-        });
+        // If user didn't wake in the night, skip asking how long they were awake
+        if (GLOBAL.wakeCount === 0) {
+          navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
+          GLOBAL.nightMinsAwake = 0;
+        } else {
+          navigation.navigate('NightMinsAwakeInput', {
+            progressBarPercent: 0.61
+          });
+        }
       }}
       buttonValues={[
         { label: 'Yes', value: 1 },
