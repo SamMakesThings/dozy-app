@@ -9,6 +9,7 @@ import {
   VictoryAxis
 } from 'victory-native';
 import moment from 'moment';
+import { WebView } from 'react-native-webview';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
@@ -144,7 +145,7 @@ export const PMROverview = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('DriversOfSleep', {
+        navigation.navigate('PMRWalkthrough', {
           progressBarPercent: 0.22
         });
       }}
@@ -164,194 +165,26 @@ It's all about noticing & releasing muscular tension.`}
   );
 };
 
-export const DriversOfSleep = ({ navigation }) => {
+export const PMRWalkthrough = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
+
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('WhySleepDrives', {
-          progressBarPercent: 0.25
+        navigation.navigate('PMROverview', {
+          progressBarPercent: 0.22
         });
       }}
-      titleLabel="The two main drivers of human sleep"
-      textLabel={
-        <Text>
-          Are <Text style={styles.BoldLabelText}>circadian sleep drive</Text>{' '}
-          and <Text style={styles.BoldLabelText}>homeostatic sleep drive.</Text>{' '}
-          Homeostatic sleep drive means the longer you&apos;ve been awake, the
-          sleepier you become. Circadian sleep drive is your body&apos;s
-          internal clock - it controls your energy with the day/night cycle.
-        </Text>
-      }
+      textLabel={'Video above'}
+      buttonLabel="Next"
       flexibleLayout
-      buttonLabel="Why does this matter?"
     >
-      <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const WhySleepDrives = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('FragmentedSleep', {
-          progressBarPercent: 0.29
-        });
-      }}
-      textLabel={
-        'By making both your circadian and homeostatic sleep drives stronger, we help you fall asleep faster and stay asleep longer.'
-      }
-      buttonLabel="Great!"
-    >
-      <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const FragmentedSleep = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('ConsolidatingSleep', {
-          progressBarPercent: 0.33
-        });
-      }}
-      titleLabel="Right now, your sleep is pretty fragmented."
-      textLabel="That is to say, most of the time you spend in bed isn't spent sleeping - the actual sleep time is scattered in chunks in the night. Our first step in treatment is to fix that."
-      flexibleLayout
-      buttonLabel="How do I fix it?"
-    >
-      <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const ConsolidatingSleep = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('ReduceTimeInBed', {
-          progressBarPercent: 0.37
-        });
-      }}
-      titleLabel="We fix it by consolidating your sleep into one chunk."
-      textLabel="This raises your sleep efficiency back over 85%, where it should be. Once your sleep is mostly in one efficient chunk again, we carefully increase your time in bed until you can sleep the whole night through."
-      flexibleLayout
-      buttonLabel="How does one consolidate sleep?"
-    >
-      <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const ReduceTimeInBed = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('SCTSRTIntro', {
-          progressBarPercent: 0.4
-        });
-      }}
-      titleLabel="Consolidate sleep by reducing time spent in bed."
-      textLabel="Weirdly, staying in bed can be bad for sleep! By extending time in bed, there’s less pressure to sleep the next night. To compensate, you stay in bed longer, which further reduces ability to sleep. It’s a vicious cycle!"
-      flexibleLayout
-      buttonLabel="What do I need to do?"
-    >
-      <BadCycleIllustration width={imgSize * 1.5} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const SCTSRTIntro = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('Rule1', {
-          progressBarPercent: 0.44
-        });
-      }}
-      titleLabel="This is where SCT and SRT come in."
-      textLabel="By following 3 simple rules, we can break the vicious cycle, boost your homeostatic sleep drive, and start improving your sleep."
-      buttonLabel="What's the first rule?"
-    >
-      <Clipboard width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const Rule1 = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('Rule2', {
-          progressBarPercent: 0.48
-        });
-      }}
-      titleLabel="1st, maintain the sleep restricted schedule."
-      textLabel="That means going to bed and getting out of bed at specific times we'll pick with you."
-      buttonLabel="What's the second rule?"
-    >
-      <AlarmClock width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const Rule2 = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('Rule3', {
-          progressBarPercent: 0.51
-        });
-      }}
-      titleLabel="2nd, if you're unable to sleep for 15+ minutes, get out of bed..."
-      textLabel="...and go do some other relaxing activity. Return to bed when you're sleepy again."
-      buttonLabel="What's the third rule?"
-    >
-      <Rule2Illustration width={imgSize * 1.5} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const Rule3 = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('RulesRecap', {
-          progressBarPercent: 0.55
-        });
-      }}
-      titleLabel="3rd, don't do anything in bed besides sleeping."
-      textLabel="That means no reading, no phone use, no TV, and no daytime naps. "
-    >
-      <Rule3Illustration width={imgSize * 1.2} height={imgSize} />
+      <WebView
+        source={{ uri: 'https://www.youtube.com/watch?v=1nZEdqcGVzo' }}
+        style={{ flex: 1 }}
+      />
     </WizardContentScreen>
   );
 };
