@@ -863,8 +863,6 @@ export const CheckinScheduling = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
       onQuestionSubmit={(value) => {
-        // TODO: Add validation to ensure date is far out enough for data colleciton
-        // Another option - wait until 7 sleep logs are collected before allowing continue
         GLOBAL.nextCheckinTime = value;
         navigation.navigate('SCTSRTEnd', { progressBarPercent: 1 });
       }}
@@ -932,8 +930,6 @@ export const SCTSRTEnd = ({ navigation }) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
-        // TODO: Get the treatments screen to update when
-        // ...finished with checkin
         submitCheckinData({
           userId: state.userToken,
           checkinPostponed: GLOBAL.checkinPostponed,

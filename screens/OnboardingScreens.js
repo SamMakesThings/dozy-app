@@ -717,8 +717,6 @@ export const CheckinScheduling = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
       onQuestionSubmit={(value) => {
-        // TODO: Add validation to ensure date is far out enough for data colleciton
-        // Another option - wait until 7 sleep logs are collected before allowing continue
         GLOBAL.firstCheckinTime = value;
         navigation.navigate('PaywallPlaceholder', { progressBarPercent: 0.8 });
       }}

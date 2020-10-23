@@ -158,8 +158,8 @@ export const TreatmentScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   Root: {
-    marginTop: scale(20), // Platform.OS === 'ios' ? scale(40) : scale(20), // TODO: Does this work ok on non-notch iPhones?
-    paddingBottom: scale(25) // Platform.OS === 'ios' ? scale(50) : scale(25) // TODO: Does this work ok on non-notch iPhones?
+    marginTop: scale(20),
+    paddingBottom: scale(25)
   },
   ItemMargin: {
     marginTop: scale(10)
