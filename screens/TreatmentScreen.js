@@ -55,13 +55,7 @@ export const TreatmentScreen = ({ navigation }) => {
   nextCheckinDate.setHours(0);
 
   return (
-    <ScreenContainer
-      hasSafeArea={
-        false /* Turning this off b/c it added bottom padding on iOS. Added styles to fix, remove if patched */
-      }
-      scrollable={true}
-      style={styles.Root}
-    >
+    <ScreenContainer hasSafeArea={true} scrollable={true} style={styles.Root}>
       <View style={styles.View_ContentContainer}>
         <Icon
           style={styles.Icon_Clipboard}
@@ -163,8 +157,8 @@ export const TreatmentScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   Root: {
-    marginTop: Platform.OS === 'ios' ? scale(40) : scale(20), // TODO: Does this work ok on non-notch iPhones?
-    paddingBottom: Platform.OS === 'ios' ? scale(50) : scale(25) // TODO: Does this work ok on non-notch iPhones?
+    marginTop: scale(20), // Platform.OS === 'ios' ? scale(40) : scale(20), // TODO: Does this work ok on non-notch iPhones?
+    paddingBottom: scale(25) // Platform.OS === 'ios' ? scale(50) : scale(25) // TODO: Does this work ok on non-notch iPhones?
   },
   ItemMargin: {
     marginTop: scale(10)

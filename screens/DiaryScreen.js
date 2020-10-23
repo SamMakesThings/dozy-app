@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     padding: scale(17),
+    paddingTop: scale(24),
     paddingBottom: scale(5)
   },
   ScreenContainer: {

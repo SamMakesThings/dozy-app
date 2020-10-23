@@ -195,7 +195,7 @@ const SleepLogsScreen = (props) => {
   return (
     <ScreenContainer
       style={{ backgroundColor: '#232B3F' }}
-      hasSafeArea={false}
+      hasSafeArea={true}
       scrollable={true}
     >
       <Container elevation={0} useThemeGutterPadding={true}>
