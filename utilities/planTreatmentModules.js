@@ -17,8 +17,10 @@ function planTreatmentModules({ sleepLogs, currentTreatments }) {
       });
     }
   });
-
-  // TODO: Sort the already-completed treatments by date
+  // Sort already completed treatments by date
+  treatmentPlan.sort((a, b) => {
+    return a.estDate - b.estDate;
+  });
 
   // At the moment, there are 3 main treatment paths (with additions if noncompliance or jet lag):
   // Relaxation, cognitive, then hygiene is the default
