@@ -185,7 +185,7 @@ export const PMRWalkthrough = ({ navigation }) => {
       <WebView
         source={{
           uri: 'https://www.youtube.com/embed/1nZEdqcGVzo'
-        }} /*'https://www.youtube.com/watch?v=1nZEdqcGVzo'*/
+        }}
         style={{ width: useWindowDimensions().width, marginBottom: scale(20) }}
       />
     </WizardContentScreen>
