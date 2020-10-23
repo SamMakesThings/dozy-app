@@ -177,13 +177,16 @@ export const PMRWalkthrough = ({ navigation }) => {
           progressBarPercent: 0.22
         });
       }}
-      textLabel={'Video above'}
-      buttonLabel="Next"
-      flexibleLayout
+      textLabel={
+        "Let's try it now! Find a comfy chair and follow along with the 6 minute video above. (If you have trouble seeing the video, make sure you don't have the YouTube website blocked.)"
+      }
+      buttonLabel="I've finished the video"
     >
       <WebView
-        source={{ uri: 'https://www.youtube.com/watch?v=1nZEdqcGVzo' }}
-        style={{ flex: 1 }}
+        source={{
+          uri: 'https://www.youtube.com/embed/1nZEdqcGVzo'
+        }} /*'https://www.youtube.com/watch?v=1nZEdqcGVzo'*/
+        style={{ width: useWindowDimensions().width, marginBottom: scale(20) }}
       />
     </WizardContentScreen>
   );
