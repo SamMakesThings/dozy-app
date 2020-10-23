@@ -63,24 +63,25 @@ export const TreatmentScreen = ({ navigation }) => {
           size={scale(80)}
           color={theme.colors.primary}
         />
-        {nextCheckinDate < new Date() && (
-          <IconTitleSubtitleButton
-            titleLabel="Check in now!"
-            subtitleLabel="Press here to begin the next module"
-            backgroundColor={theme.colors.primary}
-            icon={
-              <Ionicons
-                name="ios-clipboard"
-                size={scale(35)}
-                color={theme.colors.secondary}
-              />
-            }
-            badge
-            onPress={() =>
-              navigation.navigate(state.userData.nextCheckin.treatmentModule)
-            }
-          />
-        )}
+        {nextCheckinDate < new Date() &&
+          treatments[state.userData.nextCheckin.treatmentModule].ready && (
+            <IconTitleSubtitleButton
+              titleLabel="Check in now!"
+              subtitleLabel="Press here to begin the next module"
+              backgroundColor={theme.colors.primary}
+              icon={
+                <Ionicons
+                  name="ios-clipboard"
+                  size={scale(35)}
+                  color={theme.colors.secondary}
+                />
+              }
+              badge
+              onPress={() =>
+                navigation.navigate(state.userData.nextCheckin.treatmentModule)
+              }
+            />
+          )}
         <CurrentTreatmentsCard
           progressPercent={progressPercent}
           linkTitle={treatments[currentModule].title}

@@ -8,6 +8,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import { TreatmentScreen } from '../screens/TreatmentScreen';
 import SupportChatScreen from '../screens/SupportChatScreen';
 import { AuthContext } from '../utilities/authContext';
+import treatments from '../constants/Treatments';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +22,9 @@ export default function BottomTabs() {
     ? state.userData.currentTreatments.nextCheckinDatetime.toDate()
     : new Date(0);
   nextCheckinDate.setHours(0);
+  let nextCheckinReady = state.userData
+    ? treatments[state.userData.nextCheckin.treatmentModule].ready
+    : false;
 
   return (
     <Tab.Navigator
@@ -62,7 +66,7 @@ export default function BottomTabs() {
               focused={focused}
               color={color}
               name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'}
-              badge={nextCheckinDate < new Date()}
+              badge={nextCheckinDate < new Date() && nextCheckinReady}
             />
           )
         }}
