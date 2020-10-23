@@ -200,7 +200,7 @@ export const PostPMR = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('PMRWalkthrough', {
+        navigation.navigate('CalibrationStart', {
           progressBarPercent: 0.22
         });
       }}
@@ -209,6 +209,37 @@ export const PostPMR = ({ navigation }) => {
         "If all went well, you should be feeling significantly more relaxed. This is a useful tool both during the day and when you're about to sleep. We'll leave this exercise on the home page where you can find it easily later."
       }
       buttonLabel="So how do I use it?"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const CalibrationStart = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res) => {
+        if (res === 'Wait, I have questions') {
+          navigation.navigate('TreatmentReview', {
+            module: 'RLX'
+          });
+        } else {
+          navigation.navigate('PMRWalkthrough', {
+            progressBarPercent: 0.66
+          });
+        }
+      }}
+      titleLabel="How to apply PMR"
+      textLabel={
+        "During the week, we'll practice PMR twice daily: once during the day, and again when you go to bed at night."
+      }
+      buttonLabel="Ok, sounds reasonable"
+      bottomGreyButtonLabel="Wait, I have questions"
       flexibleLayout
     >
       <FemaleDoctor width={imgSize} height={imgSize} />
