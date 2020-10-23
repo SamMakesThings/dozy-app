@@ -299,7 +299,7 @@ export const TreatmentRecommit = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('CalibrationStart', {
+        navigation.navigate('RulesRecap', {
           progressBarPercent: 0.22
         });
       }}
@@ -322,11 +322,11 @@ export const RulesRecap = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('WhatToExpect', {
+        navigation.navigate('CheckinScheduling', {
           progressBarPercent: 0.59
         });
       }}
-      titleLabel="A quick recap:"
+      titleLabel="Quick recap of the 3 rules:"
       textLabel={
         <>
           <Text>
@@ -370,8 +370,6 @@ export const CheckinScheduling = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
       onQuestionSubmit={(value) => {
-        // TODO: Add validation to ensure date is far out enough for data colleciton
-        // Another option - wait until 7 sleep logs are collected before allowing continue
         GLOBAL.nextCheckinTime = value;
         navigation.navigate('SCTSRTEnd', { progressBarPercent: 1 });
       }}
@@ -405,20 +403,18 @@ export const SCTSRTEnd = ({ navigation }) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
-        // TODO: Get the treatments screen to update when
-        // ...finished with checkin
         submitCheckinData({
           userId: state.userToken,
-          checkinPostponed: GLOBAL.checkinPostponed,
+          checkinPostponed: false,
           nextCheckinDatetime: GLOBAL.nextCheckinTime,
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
             (v) => v.started === false
           )[0].module,
-          lastCheckinModule: 'SCTSRT',
-          targetBedTime: GLOBAL.SCTSRTBedTime,
-          targetWakeTime: GLOBAL.SCTSRTWakeTime,
-          targetTimeInBed: GLOBAL.SCTSRTTimeInBedTarget
+          lastCheckinModule: 'RLX',
+          targetBedTime: GLOBAL.targetBedTime,
+          targetWakeTime: GLOBAL.targetWakeTime,
+          targetTimeInBed: GLOBAL.targetTimeInBed
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
