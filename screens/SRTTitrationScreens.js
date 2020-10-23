@@ -182,8 +182,11 @@ export const SRTTitration = ({ navigation }) => {
   // Use old target bedtime to calculate new (if needed)
   const oldTargetBedTime = state.userData.currentTreatments.targetBedTime.toDate();
   let newTargetBedTime = oldTargetBedTime;
+  GLOBAL.targetTimeInBed = state.userData.currentTreatments.targetTimeInBed;
   if (sleepEfficiencyAvg >= 90) {
     newTargetBedTime.setMinutes(oldTargetBedTime.getMinutes() + 15);
+    GLOBAL.targetTimeInBed =
+      state.userData.currentTreatments.targetTimeInBed + 15;
   }
   const targetBedTimeLabel = formatDateAsTime(newTargetBedTime);
   const targetWakeTimeLabel = formatDateAsTime(
@@ -205,6 +208,9 @@ export const SRTTitration = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
+        // Set target bedtime and wake time in Global for use in treatment module submit function
+        GLOBAL.targetBedTime = newTargetBedTime;
+        GLOBAL.targetWakeTime = state.userData.currentTreatments.targetWakeTime.toDate();
         navigation.navigate('SleepOnset', { progressBarPercent: 0.09 });
       }}
       textLabel={getSRTTitrationLabel(sleepEfficiencyAvg)}
