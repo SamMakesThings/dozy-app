@@ -8,30 +8,12 @@ import {
   VictoryLine,
   VictoryAxis
 } from 'victory-native';
-import moment from 'moment';
 import { AuthContext } from '../utilities/authContext';
-import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
-import MultiButtonScreen from '../components/screens/MultiButtonScreen';
-import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
-import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
 import ThumbsUp from '../assets/images/ThumbsUp.svg';
-import Clipboard from '../assets/images/Clipboard.svg';
-import RaisedHands from '../assets/images/RaisedHands.svg';
-import SCTSRTTreatmentPlan from '../assets/images/SCTSRTTreatmentPlan.svg';
-import BadCycleIllustration from '../assets/images/BadCycleIllustration.svg';
 import AlarmClock from '../assets/images/AlarmClock.svg';
-import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
-import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
-import BarChart from '../assets/images/BarChart.svg';
-import YellowRuler from '../assets/images/YellowRuler.svg';
-import ManInBed from '../assets/images/ManInBed.svg';
-import RaisedEyebrowFace from '../assets/images/RaisedEyebrowFace.svg';
-import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
-import submitCheckinData from '../utilities/submitCheckinData';
-import refreshUserData from '../utilities/refreshUserData';
 import { formatDateAsTime } from '../utilities/formatDateAsTime.ts';
 
 // Define the theme for the file globally
