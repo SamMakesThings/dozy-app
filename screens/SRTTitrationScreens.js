@@ -122,7 +122,7 @@ export const SleepEfficiency = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SRTTitration', {
-          progressBarPercent: 0.07
+          progressBarPercent: 0.12
         });
       }}
       textLabel={getLabel(sleepEfficiencyAvg)}
@@ -211,7 +211,7 @@ export const SRTTitration = ({ navigation }) => {
         // Set target bedtime and wake time in Global for use in treatment module submit function
         GLOBAL.targetBedTime = newTargetBedTime;
         GLOBAL.targetWakeTime = state.userData.currentTreatments.targetWakeTime.toDate();
-        navigation.navigate('SleepOnset', { progressBarPercent: 0.09 });
+        navigation.navigate('SleepOnset', { progressBarPercent: 0.15 });
       }}
       textLabel={getSRTTitrationLabel(sleepEfficiencyAvg)}
       buttonLabel="Review sleep onset"
@@ -253,7 +253,7 @@ export const SleepOnset = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SleepMaintenance', {
-          progressBarPercent: 0.11
+          progressBarPercent: 0.18
         });
       }}
       textLabel={getLabel(sleepOnsetAvg)}
@@ -321,7 +321,7 @@ export const SleepMaintenance = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SleepDuration', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.21
         });
       }}
       textLabel={getLabel(nightMinsAwakeAvg)}
@@ -392,7 +392,7 @@ export const SleepDuration = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('TreatmentPlan', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.24
         });
       }}
       textLabel={getLabel(sleepDurationAvg)}

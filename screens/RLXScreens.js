@@ -77,7 +77,7 @@ export const Welcome = ({ navigation }) => {
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
         navigation.navigate('SRTTitrationStart', {
-          progressBarPercent: 0.03
+          progressBarPercent: 0.06
         });
       }}
       textLabel="Welcome back! This week, we’ll review your sleep data, update your treatment plan, and get started with some relaxation techniques to help you sleep."
@@ -98,7 +98,7 @@ export const TreatmentPlan = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('WhyPMR', {
-          progressBarPercent: 0.15
+          progressBarPercent: 0.28
         });
       }}
       titleLabel="This week's treatment: Progressive Muscle Relaxation"
@@ -122,7 +122,7 @@ export const WhyPMR = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PMROverview', {
-          progressBarPercent: 0.22
+          progressBarPercent: 0.33
         });
       }}
       titleLabel="Why PMR?"
@@ -146,7 +146,7 @@ export const PMROverview = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PMRWalkthrough', {
-          progressBarPercent: 0.22
+          progressBarPercent: 0.39
         });
       }}
       titleLabel="There are 3 main steps."
@@ -174,7 +174,7 @@ export const PMRWalkthrough = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PostPMR', {
-          progressBarPercent: 0.22
+          progressBarPercent: 0.44
         });
       }}
       textLabel={
@@ -201,7 +201,7 @@ export const PostPMR = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('CalibrationStart', {
-          progressBarPercent: 0.22
+          progressBarPercent: 0.56
         });
       }}
       titleLabel="How do you feel?"
@@ -230,7 +230,7 @@ export const CalibrationStart = ({ navigation }) => {
           });
         } else {
           navigation.navigate('PMRIntentionAction', {
-            progressBarPercent: 0.66
+            progressBarPercent: 0.61
           });
         }
       }}
@@ -254,7 +254,7 @@ export const PMRIntentionAction = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
         GLOBAL.PMRIntentionAction = value;
-        navigation.navigate('PMRIntentionTime', { progressBarPercent: 0.28 });
+        navigation.navigate('PMRIntentionTime', { progressBarPercent: 0.67 });
       }}
       buttonValues={[
         { label: 'Before lunch', value: 'before lunch', solidColor: false },
@@ -281,7 +281,7 @@ export const PMRIntentionTime = ({ navigation }) => {
       onQuestionSubmit={(value) => {
         GLOBAL.PMRIntentionTime = value;
         navigation.navigate('TreatmentRecommit', {
-          progressBarPercent: 0.74
+          progressBarPercent: 0.72
         });
       }}
       questionLabel="When would you like to be reminded?"
@@ -300,7 +300,7 @@ export const TreatmentRecommit = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('RulesRecap', {
-          progressBarPercent: 0.22
+          progressBarPercent: 0.78
         });
       }}
       titleLabel="Can you re-commit to following the treatment plan this week?"
@@ -323,7 +323,7 @@ export const RulesRecap = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('CheckinScheduling', {
-          progressBarPercent: 0.59
+          progressBarPercent: 0.83
         });
       }}
       titleLabel="Quick recap of the 3 rules:"
