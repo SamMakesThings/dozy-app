@@ -229,7 +229,7 @@ export const CalibrationStart = ({ navigation }) => {
             module: 'RLX'
           });
         } else {
-          navigation.navigate('PMRWalkthrough', {
+          navigation.navigate('PMRIntentionAction', {
             progressBarPercent: 0.66
           });
         }
@@ -240,6 +240,74 @@ export const CalibrationStart = ({ navigation }) => {
       }
       buttonLabel="Ok, sounds reasonable"
       bottomGreyButtonLabel="Wait, I have questions"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const PMRIntentionAction = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.PMRIntentionAction = value;
+        navigation.navigate('PMRIntentionTime', { progressBarPercent: 0.28 });
+      }}
+      buttonValues={[
+        { label: 'Before lunch', value: 'before lunch', solidColor: false },
+        { label: 'After lunch', value: 'after lunch', solidColor: false },
+        {
+          label: 'After getting home from work',
+          value: 'after work',
+          solidColor: false
+        },
+        { label: 'After dinner', value: 'after dinner', solidColor: false },
+        { label: 'Other', value: 'other trigger', solidColor: false }
+      ]}
+      questionLabel="When would you like to practice PMR during the day?"
+    />
+  );
+};
+
+export const PMRIntentionTime = ({ navigation }) => {
+  return (
+    <DateTimePickerScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      defaultValue={moment().hour(11).minute(0).toDate()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.PMRIntentionTime = value;
+        navigation.navigate('TreatmentRecommit', {
+          progressBarPercent: 0.74
+        });
+      }}
+      questionLabel="When would you like to be reminded?"
+      questionSubtitle="We'll send a push notification to remind you."
+      mode="time"
+    />
+  );
+};
+
+export const TreatmentRecommit = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('CalibrationStart', {
+          progressBarPercent: 0.22
+        });
+      }}
+      titleLabel="Can you re-commit to following the treatment plan this week?"
+      textLabel={
+        "That means following the target sleep schedule, following the 3 rules (nothing in bed besides sleeping, etc), practicing PMR during the day and before sleeping, and any others you've started."
+      }
+      buttonLabel="Yes, I can do it this week"
       flexibleLayout
     >
       <FemaleDoctor width={imgSize} height={imgSize} />
@@ -291,301 +359,6 @@ export const RulesRecap = ({ navigation }) => {
         <Rule2Illustration width={imgSize * 1.2} height={imgSize} />
         <Rule3Illustration width={imgSize * 0.7} height={imgSize * 0.7} />
       </View>
-    </WizardContentScreen>
-  );
-};
-
-export const WhatToExpect = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('UnderstandingAsk', {
-          progressBarPercent: 0.62
-        });
-      }}
-      titleLabel="What to expect"
-      textLabel="For most, sleep efficiency starts improving after 2-6 days of this schedule. Once efficiency is over 90%, we'll increase your time in bed by 15 minutes every week until you sleep through the night reliably."
-      flexibleLayout
-      buttonLabel="Makes sense"
-    >
-      <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const UnderstandingAsk = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(res) => {
-        if (res === 'I have some questions or concerns') {
-          navigation.navigate('TreatmentReview', {
-            module: 'SCTSRT'
-          });
-        } else {
-          navigation.navigate('SRTCalibrationIntro', {
-            progressBarPercent: 0.66
-          });
-        }
-      }}
-      textLabel="In other words, by following this program, you're trading a week or two of reduced sleep for a lifetime without insomnia. Short-term pain for long term gain."
-      flexibleLayout
-      buttonLabel="I understand, let's start"
-      bottomGreyButtonLabel="I have some questions or concerns"
-    >
-      <BarChart width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-// TreatmentReview screen is defined in the SCTSRTNavigator.js file!
-
-export const SRTCalibrationIntro = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('WakeTimeSetting', {
-          progressBarPercent: 0.7
-        });
-      }}
-      titleLabel="Treatment calibration"
-      textLabel="Ok - now we'll customize the treatment for you. Let’s set your bedtime and out-of-bed time targets."
-      buttonLabel="Makes sense"
-    >
-      <YellowRuler width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const WakeTimeSetting = ({ navigation }) => {
-  return (
-    <DateTimePickerScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      defaultValue={moment().hour(9).minute(0).toDate()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.SCTSRTWakeTime = value;
-        navigation.navigate('SleepDurationCalculation', {
-          progressBarPercent: 0.74
-        });
-      }}
-      validInputChecker={(val) => {
-        // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
-        return moment(val).hour() < 17
-          ? true
-          : 'Did you set AM/PM correctly? Selected time is late for a wake time.';
-      }}
-      questionLabel="What time do you want to get up every morning this week?"
-      questionSubtitle="Pick a consistent time and try to stick to it - our treatments won't be as effective if you change your hours on the weekend."
-      mode="time"
-    />
-  );
-};
-
-export const SleepDurationCalculation = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
-
-  // Trim sleepLogs to only show most recent 10
-  const recentSleepLogs = state.sleepLogs.slice(0, 10);
-
-  // Calculate recent sleep efficiency average
-  const sleepDurationAvg = Number(
-    (
-      recentSleepLogs.reduce((a, b) => a + b.sleepDuration, 0) /
-      recentSleepLogs.length
-    ).toFixed(0)
-  );
-
-  // Calculate Time in Bed (TIB) target
-  // Round it to the nearest multiple of 15. Min value 5h (300 mins)
-  let timeInBedTarget;
-  if (sleepDurationAvg < 300) {
-    timeInBedTarget = 315;
-  } else {
-    timeInBedTarget = 15 * Math.round(sleepDurationAvg / 15);
-  }
-  GLOBAL.SCTSRTTimeInBedTarget = timeInBedTarget;
-
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('TargetBedtime', {
-          progressBarPercent: 0.78
-        });
-      }}
-      titleLabel={
-        'Your average time asleep is ' +
-        (sleepDurationAvg / 60).toFixed(1) +
-        ' hours.'
-      }
-      textLabel={
-        "Based on this, we'll set your time in bed at " +
-        timeInBedTarget / 60 +
-        ' hours to start. Time in bed is the total time you spend laying in bed, including time awake.'
-      }
-    >
-      <VictoryChart
-        width={chartStyles.chart.width}
-        height={chartStyles.chart.height}
-        theme={VictoryTheme.material}
-        scale={{ x: 'time' }}
-        domainPadding={chartStyles.chart.domainPadding}
-      >
-        <VictoryAxis dependentAxis style={chartStyles.axis} tickCount={5} />
-        <VictoryAxis
-          style={chartStyles.axis}
-          tickFormat={(tick) => {
-            return tick.toLocaleString('en-US', {
-              month: 'short',
-              day: 'numeric'
-            });
-          }}
-          tickCount={7}
-        />
-        <VictoryLine
-          data={recentSleepLogs}
-          x={(d) => d.upTime.toDate()}
-          y="sleepDuration"
-          style={chartStyles.line}
-          interpolation="monotoneX"
-        />
-      </VictoryChart>
-    </WizardContentScreen>
-  );
-};
-
-export const TargetBedtime = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
-  // Calculate target bedtime based on TIB and wake time
-  const targetBedTime = moment(GLOBAL.SCTSRTWakeTime)
-    .subtract(GLOBAL.SCTSRTTimeInBedTarget, 'minutes')
-    .toDate();
-  GLOBAL.SCTSRTBedTime = targetBedTime;
-  const targetBedTimeDisplayString = formatDateAsTime(targetBedTime);
-  GLOBAL.targetBedTimeDisplayString = targetBedTimeDisplayString;
-  const targetWakeTimeDisplayString = formatDateAsTime(GLOBAL.SCTSRTWakeTime);
-  GLOBAL.targetWakeTimeDisplayString = targetWakeTimeDisplayString;
-
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('PrescriptionSummary', {
-          progressBarPercent: 0.81
-        });
-      }}
-      titleLabel={'Your target bedtime is ' + targetBedTimeDisplayString}
-      textLabel={
-        'Calculated from your target Time in Bed (TIB) and preferred wake time of ' +
-        targetWakeTimeDisplayString +
-        '.'
-      }
-      buttonLabel="Got it"
-    >
-      <ManInBed width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const PrescriptionSummary = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('DeprivationWarning', {
-          progressBarPercent: 0.85
-        });
-      }}
-      titleLabel={'Your target sleep schedule'}
-      textLabel={
-        'The plan is to get in bed at ' +
-        GLOBAL.targetBedTimeDisplayString +
-        ' and get out of bed at ' +
-        GLOBAL.targetWakeTimeDisplayString +
-        ", regardless of how sleepy you feel. Within that window, you're to get out of bed if unable to sleep. Next week, once your sleep efficiency has jumped, we'll increase your time in bed by 15 minutes."
-      }
-      buttonLabel="Next"
-      flexibleLayout
-    >
-      <View style={{ maxHeight: scale(150) }}>
-        <TargetSleepScheduleCard
-          bedTime={GLOBAL.targetBedTimeDisplayString}
-          wakeTime={GLOBAL.targetWakeTimeDisplayString}
-          styles={{ minWidth: scale(300) }}
-        />
-      </View>
-    </WizardContentScreen>
-  );
-};
-
-export const DeprivationWarning = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(val) => {
-        if (val !== 'Wait, I have some concerns') {
-          navigation.navigate('CheckinScheduling', {
-            progressBarPercent: 0.88
-          });
-        } else {
-          navigation.navigate('AddressingConcerns');
-        }
-      }}
-      textLabel="Note that this treatment will cause a temporary reduction in sleep before it starts kicking in. You’ll get less sleep than you normally would for 1-3 weeks, in exchange for permanent improvement. Are you ready to commit to following these rules this week?"
-      buttonLabel="Yes! I will do it this week"
-      bottomGreyButtonLabel="Wait, I have some concerns"
-      flexibleLayout
-    >
-      <RaisedEyebrowFace width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const AddressingConcerns = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(val) => {
-        if (val !== 'Postpone, not a good time') {
-          GLOBAL.checkinPostponed = false;
-          navigation.navigate('TreatmentReview', {
-            module: 'SCTSRT',
-            progressBarPercent: 0.95
-          });
-        } else {
-          GLOBAL.checkinPostponed = true;
-          navigation.navigate('CheckinScheduling');
-        }
-      }}
-      titleLabel="What's up?"
-      textLabel="We can answer any questions you may have, or if this week isn’t ideal (e.g. important test, presentation, etc), then we can postpone starting treatment to next week."
-      buttonLabel="I have questions"
-      bottomGreyButtonLabel="Postpone, not a good time"
-      bottomBackButtonLabel="I'm good, let's get started"
-      flexibleLayout
-    >
-      <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
