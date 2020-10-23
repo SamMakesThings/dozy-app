@@ -12,7 +12,6 @@ import moment from 'moment';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
-import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
