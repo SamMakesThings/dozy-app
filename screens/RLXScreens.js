@@ -173,7 +173,7 @@ export const PMRWalkthrough = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('PMROverview', {
+        navigation.navigate('PostPMR', {
           progressBarPercent: 0.22
         });
       }}
@@ -188,6 +188,30 @@ export const PMRWalkthrough = ({ navigation }) => {
         }} /*'https://www.youtube.com/watch?v=1nZEdqcGVzo'*/
         style={{ width: useWindowDimensions().width, marginBottom: scale(20) }}
       />
+    </WizardContentScreen>
+  );
+};
+
+export const PostPMR = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('PMRWalkthrough', {
+          progressBarPercent: 0.22
+        });
+      }}
+      titleLabel="How do you feel?"
+      textLabel={
+        "If all went well, you should be feeling significantly more relaxed. This is a useful tool both during the day and when you're about to sleep. We'll leave this exercise on the home page where you can find it easily later."
+      }
+      buttonLabel="So how do I use it?"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
