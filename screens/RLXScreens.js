@@ -2,12 +2,6 @@
 import React from 'react';
 import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import {
-  VictoryChart,
-  VictoryTheme,
-  VictoryLine,
-  VictoryAxis
-} from 'victory-native';
 import moment from 'moment';
 import { WebView } from 'react-native-webview';
 import { AuthContext } from '../utilities/authContext';
@@ -15,23 +9,13 @@ import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
-import * as SRTTitrationScreens from './SRTTitrationScreens';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
-import Clipboard from '../assets/images/Clipboard.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
-import SCTSRTTreatmentPlan from '../assets/images/SCTSRTTreatmentPlan.svg';
-import BadCycleIllustration from '../assets/images/BadCycleIllustration.svg';
 import AlarmClock from '../assets/images/AlarmClock.svg';
 import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
 import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
-import BarChart from '../assets/images/BarChart.svg';
-import YellowRuler from '../assets/images/YellowRuler.svg';
-import ManInBed from '../assets/images/ManInBed.svg';
-import RaisedEyebrowFace from '../assets/images/RaisedEyebrowFace.svg';
-import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
-import { formatDateAsTime } from '../utilities/formatDateAsTime.ts';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 
