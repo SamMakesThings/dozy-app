@@ -60,7 +60,8 @@ export default function submitCheckinData({
       'currentTreatments.nextTreatmentModule': nextCheckinModule,
       ['currentTreatments.' + lastCheckinModule]: lastCheckinDatetime,
       'currentTreatments.targetBedTime': targetBedTime,
-      'currentTreatments.targetWakeTime': targetWakeTime
+      'currentTreatments.targetWakeTime': targetWakeTime,
+      'currentTreatments.targetTimeInBed': targetTimeInBed
     });
 
     // If SCTSRT checkin, add baseline stats for easy reference
