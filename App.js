@@ -185,9 +185,14 @@ export default function App() {
       // Use my previously defined login function to get user data and store the token
       _loginWithGoogle().then((result) => {
         // Store credentials in SecureStore
-        SecureStore.setItemAsync('accessToken', result.credential.accessToken);
-        SecureStore.setItemAsync('idToken', result.credential.idToken);
-        SecureStore.setItemAsync('providerId', result.credential.providerId);
+        if (result.credential) {
+          SecureStore.setItemAsync(
+            'accessToken',
+            result.credential.accessToken
+          );
+          SecureStore.setItemAsync('idToken', result.credential.idToken);
+          SecureStore.setItemAsync('providerId', result.credential.providerId);
+        }
         SecureStore.setItemAsync('userId', result.user.uid);
         SecureStore.setItemAsync(
           'profileData',
