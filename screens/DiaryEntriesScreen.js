@@ -35,7 +35,7 @@ const SleepLogsView = (props) => {
   let selectedSleepLogs = [];
 
   // Determine whether user has logged sleep for the previous night
-  if (props.sleepLogs != null && props.sleepLogs[0]) {
+  if (props.sleepLogs != [] && props.sleepLogs[0]) {
     loggedToday =
       props.sleepLogs[0].upTime.toDate().getDate() === new Date().getDate();
 
@@ -51,7 +51,9 @@ const SleepLogsView = (props) => {
       <View horizontal={false}>
         <IconTitleSubtitleButton
           onPress={() => props.logEntryRedirect()}
-          notLoggedToday={!loggedToday}
+          backgroundColor={
+            !loggedToday ? theme.colors.primary : theme.colors.medium
+          }
           titleLabel="How did you sleep last night?"
           subtitleLabel="A consistent log improves treatment"
         />
@@ -67,14 +69,16 @@ const SleepLogsView = (props) => {
         />
       </View>
     );
-  } else if (props.sleepLogs === null) {
+  } else if (props.sleepLogs.length === 0) {
     // If there aren't any sleep logs, prompt the first
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <IconTitleSubtitleButton
             onPress={() => props.logEntryRedirect()}
-            notLoggedToday={!loggedToday}
+            backgroundColor={
+              !loggedToday ? theme.colors.primary : theme.colors.medium
+            }
             titleLabel="How did you sleep last night?"
             subtitleLabel="A consistent log improves treatment"
           />
@@ -158,9 +162,11 @@ const SleepLogsScreen = (props) => {
       fetchSleepLogs(db, state.userToken)
         .then((sleepLogs) => {
           // Check that theres >1 entry. If no, set state accordingly
-          if (sleepLogs.length === 0) {
+          // console.log(sleepLogs)
+          if (sleepLogs.size === 0) {
             setLogsLoading(false);
-          } else if (sleepLogs.length === 1) {
+            dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: [] });
+          } else if (sleepLogs.size === 1) {
             setLogsLoading(false);
             dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
             Alert.alert(
@@ -201,7 +207,7 @@ const SleepLogsScreen = (props) => {
       <Container elevation={0} useThemeGutterPadding={true}>
         <SleepLogsView
           isLoading={logsLoading}
-          sleepLogs={state.sleepLogs}
+          sleepLogs={state.sleepLogs || []}
           logEntryRedirect={() => props.navigation.navigate('SleepDiaryEntry')}
         />
       </Container>

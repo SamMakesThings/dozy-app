@@ -126,7 +126,7 @@ export default function App() {
       userToken: null,
       onboardingComplete: true,
       profileData: null,
-      sleepLogs: null,
+      sleepLogs: [],
       selectedMonth: new Date().getMonth()
     }
   );
