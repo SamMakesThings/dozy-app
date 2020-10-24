@@ -192,14 +192,14 @@ export default function App() {
           );
           SecureStore.setItemAsync('idToken', result.credential.idToken);
           SecureStore.setItemAsync('providerId', result.credential.providerId);
+          SecureStore.setItemAsync('userId', result.user.uid);
+          SecureStore.setItemAsync(
+            'profileData',
+            JSON.stringify(result.additionalUserInfo.profile)
+          ).catch((error) => {
+            console.log('Error signing in: ' + error);
+          });
         }
-        SecureStore.setItemAsync('userId', result.user.uid);
-        SecureStore.setItemAsync(
-          'profileData',
-          JSON.stringify(result.additionalUserInfo.profile)
-        ).catch((error) => {
-          console.log('Error signing in: ' + error);
-        });
 
         // Update app state accordingly thru context hook function
         dispatch({
