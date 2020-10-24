@@ -162,11 +162,10 @@ const SleepLogsScreen = (props) => {
       fetchSleepLogs(db, state.userToken)
         .then((sleepLogs) => {
           // Check that theres >1 entry. If no, set state accordingly
-          // console.log(sleepLogs)
-          if (sleepLogs.size === 0) {
+          if (sleepLogs.length === 0) {
             setLogsLoading(false);
             dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: [] });
-          } else if (sleepLogs.size === 1) {
+          } else if (sleepLogs.length === 1) {
             setLogsLoading(false);
             dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
             Alert.alert(
