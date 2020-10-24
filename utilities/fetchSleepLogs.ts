@@ -23,7 +23,7 @@ async function fetchSleepLogs(
 
         // Check that theres >1 entry. If no, set state accordingly
         if (res.size === 0) {
-          resolve(res);
+          resolve([]);
         }
 
         // Otherwise, arrange data and update state
