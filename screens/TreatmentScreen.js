@@ -1,11 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  useWindowDimensions
+} from 'react-native';
 import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
+import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../utilities/authContext';
 import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
+import { CardContainer } from '../components/CardContainer';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
@@ -124,6 +132,39 @@ export const TreatmentScreen = ({ navigation }) => {
             });
           }}
         />
+        {
+          // Display PMR video if module has been completed
+          state.userData.currentTreatments.RLX && (
+            <CardContainer>
+              <View style={styles.View_CardHeaderContainer}>
+                <Text
+                  style={{
+                    ...theme.typography.cardTitle,
+                    ...styles.Text_CardTitle
+                  }}
+                >
+                  Progressive Muscle Relaxation
+                </Text>
+                <Text
+                  style={{
+                    ...theme.typography.body2,
+                    ...styles.Text_CardSubtitle
+                  }}
+                >
+                  Practice once daily and before sleeping
+                </Text>
+              </View>
+              <View style={styles.View_CardContentContainer}>
+                <WebView
+                  source={{
+                    uri: 'https://www.youtube.com/embed/1nZEdqcGVzo'
+                  }}
+                  style={{ width: '100%' }}
+                />
+              </View>
+            </CardContainer>
+          )
+        }
         <View style={styles.View_NoCard}>
           <Text
             style={{
@@ -170,6 +211,14 @@ const styles = StyleSheet.create({
     paddingLeft: scale(10),
     paddingRight: scale(10)
   },
+  View_CardHeaderContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start'
+  },
+  View_CardContentContainer: {
+    height: 200
+  },
   View_NoCard: {
     flex: 1,
     marginTop: scale(15),
@@ -177,6 +226,12 @@ const styles = StyleSheet.create({
   },
   Text_CardTitle: {
     color: dozy_theme.colors.secondary
+  },
+  Text_CardSubtitle: {
+    color: dozy_theme.colors.secondary,
+    opacity: 0.5,
+    marginTop: scale(-5),
+    marginBottom: scale(12)
   },
   Icon_Clipboard: {
     margin: scale(20),
