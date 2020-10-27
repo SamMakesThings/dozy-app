@@ -45,7 +45,7 @@ export default {
     todos: ['Practice not trying to fall asleep when in bed'],
     url: 'https://dozy.customerly.help',
     optional: false,
-    ready: false
+    ready: true
   },
   COG1: {
     title: 'Harmful Beliefs About Sleep',
