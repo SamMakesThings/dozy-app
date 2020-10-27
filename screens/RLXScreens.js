@@ -109,9 +109,9 @@ export const WhyPMR = ({ navigation }) => {
       }}
       titleLabel="Why PMR?"
       textLabel={
-        "Worry and muscular tension that we're not even aware of can often prevent us from falling sleep. By learning physical relaxation techniques, we can also improve mental relaxation, thereby falling asleep faster. (How?)"
+        "Worry and muscular tension that we're not even aware of can often prevent us from falling sleep. By learning physical relaxation techniques, we can also improve mental relaxation, thereby falling asleep faster."
       }
-      buttonLabel="Next"
+      buttonLabel="How?"
       flexibleLayout
     >
       <FemaleDoctor width={imgSize} height={imgSize} />
