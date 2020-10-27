@@ -7,7 +7,7 @@ import HeaderProgressBar from '../components/HeaderProgressBar';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
 
 // Init and define the authentication flow for diary entry
-const SCTSRTStack = createStackNavigator();
+const RLXStack = createStackNavigator();
 
 const animConfig = {
   animation: 'spring',
@@ -24,9 +24,9 @@ const animConfig = {
 const Screens = { ...TreatmentScreens, ...SRTTitrationScreens };
 
 // Create a stack screen for each component defined in DiaryEntryScreens
-export default function SCTSRTNavigator() {
+export default function RLXNavigator() {
   return (
-    <SCTSRTStack.Navigator
+    <RLXStack.Navigator
       initialRouteName="Welcome"
       screenOptions={{
         headerShown: true,
@@ -35,7 +35,7 @@ export default function SCTSRTNavigator() {
     >
       {Object.keys(Screens).map((screen) => {
         return (
-          <SCTSRTStack.Screen
+          <RLXStack.Screen
             key={screen}
             name={screen}
             component={Screens[screen]}
@@ -69,7 +69,7 @@ export default function SCTSRTNavigator() {
           />
         );
       })}
-      <SCTSRTStack.Screen
+      <RLXStack.Screen
         name="TreatmentReview"
         component={TreatmentReviewScreen}
         options={() => ({
@@ -85,6 +85,6 @@ export default function SCTSRTNavigator() {
           headerTransparent: true
         })}
       />
-    </SCTSRTStack.Navigator>
+    </RLXStack.Navigator>
   );
 }
