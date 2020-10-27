@@ -506,7 +506,7 @@ export const Rule3 = ({ navigation }) => {
         });
       }}
       titleLabel="3rd, don't do anything in bed besides sleeping."
-      textLabel="That means no reading, no phone use, no TV, and no daytime naps. "
+      textLabel="That means no reading, no phone use, no TV, and no daytime naps. (Sex is an exception)"
     >
       <Rule3Illustration width={imgSize * 1.2} height={imgSize} />
     </WizardContentScreen>
