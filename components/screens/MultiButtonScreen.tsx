@@ -2,8 +2,17 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import BottomNavButtons from '../BottomNavButtons';
+import { Theme } from '../../types/theme';
 
-const MultiButtonScreen = (props) => {
+interface Props {
+  questionLabel: string;
+  bottomBackButton: boolean;
+  buttonValues: object;
+  onQuestionSubmit: Function;
+  theme: Theme;
+}
+
+const MultiButtonScreen: React.FC<Props> = (props) => {
   const { theme } = props;
 
   return (
