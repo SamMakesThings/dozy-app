@@ -102,15 +102,135 @@ export const GSES1 = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
-        GLOBAL.PMRIntentionAction = value;
-        navigation.navigate('PITIntentionTime', { progressBarPercent: 0.67 });
+        GLOBAL.GSES1 = value;
+        navigation.navigate('GSES2', { progressBarPercent: 0.67 });
       }}
       questionLabel="I put too much effort into sleeping when it should come naturally."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
       buttonValues={[
-        { label: 'Not at all', value: 0, solidColor: false },
+        { label: 'Very much', value: 2, solidColor: false },
         { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Very much', value: 2, solidColor: false }
+        { label: 'Not at all', value: 0, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const GSES2 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.GSES2 = value;
+        navigation.navigate('GSES3', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I feel I should be able to control my sleep."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Very much', value: 2, solidColor: false },
+        { label: 'To some extent', value: 1, solidColor: false },
+        { label: 'Not at all', value: 0, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const GSES3 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.GSES3 = value;
+        navigation.navigate('GSES4', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I put off going to bed at night for fear of not being able to sleep."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Very much', value: 2, solidColor: false },
+        { label: 'To some extent', value: 1, solidColor: false },
+        { label: 'Not at all', value: 0, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const GSES4 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.GSES4 = value;
+        navigation.navigate('GSES5', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I worry about not sleeping if I cannot sleep."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Very much', value: 2, solidColor: false },
+        { label: 'To some extent', value: 1, solidColor: false },
+        { label: 'Not at all', value: 0, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const GSES5 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.GSES5 = value;
+        navigation.navigate('GSES6', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I am no good at sleeping."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Very much', value: 2, solidColor: false },
+        { label: 'To some extent', value: 1, solidColor: false },
+        { label: 'Not at all', value: 0, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const GSES6 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.GSES6 = value;
+        navigation.navigate('GSES7', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I get anxious about sleeping before I go to bed."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Very much', value: 2, solidColor: false },
+        { label: 'To some extent', value: 1, solidColor: false },
+        { label: 'Not at all', value: 0, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const GSES7 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.GSES7 = value;
+        navigation.navigate('GSESResult', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I worry about the consequences of not sleeping."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Very much', value: 2, solidColor: false },
+        { label: 'To some extent', value: 1, solidColor: false },
+        { label: 'Not at all', value: 0, solidColor: false }
       ]}
     />
   );
