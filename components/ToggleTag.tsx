@@ -4,9 +4,17 @@ import { withTheme } from '@draftbit/ui';
 import '@firebase/firestore';
 import { Entypo } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
+import { Theme } from '../types/theme';
+
+interface Props {
+  label: string;
+  theme: Theme;
+  onPress: Function;
+  entypoIcon: string;
+}
 
 // Component for the icon/button that toggles
-const ToggleTag = (props) => {
+const ToggleTag: React.FC<Props> = (props) => {
   const { theme } = props;
   const [selected, setSelected] = React.useState(false);
 

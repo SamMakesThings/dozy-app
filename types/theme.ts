@@ -5,6 +5,7 @@ export interface Theme {
     secondary: string;
     medium: string;
     light: string;
+    lightInverse: string;
     error: string;
   };
   typography: {
