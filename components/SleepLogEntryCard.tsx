@@ -3,12 +3,26 @@ import { Text } from 'react-native';
 import { Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
 import '@firebase/firestore';
+import * as firebase from 'firebase';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 import HighlightedText from './HighlightedText';
-import { formatDateAsTime } from '../utilities/formatDateAsTime.ts';
+import { formatDateAsTime } from '../utilities/formatDateAsTime';
 
-const SleepLogEntryCard = (props) => {
+interface SleepLog {
+  bedTime: firebase.firestore.Timestamp;
+  fallAsleepTime: firebase.firestore.Timestamp;
+  wakeTime: firebase.firestore.Timestamp;
+  upTime: firebase.firestore.Timestamp;
+  sleepDuration: number;
+  sleepEfficiency: number;
+}
+
+interface Props {
+  sleepLog: SleepLog;
+}
+
+const SleepLogEntryCard: React.FC<Props> = (props) => {
   const theme = dozy_theme;
   return (
     <Container
@@ -243,10 +257,6 @@ const SleepLogEntryCard = (props) => {
       </Container>
     </Container>
   );
-};
-
-SleepLogEntryCard.propTypes = {
-  sleepLog: PropTypes.object
 };
 
 export default SleepLogEntryCard;

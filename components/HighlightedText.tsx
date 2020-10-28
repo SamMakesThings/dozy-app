@@ -9,7 +9,7 @@ interface Props {
   label: string;
   textColor: string;
   bgColor: string;
-  style: object;
+  style?: object;
 }
 
 const HighlightedText: React.FC<Props> = (props) => {
