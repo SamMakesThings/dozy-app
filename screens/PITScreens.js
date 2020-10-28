@@ -12,6 +12,7 @@ import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
+import DizzyFace from '../assets/images/DizzyFace.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import AlarmClock from '../assets/images/AlarmClock.svg';
 import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
@@ -62,7 +63,7 @@ export const Welcome = ({ navigation }) => {
           progressBarPercent: 0.06
         });
       }}
-      textLabel="Welcome back! This week, we’ll review your sleep data, update your treatment plan, and get started with some relaxation techniques to help you sleep."
+      textLabel="Welcome back! This week, we’ll review your sleep data, update your treatment plan, and get started with a technique to make falling asleep easier - Paradoxical Intention Therapy (PIT)."
     />
   );
 };
@@ -83,9 +84,9 @@ export const TreatmentPlan = ({ navigation }) => {
           progressBarPercent: 0.28
         });
       }}
-      titleLabel="This week's treatment: Progressive Muscle Relaxation"
+      titleLabel="This week's treatment: Paradoxical Intention Therapy"
       textLabel={
-        "Based on your sleep data, the next step is to give you some new tools to address stress & tension. We'll do this by learning a technique called Progressive Muscle Relaxation (PMR)."
+        "Based on your sleep data, the next step is to reduce the time it takes to fall asleep. We'll do this by learning a technique called Paradoxical Intention Therapy (PIT)."
       }
       buttonLabel="Next"
       flexibleLayout
@@ -107,14 +108,14 @@ export const WhyPMR = ({ navigation }) => {
           progressBarPercent: 0.33
         });
       }}
-      titleLabel="Why PMR?"
+      titleLabel="Why PIT?"
       textLabel={
-        "Worry and muscular tension that we're not even aware of can often prevent us from falling sleep. By learning physical relaxation techniques, we can also improve mental relaxation, thereby falling asleep faster."
+        "Falling asleep is a subconscious process. It's strange, but the harder we try to fall asleep, the more sleep will elude us. By *not* trying to fall asleep, we can actually make it easier."
       }
       buttonLabel="How?"
       flexibleLayout
     >
-      <FemaleDoctor width={imgSize} height={imgSize} />
+      <DizzyFace width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
