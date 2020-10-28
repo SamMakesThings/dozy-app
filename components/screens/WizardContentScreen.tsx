@@ -8,7 +8,7 @@ import { Theme } from '../../types/theme';
 interface Props {
   theme: Theme;
   flexibleLayout?: boolean;
-  textLabel: string;
+  textLabel: string | JSX.Element;
   titleLabel?: string;
   onQuestionSubmit: Function;
   buttonLabel?: string;

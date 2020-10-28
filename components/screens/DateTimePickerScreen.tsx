@@ -14,11 +14,11 @@ interface Props {
   defaultValue: Date;
   questionLabel: string;
   questionSubtitle?: string;
-  inputLabel: string;
+  inputLabel?: string;
   onQuestionSubmit: Function;
   buttonLabel?: string;
-  bottomBackButton: boolean;
-  bottomGreyButtonLabel: string;
+  bottomBackButton: Function;
+  bottomGreyButtonLabel?: string;
   mode: string;
   theme: Theme;
   validInputChecker?: Function;
