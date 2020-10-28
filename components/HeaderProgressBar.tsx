@@ -5,7 +5,17 @@ import { scale } from 'react-native-size-matters';
 import { ProgressBar } from './ProgressBar';
 import { dozy_theme } from '../config/Themes';
 
-const HeaderProgressBar = (props) => {
+interface Navigation {
+  goBack: Function;
+}
+
+interface Props {
+  backButtonDisabled: boolean;
+  navigation: Navigation;
+  progressBarPercent: number;
+}
+
+const HeaderProgressBar: React.FC<Props> = (props) => {
   const theme = dozy_theme;
 
   return (
@@ -38,9 +48,7 @@ const HeaderProgressBar = (props) => {
           }}
           color={theme.colors.primary}
           progress={props.progressBarPercent}
-          borderWidth={0}
           borderRadius={10}
-          animationType="spring"
           unfilledColor={theme.colors.medium}
         />
       </Container>
