@@ -22,7 +22,7 @@ interface Props {
   sleepLog: SleepLog;
 }
 
-const SleepLogEntryCard: React.FC<Props> = (props) => {
+const SleepLogEntryCard: React.FC<Props> = ({ sleepLog }) => {
   const theme = dozy_theme;
   return (
     <Container
@@ -51,7 +51,7 @@ const SleepLogEntryCard: React.FC<Props> = (props) => {
             }
           ]}
         >
-          {props.sleepLog.upTime.toDate().toLocaleString('en-US', {
+          {sleepLog.upTime.toDate().toLocaleString('en-US', {
             weekday: 'long',
             month: 'long',
             day: 'numeric'
@@ -82,7 +82,7 @@ const SleepLogEntryCard: React.FC<Props> = (props) => {
         >
           <HighlightedText
             textColor={theme.colors.secondary}
-            label={formatDateAsTime(props.sleepLog.bedTime.toDate())}
+            label={formatDateAsTime(sleepLog.bedTime.toDate())}
             bgColor={theme.colors.primary}
           />
           <Text
@@ -95,7 +95,7 @@ const SleepLogEntryCard: React.FC<Props> = (props) => {
               paddingBottom: 0
             }}
           >
-            {props.sleepLog.fallAsleepTime
+            {sleepLog.fallAsleepTime
               .toDate()
               .toLocaleString('en-US', { hour: 'numeric', minute: 'numeric' })
               .slice(0, -3)}
@@ -110,14 +110,14 @@ const SleepLogEntryCard: React.FC<Props> = (props) => {
               marginLeft: 0
             }}
           >
-            {props.sleepLog.wakeTime
+            {sleepLog.wakeTime
               .toDate()
               .toLocaleString('en-US', { hour: 'numeric', minute: 'numeric' })
               .slice(0, -3)}
           </Text>
           <HighlightedText
             textColor={theme.colors.primary}
-            label={formatDateAsTime(props.sleepLog.upTime.toDate())}
+            label={formatDateAsTime(sleepLog.upTime.toDate())}
             bgColor={theme.colors.secondary}
           />
         </Container>
@@ -203,7 +203,7 @@ const SleepLogEntryCard: React.FC<Props> = (props) => {
               }
             ]}
           >
-            {+(props.sleepLog.sleepDuration / 60).toFixed(1)} hours
+            {+(sleepLog.sleepDuration / 60).toFixed(1)} hours
           </Text>
           <Text
             style={[
@@ -236,7 +236,7 @@ const SleepLogEntryCard: React.FC<Props> = (props) => {
               }
             ]}
           >
-            {(props.sleepLog.sleepEfficiency * 100).toFixed(0).toString()}%
+            {(sleepLog.sleepEfficiency * 100).toFixed(0).toString()}%
           </Text>
           <Text
             style={[
