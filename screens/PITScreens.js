@@ -80,13 +80,13 @@ export const TreatmentPlan = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('WhyPMR', {
+        navigation.navigate('GSES1', {
           progressBarPercent: 0.28
         });
       }}
       titleLabel="This week's treatment: Paradoxical Intention Therapy"
       textLabel={
-        "Based on your sleep data, the next step is to reduce the time it takes to fall asleep. We'll do this by learning a technique called Paradoxical Intention Therapy (PIT)."
+        "Based on your sleep data, the next step is to reduce the time it takes to fall asleep. To get started, we'll ask you seven related questions. Rate how true each statement has been for you in the past week."
       }
       buttonLabel="Next"
       flexibleLayout
@@ -96,7 +96,27 @@ export const TreatmentPlan = ({ navigation }) => {
   );
 };
 
-export const WhyPMR = ({ navigation }) => {
+export const GSES1 = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value) => {
+        GLOBAL.PMRIntentionAction = value;
+        navigation.navigate('PMRIntentionTime', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I put too much effort into sleeping when it should come naturally."
+      subtitleLabel="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Not at all', value: 0, solidColor: false },
+        { label: 'To some extent', value: 1, solidColor: false },
+        { label: 'Very much', value: 2, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const WhyPIT = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
@@ -104,13 +124,13 @@ export const WhyPMR = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('PMROverview', {
+        navigation.navigate('PITOverview', {
           progressBarPercent: 0.33
         });
       }}
       titleLabel="Why PIT?"
       textLabel={
-        "Falling asleep is a subconscious process. It's strange, but the harder we try to fall asleep, the more sleep will elude us. By *not* trying to fall asleep, we can actually make it easier."
+        "Falling asleep is a subconscious process. It's strange, but the harder we try to fall asleep, the more sleep will elude us. This effort creates a vicious cycle of trying harder and harder to sleep, with disapointing results. By *not* trying to fall asleep, we can actually make it easier."
       }
       buttonLabel="How?"
       flexibleLayout
@@ -120,7 +140,7 @@ export const WhyPMR = ({ navigation }) => {
   );
 };
 
-export const PMROverview = ({ navigation }) => {
+export const PITOverview = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
