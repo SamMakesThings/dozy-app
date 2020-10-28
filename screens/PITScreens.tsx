@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -21,7 +20,8 @@ import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 
 // Define the theme for the file globally
-const theme = dozy_theme;
+// 'any' type for now since it's getting an expected something from Draftbit that's breaking.
+const theme: any = dozy_theme;
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
@@ -103,10 +103,10 @@ export const GSES1 = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
         GLOBAL.PMRIntentionAction = value;
-        navigation.navigate('PMRIntentionTime', { progressBarPercent: 0.67 });
+        navigation.navigate('PITIntentionTime', { progressBarPercent: 0.67 });
       }}
       questionLabel="I put too much effort into sleeping when it should come naturally."
-      subtitleLabel="Please rate how true each statement has been for you over the last week."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
       buttonValues={[
         { label: 'Not at all', value: 0, solidColor: false },
         { label: 'To some extent', value: 1, solidColor: false },
@@ -257,7 +257,7 @@ export const PMRIntentionAction = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value) => {
         GLOBAL.PMRIntentionAction = value;
-        navigation.navigate('PMRIntentionTime', { progressBarPercent: 0.67 });
+        navigation.navigate('PITIntentionTime', { progressBarPercent: 0.67 });
       }}
       buttonValues={[
         { label: 'Before lunch', value: 'before lunch', solidColor: false },
@@ -275,7 +275,7 @@ export const PMRIntentionAction = ({ navigation }) => {
   );
 };
 
-export const PMRIntentionTime = ({ navigation }) => {
+export const PITIntentionTime = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
@@ -403,7 +403,6 @@ export const SCTSRTEnd = ({ navigation }) => {
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
         submitCheckinData({
