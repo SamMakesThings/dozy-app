@@ -7,7 +7,13 @@ import { dozy_theme } from '../config/Themes';
 
 const theme = dozy_theme;
 
-export default class TabBarIcon extends React.Component {
+interface Props {
+  name: string;
+  focused: boolean;
+  badge: boolean;
+}
+
+export default class TabBarIcon extends React.Component<Props> {
   render() {
     return (
       <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
@@ -19,8 +25,13 @@ export default class TabBarIcon extends React.Component {
             this.props.focused ? Colors.tabIconSelected : Colors.tabIconDefault
           }
         />
-        {this.props.badge && <View style={styles.View_BadgeContainer // Display badge if passed in props
-            } />}
+        {this.props.badge && (
+          <View
+            style={
+              styles.View_BadgeContainer // Display badge if passed in props
+            }
+          />
+        )}
       </View>
     );
   }
