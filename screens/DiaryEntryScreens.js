@@ -216,7 +216,8 @@ export const NightMinsAwakeInput = ({ navigation }) => {
           return true;
         }
       }}
-      questionLabel="Roughly how many minutes were you awake in the night in total?"
+      questionLabel="Roughly how many minutes were you awake after initially falling asleep?"
+      questionSubtitle="Include time after initially falling asleep but not time after your final wake."
       inputLabel="(in minutes)"
     />
   );
