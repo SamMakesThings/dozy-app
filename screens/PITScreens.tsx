@@ -236,6 +236,34 @@ export const GSES7 = ({ navigation }) => {
   );
 };
 
+export const GSESResult = ({ navigation }) => {
+  let imgSize = imgSizePercent * useWindowDimensions().width;
+
+  const { GSES1, GSES2, GSES3, GSES4, GSES5, GSES6, GSES7 } = GLOBAL;
+
+  const GSESScore = GSES1 + GSES2 + GSES3 + GSES4 + GSES5 + GSES6 + GSES7;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('GSES1', {
+          progressBarPercent: 0.28
+        });
+      }}
+      titleLabel={`You scored a ${GSESScore} on the Glasgow Sleep Effort Scale.`}
+      textLabel={
+        "That means your efforts to fall asleep faster are an obstacle for you. Today's technique, Paradoxical Intention Therapy (PIT), will likely make falling asleep easier! Let's get started."
+      }
+      buttonLabel="Next"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
 export const WhyPIT = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
