@@ -1,3 +1,5 @@
+// This fix only works if the file is open in VSCode. WTF
+
 declare module '*.svg' {
   const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
   export default content;
