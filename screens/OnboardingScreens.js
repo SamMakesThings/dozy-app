@@ -28,9 +28,10 @@ const theme = dozy_theme;
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
+let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 export const Welcome = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+  imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -49,7 +50,6 @@ export const Welcome = ({ navigation }) => {
 };
 
 export const Overview = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -67,7 +67,6 @@ export const Overview = ({ navigation }) => {
 };
 
 export const Asks = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -85,7 +84,6 @@ export const Asks = ({ navigation }) => {
 };
 
 export const ISIIntro = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -261,7 +259,6 @@ export const ISI7 = ({ navigation }) => {
 };
 
 export const ISIResults = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   const severityText = () => {
     if (GLOBAL.ISITotal <= 7) {
       return 'no clinically significant insomnia';
@@ -299,7 +296,6 @@ export const ISIResults = ({ navigation }) => {
 };
 
 export const ISISignificant = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -331,7 +327,6 @@ export const ISISignificant = ({ navigation }) => {
 };
 
 export const ISINoSignificant = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -364,7 +359,6 @@ export const ISINoSignificant = ({ navigation }) => {
 };
 
 export const SafetyIntro = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -413,7 +407,6 @@ export const SafetyPills = ({ navigation }) => {
 };
 
 export const SafetyPillsStop = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -447,7 +440,6 @@ export const SafetyPillsStop = ({ navigation }) => {
 };
 
 export const SafetyPillsBye = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -549,7 +541,6 @@ export const SafetyCatchall = ({ navigation }) => {
 };
 
 export const SafetyIllnessWarning = ({ navigation, route }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -584,7 +575,6 @@ export const SafetyIllnessWarning = ({ navigation, route }) => {
 };
 
 export const BaselineIntro = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -621,7 +611,6 @@ export const BaselineIntro = ({ navigation }) => {
 };
 
 export const BaselineBye = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -639,7 +628,6 @@ export const BaselineBye = ({ navigation }) => {
 };
 
 export const DiaryIntro = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -740,7 +728,6 @@ export const CheckinScheduling = ({ navigation }) => {
 };
 
 export const PaywallPlaceholder = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -758,7 +745,6 @@ export const PaywallPlaceholder = ({ navigation }) => {
 };
 
 export const OnboardingEnd = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   const { dispatch, finishOnboarding } = React.useContext(AuthContext);
   return (
     <IconExplainScreen

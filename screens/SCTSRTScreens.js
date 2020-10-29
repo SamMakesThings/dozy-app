@@ -37,6 +37,7 @@ const theme = dozy_theme;
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
+let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 // Define default chart styles
 const chartStyles = {
@@ -64,7 +65,7 @@ const chartStyles = {
 };
 
 export const Welcome = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+  imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -277,8 +278,6 @@ export const SleepMaintenance = ({ navigation }) => {
 };
 
 export const TreatmentPlan = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -300,8 +299,6 @@ export const TreatmentPlan = ({ navigation }) => {
 };
 
 export const TreatmentPlanContinued = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -322,7 +319,6 @@ export const TreatmentPlanContinued = ({ navigation }) => {
 };
 
 export const DriversOfSleep = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -351,7 +347,6 @@ export const DriversOfSleep = ({ navigation }) => {
 };
 
 export const WhySleepDrives = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -372,7 +367,6 @@ export const WhySleepDrives = ({ navigation }) => {
 };
 
 export const FragmentedSleep = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -393,7 +387,6 @@ export const FragmentedSleep = ({ navigation }) => {
 };
 
 export const ConsolidatingSleep = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -414,7 +407,6 @@ export const ConsolidatingSleep = ({ navigation }) => {
 };
 
 export const ReduceTimeInBed = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -435,7 +427,6 @@ export const ReduceTimeInBed = ({ navigation }) => {
 };
 
 export const SCTSRTIntro = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -455,7 +446,6 @@ export const SCTSRTIntro = ({ navigation }) => {
 };
 
 export const Rule1 = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -475,7 +465,6 @@ export const Rule1 = ({ navigation }) => {
 };
 
 export const Rule2 = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -495,7 +484,6 @@ export const Rule2 = ({ navigation }) => {
 };
 
 export const Rule3 = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -514,7 +502,6 @@ export const Rule3 = ({ navigation }) => {
 };
 
 export const RulesRecap = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -562,7 +549,6 @@ export const RulesRecap = ({ navigation }) => {
 };
 
 export const WhatToExpect = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -583,7 +569,6 @@ export const WhatToExpect = ({ navigation }) => {
 };
 
 export const UnderstandingAsk = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -612,7 +597,6 @@ export const UnderstandingAsk = ({ navigation }) => {
 // TreatmentReview screen is defined in the SCTSRTNavigator.js file!
 
 export const SRTCalibrationIntro = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -731,8 +715,6 @@ export const SleepDurationCalculation = ({ navigation }) => {
 };
 
 export const TargetBedtime = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   // Calculate target bedtime based on TIB and wake time
   const targetBedTime = moment(GLOBAL.SCTSRTWakeTime)
     .subtract(GLOBAL.SCTSRTTimeInBedTarget, 'minutes')
@@ -766,8 +748,6 @@ export const TargetBedtime = ({ navigation }) => {
 };
 
 export const PrescriptionSummary = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -800,8 +780,6 @@ export const PrescriptionSummary = ({ navigation }) => {
 };
 
 export const DeprivationWarning = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -826,8 +804,6 @@ export const DeprivationWarning = ({ navigation }) => {
 };
 
 export const AddressingConcerns = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -887,7 +863,6 @@ export const CheckinScheduling = ({ navigation }) => {
 };
 
 export const SCTSRTEnd = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Calculate some baseline statistics for later reference

@@ -24,6 +24,7 @@ const theme = dozy_theme;
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
+let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 // Define default chart styles
 const chartStyles = {
@@ -51,7 +52,7 @@ const chartStyles = {
 };
 
 export const Welcome = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+  imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -72,8 +73,6 @@ export const Welcome = ({ navigation }) => {
 // Screen it targets for return navigation is 'TreatmentPlan'
 
 export const TreatmentPlan = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -96,8 +95,6 @@ export const TreatmentPlan = ({ navigation }) => {
 };
 
 export const WhyPMR = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -120,8 +117,6 @@ export const WhyPMR = ({ navigation }) => {
 };
 
 export const PMROverview = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -148,8 +143,6 @@ It's all about noticing & releasing muscular tension.`}
 };
 
 export const PMRWalkthrough = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -175,8 +168,6 @@ export const PMRWalkthrough = ({ navigation }) => {
 };
 
 export const PostPMR = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -199,8 +190,6 @@ export const PostPMR = ({ navigation }) => {
 };
 
 export const CalibrationStart = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -274,8 +263,6 @@ export const PMRIntentionTime = ({ navigation }) => {
 };
 
 export const TreatmentRecommit = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -298,7 +285,6 @@ export const TreatmentRecommit = ({ navigation }) => {
 };
 
 export const RulesRecap = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -376,7 +362,6 @@ export const CheckinScheduling = ({ navigation }) => {
 };
 
 export const SCTSRTEnd = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   const { state, dispatch } = React.useContext(AuthContext);
   return (
     <WizardContentScreen
