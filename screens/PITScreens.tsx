@@ -21,11 +21,27 @@ import refreshUserData from '../utilities/refreshUserData';
 
 // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
-// Same for "GLOBAL" state thing, don't want to bother typing all those values lol
-// Maybe there's a way to do it automatically?
-// TODO: Find a graceful way to type my global module
+// TODO: Find a graceful way to type my global module. Maybe create a new state management
+// ...file for each set of screens, and save GLOBAL for the few main screens?
+// Current approach is to create & type a copy locally. Leaves an error msg though
+interface Global {
+  replaceme: any;
+  GSES1: number;
+  GSES2: number;
+  GSES3: number;
+  GSES4: number;
+  GSES5: number;
+  GSES6: number;
+  GSES7: number;
+  nextCheckinTime: Date;
+  treatmentPlan: Array<{ started: boolean; module: string }>;
+  targetBedTime: Date;
+  targetWakeTime: Date;
+  targetTimeInBed: number;
+}
+
 const theme: any = dozy_theme;
-const GLOBAL: any = GLOBALRAW;
+let GLOBAL: Global = GLOBALRAW;
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
@@ -415,7 +431,7 @@ export const PMRIntentionAction: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: string) => {
-        GLOBAL.PMRIntentionAction = value;
+        GLOBAL.replaceme = value;
         navigation.navigate('PITIntentionTime', { progressBarPercent: 0.67 });
       }}
       buttonValues={[
@@ -441,7 +457,7 @@ export const PITIntentionTime: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().hour(11).minute(0).toDate()}
       onQuestionSubmit={(value: Date) => {
-        GLOBAL.PMRIntentionTime = value;
+        GLOBAL.replaceme = value;
         navigation.navigate('TreatmentRecommit', {
           progressBarPercent: 0.72
         });
