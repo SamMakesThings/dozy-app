@@ -1,3 +1,5 @@
 module.exports = {
-  userData: {}
+  targetBedTime: new Date(),
+  targetWakeTime: new Date(),
+  targetTimeInBed: -1
 };
