@@ -243,7 +243,6 @@ export const GSES7: React.FC<Props> = ({ navigation }) => {
 
 export const GSESResult: React.FC<Props> = ({ navigation }) => {
   const { GSES1, GSES2, GSES3, GSES4, GSES5, GSES6, GSES7 } = GLOBAL;
-
   const GSESScore = GSES1 + GSES2 + GSES3 + GSES4 + GSES5 + GSES6 + GSES7;
 
   return (
@@ -256,9 +255,7 @@ export const GSESResult: React.FC<Props> = ({ navigation }) => {
         });
       }}
       titleLabel={`You scored a ${GSESScore} on the Glasgow Sleep Effort Scale.`}
-      textLabel={
-        "That means your efforts to fall asleep faster are an obstacle for you. Today's technique, Paradoxical Intention Therapy (PIT), will likely make falling asleep easier! Let's get started."
-      }
+      textLabel="That means your efforts to fall asleep faster are an obstacle for you. Today's technique, Paradoxical Intention Therapy (PIT), will likely make falling asleep easier! Let's get started."
       buttonLabel="Next"
       flexibleLayout
     >
@@ -267,8 +264,67 @@ export const GSESResult: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-// Trying to sleep screen
 export const TryingToSleep: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('Paradox', {
+          progressBarPercent: 0.28
+        });
+      }}
+      titleLabel="Studies show that poor sleepers have something in common:"
+      textLabel="They try very hard to sleep. Since sleep isn't a conscious process, this strong effort actually makes sleeping harder! In fact, insomnia itself can sometimes be characterized as a symptom of trying too hard to sleep."
+      buttonLabel="Well that sucks"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const Paradox: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('Antidote', {
+          progressBarPercent: 0.28
+        });
+      }}
+      titleLabel="It's a paradox"
+      textLabel="The more you try to sleep, the less you can. And it's the opposite of what non-insomniacs do: when someone with normal sleep patterns goes to sleep, they spend almost no effort."
+      buttonLabel="The lucky pricks"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const Antidote: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('HowToPIT', {
+          progressBarPercent: 0.28
+        });
+      }}
+      titleLabel="Fortunately, we can counteract this with a simple technique:"
+      textLabel="Paradoxical Intention Therapy, or PIT. Paradoxical Intention Therapy is all about letting go of the effort to sleep. By releasing any effort to sleep, sleep actually comes faster."
+      buttonLabel="How do I do it?"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const HowToPIT: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -278,23 +334,17 @@ export const TryingToSleep: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.28
         });
       }}
-      titleLabel="Studies show that poor sleepers have something in common:"
-      textLabel={
-        "They try very hard to sleep. Since sleep isn't a conscious process, this strong effort actually makes sleeping harder! In fact, insomnia itself can sometimes be characterized as a symptom of trying too hard to sleep."
-      }
-      buttonLabel="Next"
+      titleLabel="How to use Paradoxical Intention Therapy:"
+      textLabel={`1. Maintain your prescribed sleep schedule.
+2. When you're in bed, gently keep your eyes open and make no effort to fall asleep.
+3. Don't actively keep yourself awake though - don't move around, drink coffee, etc. You're simply letting go of the effort to fall asleep.`}
+      buttonLabel="This sounds kinda silly"
       flexibleLayout
     >
       <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
-
-// Paradox screen
-
-// Antidote screen
-
-// How to screen
 
 // Science screen
 
