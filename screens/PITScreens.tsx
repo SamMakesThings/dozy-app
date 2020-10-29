@@ -39,6 +39,7 @@ interface Global {
   GSES5: number;
   GSES6: number;
   GSES7: number;
+  GSESScore: number;
   nextCheckinTime: Date;
   treatmentPlan: Array<{ started: boolean; module: string }>;
   targetBedTime: Date;
@@ -248,6 +249,7 @@ export const GSES7: React.FC<Props> = ({ navigation }) => {
 export const GSESResult: React.FC<Props> = ({ navigation }) => {
   const { GSES1, GSES2, GSES3, GSES4, GSES5, GSES6, GSES7 } = GLOBAL;
   const GSESScore = GSES1 + GSES2 + GSES3 + GSES4 + GSES5 + GSES6 + GSES7;
+  GLOBAL.GSESScore = GSESScore;
 
   return (
     <WizardContentScreen
@@ -508,12 +510,23 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
           nextCheckinDatetime: GLOBAL.nextCheckinTime,
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
-            (v: { started: boolean }) => v.started === false
+            (v: { started: boolean; module: string }) =>
+              v.started === false && v.module !== 'PIT'
           )[0].module,
           lastCheckinModule: 'PIT',
-          targetBedTime: GLOBAL.targetBedTime,
-          targetWakeTime: GLOBAL.targetWakeTime,
-          targetTimeInBed: GLOBAL.targetTimeInBed
+          targetBedTime: GLOBALRAW.targetBedTime, // TS is mad, but this needs to access true global state.
+          targetWakeTime: GLOBALRAW.targetWakeTime, // (since titration flow is in a different file)
+          targetTimeInBed: GLOBALRAW.targetTimeInBed,
+          additionalCheckinData: {
+            GSES1: GLOBAL.GSES1,
+            GSES2: GLOBAL.GSES2,
+            GSES3: GLOBAL.GSES3,
+            GSES4: GLOBAL.GSES4,
+            GSES5: GLOBAL.GSES5,
+            GSES6: GLOBAL.GSES6,
+            GSES7: GLOBAL.GSES7,
+            GSESTotal: GLOBAL.GSESScore
+          }
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
