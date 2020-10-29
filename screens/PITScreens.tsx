@@ -19,6 +19,8 @@ import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 
+// TODO: Update percentage values for progress bar
+
 // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
 // TODO: Find a graceful way to type my global module. Maybe create a new state management
@@ -45,31 +47,7 @@ let GLOBAL: Global = GLOBALRAW;
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
-
-// Define default chart styles
-const chartStyles = {
-  chart: {
-    width: scale(300),
-    height: scale(300),
-    domainPadding: { x: [3, 3], y: [35, 35] }
-  },
-  axis: {
-    tickLabels: {
-      angle: -45,
-      fontSize: scale(11)
-    },
-    grid: {
-      stroke: theme.colors.medium
-    }
-  },
-  line: {
-    data: {
-      stroke: theme.colors.primary,
-      strokeWidth: scale(4),
-      strokeLinejoin: 'round'
-    }
-  }
-};
+let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 interface Props {
   navigation: {
@@ -100,7 +78,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
 // Screen it targets for return navigation is 'TreatmentPlan'
 
 export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+  imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
     <WizardContentScreen
@@ -264,8 +242,6 @@ export const GSES7: React.FC<Props> = ({ navigation }) => {
 };
 
 export const GSESResult: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   const { GSES1, GSES2, GSES3, GSES4, GSES5, GSES6, GSES7 } = GLOBAL;
 
   const GSESScore = GSES1 + GSES2 + GSES3 + GSES4 + GSES5 + GSES6 + GSES7;
@@ -275,7 +251,7 @@ export const GSESResult: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('GSES1', {
+        navigation.navigate('TryingToSleep', {
           progressBarPercent: 0.28
         });
       }}
@@ -291,9 +267,40 @@ export const GSESResult: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const WhyPIT: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+// Trying to sleep screen
+export const TryingToSleep: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('GSES1', {
+          progressBarPercent: 0.28
+        });
+      }}
+      titleLabel="Studies show that poor sleepers have something in common:"
+      textLabel={
+        "They try very hard to sleep. Since sleep isn't a conscious process, this strong effort actually makes sleeping harder! In fact, insomnia itself can sometimes be characterized as a symptom of trying too hard to sleep."
+      }
+      buttonLabel="Next"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
 
+// Paradox screen
+
+// Antidote screen
+
+// How to screen
+
+// Science screen
+
+// Review screen
+
+export const WhyPIT: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -316,8 +323,6 @@ export const WhyPIT: React.FC<Props> = ({ navigation }) => {
 };
 
 export const PITOverview: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -344,8 +349,6 @@ It's all about noticing & releasing muscular tension.`}
 };
 
 export const PMRWalkthrough: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -371,8 +374,6 @@ export const PMRWalkthrough: React.FC<Props> = ({ navigation }) => {
 };
 
 export const PostPMR: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -395,8 +396,6 @@ export const PostPMR: React.FC<Props> = ({ navigation }) => {
 };
 
 export const CalibrationStart: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -470,8 +469,6 @@ export const PITIntentionTime: React.FC<Props> = ({ navigation }) => {
 };
 
 export const TreatmentRecommit: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
@@ -494,7 +491,6 @@ export const TreatmentRecommit: React.FC<Props> = ({ navigation }) => {
 };
 
 export const RulesRecap: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
       theme={theme}
@@ -572,7 +568,6 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
   const { state, dispatch } = React.useContext(AuthContext);
   return (
     <WizardContentScreen
