@@ -16,6 +16,7 @@ interface Args {
   sleepOnsetAvgBaseline?: number;
   nightMinsAwakeAvgBaseline?: number;
   sleepDurationAvgBaseline?: number;
+  additionalCheckinData?: object;
 }
 
 // Function that updates currentTreatments, nextCheckin, and treatmentsHistory in Firebase
@@ -34,7 +35,8 @@ export default function submitCheckinData({
   sleepEfficiencyAvgBaseline,
   sleepOnsetAvgBaseline,
   nightMinsAwakeAvgBaseline,
-  sleepDurationAvgBaseline
+  sleepDurationAvgBaseline,
+  additionalCheckinData
 }: Args) {
   try {
     // Initialize relevant Firebase values
@@ -79,7 +81,8 @@ export default function submitCheckinData({
       dateStarted: lastCheckinDatetime,
       targetBedTime: targetBedTime,
       targetWakeTime: targetWakeTime,
-      targetTimeInBed: targetTimeInBed
+      targetTimeInBed: targetTimeInBed,
+      ...additionalCheckinData
     });
   } catch (error) {
     console.log(error);
