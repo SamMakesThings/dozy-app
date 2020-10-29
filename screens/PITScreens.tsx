@@ -8,7 +8,7 @@ import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
-import GLOBAL from '../utilities/global';
+import GLOBALRAW from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
 import DizzyFace from '../assets/images/DizzyFace.svg';
@@ -21,7 +21,11 @@ import refreshUserData from '../utilities/refreshUserData';
 
 // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
+// Same for "GLOBAL" state thing, don't want to bother typing all those values lol
+// Maybe there's a way to do it automatically?
+// TODO: Find a graceful way to type my global module
 const theme: any = dozy_theme;
+const GLOBAL: any = GLOBALRAW;
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
@@ -51,7 +55,14 @@ const chartStyles = {
   }
 };
 
-export const Welcome = ({ navigation }) => {
+interface Props {
+  navigation: {
+    navigate: Function;
+    goBack: Function;
+  };
+}
+
+export const Welcome: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
@@ -72,7 +83,7 @@ export const Welcome = ({ navigation }) => {
 // First screen to navigate to is 'SRTTitrationStart'
 // Screen it targets for return navigation is 'TreatmentPlan'
 
-export const TreatmentPlan = ({ navigation }) => {
+export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
@@ -96,12 +107,12 @@ export const TreatmentPlan = ({ navigation }) => {
   );
 };
 
-export const GSES1 = ({ navigation }) => {
+export const GSES1: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: number) => {
         GLOBAL.GSES1 = value;
         navigation.navigate('GSES2', { progressBarPercent: 0.67 });
       }}
@@ -116,12 +127,12 @@ export const GSES1 = ({ navigation }) => {
   );
 };
 
-export const GSES2 = ({ navigation }) => {
+export const GSES2: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: number) => {
         GLOBAL.GSES2 = value;
         navigation.navigate('GSES3', { progressBarPercent: 0.67 });
       }}
@@ -136,12 +147,12 @@ export const GSES2 = ({ navigation }) => {
   );
 };
 
-export const GSES3 = ({ navigation }) => {
+export const GSES3: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: number) => {
         GLOBAL.GSES3 = value;
         navigation.navigate('GSES4', { progressBarPercent: 0.67 });
       }}
@@ -156,12 +167,12 @@ export const GSES3 = ({ navigation }) => {
   );
 };
 
-export const GSES4 = ({ navigation }) => {
+export const GSES4: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: number) => {
         GLOBAL.GSES4 = value;
         navigation.navigate('GSES5', { progressBarPercent: 0.67 });
       }}
@@ -176,12 +187,12 @@ export const GSES4 = ({ navigation }) => {
   );
 };
 
-export const GSES5 = ({ navigation }) => {
+export const GSES5: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: number) => {
         GLOBAL.GSES5 = value;
         navigation.navigate('GSES6', { progressBarPercent: 0.67 });
       }}
@@ -196,12 +207,12 @@ export const GSES5 = ({ navigation }) => {
   );
 };
 
-export const GSES6 = ({ navigation }) => {
+export const GSES6: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: number) => {
         GLOBAL.GSES6 = value;
         navigation.navigate('GSES7', { progressBarPercent: 0.67 });
       }}
@@ -216,12 +227,12 @@ export const GSES6 = ({ navigation }) => {
   );
 };
 
-export const GSES7 = ({ navigation }) => {
+export const GSES7: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: number) => {
         GLOBAL.GSES7 = value;
         navigation.navigate('GSESResult', { progressBarPercent: 0.67 });
       }}
@@ -236,7 +247,7 @@ export const GSES7 = ({ navigation }) => {
   );
 };
 
-export const GSESResult = ({ navigation }) => {
+export const GSESResult: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   const { GSES1, GSES2, GSES3, GSES4, GSES5, GSES6, GSES7 } = GLOBAL;
@@ -264,7 +275,7 @@ export const GSESResult = ({ navigation }) => {
   );
 };
 
-export const WhyPIT = ({ navigation }) => {
+export const WhyPIT: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
@@ -288,7 +299,7 @@ export const WhyPIT = ({ navigation }) => {
   );
 };
 
-export const PITOverview = ({ navigation }) => {
+export const PITOverview: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
@@ -316,7 +327,7 @@ It's all about noticing & releasing muscular tension.`}
   );
 };
 
-export const PMRWalkthrough = ({ navigation }) => {
+export const PMRWalkthrough: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
@@ -343,7 +354,7 @@ export const PMRWalkthrough = ({ navigation }) => {
   );
 };
 
-export const PostPMR = ({ navigation }) => {
+export const PostPMR: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
@@ -367,14 +378,14 @@ export const PostPMR = ({ navigation }) => {
   );
 };
 
-export const CalibrationStart = ({ navigation }) => {
+export const CalibrationStart: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(res) => {
+      onQuestionSubmit={(res: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
             module: 'RLX'
@@ -398,12 +409,12 @@ export const CalibrationStart = ({ navigation }) => {
   );
 };
 
-export const PMRIntentionAction = ({ navigation }) => {
+export const PMRIntentionAction: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: string) => {
         GLOBAL.PMRIntentionAction = value;
         navigation.navigate('PITIntentionTime', { progressBarPercent: 0.67 });
       }}
@@ -423,13 +434,13 @@ export const PMRIntentionAction = ({ navigation }) => {
   );
 };
 
-export const PITIntentionTime = ({ navigation }) => {
+export const PITIntentionTime: React.FC<Props> = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().hour(11).minute(0).toDate()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: Date) => {
         GLOBAL.PMRIntentionTime = value;
         navigation.navigate('TreatmentRecommit', {
           progressBarPercent: 0.72
@@ -442,7 +453,7 @@ export const PITIntentionTime = ({ navigation }) => {
   );
 };
 
-export const TreatmentRecommit = ({ navigation }) => {
+export const TreatmentRecommit: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
 
   return (
@@ -466,7 +477,7 @@ export const TreatmentRecommit = ({ navigation }) => {
   );
 };
 
-export const RulesRecap = ({ navigation }) => {
+export const RulesRecap: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <WizardContentScreen
@@ -514,17 +525,17 @@ export const RulesRecap = ({ navigation }) => {
   );
 };
 
-export const CheckinScheduling = ({ navigation }) => {
+export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: Date) => {
         GLOBAL.nextCheckinTime = value;
         navigation.navigate('SCTSRTEnd', { progressBarPercent: 1 });
       }}
-      validInputChecker={(val) => {
+      validInputChecker={(val: Date) => {
         // Make sure the selected date is 7+ days from today
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
@@ -544,7 +555,7 @@ export const CheckinScheduling = ({ navigation }) => {
   );
 };
 
-export const SCTSRTEnd = ({ navigation }) => {
+export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
   let imgSize = imgSizePercent * useWindowDimensions().width;
   const { state, dispatch } = React.useContext(AuthContext);
   return (
@@ -559,7 +570,7 @@ export const SCTSRTEnd = ({ navigation }) => {
           nextCheckinDatetime: GLOBAL.nextCheckinTime,
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
-            (v) => v.started === false
+            (v: { started: boolean }) => v.started === false
           )[0].module,
           lastCheckinModule: 'RLX',
           targetBedTime: GLOBAL.targetBedTime,
