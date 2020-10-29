@@ -381,7 +381,11 @@ export const SCTSRTEnd = ({ navigation }) => {
           lastCheckinModule: 'RLX',
           targetBedTime: GLOBAL.targetBedTime,
           targetWakeTime: GLOBAL.targetWakeTime,
-          targetTimeInBed: GLOBAL.targetTimeInBed
+          targetTimeInBed: GLOBAL.targetTimeInBed,
+          additionalCheckinData: {
+            PMRIntentionAction: GLOBAL.PMRIntentionAction,
+            PMRIntentionTime: GLOBAL.PMRIntentionTime
+          }
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
