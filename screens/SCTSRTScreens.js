@@ -911,7 +911,7 @@ export const SCTSRTEnd = ({ navigation }) => {
           nextCheckinDatetime: GLOBAL.nextCheckinTime,
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
-            (v) => v.started === false
+            (v) => v.started === false && v.module !== 'SCTSRT'
           )[0].module,
           lastCheckinModule: 'SCTSRT',
           targetBedTime: GLOBAL.SCTSRTBedTime,

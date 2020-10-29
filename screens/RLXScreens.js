@@ -376,7 +376,7 @@ export const SCTSRTEnd = ({ navigation }) => {
           nextCheckinDatetime: GLOBAL.nextCheckinTime,
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
-            (v) => v.started === false
+            (v) => v.started === false && v.module !== 'RLX'
           )[0].module,
           lastCheckinModule: 'RLX',
           targetBedTime: GLOBAL.targetBedTime,
