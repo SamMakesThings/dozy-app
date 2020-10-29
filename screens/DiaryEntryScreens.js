@@ -246,7 +246,6 @@ export const WakeTimeInput = ({ navigation }) => {
       validInputChecker={(val) => {
         // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
         // Also make sure the wake time occurs after the bedtime (complex b/c PM>AM crossover)
-        console.log(moment(GLOBAL.bedTime).hour());
         if (!(moment(val).hour() < 17)) {
           return 'Did you set AM/PM correctly? Selected time is late for a wake time.';
         } else if (
