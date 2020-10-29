@@ -12,6 +12,10 @@ import GLOBALRAW from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
 import DizzyFace from '../assets/images/DizzyFace.svg';
+import TiredFace from '../assets/images/TiredFace.svg';
+import SleepingFace from '../assets/images/SleepingFace.svg';
+import BarChart from '../assets/images/BarChart.svg';
+import LabCoat from '../assets/images/LabCoat.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import AlarmClock from '../assets/images/AlarmClock.svg';
 import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
@@ -43,7 +47,7 @@ interface Global {
 }
 
 const theme: any = dozy_theme;
-let GLOBAL: Global = GLOBALRAW;
+let GLOBAL: Global = GLOBALRAW; // Create a local copy of global app state, typed with above
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
@@ -259,7 +263,7 @@ export const GSESResult: React.FC<Props> = ({ navigation }) => {
       buttonLabel="Next"
       flexibleLayout
     >
-      <FemaleDoctor width={imgSize} height={imgSize} />
+      <BarChart width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
@@ -279,7 +283,7 @@ export const TryingToSleep: React.FC<Props> = ({ navigation }) => {
       buttonLabel="Well that sucks"
       flexibleLayout
     >
-      <FemaleDoctor width={imgSize} height={imgSize} />
+      <TiredFace width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
@@ -299,7 +303,7 @@ export const Paradox: React.FC<Props> = ({ navigation }) => {
       buttonLabel="The lucky pricks"
       flexibleLayout
     >
-      <FemaleDoctor width={imgSize} height={imgSize} />
+      <DizzyFace width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
@@ -319,7 +323,7 @@ export const Antidote: React.FC<Props> = ({ navigation }) => {
       buttonLabel="How do I do it?"
       flexibleLayout
     >
-      <FemaleDoctor width={imgSize} height={imgSize} />
+      <SleepingFace width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
@@ -330,14 +334,30 @@ export const HowToPIT: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('GSES1', {
+        navigation.navigate('PITScience', {
           progressBarPercent: 0.28
         });
       }}
       titleLabel="How to use Paradoxical Intention Therapy:"
-      textLabel={`1. Maintain your prescribed sleep schedule.
-2. When you're in bed, gently keep your eyes open and make no effort to fall asleep.
-3. Don't actively keep yourself awake though - don't move around, drink coffee, etc. You're simply letting go of the effort to fall asleep.`}
+      textLabel={
+        <>
+          <Text>
+            <Text style={styles.BoldLabelText}>1.</Text> Maintain the target
+            sleep schedule,
+          </Text>
+          {'\n'}
+          <Text>
+            <Text style={styles.BoldLabelText}>2.</Text> When you're in bed,
+            gently keep your eyes open and make no effort to fall asleep.
+          </Text>
+          {'\n'}
+          <Text>
+            <Text style={styles.BoldLabelText}>3.</Text> Don't actively keep
+            yourself awake though - don't move around, drink coffee, etc. You're
+            simply letting go of the effort to fall asleep.
+          </Text>
+        </>
+      }
       buttonLabel="This sounds kinda silly"
       flexibleLayout
     >
@@ -346,106 +366,27 @@ export const HowToPIT: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-// Science screen
-
-// Review screen
-
-export const WhyPIT: React.FC<Props> = ({ navigation }) => {
+export const PITScience: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('PITOverview', {
-          progressBarPercent: 0.33
+        navigation.navigate('PITReview', {
+          progressBarPercent: 0.28
         });
       }}
-      titleLabel="Why PIT?"
-      textLabel={
-        "Falling asleep is a subconscious process. It's strange, but the harder we try to fall asleep, the more sleep will elude us. This effort creates a vicious cycle of trying harder and harder to sleep, with disapointing results. By *not* trying to fall asleep, we can actually make it easier."
-      }
-      buttonLabel="How?"
+      titleLabel="It may sound silly, but it's science!"
+      textLabel="Multiple independent studies have found that sleepers who use PIT fall asleep faster than those who don't. It may sound weird, but it works, and there's a good chance it'll work for you."
+      buttonLabel="Next"
       flexibleLayout
     >
-      <DizzyFace width={imgSize} height={imgSize} />
+      <LabCoat width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
 
-export const PITOverview: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('PMRWalkthrough', {
-          progressBarPercent: 0.39
-        });
-      }}
-      titleLabel="There are 3 main steps."
-      textLabel={`1. Tense the muscles in your forehead for 5ish seconds. Feel what tension there feels like. 
-
-2. Release the tension with a deep outbreath. Continue breathing deeply through the whole process. 
-
-3. Repeat steps 1 and 2 for every major muscle group in the body.
-
-It's all about noticing & releasing muscular tension.`}
-      buttonLabel="Let's try it"
-      flexibleLayout
-    >
-      <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const PMRWalkthrough: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('PostPMR', {
-          progressBarPercent: 0.44
-        });
-      }}
-      textLabel={
-        "Let's try it now! Find a comfy chair and follow along with the 6 minute video above. (If you have trouble seeing the video, make sure you don't have the YouTube website blocked.)"
-      }
-      buttonLabel="I've finished the video"
-    >
-      <WebView
-        source={{
-          uri: 'https://www.youtube.com/embed/1nZEdqcGVzo'
-        }}
-        style={{ width: useWindowDimensions().width, marginBottom: scale(20) }}
-      />
-    </WizardContentScreen>
-  );
-};
-
-export const PostPMR: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('CalibrationStart', {
-          progressBarPercent: 0.56
-        });
-      }}
-      titleLabel="How do you feel?"
-      textLabel={
-        "If all went well, you should be feeling significantly more relaxed. This is a useful tool both during the day and when you're about to sleep. We'll leave this exercise on the home page where you can find it easily later."
-      }
-      buttonLabel="So how do I use it?"
-      flexibleLayout
-    >
-      <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const CalibrationStart: React.FC<Props> = ({ navigation }) => {
+export const PITReview: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -453,86 +394,18 @@ export const CalibrationStart: React.FC<Props> = ({ navigation }) => {
       onQuestionSubmit={(res: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
-            module: 'RLX'
+            module: 'PIT'
           });
         } else {
-          navigation.navigate('PMRIntentionAction', {
+          navigation.navigate('RulesRecap', {
             progressBarPercent: 0.61
           });
         }
       }}
-      titleLabel="How to apply PMR"
-      textLabel={
-        "During the week, we'll practice PMR twice daily: once during the day, and again when you go to bed at night."
-      }
-      buttonLabel="Ok, sounds reasonable"
+      titleLabel="So, to review:"
+      textLabel="In addition to your target sleep schedule and bedtime rules, start using PIT by not trying to fall asleep and instead passively trying to keep your eyes open. You can always review this information on your Treatments page."
+      buttonLabel="Ok, I can do it this week"
       bottomGreyButtonLabel="Wait, I have questions"
-      flexibleLayout
-    >
-      <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const PMRIntentionAction: React.FC<Props> = ({ navigation }) => {
-  return (
-    <MultiButtonScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: string) => {
-        GLOBAL.replaceme = value;
-        navigation.navigate('PITIntentionTime', { progressBarPercent: 0.67 });
-      }}
-      buttonValues={[
-        { label: 'Before lunch', value: 'before lunch', solidColor: false },
-        { label: 'After lunch', value: 'after lunch', solidColor: false },
-        {
-          label: 'After getting home from work',
-          value: 'after work',
-          solidColor: false
-        },
-        { label: 'After dinner', value: 'after dinner', solidColor: false },
-        { label: 'Other', value: 'other trigger', solidColor: false }
-      ]}
-      questionLabel="When would you like to practice PMR during the day?"
-    />
-  );
-};
-
-export const PITIntentionTime: React.FC<Props> = ({ navigation }) => {
-  return (
-    <DateTimePickerScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      defaultValue={moment().hour(11).minute(0).toDate()}
-      onQuestionSubmit={(value: Date) => {
-        GLOBAL.replaceme = value;
-        navigation.navigate('TreatmentRecommit', {
-          progressBarPercent: 0.72
-        });
-      }}
-      questionLabel="When would you like to be reminded?"
-      questionSubtitle="We'll send a push notification to remind you."
-      mode="time"
-    />
-  );
-};
-
-export const TreatmentRecommit: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('RulesRecap', {
-          progressBarPercent: 0.78
-        });
-      }}
-      titleLabel="Can you re-commit to following the treatment plan this week?"
-      textLabel={
-        "That means following the target sleep schedule, following the 3 rules (nothing in bed besides sleeping, etc), practicing PMR during the day and before sleeping, and any others you've started."
-      }
-      buttonLabel="Yes, I can do it this week"
       flexibleLayout
     >
       <FemaleDoctor width={imgSize} height={imgSize} />
@@ -592,10 +465,14 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
+      defaultValue={
+        new Date(
+          new Date().getTime() + 86400000 * 7
+        ) /* Default date of 7 days from today */
+      }
       onQuestionSubmit={(value: Date) => {
         GLOBAL.nextCheckinTime = value;
-        navigation.navigate('SCTSRTEnd', { progressBarPercent: 1 });
+        navigation.navigate('PITEnd', { progressBarPercent: 1 });
       }}
       validInputChecker={(val: Date) => {
         // Make sure the selected date is 7+ days from today
@@ -617,7 +494,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
+export const PITEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
   return (
     <WizardContentScreen
@@ -633,7 +510,7 @@ export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
             (v: { started: boolean }) => v.started === false
           )[0].module,
-          lastCheckinModule: 'RLX',
+          lastCheckinModule: 'PIT',
           targetBedTime: GLOBAL.targetBedTime,
           targetWakeTime: GLOBAL.targetWakeTime,
           targetTimeInBed: GLOBAL.targetTimeInBed
