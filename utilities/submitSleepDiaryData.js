@@ -29,6 +29,28 @@ export default async function submitSleepDiaryData() {
   var sleepDuration = minsInBedTotal - minsAwakeInBedTotal;
   var sleepEfficiency = +(sleepDuration / minsInBedTotal).toFixed(2);
 
+  // Create an object, add any additional treatment module data
+  // Currently added: SCT, RLX (PMR), PIT
+  let treatmentModuleData = {};
+  if (GLOBAL.SCTUpCount) {
+    treatmentModuleData = Object.assign(treatmentModuleData, {
+      SCTUpCount: GLOBAL.SCTUpCount,
+      SCTAnythingNonSleepInBed: GLOBAL.SCTAnythingNonSleepInBed,
+      SCTNonSleepActivities: GLOBAL.SCTNonSleepActivities || null,
+      SCTDaytimeNaps: GLOBAL.SCTDaytimeNaps
+    });
+  }
+  if (GLOBAL.PMRPractice) {
+    treatmentModuleData = Object.assign(treatmentModuleData, {
+      PMRPractice: GLOBAL.PMRPractice
+    });
+  }
+  if (GLOBAL.PITPractice) {
+    treatmentModuleData = Object.assign(treatmentModuleData, {
+      PITPractice: GLOBAL.PITPractice
+    });
+  }
+
   // Write the data to the user's sleep log document in Firebase
   sleepLogsRef
     .add({
@@ -48,10 +70,7 @@ export default async function submitSleepDiaryData() {
       minsInBedTotal: minsInBedTotal,
       minsAwakeInBedTotal: minsAwakeInBedTotal,
       tags: GLOBAL.tags,
-      SCTUpCount: GLOBAL.SCTUpTimeCount || null, // Add SCT data if available, otherwise undefined
-      SCTAnythingNonSleepInBed: GLOBAL.SCTAnythingNonSleepInBed || null,
-      SCTNonSleepActivities: GLOBAL.SCTNonSleepActivities || null,
-      SCTDaytimeNaps: GLOBAL.SCTDaytimeNaps || null
+      ...treatmentModuleData
     })
     .catch(function (error) {
       console.log('Error pushing sleep log data:', error);
