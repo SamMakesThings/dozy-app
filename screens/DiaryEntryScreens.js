@@ -13,7 +13,7 @@ import { AuthContext } from '../utilities/authContext';
 
 // Define the theme & state objects for the file globally
 const theme = dozy_theme;
-const state = {};
+let state = {};
 
 export const BedTimeInput = ({ navigation }) => {
   // If there is a sleep log recorded, use the most recent
@@ -58,8 +58,8 @@ export const MinsToFallAsleepInput = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.minsToFallAsleep = value;
-        // If PMR started, navigate to PMR. If PIT but no PMR, then PIT. Otherwise wakeCount
-        if (state.userData.currentTreatments.PMR) {
+        // If RLX (PMR) started, navigate to RLX. If PIT but no RLX, then PIT. Otherwise wakeCount
+        if (state.userData.currentTreatments.RLX) {
           navigation.navigate('PMRAsk', { progressBarPercent: 0.3 });
         } else if (state.userData.currentTreatments.PIT) {
           navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
@@ -97,7 +97,7 @@ export const PMRAsk = ({ navigation }) => {
       }}
       buttonValues={[
         {
-          label: 'Yes, during the day and before falling asleep',
+          label: 'Yes, daytime & before sleeping',
           value: 'DuringDayAndBeforeSleep'
         },
         { label: 'Yes, during the day only', value: 'DuringDay' },
@@ -132,14 +132,26 @@ export const WakeCountInput = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.wakeCount = value;
-        // If SCTSRT has started, navigate to SCT questions
-        // If user didn't wake in the night, skip asking how long they were awake
-        if (state.userData.currentTreatments.SCTSRT) {
-          navigation.navigate('SCTUpCountInput', { progressBarPercent: 0.5 });
+        if (
+          state.userData.currentTreatments.SCTSRT &&
+          (GLOBAL.minsToFallAsleep >= 20 || value >= 1)
+        ) {
+          // If SCTSRT has started AND user woke 1+ times or took 20+ mins to sleep, navigate to SCT questions
+          navigation.navigate('SCTUpCountInput', { progressBarPercent: 0.44 });
+        } else if (state.userData.currentTreatments.SCTSRT) {
+          // If user started SCTSRT but slept quickly, skip to asking about daytime naps
+          // & set SCT values appropriately
+          GLOBAL.SCTUpCount = 0;
+          GLOBAL.SCTAnythingNonSleepInBed = false;
+          navigation.navigate('SCTDaytimeNapsInput', {
+            progressBarPercent: 0.5
+          });
         } else if (value === 0) {
-          navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
+          // If user didn't wake in the night, skip asking how long they were awake
           GLOBAL.nightMinsAwake = 0;
+          navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
         } else {
+          // Otherwise, ask how long they were awake
           navigation.navigate('NightMinsAwakeInput', {
             progressBarPercent: 0.5
           });
@@ -177,12 +189,11 @@ export const SCTUpCountInput = ({ navigation }) => {
         { label: '4', value: 4 },
         { label: '5+', value: 5 }
       ]}
-      questionLabel="(SCT) Following rule 2, how many times did you get out of bed when unable to sleep for more than 15 minutes?"
+      questionLabel="Following rule 2 of SCT, how many times did you get out of bed when unable to sleep for more than 15 minutes?"
     />
   );
 };
 
-// If SCTSRT started, show SCT question screens
 export const SCTAnythingNonSleepInBedInput = ({ navigation }) => {
   return (
     <MultiButtonScreen
@@ -204,7 +215,7 @@ export const SCTAnythingNonSleepInBedInput = ({ navigation }) => {
         { label: 'Yes', value: 1 },
         { label: 'No', value: 0 }
       ]}
-      questionLabel="(SCT) Did you do anything in bed besides sleeping? (e.g. use phone, watch tv, read a book. Sex excluded 🙈)"
+      questionLabel="Did you do anything in bed besides sleeping? (e.g. use phone, watch tv, read a book. Sex excluded 🙈)"
     />
   );
 };
@@ -219,7 +230,7 @@ export const SCTNonSleepActivitiesInput = ({ navigation }) => {
           progressBarPercent: 0.63
         });
       }}
-      questionLabel="(SCT) What were you doing besides sleeping?"
+      questionLabel="What were you doing besides sleeping?"
       inputLabel="(e.g. reading, using phone)"
     />
   );
@@ -245,7 +256,7 @@ export const SCTDaytimeNapsInput = ({ navigation }) => {
         { label: 'Yes', value: 1 },
         { label: 'No', value: 0 }
       ]}
-      questionLabel="(SCT) Did you take any daytime naps longer than 30 minutes yesterday?"
+      questionLabel="Did you take any daytime naps longer than 30 minutes yesterday?"
     />
   );
 };
