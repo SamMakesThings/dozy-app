@@ -58,7 +58,14 @@ export const MinsToFallAsleepInput = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value) => {
         GLOBAL.minsToFallAsleep = value;
-        navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
+        // If PMR started, navigate to PMR. If PIT but no PMR, then PIT. Otherwise wakeCount
+        if (state.userData.currentTreatments.PMR) {
+          navigation.navigate('PMRAsk', { progressBarPercent: 0.3 });
+        } else if (state.userData.currentTreatments.PIT) {
+          navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
+        } else {
+          navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
+        }
       }}
       validInputChecker={(val) => {
         if (val < 0) {
@@ -71,6 +78,50 @@ export const MinsToFallAsleepInput = ({ navigation }) => {
       }}
       questionLabel="Roughly how long did it take you to fall asleep?"
       inputLabel="(in minutes)"
+    />
+  );
+};
+
+export const PMRAsk = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      onQuestionSubmit={(value) => {
+        GLOBAL.PMRPractice = value;
+        // If PIT started, navigate to PIT. Otherwise navigate to WakeCountInput
+        if (state.userData.currentTreatments.PIT) {
+          navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
+        } else {
+          navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
+        }
+      }}
+      buttonValues={[
+        {
+          label: 'Yes, during the day and before falling asleep',
+          value: 'DuringDayAndBeforeSleep'
+        },
+        { label: 'Yes, during the day only', value: 'DuringDay' },
+        { label: 'Yes, before falling asleep only', value: 'BeforeSleep' },
+        { label: 'No', value: 'NoPMR' }
+      ]}
+      questionLabel="Did you practice Progressive Muscle Relaxation (PMR)?"
+    />
+  );
+};
+
+export const PITAsk = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      onQuestionSubmit={(value) => {
+        GLOBAL.PITPractice = value;
+        navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
+      }}
+      buttonValues={[
+        { label: 'Yes', value: true },
+        { label: 'No', value: false }
+      ]}
+      questionLabel="Did you use Paradoxical Intention Therapy (PIT) to help you fall asleep?"
     />
   );
 };
@@ -335,6 +386,7 @@ export const TagsNotesInput = ({ navigation }) => {
         GLOBAL.tags = res.tags;
 
         // Submit data to Firebase thru helper function
+        // TODO: Make submitSleepDiaryData a pure function
         submitSleepDiaryData();
 
         // Navigate back to the main app
