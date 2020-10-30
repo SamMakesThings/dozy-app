@@ -11,13 +11,15 @@ import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 
-// Define the theme for the file globally
+// Define the theme & state objects for the file globally
 const theme = dozy_theme;
+const state = {};
 
 export const BedTimeInput = ({ navigation }) => {
   // If there is a sleep log recorded, use the most recent
-  // bedtime value as a default
-  const { state } = React.useContext(AuthContext);
+  // bedtime value as a default.
+  // Also use hook to set state value for the file
+  state = React.useContext(AuthContext).state;
   let defaultDate = moment().hour(22).minute(0).toDate();
   if (state.sleepLogs && state.sleepLogs.length > 0) {
     defaultDate = moment()
@@ -74,8 +76,6 @@ export const MinsToFallAsleepInput = ({ navigation }) => {
 };
 
 export const WakeCountInput = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
-
   return (
     <MultiButtonScreen
       theme={theme}
@@ -226,7 +226,6 @@ export const NightMinsAwakeInput = ({ navigation }) => {
 export const WakeTimeInput = ({ navigation }) => {
   // If there is a sleep log recorded, use the most recent
   // wake time value as a default
-  const { state } = React.useContext(AuthContext);
   let defaultDate = moment().hour(9).minute(0).toDate();
   if (state.sleepLogs && state.sleepLogs.length > 0) {
     defaultDate = moment()
