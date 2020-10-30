@@ -22,7 +22,8 @@ export default {
       'Do nothing in bed besides sleeping (no phone!)',
       'If awake for 15+ mins, get up and return later'
     ],
-    url: 'https://dozy.customerly.help/collecting-a-baseline-of-sleep-data/',
+    url:
+      'https://dozy.customerly.help/stimulus-control-therapy-and-sleep-restriction-therapy/',
     optional: false,
     ready: true
   },
@@ -34,7 +35,7 @@ export default {
       'Practice PMR once during the day',
       'Use PMR before trying to sleep'
     ],
-    url: 'https://dozy.customerly.help',
+    url: 'https://dozy.customerly.help/progressive-muscle-relaxation-pmr/',
     optional: false,
     ready: true
   },
