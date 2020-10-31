@@ -2,6 +2,15 @@ import '@firebase/firestore';
 import * as firebase from 'firebase';
 import { FbLib } from '../config/firebaseConfig';
 
+interface ReminderObject {
+  expoPushToken: string;
+  title?: string;
+  body: string;
+  type: string;
+  time: Date;
+  enabled: boolean;
+}
+
 interface Args {
   userId: string;
   nextCheckinDatetime: Date;
@@ -17,6 +26,7 @@ interface Args {
   nightMinsAwakeAvgBaseline?: number;
   sleepDurationAvgBaseline?: number;
   additionalCheckinData?: object;
+  reminderObject?: ReminderObject | Array<ReminderObject>;
 }
 
 // Function that updates currentTreatments, nextCheckin, and treatmentsHistory in Firebase
@@ -36,7 +46,8 @@ export default function submitCheckinData({
   sleepOnsetAvgBaseline,
   nightMinsAwakeAvgBaseline,
   sleepDurationAvgBaseline,
-  additionalCheckinData
+  additionalCheckinData,
+  reminderObject
 }: Args) {
   try {
     // Initialize relevant Firebase values
@@ -84,6 +95,18 @@ export default function submitCheckinData({
       targetTimeInBed: targetTimeInBed,
       ...additionalCheckinData
     });
+
+    // If reminder set during the module, add the reminder to user db
+    if (reminderObject) {
+      // If a single reminderObject is passed, put it in an array
+      const reminderArray =
+        reminderObject.constructor !== Array
+          ? [reminderObject]
+          : reminderObject;
+      reminderArray.map((reminderObject) => {
+        userDocRef.collection('notifications').add(reminderObject);
+      });
+    }
   } catch (error) {
     console.log(error);
   }

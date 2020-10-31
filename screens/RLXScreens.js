@@ -363,6 +363,30 @@ export const CheckinScheduling = ({ navigation }) => {
 
 export const SCTSRTEnd = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
+
+  // Create reminder objects, put them in an array
+  let reminderArray = [
+    {
+      expoPushToken: state.userData.reminders.expoPushToken,
+      title: 'Next checkin is ready',
+      body: 'Open the app now to get started',
+      type: 'CHECKIN_REMINDER',
+      time: GLOBAL.nextCheckinTime,
+      enabled: true
+    }
+  ];
+  // Give the option to not set a reminder for PMR practice
+  if (GLOBAL.PMRIntentionTime) {
+    reminderArray.push({
+      expoPushToken: state.userData.reminders.expoPushToken,
+      title: 'Remember to practice PMR',
+      body: 'Go to the Treatments screen to practice',
+      type: 'PMR_REMINDER',
+      time: GLOBAL.PMRIntentionTime,
+      enabled: true
+    });
+  }
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -385,7 +409,8 @@ export const SCTSRTEnd = ({ navigation }) => {
           additionalCheckinData: {
             PMRIntentionAction: GLOBAL.PMRIntentionAction,
             PMRIntentionTime: GLOBAL.PMRIntentionTime
-          }
+          },
+          reminderObject: reminderArray
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
