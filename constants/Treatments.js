@@ -44,7 +44,7 @@ export default {
     subTitle: 'To sleep, stop trying to sleep',
     image: Images.WomanInBed,
     todos: ['Practice not trying to fall asleep when in bed'],
-    url: 'https://dozy.customerly.help',
+    url: 'https://dozy.customerly.help/paradoxical-intention-therapy-pit/',
     optional: false,
     ready: true
   },
