@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
@@ -14,13 +14,13 @@ export default async function registerForPushNotificationsAsync() {
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
+      Alert.alert('Failed to get push token for push notification!');
       return;
     }
     const token = await Notifications.getExpoPushTokenAsync();
     return token;
   } else {
-    alert('Must use physical device for Push Notifications');
+    Alert.alert('Must use physical device for Push Notifications');
   }
 
   if (Platform.OS === 'android') {
