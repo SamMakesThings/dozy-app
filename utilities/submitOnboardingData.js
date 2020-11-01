@@ -19,6 +19,7 @@ export default async function submitOnboardingData(dispatch) {
   };
 
   // Store the sleep diary notification settings, store generated ID in userData
+  // Also set a reminder for the next checkin
   const notifDocRef = userDocRef.collection('notifications').doc();
   notifDocRef.set({
     expoPushToken: GLOBAL.expoPushToken
@@ -29,6 +30,14 @@ export default async function submitOnboardingData(dispatch) {
     type: 'DAILY_LOG',
     time: GLOBAL.diaryReminderTime ? GLOBAL.diaryReminderTime : new Date(),
     enabled: GLOBAL.diaryReminderTime ? true : false
+  });
+  userDocRef.collection('notifications').add({
+    expoPushToken: GLOBAL.expoPushToken,
+    title: 'Next checkin is ready',
+    body: 'Open the app now to get started',
+    type: 'CHECKIN_REMINDER',
+    time: GLOBAL.firstCheckinTime,
+    enabled: true
   });
 
   // Also store reminder info & next check-in datetime

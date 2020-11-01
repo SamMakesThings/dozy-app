@@ -898,6 +898,16 @@ export const SCTSRTEnd = ({ navigation }) => {
     ).toFixed(0)
   );
 
+  // Create reminder object for next checkin
+  let reminderObject = {
+    expoPushToken: state.userData.reminders.expoPushToken,
+    title: 'Next checkin is ready',
+    body: 'Open the app now to get started',
+    type: 'CHECKIN_REMINDER',
+    time: GLOBAL.nextCheckinTime,
+    enabled: true
+  };
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -920,7 +930,8 @@ export const SCTSRTEnd = ({ navigation }) => {
           sleepEfficiencyAvgBaseline: sleepEfficiencyAvg,
           sleepOnsetAvgBaseline: sleepOnsetAvg,
           nightMinsAwakeAvgBaseline: nightMinsAwakeAvg,
-          sleepDurationAvgBaseline: sleepDurationAvg
+          sleepDurationAvgBaseline: sleepDurationAvg,
+          reminderObject: reminderObject
         });
         navigation.navigate('App');
         refreshUserData(dispatch);

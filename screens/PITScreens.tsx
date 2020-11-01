@@ -498,6 +498,17 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const PITEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
+
+  // Create reminder object for next checkin
+  let reminderObject = {
+    expoPushToken: state.userData.reminders.expoPushToken,
+    title: 'Next checkin is ready',
+    body: 'Open the app now to get started',
+    type: 'CHECKIN_REMINDER',
+    time: GLOBAL.nextCheckinTime,
+    enabled: true
+  };
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -526,7 +537,8 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
             GSES6: GLOBAL.GSES6,
             GSES7: GLOBAL.GSES7,
             GSESTotal: GLOBAL.GSESScore
-          }
+          },
+          reminderObject: reminderObject
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
