@@ -56,7 +56,7 @@ interface Props {
 }
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+  imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -77,8 +77,6 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
 // Screen it targets for return navigation is 'TreatmentPlan'
 
 export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
-  imgSize = imgSizePercent * useWindowDimensions().width;
-
   return (
     <WizardContentScreen
       theme={theme}
