@@ -14,6 +14,9 @@ import DizzyFace from '../assets/images/DizzyFace.svg';
 import TiredFace from '../assets/images/TiredFace.svg';
 import SleepingFace from '../assets/images/SleepingFace.svg';
 import BarChart from '../assets/images/BarChart.svg';
+import TanBook from '../assets/images/TanBook.svg';
+import ThumbsUp from '../assets/images/ThumbsUp.svg';
+import Clipboard from '../assets/images/Clipboard.svg';
 import LabCoat from '../assets/images/LabCoat.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import AlarmClock from '../assets/images/AlarmClock.svg';
@@ -33,7 +36,7 @@ interface HYGState {
   SHI2?: number;
   SHI3?: number;
   SHI4?: number;
-  SHI4a?: number;
+  SHI4a?: string;
   SHI5?: number;
   SHI6?: number;
   SHI7?: number;
@@ -134,48 +137,290 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
 };
 
 export const HYGIntro: React.FC<Props> = ({ navigation }) => {
-  let SHIScore = 0;
-
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('TryingToSleep', {
+        navigation.navigate('HYGBenefits', {
           progressBarPercent: 0.28
         });
       }}
-      titleLabel={`You scored a ${SHIScore} on the Glasgow Sleep Effort Scale.`}
+      titleLabel="You've probably heard of sleep hygiene before."
       textLabel="You might've even tried some tricks from it (reduce caffeine, reduce nightly electronics use, etc). However, as you may have learned, sleep hygiene tips on their own aren't usually enough to fix insomnia."
-      buttonLabel="Next"
+      buttonLabel="Why talk about it then?"
       flexibleLayout
     >
-      <BarChart width={imgSize} height={imgSize} />
+      <TanBook width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
 
-export const GSES1: React.FC<Props> = ({ navigation }) => {
+export const HYGBenefits: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHIIntro', {
+          progressBarPercent: 0.28
+        });
+      }}
+      textLabel="Hygiene tips don't fix insomnia on their own. However, making strategic improvements can improve sleep quality, help prevent relapse, and boost the efficacy of other treatments at the same time."
+      buttonLabel="Got it"
+      flexibleLayout
+    >
+      <ThumbsUp width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHIIntro: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI1', {
+          progressBarPercent: 0.28
+        });
+      }}
+      textLabel={`To get started, we'll ask a few lifestyle questions to get a better idea of how to help you.
+      
+Please answer each question with how true the statement has been for you over the last week.`}
+      buttonLabel="Begin"
+      flexibleLayout
+    >
+      <Clipboard width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI1: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         HYGState.SHI1 = value;
-        navigation.navigate('GSES2', { progressBarPercent: 0.67 });
+        navigation.navigate('SHI2', { progressBarPercent: 0.67 });
       }}
-      questionLabel="I put too much effort into sleeping when it should come naturally."
+      questionLabel="I think, plan, or worry when I am in bed."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
       buttonValues={[
-        { label: 'Very much', value: 2, solidColor: false },
-        { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
+        { label: 'Never', value: 0, solidColor: false },
+        { label: 'Rarely', value: 1, solidColor: false },
+        { label: 'Sometimes', value: 2, solidColor: false },
+        { label: 'Frequently', value: 3, solidColor: false },
+        { label: 'Always', value: 4, solidColor: false }
       ]}
     />
   );
 };
 
-export const GSESResult: React.FC<Props> = ({ navigation }) => {
+export const SHI2: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        HYGState.SHI2 = value;
+        navigation.navigate('SHI3', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I exercise to the point of sweating within 1 hr of going to bed."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Never', value: 0, solidColor: false },
+        { label: 'Rarely', value: 1, solidColor: false },
+        { label: 'Sometimes', value: 2, solidColor: false },
+        { label: 'Frequently', value: 3, solidColor: false },
+        { label: 'Always', value: 4, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const SHI3: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        HYGState.SHI3 = value;
+        navigation.navigate('SHI4', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I stay in bed longer than I should two or three times a week."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Never', value: 0, solidColor: false },
+        { label: 'Rarely', value: 1, solidColor: false },
+        { label: 'Sometimes', value: 2, solidColor: false },
+        { label: 'Frequently', value: 3, solidColor: false },
+        { label: 'Always', value: 4, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const SHI4: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        HYGState.SHI4 = value;
+        if (value >= 2) {
+          // If uses substance more than rarely, ask which
+          navigation.navigate('SHI4a', { progressBarPercent: 0.67 });
+        } else {
+          HYGState.SHI4a = 'none';
+          navigation.navigate('SHI5', { progressBarPercent: 0.67 });
+        }
+      }}
+      questionLabel="I use alcohol, tobacco/nicotine, or caffeine within 4hrs of going to bed or after going to bed."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Never', value: 0, solidColor: false },
+        { label: 'Rarely', value: 1, solidColor: false },
+        { label: 'Sometimes', value: 2, solidColor: false },
+        { label: 'Frequently', value: 3, solidColor: false },
+        { label: 'Always', value: 4, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const SHI4a: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: string) => {
+        HYGState.SHI4a = value;
+        navigation.navigate('SHI5', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="Which would you say you use most often before going to bed?"
+      buttonValues={[
+        { label: 'Alcohol', value: 'alcohol', solidColor: false },
+        { label: 'Caffeine', value: 'caffeine', solidColor: false },
+        { label: 'Tobacco/Nicotene', value: 'nicotene', solidColor: false },
+        { label: 'Other', value: 'other', solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const SHI5: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        HYGState.SHI5 = value;
+        navigation.navigate('SHI6', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I do something that may wake me up before bedtime."
+      questionSubtitle="(for example: play video games, use social media, clean intensely)."
+      buttonValues={[
+        { label: 'Never', value: 0, solidColor: false },
+        { label: 'Rarely', value: 1, solidColor: false },
+        { label: 'Sometimes', value: 2, solidColor: false },
+        { label: 'Frequently', value: 3, solidColor: false },
+        { label: 'Always', value: 4, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const SHI6: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        HYGState.SHI6 = value;
+        navigation.navigate('SHI7', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I go to bed feeling stressed, angry, upset, or nervous."
+      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      buttonValues={[
+        { label: 'Never', value: 0, solidColor: false },
+        { label: 'Rarely', value: 1, solidColor: false },
+        { label: 'Sometimes', value: 2, solidColor: false },
+        { label: 'Frequently', value: 3, solidColor: false },
+        { label: 'Always', value: 4, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const SHI7: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        HYGState.SHI7 = value;
+        navigation.navigate('SHI8', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I sleep on an uncomfortable bed."
+      questionSubtitle="(for example: poor mattress or pillow, too many or not enough blankets)"
+      buttonValues={[
+        { label: 'Never', value: 0, solidColor: false },
+        { label: 'Rarely', value: 1, solidColor: false },
+        { label: 'Sometimes', value: 2, solidColor: false },
+        { label: 'Frequently', value: 3, solidColor: false },
+        { label: 'Always', value: 4, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const SHI8: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        HYGState.SHI8 = value;
+        navigation.navigate('SHI9', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I sleep in an uncomfortable bedroom."
+      questionSubtitle="(for example: too bright, too stuffy, too hot, too cold, or too noisy)"
+      buttonValues={[
+        { label: 'Never', value: 0, solidColor: false },
+        { label: 'Rarely', value: 1, solidColor: false },
+        { label: 'Sometimes', value: 2, solidColor: false },
+        { label: 'Frequently', value: 3, solidColor: false },
+        { label: 'Always', value: 4, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const SHI9: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        HYGState.SHI9 = value;
+        navigation.navigate('SHIResult', { progressBarPercent: 0.67 });
+      }}
+      questionLabel="I do important work before bedtime."
+      questionSubtitle="(for example: pay bills, plan, or study)"
+      buttonValues={[
+        { label: 'Never', value: 0, solidColor: false },
+        { label: 'Rarely', value: 1, solidColor: false },
+        { label: 'Sometimes', value: 2, solidColor: false },
+        { label: 'Frequently', value: 3, solidColor: false },
+        { label: 'Always', value: 4, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const SHIResult: React.FC<Props> = ({ navigation }) => {
   let SHIScore = 0;
 
   return (
