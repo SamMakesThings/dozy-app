@@ -2,13 +2,12 @@ import React from 'react';
 import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import { WebView } from 'react-native-webview';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
-import GLOBALRAW from '../utilities/global';
+import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
 import DizzyFace from '../assets/images/DizzyFace.svg';
@@ -25,36 +24,35 @@ import refreshUserData from '../utilities/refreshUserData';
 
 // TODO: Update percentage values for progress bar
 
-// Define the theme for the file globally
+const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
-// TODO: Find a graceful way to type my global module. Maybe create a new state management
-// ...file for each set of screens, and save GLOBAL for the few main screens?
-// Current approach is to create & type a copy locally. Leaves an error msg though
-interface Global {
-  replaceme: any;
-  GSES1: number;
-  GSES2: number;
-  GSES3: number;
-  GSES4: number;
-  GSES5: number;
-  GSES6: number;
-  GSES7: number;
-  GSESScore: number;
+
+// Define an interface for HYG flow state (SHI score & next checkin info)
+interface HYGState {
+  SHI1?: number;
+  SHI2?: number;
+  SHI3?: number;
+  SHI4?: number;
+  SHI4a?: number;
+  SHI5?: number;
+  SHI6?: number;
+  SHI7?: number;
+  SHI8?: number;
+  SHI9?: number;
+  SHIScore?: number;
   nextCheckinTime: Date;
   treatmentPlan: Array<{ started: boolean; module: string }>;
-  targetBedTime: Date;
-  targetWakeTime: Date;
-  targetTimeInBed: number;
 }
+let HYGState: HYGState = {
+  nextCheckinTime: new Date(),
+  treatmentPlan: [{ started: false, module: 'deleteme' }]
+};
 
-const theme: any = dozy_theme;
-let GLOBAL: Global = GLOBALRAW; // Create a local copy of global app state, typed with above
-
-// Define square image size defaults as a percent of width
-const imgSizePercent = 0.4;
+const imgSizePercent = 0.4; // Define square image size defaults as a percent of width
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 interface Props {
+  // Define Props type for all screens in this flow
   navigation: {
     navigate: Function;
     goBack: Function;
@@ -73,7 +71,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.06
         });
       }}
-      textLabel="Welcome back! This week, we’ll review your sleep data, update your treatment plan, and get started with a technique to make falling asleep easier - Paradoxical Intention Therapy (PIT)."
+      textLabel="Welcome back! This week, we’ll review your sleep data, update your treatment plan, and get started with improving your sleep hygiene."
     />
   );
 };
@@ -112,7 +110,7 @@ export const GSES1: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES1 = value;
+        HYGState.SHI1 = value;
         navigation.navigate('GSES2', { progressBarPercent: 0.67 });
       }}
       questionLabel="I put too much effort into sleeping when it should come naturally."
@@ -126,130 +124,8 @@ export const GSES1: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const GSES2: React.FC<Props> = ({ navigation }) => {
-  return (
-    <MultiButtonScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES2 = value;
-        navigation.navigate('GSES3', { progressBarPercent: 0.67 });
-      }}
-      questionLabel="I feel I should be able to control my sleep."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
-      buttonValues={[
-        { label: 'Very much', value: 2, solidColor: false },
-        { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
-      ]}
-    />
-  );
-};
-
-export const GSES3: React.FC<Props> = ({ navigation }) => {
-  return (
-    <MultiButtonScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES3 = value;
-        navigation.navigate('GSES4', { progressBarPercent: 0.67 });
-      }}
-      questionLabel="I put off going to bed at night for fear of not being able to sleep."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
-      buttonValues={[
-        { label: 'Very much', value: 2, solidColor: false },
-        { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
-      ]}
-    />
-  );
-};
-
-export const GSES4: React.FC<Props> = ({ navigation }) => {
-  return (
-    <MultiButtonScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES4 = value;
-        navigation.navigate('GSES5', { progressBarPercent: 0.67 });
-      }}
-      questionLabel="I worry about not sleeping if I cannot sleep."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
-      buttonValues={[
-        { label: 'Very much', value: 2, solidColor: false },
-        { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
-      ]}
-    />
-  );
-};
-
-export const GSES5: React.FC<Props> = ({ navigation }) => {
-  return (
-    <MultiButtonScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES5 = value;
-        navigation.navigate('GSES6', { progressBarPercent: 0.67 });
-      }}
-      questionLabel="I am no good at sleeping."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
-      buttonValues={[
-        { label: 'Very much', value: 2, solidColor: false },
-        { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
-      ]}
-    />
-  );
-};
-
-export const GSES6: React.FC<Props> = ({ navigation }) => {
-  return (
-    <MultiButtonScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES6 = value;
-        navigation.navigate('GSES7', { progressBarPercent: 0.67 });
-      }}
-      questionLabel="I get anxious about sleeping before I go to bed."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
-      buttonValues={[
-        { label: 'Very much', value: 2, solidColor: false },
-        { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
-      ]}
-    />
-  );
-};
-
-export const GSES7: React.FC<Props> = ({ navigation }) => {
-  return (
-    <MultiButtonScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES7 = value;
-        navigation.navigate('GSESResult', { progressBarPercent: 0.67 });
-      }}
-      questionLabel="I worry about the consequences of not sleeping."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
-      buttonValues={[
-        { label: 'Very much', value: 2, solidColor: false },
-        { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
-      ]}
-    />
-  );
-};
-
 export const GSESResult: React.FC<Props> = ({ navigation }) => {
-  const { GSES1, GSES2, GSES3, GSES4, GSES5, GSES6, GSES7 } = GLOBAL;
-  const GSESScore = GSES1 + GSES2 + GSES3 + GSES4 + GSES5 + GSES6 + GSES7;
-  GLOBAL.GSESScore = GSESScore;
+  let SHIScore = 0;
 
   return (
     <WizardContentScreen
@@ -260,7 +136,7 @@ export const GSESResult: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.28
         });
       }}
-      titleLabel={`You scored a ${GSESScore} on the Glasgow Sleep Effort Scale.`}
+      titleLabel={`You scored a ${SHIScore} on the Glasgow Sleep Effort Scale.`}
       textLabel="That means your efforts to fall asleep faster are an obstacle for you. Today's technique, Paradoxical Intention Therapy (PIT), will likely make falling asleep easier! Let's get started."
       buttonLabel="Next"
       flexibleLayout
@@ -473,7 +349,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         ) /* Default date of 7 days from today */
       }
       onQuestionSubmit={(value: Date) => {
-        GLOBAL.nextCheckinTime = value;
+        HYGState.nextCheckinTime = value;
         navigation.navigate('PITEnd', { progressBarPercent: 1 });
       }}
       validInputChecker={(val: Date) => {
@@ -505,7 +381,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
-    time: GLOBAL.nextCheckinTime,
+    time: HYGState.nextCheckinTime,
     enabled: true
   };
 
@@ -518,25 +394,28 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
         submitCheckinData({
           userId: state.userToken,
           checkinPostponed: false,
-          nextCheckinDatetime: GLOBAL.nextCheckinTime,
+          nextCheckinDatetime: HYGState.nextCheckinTime,
           lastCheckinDatetime: new Date(),
-          nextCheckinModule: GLOBAL.treatmentPlan.filter(
+          nextCheckinModule: HYGState.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
               v.started === false && v.module !== 'PIT'
           )[0].module,
           lastCheckinModule: 'PIT',
-          targetBedTime: GLOBALRAW.targetBedTime, // TS is mad, but this needs to access true global state.
-          targetWakeTime: GLOBALRAW.targetWakeTime, // (since titration flow is in a different file)
-          targetTimeInBed: GLOBALRAW.targetTimeInBed,
+          targetBedTime: GLOBAL.targetBedTime,
+          targetWakeTime: GLOBAL.targetWakeTime,
+          targetTimeInBed: GLOBAL.targetTimeInBed,
           additionalCheckinData: {
-            GSES1: GLOBAL.GSES1,
-            GSES2: GLOBAL.GSES2,
-            GSES3: GLOBAL.GSES3,
-            GSES4: GLOBAL.GSES4,
-            GSES5: GLOBAL.GSES5,
-            GSES6: GLOBAL.GSES6,
-            GSES7: GLOBAL.GSES7,
-            GSESTotal: GLOBAL.GSESScore
+            SHI1: HYGState.SHI1,
+            SHI2: HYGState.SHI2,
+            SHI3: HYGState.SHI3,
+            SHI4: HYGState.SHI4,
+            SHI4a: HYGState.SHI4a,
+            SHI5: HYGState.SHI5,
+            SHI6: HYGState.SHI6,
+            SHI7: HYGState.SHI7,
+            SHI8: HYGState.SHI8,
+            SHI9: HYGState.SHI9,
+            SHIScore: HYGState.SHIScore
           },
           reminderObject: reminderObject
         });
