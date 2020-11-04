@@ -70,7 +70,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
         navigation.navigate('SRTTitrationStart', {
-          progressBarPercent: 0.06
+          progressBarPercent: 0.09
         });
       }}
       textLabel="Welcome back! This week, we’ll review your sleep data, update your treatment plan, and get started with a technique to make falling asleep easier - Paradoxical Intention Therapy (PIT)."
@@ -91,7 +91,7 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('GSES1', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.39
         });
       }}
       titleLabel="This week's treatment: Paradoxical Intention Therapy"
@@ -113,7 +113,7 @@ export const GSES1: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         GLOBAL.GSES1 = value;
-        navigation.navigate('GSES2', { progressBarPercent: 0.67 });
+        navigation.navigate('GSES2', { progressBarPercent: 0.43 });
       }}
       questionLabel="I put too much effort into sleeping when it should come naturally."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -133,7 +133,7 @@ export const GSES2: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         GLOBAL.GSES2 = value;
-        navigation.navigate('GSES3', { progressBarPercent: 0.67 });
+        navigation.navigate('GSES3', { progressBarPercent: 0.48 });
       }}
       questionLabel="I feel I should be able to control my sleep."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -153,7 +153,7 @@ export const GSES3: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         GLOBAL.GSES3 = value;
-        navigation.navigate('GSES4', { progressBarPercent: 0.67 });
+        navigation.navigate('GSES4', { progressBarPercent: 0.52 });
       }}
       questionLabel="I put off going to bed at night for fear of not being able to sleep."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -173,7 +173,7 @@ export const GSES4: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         GLOBAL.GSES4 = value;
-        navigation.navigate('GSES5', { progressBarPercent: 0.67 });
+        navigation.navigate('GSES5', { progressBarPercent: 0.57 });
       }}
       questionLabel="I worry about not sleeping if I cannot sleep."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -193,7 +193,7 @@ export const GSES5: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         GLOBAL.GSES5 = value;
-        navigation.navigate('GSES6', { progressBarPercent: 0.67 });
+        navigation.navigate('GSES6', { progressBarPercent: 0.61 });
       }}
       questionLabel="I am no good at sleeping."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -213,7 +213,7 @@ export const GSES6: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         GLOBAL.GSES6 = value;
-        navigation.navigate('GSES7', { progressBarPercent: 0.67 });
+        navigation.navigate('GSES7', { progressBarPercent: 0.65 });
       }}
       questionLabel="I get anxious about sleeping before I go to bed."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -233,7 +233,7 @@ export const GSES7: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         GLOBAL.GSES7 = value;
-        navigation.navigate('GSESResult', { progressBarPercent: 0.67 });
+        navigation.navigate('GSESResult', { progressBarPercent: 0.7 });
       }}
       questionLabel="I worry about the consequences of not sleeping."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -257,7 +257,7 @@ export const GSESResult: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('TryingToSleep', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.74
         });
       }}
       titleLabel={`You scored a ${GSESScore} on the Glasgow Sleep Effort Scale.`}
@@ -277,7 +277,7 @@ export const TryingToSleep: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('Paradox', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.78
         });
       }}
       titleLabel="Studies show that poor sleepers have something in common:"
@@ -297,7 +297,7 @@ export const Paradox: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('Antidote', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.83
         });
       }}
       titleLabel="It's a paradox"
@@ -317,7 +317,7 @@ export const Antidote: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('HowToPIT', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.87
         });
       }}
       titleLabel="Fortunately, we can counteract this with a simple technique:"
@@ -337,7 +337,7 @@ export const HowToPIT: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PITScience', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.91
         });
       }}
       titleLabel="How to use Paradoxical Intention Therapy:"
@@ -375,7 +375,7 @@ export const PITScience: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PITReview', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.96
         });
       }}
       titleLabel="It may sound silly, but it's science!"
@@ -400,7 +400,7 @@ export const PITReview: React.FC<Props> = ({ navigation }) => {
           });
         } else {
           navigation.navigate('RulesRecap', {
-            progressBarPercent: 0.61
+            progressBarPercent: 0.97
           });
         }
       }}
@@ -422,7 +422,7 @@ export const RulesRecap: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('CheckinScheduling', {
-          progressBarPercent: 0.83
+          progressBarPercent: 0.98
         });
       }}
       titleLabel="Quick recap of the 3 rules:"
