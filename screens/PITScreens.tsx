@@ -22,13 +22,8 @@ import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 
-// Define the theme for the file globally
-// 'any' type for now since it's getting an expected something from Draftbit that's breaking.
-// TODO: Find a graceful way to type my global module. Maybe create a new state management
-// ...file for each set of screens, and save GLOBAL for the few main screens?
-// Current approach is to create & type a copy locally. Leaves an error msg though
+// TODO: Use a local state object instead of GLOBAL for GSES score, next checkin time
 interface Global {
-  replaceme: any;
   GSES1: number;
   GSES2: number;
   GSES3: number;
@@ -43,9 +38,11 @@ interface Global {
   targetWakeTime: Date;
   targetTimeInBed: number;
 }
-
-const theme: any = dozy_theme;
 let GLOBAL: Global = GLOBALRAW; // Create a local copy of global app state, typed with above
+
+// Define the theme for the file globally
+// 'any' type for now since it's getting an expected something from Draftbit that's breaking.
+const theme: any = dozy_theme;
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
