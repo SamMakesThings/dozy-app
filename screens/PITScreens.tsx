@@ -2,7 +2,6 @@ import React from 'react';
 import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import { WebView } from 'react-native-webview';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
@@ -22,8 +21,6 @@ import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
 import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
-
-// TODO: Update percentage values for progress bar
 
 // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
