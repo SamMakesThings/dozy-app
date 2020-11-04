@@ -60,7 +60,7 @@ interface Props {
 }
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+  imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
       theme={theme}
@@ -71,7 +71,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.06
         });
       }}
-      textLabel="Welcome back! This week, we’ll review your sleep data, update your treatment plan, and get started with improving your sleep hygiene."
+      textLabel="Welcome back! This week we'll address some of your sleep hygiene-related issues - things like light, temperature, and partners/pets. But first, let's review your sleep and how treatment's been going for you so far."
     />
   );
 };
@@ -81,25 +81,76 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
 // Screen it targets for return navigation is 'TreatmentPlan'
 
 export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
-  imgSize = imgSizePercent * useWindowDimensions().width;
+  const { state } = React.useContext(AuthContext);
+
+  // Trim sleepLogs to only show most recent 12
+  const recentSleepLogs = state.sleepLogs.slice(0, 12);
+
+  // Find top 3 sleep disturbance tags.
+  const logTagsFrequencyObject: {
+    [key: string]: number;
+  } = recentSleepLogs.reduce(
+    (
+      tagsObject: { [key: string]: number },
+      sleepLog: { tags: Array<string> }
+    ) => {
+      let newTagsObject = tagsObject;
+      sleepLog.tags.map((tag) => {
+        newTagsObject[tag] = newTagsObject[tag] ? newTagsObject[tag] + 1 : 1; // if exists, increment. Otherwise, start with 1
+      });
+      return newTagsObject;
+    },
+    { nothing: -20 }
+  ); // Add nothing way negative so it's excluded from the highest frequency
+  // Then find the 3 highest from the object. Put them in an array as strings.
+  const mostCommonTags = Object.keys(logTagsFrequencyObject)
+    .sort(function (a, b) {
+      return logTagsFrequencyObject[b] - logTagsFrequencyObject[a];
+    })
+    .slice(0, 3);
+  // Turn it into a nice string for this screen
+  const tagsString =
+    mostCommonTags.length === 3
+      ? `${mostCommonTags[0]}, ${mostCommonTags[1]}, and ${mostCommonTags[2]}`
+      : `light, heat, noise, and other issues`;
 
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('GSES1', {
+        navigation.navigate('HYGIntro', {
           progressBarPercent: 0.28
         });
       }}
-      titleLabel="This week's treatment: Paradoxical Intention Therapy"
-      textLabel={
-        "Based on your sleep data, the next step is to reduce the time it takes to fall asleep. To get started, we'll ask you seven related questions. Rate how true each statement has been for you in the past week."
-      }
+      titleLabel="This week's treatment: Sleep hygiene improvements"
+      textLabel={`Today we'll be addressing your sleep problems caused by ${tagsString}.`}
       buttonLabel="Next"
       flexibleLayout
     >
       <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const HYGIntro: React.FC<Props> = ({ navigation }) => {
+  let SHIScore = 0;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('TryingToSleep', {
+          progressBarPercent: 0.28
+        });
+      }}
+      titleLabel={`You scored a ${SHIScore} on the Glasgow Sleep Effort Scale.`}
+      textLabel="You might've even tried some tricks from it (reduce caffeine, reduce nightly electronics use, etc). However, as you may have learned, sleep hygiene tips on their own aren't usually enough to fix insomnia."
+      buttonLabel="Next"
+      flexibleLayout
+    >
+      <BarChart width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
