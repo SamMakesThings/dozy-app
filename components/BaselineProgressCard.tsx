@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  GestureResponderEvent
+} from 'react-native';
 import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
@@ -8,7 +14,12 @@ import { CardContainer } from './CardContainer';
 import HighlightedText from './HighlightedText';
 import { dozy_theme } from '../config/Themes';
 
-export const BaselineProgressCard = (props) => {
+interface Props {
+  nightsLogged: number;
+  onPress?: (event: GestureResponderEvent) => void;
+}
+
+export const BaselineProgressCard: React.FC<Props> = (props) => {
   const theme = dozy_theme;
 
   const baselineLogsRequired = 7;
@@ -87,6 +98,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center'
   },
+  View_CardContentContainer: {},
   View_CardHeaderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
