@@ -166,7 +166,7 @@ export const HYGBenefits: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.28
         });
       }}
-      textLabel="Hygiene tips don't fix insomnia on their own. However, making strategic improvements can improve sleep quality, help prevent relapse, and boost the efficacy of other treatments at the same time."
+      textLabel="Fortunately, making strategic sleep hygiene improvements can improve sleep quality, help prevent relapse, and boost the efficacy of other treatments at the same time!"
       buttonLabel="Got it"
       flexibleLayout
     >
@@ -421,7 +421,14 @@ export const SHI9: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SHIResult: React.FC<Props> = ({ navigation }) => {
-  let SHIScore = 0;
+  // If nothing is undefined (shouldn't be), add answers for the total SHI score
+  const { SHI1, SHI2, SHI3, SHI4, SHI5, SHI6, SHI7, SHI8, SHI9 } = HYGState;
+  console.log(SHI1 && SHI2);
+  console.log(HYGState);
+  let SHIScore =
+    SHI1 && SHI2 && SHI3 && SHI4 && SHI5 && SHI6 && SHI7 && SHI8 && SHI9
+      ? SHI1 + SHI2 + SHI3 + SHI4 + SHI5 + SHI6 + SHI7 + SHI8 + SHI9
+      : -1;
 
   return (
     <WizardContentScreen
@@ -432,9 +439,11 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.28
         });
       }}
-      titleLabel={`You scored a ${SHIScore} on the Glasgow Sleep Effort Scale.`}
-      textLabel="That means your efforts to fall asleep faster are an obstacle for you. Today's technique, Paradoxical Intention Therapy (PIT), will likely make falling asleep easier! Let's get started."
-      buttonLabel="Next"
+      titleLabel={`You scored a ${
+        SHIScore === -1 ? 'ERROR' : SHIScore
+      } on the shortened Sleep Hygiene Index (out of 36).`}
+      textLabel="There are some improvements to be made, but we can help. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
+      buttonLabel="OK"
       flexibleLayout
     >
       <BarChart width={imgSize} height={imgSize} />
