@@ -423,8 +423,6 @@ export const SHI9: React.FC<Props> = ({ navigation }) => {
 export const SHIResult: React.FC<Props> = ({ navigation }) => {
   // If nothing is undefined (shouldn't be), add answers for the total SHI score
   const { SHI1, SHI2, SHI3, SHI4, SHI5, SHI6, SHI7, SHI8, SHI9 } = HYGState;
-  console.log(SHI1 && SHI2);
-  console.log(HYGState);
   let SHIScore =
     SHI1 && SHI2 && SHI3 && SHI4 && SHI5 && SHI6 && SHI7 && SHI8 && SHI9
       ? SHI1 + SHI2 + SHI3 + SHI4 + SHI5 + SHI6 + SHI7 + SHI8 + SHI9
