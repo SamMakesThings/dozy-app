@@ -5,7 +5,7 @@ import { scale } from 'react-native-size-matters';
 import { MaterialIcons } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
 
-export const TodoItem = (props) => {
+export const TodoItem = (props: { label: string }) => {
   const theme = dozy_theme;
   return (
     <View style={styles.View_TodoItem}>
