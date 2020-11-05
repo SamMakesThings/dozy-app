@@ -3,7 +3,7 @@ import { ActivityIndicator, StatusBar, View } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 
 export default class AuthLoadingScreen extends React.Component {
-  constructor(props) {
+  constructor(props: object) {
     super(props);
     this._bootstrapAsync();
   }
