@@ -6,7 +6,16 @@ import { TodoItem } from './TodoItem';
 import { CardContainer } from './CardContainer';
 import { dozy_theme } from '../config/Themes';
 
-const CurrentTreatmentsCard = (props) => {
+interface Props {
+  progressPercent: number;
+  linkImage: React.Component;
+  linkTitle: string;
+  linkSubtitle: string;
+  onPress: Function;
+  todosArray: Array<string>;
+}
+
+const CurrentTreatmentsCard: React.FC<Props> = (props) => {
   const theme = dozy_theme;
 
   return (
@@ -59,6 +68,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
+  View_CardContentContainer: {},
+  View_TodoContainer: {},
   Text_CardTitle: {
     color: dozy_theme.colors.secondary
   },
