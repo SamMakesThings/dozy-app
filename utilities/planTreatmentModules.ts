@@ -1,11 +1,23 @@
 import moment from 'moment';
-import treatments from '../constants/Treatments';
+import * as firebase from 'firebase';
+import treatmentsRaw from '../constants/Treatments';
 
-function planTreatmentModules({ sleepLogs, currentTreatments }) {
-  // sleepLogs should be an array of log objects
-  // I should really just bite the bullet and learn TypeScript...
+interface Args {
+  sleepLogs: Array<{
+    tags: Array<string>;
+  }>;
+  currentTreatments: {
+    [key: string]: firebase.firestore.Timestamp;
+  };
+}
+const treatments: { [key: string]: { optional: boolean } } = treatmentsRaw; // Give Treatments an iterable type
 
-  let treatmentPlan = [];
+function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
+  let treatmentPlan: Array<{
+    module: string;
+    estDate: Date;
+    started: boolean;
+  }> = [];
 
   // Add already completed treatments with their dates to the list first
   Object.keys(currentTreatments).map((item) => {
@@ -18,8 +30,8 @@ function planTreatmentModules({ sleepLogs, currentTreatments }) {
     }
   });
   // Sort already completed treatments by date
-  treatmentPlan.sort((a, b) => {
-    return a.estDate - b.estDate;
+  treatmentPlan.sort((a: { estDate: Date }, b: { estDate: Date }) => {
+    return a.estDate.getTime() - b.estDate.getTime();
   });
 
   // At the moment, there are 3 main treatment paths (with additions if noncompliance or jet lag):
