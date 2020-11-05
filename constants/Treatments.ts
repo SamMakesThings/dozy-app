@@ -73,7 +73,7 @@ export default {
     todos: ['Improve sleep hygiene'],
     url: 'https://dozy.customerly.help',
     optional: false,
-    ready: false
+    ready: true
   },
   END: {
     title: 'Maintaining Sleep Improvements',
