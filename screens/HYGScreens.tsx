@@ -25,25 +25,37 @@ const theme: any = dozy_theme; // Define the theme for the file globally
 
 // Define an interface for HYG flow state (SHI score & next checkin info)
 interface HYGState {
-  SHI1?: number;
-  SHI2?: number;
-  SHI3?: number;
-  SHI4?: number;
-  SHI4a?: string;
-  SHI5?: number;
-  SHI6?: number;
-  SHI7?: number;
-  SHI8?: number;
-  SHI9?: number;
-  SHIScore?: number;
+  SHI1: number;
+  SHI2: number;
+  SHI3: number;
+  SHI4: number;
+  SHI4a: string;
+  SHI5: number;
+  SHI6: number;
+  SHI7: number;
+  SHI8: number;
+  SHI9: number;
+  SHIScore: number;
   nextCheckinTime: Date;
   treatmentPlan: Array<{ started: boolean; module: string }>;
 }
 let HYGState: HYGState = {
   nextCheckinTime: new Date(),
-  treatmentPlan: [{ started: false, module: 'deleteme' }]
+  treatmentPlan: [{ started: false, module: 'deleteme' }],
+  SHI1: 0,
+  SHI2: 0,
+  SHI3: 0,
+  SHI4: 0,
+  SHI4a: 'none',
+  SHI5: 0,
+  SHI6: 0,
+  SHI7: 0,
+  SHI8: 0,
+  SHI9: 0,
+  SHIScore: 0
 };
 
+HYGState.treatmentPlan = GLOBAL.treatmentPlan; // Update treatmentPlan variable with global one
 const imgSizePercent = 0.4; // Define square image size defaults as a percent of width
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
@@ -57,8 +69,6 @@ interface Props {
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
-
-  HYGState.treatmentPlan = GLOBAL.treatmentPlan;
 
   return (
     <IconExplainScreen
@@ -419,10 +429,7 @@ export const SHI9: React.FC<Props> = ({ navigation }) => {
 export const SHIResult: React.FC<Props> = ({ navigation }) => {
   // If nothing is undefined (shouldn't be), add answers for the total SHI score
   const { SHI1, SHI2, SHI3, SHI4, SHI5, SHI6, SHI7, SHI8, SHI9 } = HYGState;
-  let SHIScore =
-    SHI1 && SHI2 && SHI3 && SHI4 && SHI5 && SHI6 && SHI7 && SHI8 && SHI9
-      ? SHI1 + SHI2 + SHI3 + SHI4 + SHI5 + SHI6 + SHI7 + SHI8 + SHI9
-      : -1;
+  let SHIScore = SHI1 + SHI2 + SHI3 + SHI4 + SHI5 + SHI6 + SHI7 + SHI8 + SHI9;
 
   return (
     <WizardContentScreen
@@ -433,9 +440,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.96
         });
       }}
-      titleLabel={`You scored a ${
-        SHIScore === -1 ? 'ERROR' : SHIScore
-      } on the shortened Sleep Hygiene Index (out of 36).`}
+      titleLabel={`You scored a ${SHIScore} on the shortened Sleep Hygiene Index (out of 36).`}
       textLabel="There are some improvements to be made, but we can help. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
       buttonLabel="OK"
       flexibleLayout
@@ -456,8 +461,8 @@ export const HYGReview: React.FC<Props> = ({ navigation }) => {
             module: 'HYG'
           });
         } else {
-          navigation.navigate('RulesRecap', {
-            progressBarPercent: 0.99
+          navigation.navigate('CheckinScheduling', {
+            progressBarPercent: 0.985
           });
         }
       }}
