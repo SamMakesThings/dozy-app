@@ -18,28 +18,11 @@ import RaisedHands from '../assets/images/RaisedHands.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 
-// TODO: Update percentage values for progress bar
-
 const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
 
 // Define an interface for HYG flow state (SHI score & next checkin info)
-interface HYGState {
-  SHI1: number;
-  SHI2: number;
-  SHI3: number;
-  SHI4: number;
-  SHI4a: string;
-  SHI5: number;
-  SHI6: number;
-  SHI7: number;
-  SHI8: number;
-  SHI9: number;
-  SHIScore: number;
-  nextCheckinTime: Date;
-  treatmentPlan: Array<{ started: boolean; module: string }>;
-}
-let HYGState: HYGState = {
+let HYGState = {
   nextCheckinTime: new Date(),
   treatmentPlan: [{ started: false, module: 'deleteme' }],
   SHI1: 0,
