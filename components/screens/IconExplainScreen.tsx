@@ -3,17 +3,28 @@ import { StyleSheet, Text, View } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { ProgressBar } from '../ProgressBar';
 import BottomNavButtons from '../BottomNavButtons';
+import { Theme } from '../../types/theme';
+
+interface Props {
+  theme: Theme;
+  progressBarPercent: number;
+  image: React.Component;
+  textLabel: string;
+  longText?: boolean;
+  onQuestionSubmit: Function;
+  buttonLabel?: string;
+  bottomGreyButtonLabel?: string;
+  bottomBackButton?: Function;
+  bbbDisabled?: boolean;
+  onlyBackButton?: boolean;
+}
 
 // Wizard screen with a hero image (usually icon) and paragraph text
-const IconExplainScreen = (props) => {
+const IconExplainScreen: React.FC<Props> = (props) => {
   const { theme } = props;
 
   return (
-    <ScreenContainer
-      hasSafeArea={true}
-      scrollable={false}
-      style={styles.RootContainer}
-    >
+    <ScreenContainer hasSafeArea={true} scrollable={false}>
       <Container
         style={styles.View_HeaderContainer}
         elevation={0}
@@ -44,15 +55,13 @@ const IconExplainScreen = (props) => {
         <View style={{ flex: 1 }} />
         <View style={styles.View_ImageContainer}>{props.image}</View>
         <Text
-          style={[
-            styles.Text_Explainer,
-            theme.typography.body1,
-            {
-              color: theme.colors.secondary,
-              flex: props.longText ? null : 3,
-              marginBottom: 10
-            }
-          ]}
+          style={{
+            ...styles.Text_Explainer,
+            ...theme.typography.body1,
+            color: theme.colors.secondary,
+            flex: props.longText ? undefined : 3,
+            marginBottom: 10
+          }}
         >
           {props.textLabel}
         </Text>
@@ -93,7 +102,9 @@ const styles = StyleSheet.create({
     width: '90%',
     alignItems: 'flex-start',
     alignSelf: 'center'
-  }
+  },
+  ProgressBar: {},
+  View_HeaderContainer: {}
 });
 
 export default withTheme(IconExplainScreen);
