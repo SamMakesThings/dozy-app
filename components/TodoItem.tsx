@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { MaterialIcons } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
@@ -33,4 +32,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withTheme(TodoItem);
+export default TodoItem;
