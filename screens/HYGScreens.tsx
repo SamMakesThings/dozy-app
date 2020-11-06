@@ -449,125 +449,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const TryingToSleep: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('Paradox', {
-          progressBarPercent: 0.28
-        });
-      }}
-      titleLabel="Studies show that poor sleepers have something in common:"
-      textLabel="They try very hard to sleep. Since sleep isn't a conscious process, this strong effort actually makes sleeping harder! In fact, insomnia itself can sometimes be characterized as a symptom of trying too hard to sleep."
-      buttonLabel="Well that sucks"
-      flexibleLayout
-    >
-      <TiredFace width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const Paradox: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('Antidote', {
-          progressBarPercent: 0.28
-        });
-      }}
-      titleLabel="It's a paradox"
-      textLabel="The more you try to sleep, the less you can. And it's the opposite of what non-insomniacs do: when someone with normal sleep patterns goes to sleep, they spend almost no effort."
-      buttonLabel="The lucky pricks"
-      flexibleLayout
-    >
-      <DizzyFace width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const Antidote: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('HowToPIT', {
-          progressBarPercent: 0.28
-        });
-      }}
-      titleLabel="Fortunately, we can counteract this with a simple technique:"
-      textLabel="Paradoxical Intention Therapy, or PIT. Paradoxical Intention Therapy is all about letting go of the effort to sleep. By releasing any effort to sleep, sleep actually comes faster."
-      buttonLabel="How do I do it?"
-      flexibleLayout
-    >
-      <SleepingFace width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const HowToPIT: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('PITScience', {
-          progressBarPercent: 0.28
-        });
-      }}
-      titleLabel="How to use Paradoxical Intention Therapy:"
-      textLabel={
-        <>
-          <Text>
-            <Text style={styles.BoldLabelText}>1.</Text> Maintain the target
-            sleep schedule,
-          </Text>
-          {'\n'}
-          <Text>
-            <Text style={styles.BoldLabelText}>2.</Text> When you're in bed,
-            gently keep your eyes open and make no effort to fall asleep.
-          </Text>
-          {'\n'}
-          <Text>
-            <Text style={styles.BoldLabelText}>3.</Text> Don't actively keep
-            yourself awake though - don't move around, drink coffee, etc. You're
-            simply letting go of the effort to fall asleep.
-          </Text>
-        </>
-      }
-      buttonLabel="This sounds kinda silly"
-      flexibleLayout
-    >
-      <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const PITScience: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('PITReview', {
-          progressBarPercent: 0.28
-        });
-      }}
-      titleLabel="It may sound silly, but it's science!"
-      textLabel="Multiple independent studies have found that sleepers who use PIT fall asleep faster than those who don't. It may sound weird, but it works, and there's a good chance it'll work for you."
-      buttonLabel="Next"
-      flexibleLayout
-    >
-      <LabCoat width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const PITReview: React.FC<Props> = ({ navigation }) => {
+export const HYGReview: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -575,7 +457,7 @@ export const PITReview: React.FC<Props> = ({ navigation }) => {
       onQuestionSubmit={(res: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
-            module: 'PIT'
+            module: 'HYG'
           });
         } else {
           navigation.navigate('RulesRecap', {
