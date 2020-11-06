@@ -6,9 +6,9 @@ import { Theme } from '../types/theme';
 
 interface Props {
   theme: Theme;
-  bottomBackButton: Function;
-  bbbDisabled: boolean;
-  buttonValues: Array<{
+  bottomBackButton?: Function;
+  bbbDisabled?: boolean;
+  buttonValues?: Array<{
     label: string;
     value: string | number | boolean;
     solidColor?: boolean;
@@ -90,7 +90,7 @@ const BottomNavButtons: React.FC<Props> = (props) => {
         <TouchableOpacity
           disabled={bbbDisabled}
           style={styles.Touchable_BackButton}
-          onPress={() => bottomBackButton()}
+          onPress={() => (bottomBackButton ? bottomBackButton() : undefined)}
         >
           <Text
             style={StyleSheet.flatten([

@@ -17,7 +17,7 @@ interface Props {
   progressBarPercent?: number;
   onQuestionSubmit: Function;
   optional?: boolean;
-  bottomBackButton?: boolean;
+  bottomBackButton?: Function;
   validInputChecker?: Function;
   theme: Theme;
 }
@@ -133,7 +133,7 @@ const NumInputScreen: React.FC<Props> = (props) => {
       </Container>
       <BottomNavButtons
         theme={theme}
-        bottomBackButton={props.bottomBackButton || null}
+        bottomBackButton={props.bottomBackButton}
         onPress={() => {
           props.onQuestionSubmit(selectedNum);
         }}
