@@ -67,7 +67,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
         navigation.navigate('SRTTitrationStart', {
-          progressBarPercent: 0.06
+          progressBarPercent: 0.08
         });
       }}
       textLabel="Welcome back! This week we'll address some of your sleep hygiene-related issues - things like light, temperature, and partners/pets. But first, let's review your sleep and how treatment's been going for you so far."
@@ -119,7 +119,7 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('HYGIntro', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.4
         });
       }}
       titleLabel="This week's treatment: Sleep hygiene improvements"
@@ -139,7 +139,7 @@ export const HYGIntro: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('HYGBenefits', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.44
         });
       }}
       titleLabel="You've probably heard of sleep hygiene before."
@@ -159,7 +159,7 @@ export const HYGBenefits: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SHIIntro', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.48
         });
       }}
       textLabel="Fortunately, making strategic sleep hygiene improvements can improve sleep quality, help prevent relapse, and boost the efficacy of other treatments at the same time!"
@@ -178,7 +178,7 @@ export const SHIIntro: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SHI1', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.52
         });
       }}
       textLabel={`To get started, we'll ask a few lifestyle questions to get a better idea of how to help you.
@@ -199,7 +199,7 @@ export const SHI1: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         HYGState.SHI1 = value;
-        navigation.navigate('SHI2', { progressBarPercent: 0.67 });
+        navigation.navigate('SHI2', { progressBarPercent: 0.56 });
       }}
       questionLabel="I think, plan, or worry when I am in bed."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -221,7 +221,7 @@ export const SHI2: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         HYGState.SHI2 = value;
-        navigation.navigate('SHI3', { progressBarPercent: 0.67 });
+        navigation.navigate('SHI3', { progressBarPercent: 0.6 });
       }}
       questionLabel="I exercise to the point of sweating within 1 hr of going to bed."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -243,7 +243,7 @@ export const SHI3: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         HYGState.SHI3 = value;
-        navigation.navigate('SHI4', { progressBarPercent: 0.67 });
+        navigation.navigate('SHI4', { progressBarPercent: 0.64 });
       }}
       questionLabel="I stay in bed longer than I should two or three times a week."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -267,10 +267,10 @@ export const SHI4: React.FC<Props> = ({ navigation }) => {
         HYGState.SHI4 = value;
         if (value >= 2) {
           // If uses substance more than rarely, ask which
-          navigation.navigate('SHI4a', { progressBarPercent: 0.67 });
+          navigation.navigate('SHI4a', { progressBarPercent: 0.68 });
         } else {
           HYGState.SHI4a = 'none';
-          navigation.navigate('SHI5', { progressBarPercent: 0.67 });
+          navigation.navigate('SHI5', { progressBarPercent: 0.72 });
         }
       }}
       questionLabel="I use alcohol, tobacco/nicotine, or caffeine within 4hrs of going to bed or after going to bed."
@@ -293,7 +293,7 @@ export const SHI4a: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: string) => {
         HYGState.SHI4a = value;
-        navigation.navigate('SHI5', { progressBarPercent: 0.67 });
+        navigation.navigate('SHI5', { progressBarPercent: 0.72 });
       }}
       questionLabel="Which would you say you use most often before going to bed?"
       buttonValues={[
@@ -313,7 +313,7 @@ export const SHI5: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         HYGState.SHI5 = value;
-        navigation.navigate('SHI6', { progressBarPercent: 0.67 });
+        navigation.navigate('SHI6', { progressBarPercent: 0.76 });
       }}
       questionLabel="I do something that may wake me up before bedtime."
       questionSubtitle="(for example: play video games, use social media, clean intensely)."
@@ -335,7 +335,7 @@ export const SHI6: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         HYGState.SHI6 = value;
-        navigation.navigate('SHI7', { progressBarPercent: 0.67 });
+        navigation.navigate('SHI7', { progressBarPercent: 0.8 });
       }}
       questionLabel="I go to bed feeling stressed, angry, upset, or nervous."
       questionSubtitle="Please rate how true each statement has been for you over the last week."
@@ -357,7 +357,7 @@ export const SHI7: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         HYGState.SHI7 = value;
-        navigation.navigate('SHI8', { progressBarPercent: 0.67 });
+        navigation.navigate('SHI8', { progressBarPercent: 0.84 });
       }}
       questionLabel="I sleep on an uncomfortable bed."
       questionSubtitle="(for example: poor mattress or pillow, too many or not enough blankets)"
@@ -379,7 +379,7 @@ export const SHI8: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         HYGState.SHI8 = value;
-        navigation.navigate('SHI9', { progressBarPercent: 0.67 });
+        navigation.navigate('SHI9', { progressBarPercent: 0.88 });
       }}
       questionLabel="I sleep in an uncomfortable bedroom."
       questionSubtitle="(for example: too bright, too stuffy, too hot, too cold, or too noisy)"
@@ -401,7 +401,7 @@ export const SHI9: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         HYGState.SHI9 = value;
-        navigation.navigate('SHIResult', { progressBarPercent: 0.67 });
+        navigation.navigate('SHIResult', { progressBarPercent: 0.92 });
       }}
       questionLabel="I do important work before bedtime."
       questionSubtitle="(for example: pay bills, plan, or study)"
@@ -430,7 +430,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('HYGReview', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.96
         });
       }}
       titleLabel={`You scored a ${
@@ -457,7 +457,7 @@ export const HYGReview: React.FC<Props> = ({ navigation }) => {
           });
         } else {
           navigation.navigate('RulesRecap', {
-            progressBarPercent: 0.61
+            progressBarPercent: 0.99
           });
         }
       }}
