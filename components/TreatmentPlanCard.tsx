@@ -1,6 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { withTheme } from '@draftbit/ui';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  GestureResponderEvent
+} from 'react-native';
+import * as firebase from 'firebase';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { CardContainer } from './CardContainer';
@@ -8,7 +14,15 @@ import HighlightedText from './HighlightedText';
 import { ProgressBar } from './ProgressBar';
 import { dozy_theme } from '../config/Themes';
 
-export const TreatmentPlanCard = (props) => {
+interface Props {
+  onPress?: (event: GestureResponderEvent) => void;
+  title?: string;
+  titleOpacity: number;
+  nextCheckinDate: firebase.firestore.Timestamp;
+  completionPercentProgress: number;
+}
+
+export const TreatmentPlanCard: React.FC<Props> = (props) => {
   const theme = dozy_theme;
 
   return (
@@ -97,6 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
+  View_CardContentContainer: {},
   View_CenteredRowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -119,4 +134,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withTheme(TreatmentPlanCard);
+export default TreatmentPlanCard;
