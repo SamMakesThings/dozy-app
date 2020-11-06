@@ -73,7 +73,7 @@ export default {
     todos: [
       'Message Dozy team in support tab for one-on-one sleep hygiene advice'
     ],
-    url: 'https://dozy.customerly.help',
+    url: 'https://dozy.customerly.help/sleep-hygiene/',
     optional: false,
     ready: true
   },
