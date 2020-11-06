@@ -4,14 +4,26 @@ import {
   Text,
   View,
   ImageBackground,
-  TouchableOpacity
+  ImageSourcePropType,
+  TouchableOpacity,
+  GestureResponderEvent
 } from 'react-native';
 import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
 
-export const LinkCard = (props) => {
+interface Props {
+  style: object;
+  onPress: (event: GestureResponderEvent) => void;
+  disabled?: boolean;
+  bgImage: ImageSourcePropType;
+  overlayColor?: string;
+  titleLabel: string;
+  subtitleLabel: string;
+}
+
+export const LinkCard: React.FC<Props> = (props) => {
   const theme = dozy_theme;
   return (
     <View style={{ ...props.style, ...styles.View_ContentLinkCard }}>
