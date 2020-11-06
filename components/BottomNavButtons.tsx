@@ -2,10 +2,28 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { Container, Button } from '@draftbit/ui';
+import { Theme } from '../types/theme';
+
+interface Props {
+  theme: Theme;
+  bottomBackButton: Function;
+  bbbDisabled: boolean;
+  buttonValues: Array<{
+    label: string;
+    value: string | number | boolean;
+    solidColor?: boolean;
+  }>;
+  onPress: Function;
+  onlyBackButton?: boolean;
+  disabled?: boolean;
+  buttonLabel?: string;
+  bottomGreyButtonLabel?: string;
+  bottomBackButtonLabel?: string;
+}
 
 // A catch-all component for buttons on the bottom of a screen.
 // TODO: Replace bottomGreyButton calls with buttonValues
-const BottomNavButtons = (props) => {
+const BottomNavButtons: React.FC<Props> = (props) => {
   const { theme, bottomBackButton, bbbDisabled } = props;
 
   return (
