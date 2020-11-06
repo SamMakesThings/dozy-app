@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
@@ -68,4 +67,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withTheme(ProgressBar);
+export default ProgressBar;
