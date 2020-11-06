@@ -13,20 +13,33 @@ import { scale } from 'react-native-size-matters';
 import Intl from 'intl';
 import ToggleTag from '../ToggleTag';
 import BottomNavButtons from '../BottomNavButtons';
+import { Theme } from '../../types/theme';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/tr-TR');
   require('date-time-format-timezone');
-  Intl.__disableRegExpRestore(); /*For syntaxerror invalid regular expression unmatched parentheses*/
+  // ntl.__disableRegExpRestore(); /*For syntaxerror invalid regular expression unmatched parentheses*/
 }
 
-const TagSelectScreen = (props) => {
+interface Props {
+  theme: Theme;
+  touchableTags: Array<{
+    label: string;
+    selected: boolean;
+    icon: string;
+  }>;
+  questionLabel: string;
+  inputLabel: string;
+  onFormSubmit: Function;
+}
+
+const TagSelectScreen: React.FC<Props> = (props) => {
   // Set the available tags and icons
   const { theme, touchableTags } = props;
 
   // Set up component state for tags and note field
-  const [selectedTags, updateTags] = React.useState([]);
+  const [selectedTags, updateTags] = React.useState([]) as any;
   const [notes, setNotes] = React.useState('');
 
   return (
@@ -43,8 +56,6 @@ const TagSelectScreen = (props) => {
       <KeyboardAvoidingView
         style={styles.Container_n8t}
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        elevation={0}
-        useThemeGutterPadding={true}
       >
         <Text
           style={[
@@ -81,7 +92,9 @@ const TagSelectScreen = (props) => {
                 label={label}
                 onPress={() => {
                   let tempArray = selectedTags;
-                  const index = selectedTags.findIndex((tag) => tag === label);
+                  const index = selectedTags.findIndex(
+                    (tag: string) => tag === label
+                  );
                   if (index > -1) {
                     tempArray.splice(index, 1);
                     updateTags(tempArray);
