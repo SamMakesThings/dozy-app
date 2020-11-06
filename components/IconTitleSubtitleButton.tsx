@@ -6,7 +6,6 @@ import {
   GestureResponderEvent,
   StyleSheet
 } from 'react-native';
-// import { withTheme } from '@draftbit/ui';
 import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';

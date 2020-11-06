@@ -1,11 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput } from 'react-native';
-import {
-  withTheme,
-  ScreenContainer,
-  Container,
-  ProgressBar
-} from '@draftbit/ui';
+import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
 import { Theme } from '../../types/theme';

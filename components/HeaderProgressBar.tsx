@@ -5,13 +5,9 @@ import { scale } from 'react-native-size-matters';
 import { ProgressBar } from './ProgressBar';
 import { dozy_theme } from '../config/Themes';
 
-interface Navigation {
-  goBack: Function;
-}
-
 interface Props {
   backButtonDisabled: boolean;
-  navigation: Navigation;
+  navigation: { goBack: Function };
   progressBarPercent: number;
 }
 

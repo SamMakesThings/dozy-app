@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   GestureResponderEvent
 } from 'react-native';
-import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { ProgressBar } from './ProgressBar';
@@ -126,4 +125,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withTheme(BaselineProgressCard);
+export default BaselineProgressCard;

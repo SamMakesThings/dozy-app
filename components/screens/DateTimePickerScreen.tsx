@@ -11,7 +11,7 @@ import { Theme } from '../../types/theme';
 
 // Define types for props
 interface Props {
-  defaultValue: Date;
+  defaultValue?: Date;
   questionLabel: string;
   questionSubtitle?: string;
   inputLabel?: string;
