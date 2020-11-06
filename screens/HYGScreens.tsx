@@ -429,7 +429,8 @@ export const SHI9: React.FC<Props> = ({ navigation }) => {
 export const SHIResult: React.FC<Props> = ({ navigation }) => {
   // If nothing is undefined (shouldn't be), add answers for the total SHI score
   const { SHI1, SHI2, SHI3, SHI4, SHI5, SHI6, SHI7, SHI8, SHI9 } = HYGState;
-  let SHIScore = SHI1 + SHI2 + SHI3 + SHI4 + SHI5 + SHI6 + SHI7 + SHI8 + SHI9;
+  HYGState.SHIScore =
+    SHI1 + SHI2 + SHI3 + SHI4 + SHI5 + SHI6 + SHI7 + SHI8 + SHI9;
 
   return (
     <WizardContentScreen
@@ -440,7 +441,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.96
         });
       }}
-      titleLabel={`You scored a ${SHIScore} on the shortened Sleep Hygiene Index (out of 36).`}
+      titleLabel={`You scored a ${HYGState.SHIScore} on the shortened Sleep Hygiene Index (out of 36).`}
       textLabel="There are some improvements to be made, but we can help. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
       buttonLabel="OK"
       flexibleLayout
