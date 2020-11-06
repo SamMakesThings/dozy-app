@@ -70,7 +70,9 @@ export default {
     title: 'Fixing Sleep Hygiene',
     subTitle: 'Improving sleep duration & quality',
     image: Images.WomanInBed,
-    todos: ['Improve sleep hygiene'],
+    todos: [
+      'Message Dozy team in support tab for one-on-one sleep hygiene advice'
+    ],
     url: 'https://dozy.customerly.help',
     optional: false,
     ready: true
