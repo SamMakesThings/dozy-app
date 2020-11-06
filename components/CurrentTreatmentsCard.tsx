@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  GestureResponderEvent,
+  ImageSourcePropType
+} from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { LinkCard } from './LinkCard';
 import { TodoItem } from './TodoItem';
@@ -8,10 +14,10 @@ import { dozy_theme } from '../config/Themes';
 
 interface Props {
   progressPercent: number;
-  linkImage: React.Component;
+  linkImage: ImageSourcePropType;
   linkTitle: string;
   linkSubtitle: string;
-  onPress: Function;
+  onPress: (event: GestureResponderEvent) => void;
   todosArray: Array<string>;
 }
 
