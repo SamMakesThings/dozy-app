@@ -10,18 +10,11 @@ import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
-import DizzyFace from '../assets/images/DizzyFace.svg';
-import TiredFace from '../assets/images/TiredFace.svg';
-import SleepingFace from '../assets/images/SleepingFace.svg';
 import BarChart from '../assets/images/BarChart.svg';
 import TanBook from '../assets/images/TanBook.svg';
 import ThumbsUp from '../assets/images/ThumbsUp.svg';
 import Clipboard from '../assets/images/Clipboard.svg';
-import LabCoat from '../assets/images/LabCoat.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
-import AlarmClock from '../assets/images/AlarmClock.svg';
-import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
-import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 
@@ -64,6 +57,9 @@ interface Props {
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
+
+  HYGState.treatmentPlan = GLOBAL.treatmentPlan;
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -433,7 +429,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('TryingToSleep', {
+        navigation.navigate('HYGReview', {
           progressBarPercent: 0.28
         });
       }}
@@ -465,60 +461,13 @@ export const HYGReview: React.FC<Props> = ({ navigation }) => {
           });
         }
       }}
-      titleLabel="So, to review:"
-      textLabel="In addition to your target sleep schedule and bedtime rules, start using PIT by not trying to fall asleep and instead passively trying to keep your eyes open. You can always review this information on your Treatments page."
+      titleLabel="So, here's the plan this week:"
+      textLabel="Message us (in the Support tab) and we'll give you 1:1 advice on improving your sleep hygiene. Stick to your target sleep schedule, and continue any other techniques you've learned. Can you recommit to following the treatment plan this week?"
       buttonLabel="Ok, I can do it this week"
       bottomGreyButtonLabel="Wait, I have questions"
       flexibleLayout
     >
       <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const RulesRecap: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('CheckinScheduling', {
-          progressBarPercent: 0.83
-        });
-      }}
-      titleLabel="Quick recap of the 3 rules:"
-      textLabel={
-        <>
-          <Text>
-            <Text style={styles.BoldLabelText}>1.</Text> Maintain the target
-            sleep schedule,
-          </Text>
-          {'\n'}
-          <Text>
-            <Text style={styles.BoldLabelText}>2.</Text> Get out of bed if
-            unable to sleep for 15+ minutes (and return once sleepy again), and
-          </Text>
-          {'\n'}
-          <Text>
-            <Text style={styles.BoldLabelText}>3.</Text> Don&apos;t do anything
-            in bed besides sleeping (including naps).
-          </Text>
-        </>
-      }
-      flexibleLayout
-    >
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around',
-          alignItems: 'center'
-        }}
-      >
-        <AlarmClock width={imgSize * 0.5} height={imgSize * 0.5} />
-        <Rule2Illustration width={imgSize * 1.2} height={imgSize} />
-        <Rule3Illustration width={imgSize * 0.7} height={imgSize * 0.7} />
-      </View>
     </WizardContentScreen>
   );
 };
@@ -535,7 +484,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
       }
       onQuestionSubmit={(value: Date) => {
         HYGState.nextCheckinTime = value;
-        navigation.navigate('PITEnd', { progressBarPercent: 1 });
+        navigation.navigate('HYGEnd', { progressBarPercent: 1 });
       }}
       validInputChecker={(val: Date) => {
         // Make sure the selected date is 7+ days from today
@@ -557,7 +506,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const PITEnd: React.FC<Props> = ({ navigation }) => {
+export const HYGEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder object for next checkin
@@ -583,9 +532,9 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
           lastCheckinDatetime: new Date(),
           nextCheckinModule: HYGState.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
-              v.started === false && v.module !== 'PIT'
+              v.started === false && v.module !== 'HYG'
           )[0].module,
-          lastCheckinModule: 'PIT',
+          lastCheckinModule: 'HYG',
           targetBedTime: GLOBAL.targetBedTime,
           targetWakeTime: GLOBAL.targetWakeTime,
           targetTimeInBed: GLOBAL.targetTimeInBed,
@@ -607,7 +556,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
         navigation.navigate('App');
         refreshUserData(dispatch);
       }}
-      textLabel="Weekly check-in completed!"
+      textLabel="Well done! You've taken one more step towards sleeping through the night."
       buttonLabel="Finish"
     >
       <RaisedHands width={imgSize} height={imgSize} />
