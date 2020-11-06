@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   GestureResponderEvent
 } from 'react-native';
-import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
@@ -107,4 +106,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withTheme(LinkCard);
+export default LinkCard;
