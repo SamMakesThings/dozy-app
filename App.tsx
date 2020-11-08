@@ -14,8 +14,8 @@ import * as Icon from '@expo/vector-icons';
 import * as Google from 'expo-google-app-auth';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
-import { decode, encode } from 'base-64';
 import { FbAuth, FbLib } from './config/firebaseConfig';
+import * as firebase from 'firebase';
 import { dozy_theme } from './config/Themes';
 import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
@@ -175,36 +175,38 @@ export default function App() {
       // Fetch and store the relevant auth token
 
       // Use my previously defined login function to get user data and store the token
-      _loginWithGoogle().then((result) => {
-        // Store credentials in SecureStore
-        if (result.credential) {
-          SecureStore.setItemAsync(
-            'accessToken',
-            result.credential.accessToken
-          );
-          SecureStore.setItemAsync('idToken', result.credential.idToken);
-          SecureStore.setItemAsync('providerId', result.credential.providerId);
-          SecureStore.setItemAsync('userId', result.user.uid);
-          SecureStore.setItemAsync(
-            'profileData',
-            JSON.stringify(result.additionalUserInfo.profile)
-          ).catch((error) => {
-            console.log('Error signing in: ' + error);
-          });
+      _loginWithGoogle().then(
+        (result: firebase.auth.UserCredential | { cancelled: boolean }) => {
+          // Store credentials in SecureStore
+          if ('credential' in result) {
+            SecureStore.setItemAsync(
+              'providerId',
+              result.credential.providerId
+            );
+            SecureStore.setItemAsync('userId', result.user.uid);
+            SecureStore.setItemAsync(
+              'profileData',
+              JSON.stringify(result.additionalUserInfo.profile)
+            ).catch((error) => {
+              console.log('Error signing in: ' + error);
+            });
+
+            // Update app state accordingly thru context hook function
+            dispatch({
+              type: 'SIGN_IN',
+              token: result.user.uid,
+              onboardingComplete: !result.additionalUserInfo.isNewUser,
+              profileData: result.additionalUserInfo.profile,
+              isAuthLoading: false
+            });
+          } else {
+            console.log('Error signing in (maybe cancelled)');
+          }
+
+          // Update user's data from Firestore db
+          refreshUserData(dispatch);
         }
-
-        // Update app state accordingly thru context hook function
-        dispatch({
-          type: 'SIGN_IN',
-          token: result.user.uid,
-          onboardingComplete: !result.additionalUserInfo.isNewUser,
-          profileData: result.additionalUserInfo.profile,
-          isAuthLoading: false
-        });
-
-        // Update user's data from Firestore db
-        refreshUserData(dispatch);
-      });
+      );
     },
     signOut: () => {
       SecureStore.deleteItemAsync('userId');
@@ -225,7 +227,7 @@ export default function App() {
     // TODO: Why TF does this work?? How can I make it not this??
     // Getting AppLoading errors when the dispatch isn't in a setTimeout.
     // Doesn't seem to wait 4 seconds though... confused what's happening
-    setTimeout(() => dispatch({ type: 'FINISH_LOADING' }, 4000));
+    setTimeout(() => dispatch({ type: 'FINISH_LOADING' }));
     // dispatch({ type: 'FINISH_LOADING' });
   }
 
@@ -255,7 +257,11 @@ export default function App() {
         <NavigationContainer>
           <View style={styles.container}>
             <ThemeProvider theme={dozy_theme}>
-              {Platform.OS === 'ios' ? <StatusBar barStyle="light" /> : []}
+              {Platform.OS === 'ios' ? (
+                <StatusBar barStyle="light-content" />
+              ) : (
+                []
+              )}
               <AppNavigator
                 userToken={state.userToken}
                 authLoading={state.authLoading}
