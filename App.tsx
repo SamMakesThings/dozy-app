@@ -31,10 +31,6 @@ console.warn = (message) => {
   }
 };
 
-// Disable font scaling app-wide, enable on things it doesn't break
-Text.defaultProps = Text.defaultProps || {};
-Text.defaultProps.allowFontScaling = false;
-
 // A utility function to always return a valid date number given a starting date and a delta
 // TODO: Move this to its own file
 function alterMonthSelection(prevMonth, changeBy) {
