@@ -51,14 +51,6 @@ function alterMonthSelection(prevMonth, changeBy) {
 
 // Root app component
 export default function App() {
-  // Temporary fix for the Firebase "can't find atob" error
-  if (!global.btoa) {
-    global.btoa = encode;
-  }
-  if (!global.atob) {
-    global.atob = decode;
-  }
-
   // Using auth functions from react-navigation guide
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
