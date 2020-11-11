@@ -11,12 +11,11 @@ import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
 import BarChart from '../assets/images/BarChart.svg';
-import TanBook from '../assets/images/TanBook.svg';
-import ThumbsUp from '../assets/images/ThumbsUp.svg';
-import Clipboard from '../assets/images/Clipboard.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
+
+// TODO: Update percentage values
 
 const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
@@ -41,7 +40,12 @@ let COG1State = {
   DBAS14: 0,
   DBAS15: 0,
   DBAS16: 0,
-  DBASScore: 0
+  DBASScore: 0,
+  DBASF1: 0,
+  DBASF2: 0,
+  DBASF3: 0,
+  DBASF4: 0,
+  highestAvgCategoryLabel: 'ERROR'
 };
 
 COG1State.treatmentPlan = GLOBAL.treatmentPlan; // Update treatmentPlan variable with global one
@@ -453,21 +457,85 @@ export const DBAS16: React.FC<Props> = ({ navigation }) => {
 };
 
 export const DBASResult: React.FC<Props> = ({ navigation }) => {
-  // If nothing is undefined (shouldn't be), add answers for the total SHI score
-  const { DBAS1, DBAS2 } = COG1State;
-  COG1State.DBASScore = DBAS1 + DBAS2;
+  // Add answers for the total DBAS score
+  const {
+    DBAS1,
+    DBAS2,
+    DBAS3,
+    DBAS4,
+    DBAS5,
+    DBAS6,
+    DBAS7,
+    DBAS8,
+    DBAS9,
+    DBAS10,
+    DBAS11,
+    DBAS12,
+    DBAS13,
+    DBAS14,
+    DBAS15,
+    DBAS16
+  } = COG1State;
+  COG1State.DBASScore =
+    DBAS1 +
+    DBAS2 +
+    DBAS3 +
+    DBAS4 +
+    DBAS5 +
+    DBAS6 +
+    DBAS7 +
+    DBAS8 +
+    DBAS9 +
+    DBAS10 +
+    DBAS11 +
+    DBAS12 +
+    DBAS13 +
+    DBAS14 +
+    DBAS15 +
+    DBAS16;
+
+  // Calculate category average scores as well
+  COG1State.DBASF1 = (DBAS5 + DBAS7 + DBAS9 + DBAS12 + DBAS16) / 5;
+  COG1State.DBASF2 = (DBAS3 + DBAS4 + DBAS8 + DBAS10 + DBAS11) / 5;
+  COG1State.DBASF3 = (DBAS1 + DBAS2) / 2;
+  COG1State.DBASF4 = (DBAS6 + DBAS13 + DBAS15) / 3;
+
+  // Find the highest average scoring category, label it
+  const categoryAvgScores: { [key: string]: number } = {
+    DBASF1: COG1State.DBASF1,
+    DBASF2: COG1State.DBASF2,
+    DBASF3: COG1State.DBASF3,
+    DBASF4: COG1State.DBASF4
+  };
+  const highestAvgCategory = Object.keys(categoryAvgScores).sort(
+    (a, b) => categoryAvgScores[b] - categoryAvgScores[a]
+  )[0];
+  switch (highestAvgCategory) {
+    case 'DBASF1':
+      COG1State.highestAvgCategoryLabel = 'perceived consequences of insomnia';
+      break;
+    case 'DBASF2':
+      COG1State.highestAvgCategoryLabel = 'worry about insomnia';
+      break;
+    case 'DBASF3':
+      COG1State.highestAvgCategoryLabel = 'sleep expectations';
+      break;
+    case 'DBASF4':
+      COG1State.highestAvgCategoryLabel = 'views on medication';
+      break;
+  }
 
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('HYGReview', {
+        navigation.navigate('COG1Review', {
           progressBarPercent: 0.96
         });
       }}
-      titleLabel={`You scored a ${COG1State.DBASScore} on the shortened Sleep Hygiene Index (out of 36).`}
-      textLabel="There are some improvements to be made, but we can help. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
+      titleLabel={`Seems like your most difficult area is with ${COG1State.highestAvgCategoryLabel}.`}
+      textLabel="The results say you've got some views on sleep that could be perpetuating your insomnia. By challenging these views, we can improve your thinking & improve your sleep. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
       buttonLabel="OK"
       flexibleLayout
     >
@@ -476,7 +544,7 @@ export const DBASResult: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const HYGReview: React.FC<Props> = ({ navigation }) => {
+export const COG1Review: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -484,7 +552,7 @@ export const HYGReview: React.FC<Props> = ({ navigation }) => {
       onQuestionSubmit={(res: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
-            module: 'HYG'
+            module: 'COG1'
           });
         } else {
           navigation.navigate('CheckinScheduling', {
@@ -493,7 +561,7 @@ export const HYGReview: React.FC<Props> = ({ navigation }) => {
         }
       }}
       titleLabel="So, here's the plan this week:"
-      textLabel="Message us (in the Support tab) and we'll give you 1:1 advice on improving your sleep hygiene. Stick to your target sleep schedule, and continue any other techniques you've learned. Can you recommit to following the treatment plan this week?"
+      textLabel={`Message us (in the Support tab) and we'll talk 1:1 re: ${COG1State.highestAvgCategoryLabel}. Stick to your target sleep schedule, and continue any other techniques you've learned. Can you recommit to following the treatment plan this week?`}
       buttonLabel="Ok, I can do it this week"
       bottomGreyButtonLabel="Wait, I have questions"
       flexibleLayout
@@ -515,7 +583,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
       }
       onQuestionSubmit={(value: Date) => {
         COG1State.nextCheckinTime = value;
-        navigation.navigate('HYGEnd', { progressBarPercent: 1 });
+        navigation.navigate('COG1End', { progressBarPercent: 1 });
       }}
       validInputChecker={(val: Date) => {
         // Make sure the selected date is 7+ days from today
@@ -537,7 +605,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const HYGEnd: React.FC<Props> = ({ navigation }) => {
+export const COG1End: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder object for next checkin
@@ -563,16 +631,34 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
           lastCheckinDatetime: new Date(),
           nextCheckinModule: COG1State.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
-              v.started === false && v.module !== 'HYG'
+              v.started === false && v.module !== 'COG1'
           )[0].module,
-          lastCheckinModule: 'HYG',
+          lastCheckinModule: 'COG1',
           targetBedTime: GLOBAL.targetBedTime,
           targetWakeTime: GLOBAL.targetWakeTime,
           targetTimeInBed: GLOBAL.targetTimeInBed,
           additionalCheckinData: {
             DBAS1: COG1State.DBAS1,
             DBAS2: COG1State.DBAS2,
-            SHIScore: COG1State.DBASScore
+            DBAS3: COG1State.DBAS3,
+            DBAS4: COG1State.DBAS4,
+            DBAS5: COG1State.DBAS5,
+            DBAS6: COG1State.DBAS6,
+            DBAS7: COG1State.DBAS7,
+            DBAS8: COG1State.DBAS8,
+            DBAS9: COG1State.DBAS9,
+            DBAS10: COG1State.DBAS10,
+            DBAS11: COG1State.DBAS11,
+            DBAS12: COG1State.DBAS12,
+            DBAS13: COG1State.DBAS13,
+            DBAS14: COG1State.DBAS14,
+            DBAS15: COG1State.DBAS15,
+            DBAS16: COG1State.DBAS16,
+            DBASScore: COG1State.DBASScore,
+            DBASF1: COG1State.DBASF1,
+            DBASF2: COG1State.DBASF2,
+            DBASF3: COG1State.DBASF3,
+            DBASF4: COG1State.DBASF4
           },
           reminderObject: reminderObject
         });
