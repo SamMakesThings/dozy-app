@@ -54,16 +54,18 @@ export default {
     subTitle: 'Finding and fixing harmful perspectives',
     image: Images.WomanInBed,
     todos: ['Notice harmful thoughts and replace with healthy ones'],
-    url: 'https://dozy.customerly.help',
+    url:
+      'https://dozy.customerly.help/dysfunctional-beliefs-attitudes-about-sleep-dbas/',
     optional: false,
-    ready: false
+    ready: true
   },
   COG2: {
     title: 'Revisiting Harmful Beliefs About Sleep',
     subTitle: "Checking the progress you've made",
     image: Images.WomanInBed,
     todos: ['Notice harmful thoughts and replace with healthy ones'],
-    url: 'https://dozy.customerly.help',
+    url:
+      'https://dozy.customerly.help/dysfunctional-beliefs-attitudes-about-sleep-dbas/',
     optional: false,
     ready: false
   },
