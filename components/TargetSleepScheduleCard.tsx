@@ -8,7 +8,7 @@ import TransRightArrow from '../assets/images/TransRightArrow.svg';
 import YellowSun from '../assets/images/YellowSun.svg';
 
 interface Props {
-  styles: object;
+  styles?: object;
   remainingDays: number;
   bedTime: string;
   wakeTime: string;

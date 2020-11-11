@@ -17,7 +17,7 @@ import { dozy_theme } from '../config/Themes';
 interface Props {
   onPress?: (event: GestureResponderEvent) => void;
   title?: string;
-  titleOpacity: number;
+  titleOpacity?: number;
   nextCheckinDate: firebase.firestore.Timestamp;
   completionPercentProgress: number;
 }
@@ -44,7 +44,7 @@ export const TreatmentPlanCard: React.FC<Props> = (props) => {
               style={{
                 ...theme.typography.cardTitle,
                 ...styles.Text_CardTitle,
-                opacity: props.titleOpacity
+                opacity: props.titleOpacity || undefined
               }}
             >
               {props.title || 'My treatment plan'}
