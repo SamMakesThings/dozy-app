@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  useWindowDimensions,
-  ActivityIndicator
-} from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { WebView } from 'react-native-webview';
@@ -19,12 +12,29 @@ import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
 import { dozy_theme } from '../config/Themes';
-import treatments from '../constants/Treatments';
-import { formatDateAsTime } from '../utilities/formatDateAsTime.ts';
+import treatmentsRaw from '../constants/Treatments';
+import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import planTreatmentModules from '../utilities/planTreatmentModules';
 import GLOBAL from '../utilities/global';
 
-export const TreatmentScreen = ({ navigation }) => {
+type Props = {
+  navigation: {
+    navigate: Function;
+  };
+};
+
+const treatments: {
+  [key: string]: {
+    ready: boolean;
+    title: string;
+    subTitle: string;
+    image: object;
+    todos: Array<string>;
+    optional: boolean;
+  };
+} = treatmentsRaw; // Give Treatments an iterable type
+
+export const TreatmentScreen: React.FC<Props> = ({ navigation }) => {
   const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
 
@@ -59,7 +69,7 @@ export const TreatmentScreen = ({ navigation }) => {
       (module) => module.started === true
     ).length;
     const percentTreatmentCompleted =
-      (modulesCompleted / treatmentPlan.length).toFixed(2) * 1;
+      parseFloat((modulesCompleted / treatmentPlan.length).toFixed(2)) * 1; // Parsefloat added to make TS happy
 
     // Strip time from next checkin datetime to determine whether to show checkin button
     let nextCheckinDate = state.userData.currentTreatments.nextCheckinDatetime.toDate();
@@ -203,7 +213,7 @@ export const TreatmentScreen = ({ navigation }) => {
   } else {
     // If sleep logs haven't loaded, show indicator
     return (
-      <View horizontal={false}>
+      <View>
         <ActivityIndicator
           size="large"
           color={theme.colors.primary}
