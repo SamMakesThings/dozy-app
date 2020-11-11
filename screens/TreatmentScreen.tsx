@@ -12,7 +12,7 @@ import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
 import { dozy_theme } from '../config/Themes';
-import treatmentsRaw from '../constants/Treatments';
+import treatments from '../constants/Treatments';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import planTreatmentModules from '../utilities/planTreatmentModules';
 import GLOBAL from '../utilities/global';
@@ -22,17 +22,6 @@ type Props = {
     navigate: Function;
   };
 };
-
-const treatments: {
-  [key: string]: {
-    ready: boolean;
-    title: string;
-    subTitle: string;
-    image: object;
-    todos: Array<string>;
-    optional: boolean;
-  };
-} = treatmentsRaw; // Give Treatments an iterable type
 
 export const TreatmentScreen: React.FC<Props> = ({ navigation }) => {
   const theme = dozy_theme;
