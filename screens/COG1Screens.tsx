@@ -22,23 +22,29 @@ const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
 
 // Define an interface for HYG flow state (SHI score & next checkin info)
-let HYGState = {
+let COG1State = {
   nextCheckinTime: new Date(),
-  treatmentPlan: [{ started: false, module: 'deleteme' }],
-  SHI1: 0,
-  SHI2: 0,
-  SHI3: 0,
-  SHI4: 0,
-  SHI4a: 'none',
-  SHI5: 0,
-  SHI6: 0,
-  SHI7: 0,
-  SHI8: 0,
-  SHI9: 0,
-  SHIScore: 0
+  treatmentPlan: [{ started: false, module: 'deleteme', estDate: new Date() }],
+  DBAS1: 0,
+  DBAS2: 0,
+  DBAS3: 0,
+  DBAS4: 0,
+  DBAS5: 0,
+  DBAS6: 0,
+  DBAS7: 0,
+  DBAS8: 0,
+  DBAS9: 0,
+  DBAS10: 0,
+  DBAS11: 0,
+  DBAS12: 0,
+  DBAS13: 0,
+  DBAS14: 0,
+  DBAS15: 0,
+  DBAS16: 0,
+  DBASScore: 0
 };
 
-HYGState.treatmentPlan = GLOBAL.treatmentPlan; // Update treatmentPlan variable with global one
+COG1State.treatmentPlan = GLOBAL.treatmentPlan; // Update treatmentPlan variable with global one
 const imgSizePercent = 0.4; // Define square image size defaults as a percent of width
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
@@ -63,7 +69,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.08
         });
       }}
-      textLabel="Welcome back! This week we'll address some of your sleep hygiene-related issues - things like light, temperature, and partners/pets. But first, let's review your sleep and how treatment's been going for you so far."
+      textLabel="Welcome back! This week we'll help address some anxieties and beliefs that make sleep harder. But first, let's review your sleep and how treatment's been going for you so far."
     />
   );
 };
@@ -75,48 +81,17 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
 export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
 
-  // Trim sleepLogs to only show most recent 12
-  const recentSleepLogs = state.sleepLogs.slice(0, 12);
-
-  // Find top 3 sleep disturbance tags.
-  const logTagsFrequencyObject: {
-    [key: string]: number;
-  } = recentSleepLogs.reduce(
-    (
-      tagsObject: { [key: string]: number },
-      sleepLog: { tags: Array<string> }
-    ) => {
-      let newTagsObject = tagsObject;
-      sleepLog.tags.map((tag) => {
-        newTagsObject[tag] = newTagsObject[tag] ? newTagsObject[tag] + 1 : 1; // if exists, increment. Otherwise, start with 1
-      });
-      return newTagsObject;
-    },
-    { nothing: -20 }
-  ); // Add nothing way negative so it's excluded from the highest frequency
-  // Then find the 3 highest from the object. Put them in an array as strings.
-  const mostCommonTags = Object.keys(logTagsFrequencyObject)
-    .sort(function (a, b) {
-      return logTagsFrequencyObject[b] - logTagsFrequencyObject[a];
-    })
-    .slice(0, 3);
-  // Turn it into a nice string for this screen
-  const tagsString =
-    mostCommonTags.length === 3
-      ? `${mostCommonTags[0]}, ${mostCommonTags[1]}, and ${mostCommonTags[2]}`
-      : `light, heat, noise, and other issues`;
-
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('HYGIntro', {
+        navigation.navigate('DBAS1', {
           progressBarPercent: 0.4
         });
       }}
-      titleLabel="This week's treatment: Sleep hygiene improvements"
-      textLabel={`Today we'll be addressing your sleep problems caused by ${tagsString}.`}
+      titleLabel="This week's treatment: Addressing Dysfunctional Beliefs & Attitudes about Sleep (DBAS)"
+      textLabel="We're going to get an idea of how you currently think about sleep. To get started, we'll ask you 16 questions. Rate how much you personally agree or disagree with each statement."
       buttonLabel="Next"
       flexibleLayout
     >
@@ -125,295 +100,362 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const HYGIntro: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('HYGBenefits', {
-          progressBarPercent: 0.44
-        });
-      }}
-      titleLabel="You've probably heard of sleep hygiene before."
-      textLabel="You might've even tried some tricks from it (reduce caffeine, reduce nightly electronics use, etc). However, as you may have learned, sleep hygiene tips on their own aren't usually enough to fix insomnia."
-      buttonLabel="Why talk about it then?"
-      flexibleLayout
-    >
-      <TanBook width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const HYGBenefits: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('SHIIntro', {
-          progressBarPercent: 0.48
-        });
-      }}
-      textLabel="Fortunately, making strategic sleep hygiene improvements can improve sleep quality, help prevent relapse, and boost the efficacy of other treatments at the same time!"
-      buttonLabel="Got it"
-      flexibleLayout
-    >
-      <ThumbsUp width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const SHIIntro: React.FC<Props> = ({ navigation }) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('SHI1', {
-          progressBarPercent: 0.52
-        });
-      }}
-      textLabel={`To get started, we'll ask a few lifestyle questions to get a better idea of how to help you.
-      
-Please answer each question with how true the statement has been for you over the last week.`}
-      buttonLabel="Begin"
-      flexibleLayout
-    >
-      <Clipboard width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
-
-export const SHI1: React.FC<Props> = ({ navigation }) => {
+export const DBAS1: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
-        HYGState.SHI1 = value;
-        navigation.navigate('SHI2', { progressBarPercent: 0.56 });
+        COG1State.DBAS1 = value;
+        navigation.navigate('DBAS2', { progressBarPercent: 0.56 });
       }}
-      questionLabel="I think, plan, or worry when I am in bed."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      questionLabel="I need 8 hours of sleep to feel refreshed and function well during the day."
+      questionSubtitle="Please rate how much you personally agree with each statement."
       buttonValues={[
-        { label: 'Never', value: 0, solidColor: false },
-        { label: 'Rarely', value: 1, solidColor: false },
-        { label: 'Sometimes', value: 2, solidColor: false },
-        { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
       ]}
     />
   );
 };
 
-export const SHI2: React.FC<Props> = ({ navigation }) => {
+export const DBAS2: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
-        HYGState.SHI2 = value;
-        navigation.navigate('SHI3', { progressBarPercent: 0.6 });
+        COG1State.DBAS2 = value;
+        navigation.navigate('DBAS3', { progressBarPercent: 0.56 });
       }}
-      questionLabel="I exercise to the point of sweating within 1 hr of going to bed."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      questionLabel="When I don't get the proper amount of sleep on a given night, I need to catch up the next day by napping or the next night by sleeping longer."
+      questionSubtitle="Please rate how much you personally agree with each statement."
       buttonValues={[
-        { label: 'Never', value: 0, solidColor: false },
-        { label: 'Rarely', value: 1, solidColor: false },
-        { label: 'Sometimes', value: 2, solidColor: false },
-        { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
       ]}
     />
   );
 };
 
-export const SHI3: React.FC<Props> = ({ navigation }) => {
+export const DBAS3: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
-        HYGState.SHI3 = value;
-        navigation.navigate('SHI4', { progressBarPercent: 0.64 });
+        COG1State.DBAS3 = value;
+        navigation.navigate('DBAS4', { progressBarPercent: 0.56 });
       }}
-      questionLabel="I stay in bed longer than I should two or three times a week."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      questionLabel="I am concerned that chronic insomnia may have serious consequences on my physical health."
+      questionSubtitle="Please rate how much you personally agree with each statement."
       buttonValues={[
-        { label: 'Never', value: 0, solidColor: false },
-        { label: 'Rarely', value: 1, solidColor: false },
-        { label: 'Sometimes', value: 2, solidColor: false },
-        { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
       ]}
     />
   );
 };
 
-export const SHI4: React.FC<Props> = ({ navigation }) => {
+export const DBAS4: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
-        HYGState.SHI4 = value;
-        if (value >= 2) {
-          // If uses substance more than rarely, ask which
-          navigation.navigate('SHI4a', { progressBarPercent: 0.68 });
-        } else {
-          HYGState.SHI4a = 'none';
-          navigation.navigate('SHI5', { progressBarPercent: 0.72 });
-        }
+        COG1State.DBAS4 = value;
+        navigation.navigate('DBAS5', { progressBarPercent: 0.56 });
       }}
-      questionLabel="I use alcohol, tobacco/nicotine, or caffeine within 4hrs of going to bed or after going to bed."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      questionLabel="I am worried that I may lose control over my ability to sleep."
+      questionSubtitle="Please rate how much you personally agree with each statement."
       buttonValues={[
-        { label: 'Never', value: 0, solidColor: false },
-        { label: 'Rarely', value: 1, solidColor: false },
-        { label: 'Sometimes', value: 2, solidColor: false },
-        { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
       ]}
     />
   );
 };
 
-export const SHI4a: React.FC<Props> = ({ navigation }) => {
-  return (
-    <MultiButtonScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: string) => {
-        HYGState.SHI4a = value;
-        navigation.navigate('SHI5', { progressBarPercent: 0.72 });
-      }}
-      questionLabel="Which would you say you use most often before going to bed?"
-      buttonValues={[
-        { label: 'Alcohol', value: 'alcohol', solidColor: false },
-        { label: 'Caffeine', value: 'caffeine', solidColor: false },
-        { label: 'Tobacco/Nicotene', value: 'nicotene', solidColor: false },
-        { label: 'Other', value: 'other', solidColor: false }
-      ]}
-    />
-  );
-};
-
-export const SHI5: React.FC<Props> = ({ navigation }) => {
+export const DBAS5: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
-        HYGState.SHI5 = value;
-        navigation.navigate('SHI6', { progressBarPercent: 0.76 });
+        COG1State.DBAS5 = value;
+        navigation.navigate('DBAS6', { progressBarPercent: 0.56 });
       }}
-      questionLabel="I do something that may wake me up before bedtime."
-      questionSubtitle="(for example: play video games, use social media, clean intensely)."
+      questionLabel="After a poor night's sleep, I know it will interfere with my activities the next day."
+      questionSubtitle="Please rate how much you personally agree with each statement."
       buttonValues={[
-        { label: 'Never', value: 0, solidColor: false },
-        { label: 'Rarely', value: 1, solidColor: false },
-        { label: 'Sometimes', value: 2, solidColor: false },
-        { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
       ]}
     />
   );
 };
 
-export const SHI6: React.FC<Props> = ({ navigation }) => {
+export const DBAS6: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
-        HYGState.SHI6 = value;
-        navigation.navigate('SHI7', { progressBarPercent: 0.8 });
+        COG1State.DBAS6 = value;
+        navigation.navigate('DBAS7', { progressBarPercent: 0.56 });
       }}
-      questionLabel="I go to bed feeling stressed, angry, upset, or nervous."
-      questionSubtitle="Please rate how true each statement has been for you over the last week."
+      questionLabel="To be alert and function well during the day, I believe I would be better off taking a sleeping pill rather than having a poor night's sleep."
+      questionSubtitle="Please rate how much you personally agree with each statement."
       buttonValues={[
-        { label: 'Never', value: 0, solidColor: false },
-        { label: 'Rarely', value: 1, solidColor: false },
-        { label: 'Sometimes', value: 2, solidColor: false },
-        { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
       ]}
     />
   );
 };
 
-export const SHI7: React.FC<Props> = ({ navigation }) => {
+export const DBAS7: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
-        HYGState.SHI7 = value;
-        navigation.navigate('SHI8', { progressBarPercent: 0.84 });
+        COG1State.DBAS7 = value;
+        navigation.navigate('DBAS8', { progressBarPercent: 0.56 });
       }}
-      questionLabel="I sleep on an uncomfortable bed."
-      questionSubtitle="(for example: poor mattress or pillow, too many or not enough blankets)"
+      questionLabel="When I feel irritable, depressed, or anxious during the day, it is mostly because I did not sleep well the night before."
+      questionSubtitle="Please rate how much you personally agree with each statement."
       buttonValues={[
-        { label: 'Never', value: 0, solidColor: false },
-        { label: 'Rarely', value: 1, solidColor: false },
-        { label: 'Sometimes', value: 2, solidColor: false },
-        { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
       ]}
     />
   );
 };
 
-export const SHI8: React.FC<Props> = ({ navigation }) => {
+export const DBAS8: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
-        HYGState.SHI8 = value;
-        navigation.navigate('SHI9', { progressBarPercent: 0.88 });
+        COG1State.DBAS8 = value;
+        navigation.navigate('DBAS9', { progressBarPercent: 0.56 });
       }}
-      questionLabel="I sleep in an uncomfortable bedroom."
-      questionSubtitle="(for example: too bright, too stuffy, too hot, too cold, or too noisy)"
+      questionLabel="When I sleep poorly one night, I know it will disturb my sleep schedule for the whole week."
+      questionSubtitle="Please rate how much you personally agree with each statement."
       buttonValues={[
-        { label: 'Never', value: 0, solidColor: false },
-        { label: 'Rarely', value: 1, solidColor: false },
-        { label: 'Sometimes', value: 2, solidColor: false },
-        { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
       ]}
     />
   );
 };
 
-export const SHI9: React.FC<Props> = ({ navigation }) => {
+export const DBAS9: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
-        HYGState.SHI9 = value;
-        navigation.navigate('SHIResult', { progressBarPercent: 0.92 });
+        COG1State.DBAS9 = value;
+        navigation.navigate('DBAS10', { progressBarPercent: 0.56 });
       }}
-      questionLabel="I do important work before bedtime."
-      questionSubtitle="(for example: pay bills, plan, or study)"
+      questionLabel="Without an adequate night's sleep, I can hardly function the next day."
+      questionSubtitle="Please rate how much you personally agree with each statement."
       buttonValues={[
-        { label: 'Never', value: 0, solidColor: false },
-        { label: 'Rarely', value: 1, solidColor: false },
-        { label: 'Sometimes', value: 2, solidColor: false },
-        { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
       ]}
     />
   );
 };
 
-export const SHIResult: React.FC<Props> = ({ navigation }) => {
+export const DBAS10: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        COG1State.DBAS10 = value;
+        navigation.navigate('DBAS11', { progressBarPercent: 0.56 });
+      }}
+      questionLabel="I can't ever predict whether I'll have a good or poor night's sleep."
+      questionSubtitle="Please rate how much you personally agree with each statement."
+      buttonValues={[
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const DBAS11: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        COG1State.DBAS11 = value;
+        navigation.navigate('DBAS12', { progressBarPercent: 0.56 });
+      }}
+      questionLabel="I have little ability to manage the negative consequences of disturbed sleep."
+      questionSubtitle="Please rate how much you personally agree with each statement."
+      buttonValues={[
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const DBAS12: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        COG1State.DBAS12 = value;
+        navigation.navigate('DBAS13', { progressBarPercent: 0.56 });
+      }}
+      questionLabel="When I feel tired, have no energy, or just seem to not function well during the day, it is generally because I did not sleep well the night before."
+      questionSubtitle="Please rate how much you personally agree with each statement."
+      buttonValues={[
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const DBAS13: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        COG1State.DBAS13 = value;
+        navigation.navigate('DBAS14', { progressBarPercent: 0.56 });
+      }}
+      questionLabel="I believe insomnia is the result of a chemical imbalance."
+      questionSubtitle="Please rate how much you personally agree with each statement."
+      buttonValues={[
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const DBAS14: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        COG1State.DBAS14 = value;
+        navigation.navigate('DBAS15', { progressBarPercent: 0.56 });
+      }}
+      questionLabel="I feel insomnia is ruining my ability to enjoy life and prevents me from doing what I want."
+      questionSubtitle="Please rate how much you personally agree with each statement."
+      buttonValues={[
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const DBAS15: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        COG1State.DBAS15 = value;
+        navigation.navigate('DBAS16', { progressBarPercent: 0.56 });
+      }}
+      questionLabel="Medication is probably the only solution to sleeplessness."
+      questionSubtitle="Please rate how much you personally agree with each statement."
+      buttonValues={[
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const DBAS16: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        COG1State.DBAS16 = value;
+        navigation.navigate('DBASResult', { progressBarPercent: 0.56 });
+      }}
+      questionLabel="I avoid or cancel obligations (social, family) after a poor night's sleep."
+      questionSubtitle="Please rate how much you personally agree with each statement."
+      buttonValues={[
+        { label: 'Strongly disagree', value: 0, solidColor: false },
+        { label: 'Disagree', value: 2.5, solidColor: false },
+        { label: 'Neutral', value: 5, solidColor: false },
+        { label: 'Agree', value: 7.5, solidColor: false },
+        { label: 'Strongly agree', value: 10, solidColor: false }
+      ]}
+    />
+  );
+};
+
+export const DBASResult: React.FC<Props> = ({ navigation }) => {
   // If nothing is undefined (shouldn't be), add answers for the total SHI score
-  const { SHI1, SHI2, SHI3, SHI4, SHI5, SHI6, SHI7, SHI8, SHI9 } = HYGState;
-  HYGState.SHIScore =
-    SHI1 + SHI2 + SHI3 + SHI4 + SHI5 + SHI6 + SHI7 + SHI8 + SHI9;
+  const { DBAS1, DBAS2 } = COG1State;
+  COG1State.DBASScore = DBAS1 + DBAS2;
 
   return (
     <WizardContentScreen
@@ -424,7 +466,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.96
         });
       }}
-      titleLabel={`You scored a ${HYGState.SHIScore} on the shortened Sleep Hygiene Index (out of 36).`}
+      titleLabel={`You scored a ${COG1State.DBASScore} on the shortened Sleep Hygiene Index (out of 36).`}
       textLabel="There are some improvements to be made, but we can help. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
       buttonLabel="OK"
       flexibleLayout
@@ -472,7 +514,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         ) /* Default date of 7 days from today */
       }
       onQuestionSubmit={(value: Date) => {
-        HYGState.nextCheckinTime = value;
+        COG1State.nextCheckinTime = value;
         navigation.navigate('HYGEnd', { progressBarPercent: 1 });
       }}
       validInputChecker={(val: Date) => {
@@ -504,7 +546,7 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
-    time: HYGState.nextCheckinTime,
+    time: COG1State.nextCheckinTime,
     enabled: true
   };
 
@@ -517,9 +559,9 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
         submitCheckinData({
           userId: state.userToken,
           checkinPostponed: false,
-          nextCheckinDatetime: HYGState.nextCheckinTime,
+          nextCheckinDatetime: COG1State.nextCheckinTime,
           lastCheckinDatetime: new Date(),
-          nextCheckinModule: HYGState.treatmentPlan.filter(
+          nextCheckinModule: COG1State.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
               v.started === false && v.module !== 'HYG'
           )[0].module,
@@ -528,17 +570,9 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
           targetWakeTime: GLOBAL.targetWakeTime,
           targetTimeInBed: GLOBAL.targetTimeInBed,
           additionalCheckinData: {
-            SHI1: HYGState.SHI1,
-            SHI2: HYGState.SHI2,
-            SHI3: HYGState.SHI3,
-            SHI4: HYGState.SHI4,
-            SHI4a: HYGState.SHI4a,
-            SHI5: HYGState.SHI5,
-            SHI6: HYGState.SHI6,
-            SHI7: HYGState.SHI7,
-            SHI8: HYGState.SHI8,
-            SHI9: HYGState.SHI9,
-            SHIScore: HYGState.SHIScore
+            DBAS1: COG1State.DBAS1,
+            DBAS2: COG1State.DBAS2,
+            SHIScore: COG1State.DBASScore
           },
           reminderObject: reminderObject
         });
