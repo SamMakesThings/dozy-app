@@ -13,6 +13,7 @@ import SCTSRTNavigator from './SCTSRTNavigator';
 import RLXNavigator from './RLXNavigator';
 import PITNavigator from './PITNavigator';
 import HYGNavigator from './HYGNavigator';
+import COG1Navigator from './COG1Navigator';
 import HeaderProgressBar from '../components/HeaderProgressBar';
 
 // Create the main app auth navigation flow
@@ -115,6 +116,7 @@ export default function InitialAuthNavigator({
           <TopStack.Screen name="RLX" component={RLXNavigator} />
           <TopStack.Screen name="PIT" component={PITNavigator} />
           <TopStack.Screen name="HYG" component={HYGNavigator} />
+          <TopStack.Screen name="COG1" component={COG1Navigator} />
         </>
       ) : (
         <TopStack.Screen
