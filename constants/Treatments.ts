@@ -1,4 +1,5 @@
 import Images from '../config/Images';
+import { ImageSourcePropType } from 'react-native';
 
 // Copy and image information for treatment modules
 // Used to keep things consistent across the app.
@@ -104,4 +105,14 @@ export default {
     optional: true,
     ready: false
   }
+} as {
+  [key: string]: {
+    title: string;
+    subTitle: string;
+    image: ImageSourcePropType;
+    todos: Array<string>;
+    url: string;
+    optional: boolean;
+    ready: boolean;
+  };
 };

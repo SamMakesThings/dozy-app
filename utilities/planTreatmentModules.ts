@@ -1,6 +1,6 @@
 import moment from 'moment';
 import * as firebase from 'firebase';
-import treatmentsRaw from '../constants/Treatments';
+import treatments from '../constants/Treatments';
 
 interface Args {
   sleepLogs: Array<{
@@ -10,7 +10,6 @@ interface Args {
     [key: string]: firebase.firestore.Timestamp;
   };
 }
-const treatments: { [key: string]: { optional: boolean } } = treatmentsRaw; // Give Treatments an iterable type
 
 function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
   let treatmentPlan: Array<{
