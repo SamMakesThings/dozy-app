@@ -23,7 +23,6 @@ const theme: any = dozy_theme; // Define the theme for the file globally
 // Define an interface for HYG flow state (SHI score & next checkin info)
 let COG1State = {
   nextCheckinTime: new Date(),
-  treatmentPlan: [{ started: false, module: 'deleteme', estDate: new Date() }],
   DBAS1: 0,
   DBAS2: 0,
   DBAS3: 0,
@@ -48,7 +47,6 @@ let COG1State = {
   highestAvgCategoryLabel: 'ERROR'
 };
 
-COG1State.treatmentPlan = GLOBAL.treatmentPlan; // Update treatmentPlan variable with global one
 const imgSizePercent = 0.4; // Define square image size defaults as a percent of width
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
@@ -629,7 +627,7 @@ export const COG1End: React.FC<Props> = ({ navigation }) => {
           checkinPostponed: false,
           nextCheckinDatetime: COG1State.nextCheckinTime,
           lastCheckinDatetime: new Date(),
-          nextCheckinModule: COG1State.treatmentPlan.filter(
+          nextCheckinModule: GLOBAL.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
               v.started === false && v.module !== 'COG1'
           )[0].module,

@@ -38,7 +38,6 @@ let HYGState = {
   SHIScore: 0
 };
 
-HYGState.treatmentPlan = GLOBAL.treatmentPlan; // Update treatmentPlan variable with global one
 const imgSizePercent = 0.4; // Define square image size defaults as a percent of width
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
@@ -519,7 +518,7 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
           checkinPostponed: false,
           nextCheckinDatetime: HYGState.nextCheckinTime,
           lastCheckinDatetime: new Date(),
-          nextCheckinModule: HYGState.treatmentPlan.filter(
+          nextCheckinModule: GLOBAL.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
               v.started === false && v.module !== 'HYG'
           )[0].module,

@@ -512,7 +512,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
           checkinPostponed: false,
           nextCheckinDatetime: GLOBAL.nextCheckinTime,
           lastCheckinDatetime: new Date(),
-          nextCheckinModule: GLOBAL.treatmentPlan.filter(
+          nextCheckinModule: GLOBALRAW.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
               v.started === false && v.module !== 'PIT'
           )[0].module,
