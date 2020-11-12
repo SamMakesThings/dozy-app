@@ -13,7 +13,13 @@ import GLOBAL from '../utilities/global';
 
 const theme = dozy_theme;
 
-function TreatmentPlanScreen({ navigation, route }) {
+function TreatmentPlanScreen({
+  navigation,
+  route
+}: {
+  navigation: { navigate: Function };
+  route: { params: { completionPercentProgress: number } };
+}) {
   const { state } = React.useContext(AuthContext);
   const treatmentPlan = GLOBAL.treatmentPlan;
 
@@ -30,7 +36,6 @@ function TreatmentPlanScreen({ navigation, route }) {
     >
       <View style={styles.View_ContentContainer}>
         <TreatmentPlanCard
-          estCompletionDate={route.params.estCompletionDate}
           completionPercentProgress={route.params.completionPercentProgress}
           nextCheckinDate={state.userData.nextCheckin.nextCheckinDatetime}
           title={'Progress so far'}
@@ -103,7 +108,7 @@ function TreatmentPlanScreen({ navigation, route }) {
                         });
                       }}
                       overlayColor={
-                        module.started ? 'rgba(0, 129, 138, 0.8)' : null
+                        module.started ? 'rgba(0, 129, 138, 0.8)' : undefined
                       }
                       disabled={!module.started}
                     />
@@ -126,6 +131,7 @@ const styles = StyleSheet.create({
     marginTop: scale(1),
     marginBottom: scale(17)
   },
+  View_CardHeaderContainer: {},
   View_ContentContainer: {
     justifyContent: 'flex-start',
     alignItems: 'stretch',
