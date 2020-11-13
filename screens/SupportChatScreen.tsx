@@ -13,6 +13,9 @@ const SupportChatScreen = () => {
   setTimeout(function(){
     LC_API.set_visitor_name("${state.profileData.name}");
     LC_API.set_visitor_email("${state.profileData.email}");
+    LC_API.update_custom_variables([
+    {name: "userId", value: state.userToken},
+    {name: "currentTreatmentModule", value: state.userData.currentTreatments.currentModule}]);
     }, 6000);
   `;
 
