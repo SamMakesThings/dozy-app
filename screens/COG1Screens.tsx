@@ -68,7 +68,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
         navigation.navigate('SRTTitrationStart', {
-          progressBarPercent: 0.08
+          progressBarPercent: 0.07
         });
       }}
       textLabel="Welcome back! This week we'll help address some anxieties and beliefs that make sleep harder. But first, let's review your sleep and how treatment's been going for you so far."
@@ -89,7 +89,7 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('DBAS1', {
-          progressBarPercent: 0.4
+          progressBarPercent: 0.32
         });
       }}
       titleLabel="This week's treatment: Addressing Dysfunctional Beliefs & Attitudes about Sleep (DBAS)"
@@ -109,7 +109,7 @@ export const DBAS1: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS1 = value;
-        navigation.navigate('DBAS2', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS2', { progressBarPercent: 0.36 });
       }}
       questionLabel="I need 8 hours of sleep to feel refreshed and function well during the day."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -131,7 +131,7 @@ export const DBAS2: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS2 = value;
-        navigation.navigate('DBAS3', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS3', { progressBarPercent: 0.39 });
       }}
       questionLabel="When I don't get the proper amount of sleep on a given night, I need to catch up the next day by napping or the next night by sleeping longer."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -153,7 +153,7 @@ export const DBAS3: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS3 = value;
-        navigation.navigate('DBAS4', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS4', { progressBarPercent: 0.43 });
       }}
       questionLabel="I am concerned that chronic insomnia may have serious consequences on my physical health."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -175,7 +175,7 @@ export const DBAS4: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS4 = value;
-        navigation.navigate('DBAS5', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS5', { progressBarPercent: 0.46 });
       }}
       questionLabel="I am worried that I may lose control over my ability to sleep."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -197,7 +197,7 @@ export const DBAS5: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS5 = value;
-        navigation.navigate('DBAS6', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS6', { progressBarPercent: 0.5 });
       }}
       questionLabel="After a poor night's sleep, I know it will interfere with my activities the next day."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -219,7 +219,7 @@ export const DBAS6: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS6 = value;
-        navigation.navigate('DBAS7', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS7', { progressBarPercent: 0.54 });
       }}
       questionLabel="To be alert and function well during the day, I believe I would be better off taking a sleeping pill rather than having a poor night's sleep."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -241,7 +241,7 @@ export const DBAS7: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS7 = value;
-        navigation.navigate('DBAS8', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS8', { progressBarPercent: 0.57 });
       }}
       questionLabel="When I feel irritable, depressed, or anxious during the day, it is mostly because I did not sleep well the night before."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -263,7 +263,7 @@ export const DBAS8: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS8 = value;
-        navigation.navigate('DBAS9', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS9', { progressBarPercent: 0.61 });
       }}
       questionLabel="When I sleep poorly one night, I know it will disturb my sleep schedule for the whole week."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -285,7 +285,7 @@ export const DBAS9: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS9 = value;
-        navigation.navigate('DBAS10', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS10', { progressBarPercent: 0.64 });
       }}
       questionLabel="Without an adequate night's sleep, I can hardly function the next day."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -307,7 +307,7 @@ export const DBAS10: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS10 = value;
-        navigation.navigate('DBAS11', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS11', { progressBarPercent: 0.68 });
       }}
       questionLabel="I can't ever predict whether I'll have a good or poor night's sleep."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -329,7 +329,7 @@ export const DBAS11: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS11 = value;
-        navigation.navigate('DBAS12', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS12', { progressBarPercent: 0.71 });
       }}
       questionLabel="I have little ability to manage the negative consequences of disturbed sleep."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -351,7 +351,7 @@ export const DBAS12: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS12 = value;
-        navigation.navigate('DBAS13', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS13', { progressBarPercent: 0.75 });
       }}
       questionLabel="When I feel tired, have no energy, or just seem to not function well during the day, it is generally because I did not sleep well the night before."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -373,7 +373,7 @@ export const DBAS13: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS13 = value;
-        navigation.navigate('DBAS14', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS14', { progressBarPercent: 0.79 });
       }}
       questionLabel="I believe insomnia is the result of a chemical imbalance."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -395,7 +395,7 @@ export const DBAS14: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS14 = value;
-        navigation.navigate('DBAS15', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS15', { progressBarPercent: 0.82 });
       }}
       questionLabel="I feel insomnia is ruining my ability to enjoy life and prevents me from doing what I want."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -417,7 +417,7 @@ export const DBAS15: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS15 = value;
-        navigation.navigate('DBAS16', { progressBarPercent: 0.56 });
+        navigation.navigate('DBAS16', { progressBarPercent: 0.86 });
       }}
       questionLabel="Medication is probably the only solution to sleeplessness."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -439,7 +439,7 @@ export const DBAS16: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         COG1State.DBAS16 = value;
-        navigation.navigate('DBASResult', { progressBarPercent: 0.56 });
+        navigation.navigate('DBASResult', { progressBarPercent: 0.89 });
       }}
       questionLabel="I avoid or cancel obligations (social, family) after a poor night's sleep."
       questionSubtitle="Please rate how much you personally agree with each statement."
@@ -529,7 +529,7 @@ export const DBASResult: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('COG1Review', {
-          progressBarPercent: 0.96
+          progressBarPercent: 0.93
         });
       }}
       titleLabel={`Seems like your most difficult area is with ${COG1State.highestAvgCategoryLabel}.`}
@@ -554,7 +554,7 @@ export const COG1Review: React.FC<Props> = ({ navigation }) => {
           });
         } else {
           navigation.navigate('CheckinScheduling', {
-            progressBarPercent: 0.985
+            progressBarPercent: 0.96
           });
         }
       }}
