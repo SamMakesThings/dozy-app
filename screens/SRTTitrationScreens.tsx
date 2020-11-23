@@ -14,20 +14,26 @@ import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import ThumbsUp from '../assets/images/ThumbsUp.svg';
 import AlarmClock from '../assets/images/AlarmClock.svg';
-import { formatDateAsTime } from '../utilities/formatDateAsTime.ts';
+import { formatDateAsTime } from '../utilities/formatDateAsTime';
+import { Navigation, SleepLog } from '../types/custom';
+
+interface Props {
+  navigation: Navigation;
+}
 
 // Define the theme for the file globally
 const theme = dozy_theme;
 
-// Define square image size defaults as a percent of width
+// Define square image size defaults as a percent of width, and set global SleepLogs value
 const imgSizePercent = 0.4;
+let recentSleepLogs: Array<SleepLog> = [];
 
 // Define default chart styles
 const chartStyles = {
   chart: {
     width: scale(300),
     height: scale(300),
-    domainPadding: { x: [3, 3], y: [35, 35] }
+    domainPadding: { x: 3, y: 35 }
   },
   axis: {
     tickLabels: {
@@ -47,11 +53,11 @@ const chartStyles = {
   }
 };
 
-export const SRTTitrationStart = ({ navigation }) => {
+export const SRTTitrationStart = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
   let imgSize = imgSizePercent * useWindowDimensions().width;
   // Trim sleepLogs to only show most recent 7
-  const recentSleepLogs = state.sleepLogs.slice(0, 7);
+  recentSleepLogs = state.sleepLogs.slice(0, 7);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -62,7 +68,7 @@ export const SRTTitrationStart = ({ navigation }) => {
     ).toFixed(0)
   );
 
-  function getSRTTitrationLabel(sleepEffiencyAvg) {
+  function getSRTTitrationLabel(sleepEffiencyAvg: number) {
     if (sleepEffiencyAvg < 85) {
       return `Good job sticking to your target sleep schedule! However, your sleep data may indicate that more action is needed.`;
     } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
@@ -87,11 +93,8 @@ export const SRTTitrationStart = ({ navigation }) => {
   );
 };
 
-export const SleepEfficiency = ({ navigation }) => {
+export const SleepEfficiency = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
-
-  // Trim sleepLogs to only show most recent 7
-  const recentSleepLogs = state.sleepLogs.slice(0, 7);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -106,7 +109,7 @@ export const SleepEfficiency = ({ navigation }) => {
   const sleepEfficiencyAvgBaseline =
     state.userData.baselineInfo.sleepEfficiencyAvg;
 
-  function getLabel(sleepEffiencyAvg) {
+  function getLabel(sleepEffiencyAvg: number) {
     if (sleepEffiencyAvg < 85) {
       return `Your sleep efficiency is ok, but with an average of ${sleepEffiencyAvg}% (previously ${sleepEfficiencyAvgBaseline}%) it's not quite where we need it to be yet.`;
     } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
@@ -162,13 +165,10 @@ export const SleepEfficiency = ({ navigation }) => {
   );
 };
 
-export const SRTTitration = ({ navigation }) => {
+export const SRTTitration = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
 
   let imgSize = imgSizePercent * useWindowDimensions().width;
-
-  // Trim sleepLogs to only show most recent 7
-  const recentSleepLogs = state.sleepLogs.slice(0, 7);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -193,7 +193,7 @@ export const SRTTitration = ({ navigation }) => {
     state.userData.currentTreatments.targetWakeTime.toDate()
   );
 
-  function getSRTTitrationLabel(sleepEffiencyAvg) {
+  function getSRTTitrationLabel(sleepEffiencyAvg: number) {
     if (sleepEffiencyAvg < 85) {
       return `Based on your sleep efficiency, we should maintain the same target bedtime (${targetBedTimeLabel}) & wake time (${targetWakeTimeLabel}) this week. For most people, sleep efficiency climbs over 90% by the next week, and we can start allotting more time in bed. From there, it's adding 15 minutes to bedtime each week until you're sleeping the whole night through.`;
     } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
@@ -222,11 +222,11 @@ export const SRTTitration = ({ navigation }) => {
   );
 };
 
-export const SleepOnset = ({ navigation }) => {
+export const SleepOnset = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
 
   // Trim sleepLogs to only show most recent 10
-  const recentSleepLogs = state.sleepLogs.slice(0, 10);
+  recentSleepLogs = state.sleepLogs.slice(0, 10);
 
   // Calculate recent sleep onset average & fetch baseline for comparison
   const sleepOnsetAvg = Number(
@@ -237,7 +237,7 @@ export const SleepOnset = ({ navigation }) => {
   );
   const baselineSleepOnsetAvg = state.userData.baselineInfo.sleepOnsetAvg;
 
-  function getLabel(sleepOnsetAvg) {
+  function getLabel(sleepOnsetAvg: number) {
     if (sleepOnsetAvg > baselineSleepOnsetAvg + 5) {
       return `On average, it's taken you ${sleepOnsetAvg} minutes to fall asleep this week, which is a bit worse than your previous baseline of ${baselineSleepOnsetAvg} minutes. The techniques we're introducing today may help you fall asleep faster.`;
     } else if (sleepOnsetAvg > baselineSleepOnsetAvg - 2) {
@@ -289,11 +289,8 @@ export const SleepOnset = ({ navigation }) => {
   );
 };
 
-export const SleepMaintenance = ({ navigation }) => {
+export const SleepMaintenance = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
-
-  // Trim sleepLogs to only show most recent 10
-  const recentSleepLogs = state.sleepLogs.slice(0, 10);
 
   // Calculate recent night mins awake average & fetch baseline for comparison
   const nightMinsAwakeAvg = Number(
@@ -305,7 +302,7 @@ export const SleepMaintenance = ({ navigation }) => {
   const baselineSleepMaintenanceAvg =
     state.userData.baselineInfo.nightMinsAwakeAvg;
 
-  function getLabel(nightMinsAwakeAvg) {
+  function getLabel(nightMinsAwakeAvg: number) {
     if (nightMinsAwakeAvg > baselineSleepMaintenanceAvg + 5) {
       return `You're spending ${nightMinsAwakeAvg} minutes awake during the night on average, which is a bit worse than your previous baseline of ${baselineSleepMaintenanceAvg} minutes. Consider messaging our team for some one on one advice on avoiding this nightly wakefulness.`;
     } else if (nightMinsAwakeAvg > baselineSleepMaintenanceAvg - 2) {
@@ -357,11 +354,8 @@ export const SleepMaintenance = ({ navigation }) => {
   );
 };
 
-export const SleepDuration = ({ navigation }) => {
+export const SleepDuration = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
-
-  // Trim sleepLogs to only show most recent 10
-  const recentSleepLogs = state.sleepLogs.slice(0, 10);
 
   // Calculate recent night mins awake average & fetch baseline for comparison
   const sleepDurationAvg = Number(
@@ -376,7 +370,7 @@ export const SleepDuration = ({ navigation }) => {
     1
   );
 
-  function getLabel(sleepDurationAvg) {
+  function getLabel(sleepDurationAvg: number) {
     if (sleepDurationAvg < baselineSleepDurationAvg + 10) {
       return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is a bit worse than your previous baseline of ${baselineSleepDurationAvgLabel} hours. This should improve as treatment progresses.`;
     } else if (sleepDurationAvg < baselineSleepDurationAvg - 4) {
