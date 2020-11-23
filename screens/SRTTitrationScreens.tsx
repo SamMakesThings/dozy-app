@@ -6,7 +6,8 @@ import {
   VictoryChart,
   VictoryTheme,
   VictoryLine,
-  VictoryAxis
+  VictoryAxis,
+  VictoryScatter
 } from 'victory-native';
 import { AuthContext } from '../utilities/authContext';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
@@ -49,6 +50,11 @@ const chartStyles = {
       stroke: theme.colors.primary,
       strokeWidth: scale(4),
       strokeLinejoin: 'round'
+    }
+  },
+  scatter: {
+    data: {
+      fill: theme.colors.primary
     }
   }
 };
@@ -160,6 +166,13 @@ export const SleepEfficiency = ({ navigation }: Props) => {
           style={chartStyles.line}
           interpolation="monotoneX"
         />
+        <VictoryScatter
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="sleepEfficiency"
+          style={chartStyles.scatter}
+          size={scale(5)}
+        />
       </VictoryChart>
     </WizardContentScreen>
   );
@@ -225,9 +238,6 @@ export const SRTTitration = ({ navigation }: Props) => {
 export const SleepOnset = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
 
-  // Trim sleepLogs to only show most recent 10
-  recentSleepLogs = state.sleepLogs.slice(0, 10);
-
   // Calculate recent sleep onset average & fetch baseline for comparison
   const sleepOnsetAvg = Number(
     (
@@ -247,6 +257,13 @@ export const SleepOnset = ({ navigation }: Props) => {
     }
   }
 
+  const highestValueForDomain = Math.max.apply(
+    Math,
+    recentSleepLogs.map(function (o) {
+      return o.minsToFallAsleep;
+    })
+  );
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -265,6 +282,7 @@ export const SleepOnset = ({ navigation }: Props) => {
         theme={VictoryTheme.material}
         scale={{ x: 'time' }}
         domainPadding={chartStyles.chart.domainPadding}
+        domain={{ y: [0, highestValueForDomain] }}
       >
         <VictoryAxis dependentAxis style={chartStyles.axis} tickCount={5} />
         <VictoryAxis
@@ -283,6 +301,13 @@ export const SleepOnset = ({ navigation }: Props) => {
           y="minsToFallAsleep"
           style={chartStyles.line}
           interpolation="monotoneX"
+        />
+        <VictoryScatter
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="minsToFallAsleep"
+          style={chartStyles.scatter}
+          size={scale(5)}
         />
       </VictoryChart>
     </WizardContentScreen>
@@ -312,6 +337,13 @@ export const SleepMaintenance = ({ navigation }: Props) => {
     }
   }
 
+  const highestValueForDomain = Math.max.apply(
+    Math,
+    recentSleepLogs.map(function (o) {
+      return o.nightMinsAwake;
+    })
+  );
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -330,6 +362,7 @@ export const SleepMaintenance = ({ navigation }: Props) => {
         theme={VictoryTheme.material}
         scale={{ x: 'time' }}
         domainPadding={chartStyles.chart.domainPadding}
+        domain={{ y: [0, highestValueForDomain] }}
       >
         <VictoryAxis dependentAxis style={chartStyles.axis} tickCount={5} />
         <VictoryAxis
@@ -348,6 +381,13 @@ export const SleepMaintenance = ({ navigation }: Props) => {
           y="nightMinsAwake"
           style={chartStyles.line}
           interpolation="monotoneX"
+        />
+        <VictoryScatter
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="nightMinsAwake"
+          style={chartStyles.scatter}
+          size={scale(5)}
         />
       </VictoryChart>
     </WizardContentScreen>
@@ -380,6 +420,13 @@ export const SleepDuration = ({ navigation }: Props) => {
     }
   }
 
+  const highestValueForDomain = Math.max.apply(
+    Math,
+    recentSleepLogs.map(function (o) {
+      return o.sleepDuration;
+    })
+  );
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -398,6 +445,7 @@ export const SleepDuration = ({ navigation }: Props) => {
         theme={VictoryTheme.material}
         scale={{ x: 'time' }}
         domainPadding={chartStyles.chart.domainPadding}
+        domain={{ y: [0, highestValueForDomain] }}
       >
         <VictoryAxis dependentAxis style={chartStyles.axis} tickCount={5} />
         <VictoryAxis
@@ -416,6 +464,13 @@ export const SleepDuration = ({ navigation }: Props) => {
           y="sleepDuration"
           style={chartStyles.line}
           interpolation="monotoneX"
+        />
+        <VictoryScatter
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="sleepDuration"
+          style={chartStyles.scatter}
+          size={scale(5)}
         />
       </VictoryChart>
     </WizardContentScreen>
