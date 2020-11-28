@@ -3,40 +3,68 @@ import { FbLib } from '../config/firebaseConfig';
 import GLOBAL from './global';
 import refreshUserData from './refreshUserData';
 
-export default async function submitOnboardingData(dispatch) {
+interface OnboardingState {
+  pills: string;
+  snoring: boolean;
+  rls: boolean;
+  parasomnias: boolean;
+  otherCondition: boolean;
+  expoPushToken: string | undefined;
+  diaryReminderTime: Date | undefined;
+  firstCheckinTime: Date;
+  diaryHabitTrigger: string;
+  ISI1: number;
+  ISI2: number;
+  ISI3: number;
+  ISI4: number;
+  ISI5: number;
+  ISI6: number;
+  ISI7: number;
+  ISITotal: number;
+}
+
+export default async function submitOnboardingData(
+  onboardingState: OnboardingState,
+  dispatch: Function
+) {
   // Initialize relevant Firebase values
   let db = FbLib.firestore();
   let userId = await SecureStore.getItemAsync('userId');
-  let userDocRef = db.collection('users').doc(userId);
+  let userDocRef =
+    typeof userId === 'string'
+      ? db.collection('users').doc(userId)
+      : db.collection('users').doc('ERRORDELETEME');
 
   // Collect the relevant onboarding values into a map for Firebase & store it
   const healthHistory = {
-    pills: GLOBAL.pills,
-    snoring: GLOBAL.snoring,
-    rls: GLOBAL.rls,
-    parasomnias: GLOBAL.parasomnias,
-    otherCondition: GLOBAL.otherCondition
+    pills: onboardingState.pills,
+    snoring: onboardingState.snoring,
+    rls: onboardingState.rls,
+    parasomnias: onboardingState.parasomnias,
+    otherCondition: onboardingState.otherCondition
   };
 
   // Store the sleep diary notification settings, store generated ID in userData
   // Also set a reminder for the next checkin
   const notifDocRef = userDocRef.collection('notifications').doc();
   notifDocRef.set({
-    expoPushToken: GLOBAL.expoPushToken
-      ? GLOBAL.expoPushToken
+    expoPushToken: onboardingState.expoPushToken
+      ? onboardingState.expoPushToken
       : 'No push token provided',
     title: 'How did you sleep?',
     body: "Add last night's entry now",
     type: 'DAILY_LOG',
-    time: GLOBAL.diaryReminderTime ? GLOBAL.diaryReminderTime : new Date(),
-    enabled: GLOBAL.diaryReminderTime ? true : false
+    time: onboardingState.diaryReminderTime
+      ? onboardingState.diaryReminderTime
+      : new Date(),
+    enabled: onboardingState.diaryReminderTime ? true : false
   });
   userDocRef.collection('notifications').add({
-    expoPushToken: GLOBAL.expoPushToken,
+    expoPushToken: onboardingState.expoPushToken,
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
-    time: GLOBAL.firstCheckinTime,
+    time: onboardingState.firstCheckinTime,
     enabled: true
   });
 
@@ -46,26 +74,26 @@ export default async function submitOnboardingData(dispatch) {
       healthHistory: healthHistory,
       baselineInfo: {
         baselineStartDate: new Date(),
-        isiTotal: GLOBAL.ISITotal
+        isiTotal: onboardingState.ISITotal
       },
-      reminders: GLOBAL.diaryReminderTime
+      reminders: onboardingState.diaryReminderTime
         ? {
             sleepDiaryReminder: {
-              diaryHabitTrigger: GLOBAL.diaryHabitTrigger,
-              diaryReminderTime: GLOBAL.diaryReminderTime
+              diaryHabitTrigger: onboardingState.diaryHabitTrigger,
+              diaryReminderTime: onboardingState.diaryReminderTime
             },
-            expoPushToken: GLOBAL.expoPushToken
+            expoPushToken: onboardingState.expoPushToken
           }
         : {},
       nextCheckin: {
-        nextCheckinDatetime: GLOBAL.firstCheckinTime,
+        nextCheckinDatetime: onboardingState.firstCheckinTime,
         treatmentModule: 'SCTSRT'
       },
       currentTreatments: {
         BSL: new Date(),
         currentModule: 'BSL',
         lastCheckinDatetime: new Date(),
-        nextCheckinDatetime: GLOBAL.firstCheckinTime,
+        nextCheckinDatetime: onboardingState.firstCheckinTime,
         nextTreatmentModule: 'SCTSRT'
       },
       logReminderId: notifDocRef.id
@@ -77,14 +105,14 @@ export default async function submitOnboardingData(dispatch) {
   // Store ISI results
   const ISIResultsRef = userDocRef.collection('isiResults');
   ISIResultsRef.add({
-    ISI1: GLOBAL.ISI1,
-    ISI2: GLOBAL.ISI2,
-    ISI3: GLOBAL.ISI3,
-    ISI4: GLOBAL.ISI4,
-    ISI5: GLOBAL.ISI5,
-    ISI6: GLOBAL.ISI6,
-    ISI7: GLOBAL.ISI7,
-    ISITotal: GLOBAL.ISITotal,
+    ISI1: onboardingState.ISI1,
+    ISI2: onboardingState.ISI2,
+    ISI3: onboardingState.ISI3,
+    ISI4: onboardingState.ISI4,
+    ISI5: onboardingState.ISI5,
+    ISI6: onboardingState.ISI6,
+    ISI7: onboardingState.ISI7,
+    ISITotal: onboardingState.ISITotal,
     timestamp: new Date()
   }).catch(function (error) {
     console.error('Error adding ISI data: ', error);

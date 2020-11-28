@@ -22,6 +22,7 @@ import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
+import { Navigation } from '../types/custom';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -30,7 +31,32 @@ const theme = dozy_theme;
 const imgSizePercent = 0.4;
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
-export const Welcome = ({ navigation }) => {
+interface Props {
+  navigation: Navigation;
+  route: { params: { nextScreen: string; warnAbout: string } };
+}
+
+let onboardingState = {
+  ISI1: 0,
+  ISI2: 0,
+  ISI3: 0,
+  ISI4: 0,
+  ISI5: 0,
+  ISI6: 0,
+  ISI7: 0,
+  ISITotal: 0,
+  pills: '',
+  snoring: false,
+  rls: false,
+  parasomnias: false,
+  otherCondition: false,
+  diaryHabitTrigger: 'ERROR',
+  expoPushToken: undefined as undefined | string,
+  diaryReminderTime: undefined as Date | undefined,
+  firstCheckinTime: new Date()
+};
+
+export const Welcome = ({ navigation }: Props) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
@@ -49,7 +75,7 @@ export const Welcome = ({ navigation }) => {
   );
 };
 
-export const Overview = ({ navigation }) => {
+export const Overview = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
@@ -66,7 +92,7 @@ export const Overview = ({ navigation }) => {
   );
 };
 
-export const Asks = ({ navigation }) => {
+export const Asks = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
@@ -83,7 +109,7 @@ export const Asks = ({ navigation }) => {
   );
 };
 
-export const ISIIntro = ({ navigation }) => {
+export const ISIIntro = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
@@ -100,13 +126,13 @@ export const ISIIntro = ({ navigation }) => {
   );
 };
 
-export const ISI1 = ({ navigation }) => {
+export const ISI1 = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.ISI1 = value;
+      onQuestionSubmit={(value: number) => {
+        onboardingState.ISI1 = value;
         navigation.navigate('ISI2', { progressBarPercent: 0.28 });
       }}
       buttonValues={[
@@ -121,13 +147,13 @@ export const ISI1 = ({ navigation }) => {
   );
 };
 
-export const ISI2 = ({ navigation }) => {
+export const ISI2 = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.ISI2 = value;
+      onQuestionSubmit={(value: number) => {
+        onboardingState.ISI2 = value;
         navigation.navigate('ISI3', { progressBarPercent: 0.42 });
       }}
       buttonValues={[
@@ -142,13 +168,13 @@ export const ISI2 = ({ navigation }) => {
   );
 };
 
-export const ISI3 = ({ navigation }) => {
+export const ISI3 = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.ISI3 = value;
+      onQuestionSubmit={(value: number) => {
+        onboardingState.ISI3 = value;
         navigation.navigate('ISI4', { progressBarPercent: 0.56 });
       }}
       buttonValues={[
@@ -167,13 +193,13 @@ export const ISI3 = ({ navigation }) => {
   );
 };
 
-export const ISI4 = ({ navigation }) => {
+export const ISI4 = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.ISI4 = value;
+      onQuestionSubmit={(value: number) => {
+        onboardingState.ISI4 = value;
         navigation.navigate('ISI5', { progressBarPercent: 0.7 });
       }}
       buttonValues={[
@@ -192,13 +218,13 @@ export const ISI4 = ({ navigation }) => {
   );
 };
 
-export const ISI5 = ({ navigation }) => {
+export const ISI5 = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.ISI5 = value;
+      onQuestionSubmit={(value: number) => {
+        onboardingState.ISI5 = value;
         navigation.navigate('ISI6', { progressBarPercent: 0.84 });
       }}
       buttonValues={[
@@ -213,13 +239,13 @@ export const ISI5 = ({ navigation }) => {
   );
 };
 
-export const ISI6 = ({ navigation }) => {
+export const ISI6 = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.ISI6 = value;
+      onQuestionSubmit={(value: number) => {
+        onboardingState.ISI6 = value;
         navigation.navigate('ISI7', { progressBarPercent: 0.95 });
       }}
       buttonValues={[
@@ -234,16 +260,17 @@ export const ISI6 = ({ navigation }) => {
   );
 };
 
-export const ISI7 = ({ navigation }) => {
+export const ISI7 = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: number) => {
         // Sum ISI scores, store value & navigate accordingly
-        const { ISI1, ISI2, ISI3, ISI4, ISI5, ISI6 } = GLOBAL;
-        GLOBAL.ISI7 = value;
-        GLOBAL.ISITotal = ISI1 + ISI2 + ISI3 + ISI4 + ISI5 + ISI6 + value;
+        const { ISI1, ISI2, ISI3, ISI4, ISI5, ISI6 } = onboardingState;
+        onboardingState.ISI7 = value;
+        onboardingState.ISITotal =
+          ISI1 + ISI2 + ISI3 + ISI4 + ISI5 + ISI6 + value;
         navigation.navigate('ISIResults', { progressBarPercent: null });
       }}
       buttonValues={[
@@ -258,13 +285,13 @@ export const ISI7 = ({ navigation }) => {
   );
 };
 
-export const ISIResults = ({ navigation }) => {
+export const ISIResults = ({ navigation }: Props) => {
   const severityText = () => {
-    if (GLOBAL.ISITotal <= 7) {
+    if (onboardingState.ISITotal <= 7) {
       return 'no clinically significant insomnia';
-    } else if (GLOBAL.ISITotal <= 14) {
+    } else if (onboardingState.ISITotal <= 14) {
       return 'clinically mild insomnia';
-    } else if (GLOBAL.ISITotal <= 21) {
+    } else if (onboardingState.ISITotal <= 21) {
       return 'clinically moderate insomnia';
     } else {
       return 'clinically severe insomnia';
@@ -277,7 +304,7 @@ export const ISIResults = ({ navigation }) => {
       image={<BarChart width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate(
-          GLOBAL.ISITotal > 7 ? 'ISISignificant' : 'ISINoSignificant',
+          onboardingState.ISITotal > 7 ? 'ISISignificant' : 'ISINoSignificant',
           {
             progressBarPercent: null
           }
@@ -286,7 +313,7 @@ export const ISIResults = ({ navigation }) => {
       textLabel={
         <Text>
           Done! According to the Insomnia Severity Index, you’ve got
-          {GLOBAL.ISITotal >= 7 ? '\n' : ' '}
+          {onboardingState.ISITotal >= 7 ? '\n' : ' '}
           <Text style={styles.BoldLabelText}>{severityText()}</Text>
         </Text>
       }
@@ -295,7 +322,7 @@ export const ISIResults = ({ navigation }) => {
   );
 };
 
-export const ISISignificant = ({ navigation }) => {
+export const ISISignificant = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
@@ -313,7 +340,8 @@ export const ISISignificant = ({ navigation }) => {
             Clinically significant insomnia{'\n'}
           </Text>
           <Text style={{ lineHeight: scale(18) }}>
-            Your insomnia is {GLOBAL.ISITotal >= 14 ? 'definitely' : 'likely'}{' '}
+            Your insomnia is{' '}
+            {onboardingState.ISITotal >= 14 ? 'definitely' : 'likely'}{' '}
             interfering with your life. However, there&apos;s good news:
             You&apos;re exactly the person our app was designed to help! With
             your support, Dozy can take you from your current insomnia to no
@@ -326,7 +354,7 @@ export const ISISignificant = ({ navigation }) => {
   );
 };
 
-export const ISINoSignificant = ({ navigation }) => {
+export const ISINoSignificant = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
@@ -358,7 +386,7 @@ export const ISINoSignificant = ({ navigation }) => {
   );
 };
 
-export const SafetyIntro = ({ navigation }) => {
+export const SafetyIntro = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
@@ -375,13 +403,13 @@ export const SafetyIntro = ({ navigation }) => {
   );
 };
 
-export const SafetyPills = ({ navigation }) => {
+export const SafetyPills = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.pills = value;
+      onQuestionSubmit={(value: string) => {
+        onboardingState.pills = value;
         navigation.navigate(
           value == 'none' ? 'SafetySnoring' : 'SafetyPillsStop',
           { progressBarPercent: null }
@@ -406,13 +434,13 @@ export const SafetyPills = ({ navigation }) => {
   );
 };
 
-export const SafetyPillsStop = ({ navigation }) => {
+export const SafetyPillsStop = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<Stop width={imgSize} height={imgSize} />}
-      onQuestionSubmit={(result) => {
+      onQuestionSubmit={(result: string) => {
         navigation.navigate(
           result === 'Continue anyway' ? 'SafetySnoring' : 'SafetyPillsBye',
           {
@@ -439,7 +467,7 @@ export const SafetyPillsStop = ({ navigation }) => {
   );
 };
 
-export const SafetyPillsBye = ({ navigation }) => {
+export const SafetyPillsBye = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
@@ -456,13 +484,13 @@ export const SafetyPillsBye = ({ navigation }) => {
   );
 };
 
-export const SafetySnoring = ({ navigation }) => {
+export const SafetySnoring = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.snoring = value;
+      onQuestionSubmit={(value: boolean) => {
+        onboardingState.snoring = value;
         navigation.navigate(!value ? 'SafetyLegs' : 'SafetyIllnessWarning', {
           warnAbout: 'sleep apneas',
           nextScreen: 'SafetyLegs'
@@ -477,13 +505,13 @@ export const SafetySnoring = ({ navigation }) => {
   );
 };
 
-export const SafetyLegs = ({ navigation }) => {
+export const SafetyLegs = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.rls = value;
+      onQuestionSubmit={(value: boolean) => {
+        onboardingState.rls = value;
         navigation.navigate(!value ? 'SafetyParas' : 'SafetyIllnessWarning', {
           warnAbout: 'Restless Leg Syndrome',
           nextScreen: 'SafetyParas'
@@ -498,13 +526,13 @@ export const SafetyLegs = ({ navigation }) => {
   );
 };
 
-export const SafetyParas = ({ navigation }) => {
+export const SafetyParas = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.parasomnias = value;
+      onQuestionSubmit={(value: boolean) => {
+        onboardingState.parasomnias = value;
         navigation.navigate(
           !value ? 'SafetyCatchall' : 'SafetyIllnessWarning',
           { warnAbout: 'parasomnias', nextScreen: 'SafetyCatchall' }
@@ -519,13 +547,13 @@ export const SafetyParas = ({ navigation }) => {
   );
 };
 
-export const SafetyCatchall = ({ navigation }) => {
+export const SafetyCatchall = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.otherCondition = value;
+      onQuestionSubmit={(value: boolean) => {
+        onboardingState.otherCondition = value;
         navigation.navigate(!value ? 'BaselineIntro' : 'SafetyIllnessWarning', {
           warnAbout: 'such conditions',
           nextScreen: 'BaselineIntro'
@@ -540,13 +568,13 @@ export const SafetyCatchall = ({ navigation }) => {
   );
 };
 
-export const SafetyIllnessWarning = ({ navigation, route }) => {
+export const SafetyIllnessWarning = ({ navigation, route }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<TiredFace width={imgSize} height={imgSize} />}
-      onQuestionSubmit={(result) => {
+      onQuestionSubmit={(result: string) => {
         navigation.navigate(
           result === 'I understand the risks, continue anyway'
             ? route.params.nextScreen
@@ -574,13 +602,13 @@ export const SafetyIllnessWarning = ({ navigation, route }) => {
   );
 };
 
-export const BaselineIntro = ({ navigation }) => {
+export const BaselineIntro = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<WarningTriangle width={imgSize} height={imgSize} />}
-      onQuestionSubmit={(result) => {
+      onQuestionSubmit={(result: string) => {
         navigation.navigate(
           result === 'My sleep will be unusual, let’s postpone'
             ? 'BaselineBye'
@@ -610,7 +638,7 @@ export const BaselineIntro = ({ navigation }) => {
   );
 };
 
-export const BaselineBye = ({ navigation }) => {
+export const BaselineBye = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
@@ -627,7 +655,7 @@ export const BaselineBye = ({ navigation }) => {
   );
 };
 
-export const DiaryIntro = ({ navigation }) => {
+export const DiaryIntro = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
@@ -644,13 +672,13 @@ export const DiaryIntro = ({ navigation }) => {
   );
 };
 
-export const DiaryHabit = ({ navigation }) => {
+export const DiaryHabit = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.diaryHabitTrigger = value;
+      onQuestionSubmit={(value: string) => {
+        onboardingState.diaryHabitTrigger = value;
         navigation.navigate('DiaryReminder', { progressBarPercent: 0.4 });
       }}
       buttonValues={[
@@ -672,19 +700,21 @@ export const DiaryHabit = ({ navigation }) => {
   );
 };
 
-export const DiaryReminder = ({ navigation }) => {
+export const DiaryReminder = ({ navigation }: Props) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().hour(9).minute(0).toDate()}
-      onQuestionSubmit={(value) => {
+      onQuestionSubmit={(value: Date | boolean) => {
         // TODO: Can I just make the arrow function async instead of below
         async function setPushToken() {
-          GLOBAL.expoPushToken = await registerForPushNotificationsAsync();
+          let pushToken = await registerForPushNotificationsAsync();
+
+          onboardingState.expoPushToken = await registerForPushNotificationsAsync();
         }
-        if (value != false) {
-          GLOBAL.diaryReminderTime = value;
+        if (typeof value != 'boolean') {
+          onboardingState.diaryReminderTime = value;
           setPushToken();
         } else {
           null;
@@ -698,17 +728,17 @@ export const DiaryReminder = ({ navigation }) => {
   );
 };
 
-export const CheckinScheduling = ({ navigation }) => {
+export const CheckinScheduling = ({ navigation }: Props) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
-      onQuestionSubmit={(value) => {
-        GLOBAL.firstCheckinTime = value;
+      onQuestionSubmit={(value: Date) => {
+        onboardingState.firstCheckinTime = value;
         navigation.navigate('PaywallPlaceholder', { progressBarPercent: 0.8 });
       }}
-      validInputChecker={(val) => {
+      validInputChecker={(val: Date) => {
         // Make sure the selected date is 7+ days from today
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
@@ -727,7 +757,7 @@ export const CheckinScheduling = ({ navigation }) => {
   );
 };
 
-export const PaywallPlaceholder = ({ navigation }) => {
+export const PaywallPlaceholder = ({ navigation }: Props) => {
   return (
     <IconExplainScreen
       theme={theme}
@@ -744,7 +774,7 @@ export const PaywallPlaceholder = ({ navigation }) => {
   );
 };
 
-export const OnboardingEnd = ({ navigation }) => {
+export const OnboardingEnd = ({ navigation }: Props) => {
   const { dispatch, finishOnboarding } = React.useContext(AuthContext);
   return (
     <IconExplainScreen
@@ -752,7 +782,7 @@ export const OnboardingEnd = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        submitOnboardingData(dispatch);
+        submitOnboardingData(onboardingState, dispatch);
         finishOnboarding();
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
