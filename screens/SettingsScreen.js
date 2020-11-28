@@ -157,7 +157,8 @@ function Root() {
                 styles.Text_nl,
                 theme.typography.smallLabel,
                 {
-                  color: theme.colors.strong
+                  color: theme.colors.strong,
+                  textAlign: 'left'
                 }
               ]}
             >
@@ -190,7 +191,8 @@ function Root() {
                 styles.Text_nl,
                 theme.typography.smallLabel,
                 {
-                  color: theme.colors.strong
+                  color: theme.colors.strong,
+                  textAlign: 'left'
                 }
               ]}
             >
