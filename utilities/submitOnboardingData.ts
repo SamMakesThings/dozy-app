@@ -48,9 +48,7 @@ export default async function submitOnboardingData(
   // Also set a reminder for the next checkin
   const notifDocRef = userDocRef.collection('notifications').doc();
   notifDocRef.set({
-    expoPushToken: onboardingState.expoPushToken
-      ? onboardingState.expoPushToken
-      : 'No push token provided',
+    expoPushToken: onboardingState.expoPushToken || 'No push token provided',
     title: 'How did you sleep?',
     body: "Add last night's entry now",
     type: 'DAILY_LOG',
@@ -60,7 +58,7 @@ export default async function submitOnboardingData(
     enabled: onboardingState.diaryReminderTime ? true : false
   });
   userDocRef.collection('notifications').add({
-    expoPushToken: onboardingState.expoPushToken,
+    expoPushToken: onboardingState.expoPushToken || 'No push token provided',
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
