@@ -21,11 +21,10 @@ function Root() {
   // Get theme object
   const theme = dozy_theme;
 
-  let notifFbQuery;
   let notifLogReminderRef;
 
   // Get various Firebase refs for keeping settings updated
-  if (state.userToken !== null) {
+  if (state.userToken !== null && state.userData?.logReminderId !== undefined) {
     const notifColRef = FbLib.firestore()
       .collection('users')
       .doc(state.userToken)
@@ -33,11 +32,15 @@ function Root() {
 
     notifLogReminderRef = notifColRef.doc(state.userData.logReminderId);
 
-    notifFbQuery = notifColRef.where('type', '==', 'DAILY_LOG');
+    var notifFbQuery = notifColRef.where('type', '==', 'DAILY_LOG');
   }
 
   // Add function to pull existing settings from Firebase, update state with them
   function getSettings() {
+    if (notifFbQuery === undefined) {
+      return 'ERROR: Firebase not loading correctly';
+    }
+
     notifFbQuery
       .get()
       .then((snapshot) => {
