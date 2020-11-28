@@ -86,7 +86,7 @@ export const Overview = ({ navigation }: Props) => {
           progressBarPercent: null
         });
       }}
-      textLabel="We use a proven therapy treatment to get you sleeping again. It's drug-free, takes from 4-8 weeks, and is permanent."
+      textLabel="We use a proven therapy treatment to get you sleeping again. It's drug-free, takes from 4-8 weeks, and the benefits are long-lasting."
       buttonLabel="Next"
     />
   );
@@ -721,7 +721,8 @@ export const DiaryReminder = ({ navigation }: Props) => {
         }
         navigation.navigate('CheckinScheduling', { progressBarPercent: 0.6 });
       }}
-      questionLabel="What time do you usually do that? (we'll send you a gentle reminder)"
+      questionLabel="What time do you usually do that?"
+      questionSubtitle="We'll send you a gentle reminder."
       bottomGreyButtonLabel="Don't set a reminder"
       mode="time"
     />
@@ -750,7 +751,8 @@ export const CheckinScheduling = ({ navigation }: Props) => {
           return true;
         }
       }}
-      questionLabel="When would you like to schedule your first weekly check-in? (Check-ins take 5-10 minutes and introduce you to new treatment techniques based on your sleep patterns.)"
+      questionLabel="When would you like to schedule your first weekly check-in?"
+      questionSubtitle="Check-ins take 5-10 minutes and introduce you to new treatment techniques based on your sleep patterns."
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"
     />
@@ -768,7 +770,7 @@ export const PaywallPlaceholder = ({ navigation }: Props) => {
           progressBarPercent: 1
         });
       }}
-      textLabel="...so this is where I'll put the 'get a subscription' message, but you don't need to pay that.  :)"
+      textLabel="Ordinarily this is the subscription screen, but you've got free access.  :)"
       buttonLabel="Nice"
     />
   );
