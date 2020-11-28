@@ -1,6 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
 import { FbLib } from '../config/firebaseConfig';
-import GLOBAL from './global';
 import refreshUserData from './refreshUserData';
 
 interface OnboardingState {
