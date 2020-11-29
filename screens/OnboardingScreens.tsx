@@ -1,13 +1,14 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { useWindowDimensions, Text, StyleSheet } from 'react-native';
-import { scale } from 'react-native-size-matters';
+import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
+import { scale, verticalScale } from 'react-native-size-matters';
 import moment from 'moment';
+import { WebView } from 'react-native-webview';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
-import GLOBAL from '../utilities/global';
+import WizardContentScreen from '../components/screens/WizardContentScreen';
 import { dozy_theme } from '../config/Themes';
 import WaveHello from '../assets/images/WaveHello.svg';
 import LabCoat from '../assets/images/LabCoat.svg';
@@ -20,6 +21,7 @@ import Stop from '../assets/images/Stop.svg';
 import WarningTriangle from '../assets/images/WarningTriangle.svg';
 import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
+import BlankCalendar from '../assets/images/BlankCalendar.svg';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
@@ -521,7 +523,8 @@ export const SafetyLegs = ({ navigation }: Props) => {
         { label: 'Yes', value: true, solidColor: true },
         { label: 'No', value: false, solidColor: true }
       ]}
-      questionLabel="Do you have unpleasant tingling or discomfort in the legs, which makes you need to kick or to move? (restless body rather than a racing mind)"
+      questionLabel="Do you have unpleasant tingling or discomfort in the legs, which makes you need to kick or to move?"
+      questionSubtitle="(restless body rather than a racing mind)"
     />
   );
 };
@@ -766,13 +769,66 @@ export const PaywallPlaceholder = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       image={<MonocleEmoji width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        navigation.navigate('OnboardingEnd', {
-          progressBarPercent: 1
+        navigation.navigate('ScheduleOnboardingCall', {
+          progressBarPercent: 0.9
         });
       }}
       textLabel="Ordinarily this is the subscription screen, but you've got free access.  :)"
       buttonLabel="Nice"
     />
+  );
+};
+
+export const ScheduleOnboardingCall = ({ navigation }: Props) => {
+  let imgSize = 0.4 * useWindowDimensions().width;
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      textLabel="We recommend scheduling a 15-minute call with us at your convenience. This is so we can give you a clear idea of what to expect & to maximize your chances of success."
+      onQuestionSubmit={(value: string) => {
+        if (value === 'Skip scheduling a call') {
+          navigation.navigate('OnboardingEnd');
+        } else {
+          navigation.navigate('CallSchedulingWebview');
+        }
+      }}
+      buttonLabel="Schedule 15-minute call"
+      bottomGreyButtonLabel="Skip scheduling a call"
+    >
+      <BlankCalendar width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const CallSchedulingWebview = ({ navigation }: Props) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      textLabel=""
+      onQuestionSubmit={() => {
+        navigation.navigate('OnboardingEnd', { progressBarPercent: 1 });
+      }}
+      buttonLabel="I've scheduled a call"
+      flexibleLayout
+    >
+      <View
+        style={{
+          width: useWindowDimensions().width,
+          height: verticalScale(600),
+          backgroundColor: theme.colors.primary
+        }}
+      >
+        <WebView
+          source={{
+            uri: 'https://calendly.com/dozysleep/closed-beta-onboarding'
+          }}
+          style={{ width: '100%', marginTop: verticalScale(55) }}
+        />
+      </View>
+    </WizardContentScreen>
   );
 };
 
