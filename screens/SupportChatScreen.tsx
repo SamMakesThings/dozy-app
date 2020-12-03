@@ -27,6 +27,9 @@ const SupportChatScreen = () => {
         }}
         style={{ marginTop: scale(10) }}
         injectedJavaScript={livechatJavascript}
+        onMessage={() =>
+          console.log('Got a message from webview?? This should not happen')
+        }
       />
     </SafeAreaView>
   );
