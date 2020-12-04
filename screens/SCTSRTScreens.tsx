@@ -28,12 +28,29 @@ import YellowRuler from '../assets/images/YellowRuler.svg';
 import ManInBed from '../assets/images/ManInBed.svg';
 import RaisedEyebrowFace from '../assets/images/RaisedEyebrowFace.svg';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
-import { formatDateAsTime } from '../utilities/formatDateAsTime.ts';
+import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
+import { Navigation, SleepLog } from '../types/custom';
 
-// Define the theme for the file globally
+interface Props {
+  navigation: Navigation;
+}
+
+// Create a global state object for the file
+let SCTSRTState = {
+  SCTSRTWakeTime: new Date(),
+  SCTSRTTimeInBedTarget: 480,
+  SCTSRTBedTime: new Date(),
+  targetBedTimeDisplayString: 'ERROR',
+  targetWakeTimeDisplayString: 'ERROR',
+  checkinPostponed: false,
+  nextCheckinTime: new Date()
+};
+
+// Define the theme for the file globally, along with sleepLogs array
 const theme = dozy_theme;
+let recentSleepLogs: Array<SleepLog> = [];
 
 // Define square image size defaults as a percent of width
 const imgSizePercent = 0.4;
@@ -44,7 +61,7 @@ const chartStyles = {
   chart: {
     width: scale(300),
     height: scale(300),
-    domainPadding: { x: [3, 3], y: [35, 35] }
+    domainPadding: { x: 3, y: 35 }
   },
   axis: {
     tickLabels: {
@@ -64,7 +81,7 @@ const chartStyles = {
   }
 };
 
-export const Welcome = ({ navigation }) => {
+export const Welcome = ({ navigation }: Props) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
@@ -81,11 +98,11 @@ export const Welcome = ({ navigation }) => {
   );
 };
 
-export const SleepEfficiency = ({ navigation }) => {
+export const SleepEfficiency = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
 
   // Trim sleepLogs to only show most recent 10
-  const recentSleepLogs = state.sleepLogs.slice(0, 10);
+  recentSleepLogs = state.sleepLogs.slice(0, 10);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -154,11 +171,8 @@ export const SleepEfficiency = ({ navigation }) => {
   );
 };
 
-export const SleepOnset = ({ navigation }) => {
+export const SleepOnset = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
-
-  // Trim sleepLogs to only show most recent 10
-  const recentSleepLogs = state.sleepLogs.slice(0, 10);
 
   // Calculate recent sleep efficiency average
   const sleepOnsetAvg = Number(
@@ -215,11 +229,8 @@ export const SleepOnset = ({ navigation }) => {
   );
 };
 
-export const SleepMaintenance = ({ navigation }) => {
+export const SleepMaintenance = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
-
-  // Trim sleepLogs to only show most recent 10
-  const recentSleepLogs = state.sleepLogs.slice(0, 10);
 
   // Calculate recent sleep efficiency average
   const nightMinsAwakeAvg = Number(
@@ -277,7 +288,7 @@ export const SleepMaintenance = ({ navigation }) => {
   );
 };
 
-export const TreatmentPlan = ({ navigation }) => {
+export const TreatmentPlan = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -298,7 +309,7 @@ export const TreatmentPlan = ({ navigation }) => {
   );
 };
 
-export const TreatmentPlanContinued = ({ navigation }) => {
+export const TreatmentPlanContinued = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -318,7 +329,7 @@ export const TreatmentPlanContinued = ({ navigation }) => {
   );
 };
 
-export const DriversOfSleep = ({ navigation }) => {
+export const DriversOfSleep = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -346,7 +357,7 @@ export const DriversOfSleep = ({ navigation }) => {
   );
 };
 
-export const WhySleepDrives = ({ navigation }) => {
+export const WhySleepDrives = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -366,7 +377,7 @@ export const WhySleepDrives = ({ navigation }) => {
   );
 };
 
-export const FragmentedSleep = ({ navigation }) => {
+export const FragmentedSleep = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -386,7 +397,7 @@ export const FragmentedSleep = ({ navigation }) => {
   );
 };
 
-export const ConsolidatingSleep = ({ navigation }) => {
+export const ConsolidatingSleep = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -406,7 +417,7 @@ export const ConsolidatingSleep = ({ navigation }) => {
   );
 };
 
-export const ReduceTimeInBed = ({ navigation }) => {
+export const ReduceTimeInBed = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -426,7 +437,7 @@ export const ReduceTimeInBed = ({ navigation }) => {
   );
 };
 
-export const SCTSRTIntro = ({ navigation }) => {
+export const SCTSRTIntro = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -445,7 +456,7 @@ export const SCTSRTIntro = ({ navigation }) => {
   );
 };
 
-export const Rule1 = ({ navigation }) => {
+export const Rule1 = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -464,7 +475,7 @@ export const Rule1 = ({ navigation }) => {
   );
 };
 
-export const Rule2 = ({ navigation }) => {
+export const Rule2 = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -483,7 +494,7 @@ export const Rule2 = ({ navigation }) => {
   );
 };
 
-export const Rule3 = ({ navigation }) => {
+export const Rule3 = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -501,7 +512,7 @@ export const Rule3 = ({ navigation }) => {
   );
 };
 
-export const RulesRecap = ({ navigation }) => {
+export const RulesRecap = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -548,7 +559,7 @@ export const RulesRecap = ({ navigation }) => {
   );
 };
 
-export const WhatToExpect = ({ navigation }) => {
+export const WhatToExpect = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -568,12 +579,12 @@ export const WhatToExpect = ({ navigation }) => {
   );
 };
 
-export const UnderstandingAsk = ({ navigation }) => {
+export const UnderstandingAsk = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(res) => {
+      onQuestionSubmit={(res: string) => {
         if (res === 'I have some questions or concerns') {
           navigation.navigate('TreatmentReview', {
             module: 'SCTSRT'
@@ -596,7 +607,7 @@ export const UnderstandingAsk = ({ navigation }) => {
 
 // TreatmentReview screen is defined in the SCTSRTNavigator.js file!
 
-export const SRTCalibrationIntro = ({ navigation }) => {
+export const SRTCalibrationIntro = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -615,19 +626,19 @@ export const SRTCalibrationIntro = ({ navigation }) => {
   );
 };
 
-export const WakeTimeSetting = ({ navigation }) => {
+export const WakeTimeSetting = ({ navigation }: Props) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().hour(9).minute(0).toDate()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.SCTSRTWakeTime = value;
+      onQuestionSubmit={(value: Date) => {
+        SCTSRTState.SCTSRTWakeTime = value;
         navigation.navigate('SleepDurationCalculation', {
           progressBarPercent: 0.74
         });
       }}
-      validInputChecker={(val) => {
+      validInputChecker={(val: Date) => {
         // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
         return moment(val).hour() < 17
           ? true
@@ -640,11 +651,8 @@ export const WakeTimeSetting = ({ navigation }) => {
   );
 };
 
-export const SleepDurationCalculation = ({ navigation }) => {
+export const SleepDurationCalculation = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
-
-  // Trim sleepLogs to only show most recent 10
-  const recentSleepLogs = state.sleepLogs.slice(0, 10);
 
   // Calculate recent sleep efficiency average
   const sleepDurationAvg = Number(
@@ -662,7 +670,7 @@ export const SleepDurationCalculation = ({ navigation }) => {
   } else {
     timeInBedTarget = 15 * Math.round(sleepDurationAvg / 15);
   }
-  GLOBAL.SCTSRTTimeInBedTarget = timeInBedTarget;
+  SCTSRTState.SCTSRTTimeInBedTarget = timeInBedTarget;
 
   return (
     <WizardContentScreen
@@ -714,16 +722,18 @@ export const SleepDurationCalculation = ({ navigation }) => {
   );
 };
 
-export const TargetBedtime = ({ navigation }) => {
+export const TargetBedtime = ({ navigation }: Props) => {
   // Calculate target bedtime based on TIB and wake time
-  const targetBedTime = moment(GLOBAL.SCTSRTWakeTime)
-    .subtract(GLOBAL.SCTSRTTimeInBedTarget, 'minutes')
+  const targetBedTime = moment(SCTSRTState.SCTSRTWakeTime)
+    .subtract(SCTSRTState.SCTSRTTimeInBedTarget, 'minutes')
     .toDate();
-  GLOBAL.SCTSRTBedTime = targetBedTime;
+  SCTSRTState.SCTSRTBedTime = targetBedTime;
   const targetBedTimeDisplayString = formatDateAsTime(targetBedTime);
-  GLOBAL.targetBedTimeDisplayString = targetBedTimeDisplayString;
-  const targetWakeTimeDisplayString = formatDateAsTime(GLOBAL.SCTSRTWakeTime);
-  GLOBAL.targetWakeTimeDisplayString = targetWakeTimeDisplayString;
+  SCTSRTState.targetBedTimeDisplayString = targetBedTimeDisplayString;
+  const targetWakeTimeDisplayString = formatDateAsTime(
+    SCTSRTState.SCTSRTWakeTime
+  );
+  SCTSRTState.targetWakeTimeDisplayString = targetWakeTimeDisplayString;
 
   return (
     <WizardContentScreen
@@ -747,7 +757,7 @@ export const TargetBedtime = ({ navigation }) => {
   );
 };
 
-export const PrescriptionSummary = ({ navigation }) => {
+export const PrescriptionSummary = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -760,9 +770,9 @@ export const PrescriptionSummary = ({ navigation }) => {
       titleLabel={'Your target sleep schedule'}
       textLabel={
         'The plan is to get in bed at ' +
-        GLOBAL.targetBedTimeDisplayString +
+        SCTSRTState.targetBedTimeDisplayString +
         ' and get out of bed at ' +
-        GLOBAL.targetWakeTimeDisplayString +
+        SCTSRTState.targetWakeTimeDisplayString +
         ", regardless of how sleepy you feel. Within that window, you're to get out of bed if unable to sleep. Next week, once your sleep efficiency has jumped, we'll increase your time in bed by 15 minutes."
       }
       buttonLabel="Next"
@@ -770,21 +780,22 @@ export const PrescriptionSummary = ({ navigation }) => {
     >
       <View style={{ maxHeight: scale(150) }}>
         <TargetSleepScheduleCard
-          bedTime={GLOBAL.targetBedTimeDisplayString}
-          wakeTime={GLOBAL.targetWakeTimeDisplayString}
+          bedTime={SCTSRTState.targetBedTimeDisplayString}
+          wakeTime={SCTSRTState.targetWakeTimeDisplayString}
           styles={{ minWidth: scale(300) }}
+          remainingDays={7}
         />
       </View>
     </WizardContentScreen>
   );
 };
 
-export const DeprivationWarning = ({ navigation }) => {
+export const DeprivationWarning = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(val) => {
+      onQuestionSubmit={(val: string) => {
         if (val !== 'Wait, I have some concerns') {
           navigation.navigate('CheckinScheduling', {
             progressBarPercent: 0.88
@@ -803,20 +814,20 @@ export const DeprivationWarning = ({ navigation }) => {
   );
 };
 
-export const AddressingConcerns = ({ navigation }) => {
+export const AddressingConcerns = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(val) => {
+      onQuestionSubmit={(val: string) => {
         if (val !== 'Postpone, not a good time') {
-          GLOBAL.checkinPostponed = false;
+          SCTSRTState.checkinPostponed = false;
           navigation.navigate('TreatmentReview', {
             module: 'SCTSRT',
             progressBarPercent: 0.95
           });
         } else {
-          GLOBAL.checkinPostponed = true;
+          SCTSRTState.checkinPostponed = true;
           navigation.navigate('CheckinScheduling');
         }
       }}
@@ -832,17 +843,17 @@ export const AddressingConcerns = ({ navigation }) => {
   );
 };
 
-export const CheckinScheduling = ({ navigation }) => {
+export const CheckinScheduling = ({ navigation }: Props) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
-      onQuestionSubmit={(value) => {
-        GLOBAL.nextCheckinTime = value;
+      onQuestionSubmit={(value: Date) => {
+        SCTSRTState.nextCheckinTime = value;
         navigation.navigate('SCTSRTEnd', { progressBarPercent: 1 });
       }}
-      validInputChecker={(val) => {
+      validInputChecker={(val: Date) => {
         // Make sure the selected date is 7+ days from today
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
@@ -862,11 +873,11 @@ export const CheckinScheduling = ({ navigation }) => {
   );
 };
 
-export const SCTSRTEnd = ({ navigation }) => {
+export const SCTSRTEnd = ({ navigation }: Props) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Calculate some baseline statistics for later reference
-  const sleepLogs = state.sleepLogs;
+  const sleepLogs: Array<SleepLog> = state.sleepLogs;
 
   // Calculate baseline sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -904,7 +915,7 @@ export const SCTSRTEnd = ({ navigation }) => {
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
-    time: GLOBAL.nextCheckinTime,
+    time: SCTSRTState.nextCheckinTime,
     enabled: true
   };
 
@@ -917,16 +928,16 @@ export const SCTSRTEnd = ({ navigation }) => {
         // Submit checkin data, refresh app state
         submitCheckinData({
           userId: state.userToken,
-          checkinPostponed: GLOBAL.checkinPostponed,
-          nextCheckinDatetime: GLOBAL.nextCheckinTime,
+          checkinPostponed: SCTSRTState.checkinPostponed,
+          nextCheckinDatetime: SCTSRTState.nextCheckinTime,
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
             (v) => v.started === false && v.module !== 'SCTSRT'
           )[0].module,
           lastCheckinModule: 'SCTSRT',
-          targetBedTime: GLOBAL.SCTSRTBedTime,
-          targetWakeTime: GLOBAL.SCTSRTWakeTime,
-          targetTimeInBed: GLOBAL.SCTSRTTimeInBedTarget,
+          targetBedTime: SCTSRTState.SCTSRTBedTime,
+          targetWakeTime: SCTSRTState.SCTSRTWakeTime,
+          targetTimeInBed: SCTSRTState.SCTSRTTimeInBedTarget,
           sleepEfficiencyAvgBaseline: sleepEfficiencyAvg,
           sleepOnsetAvgBaseline: sleepOnsetAvg,
           nightMinsAwakeAvgBaseline: nightMinsAwakeAvg,
