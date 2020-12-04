@@ -6,7 +6,8 @@ import {
   VictoryChart,
   VictoryTheme,
   VictoryLine,
-  VictoryAxis
+  VictoryAxis,
+  VictoryScatter
 } from 'victory-native';
 import moment from 'moment';
 import { AuthContext } from '../utilities/authContext';
@@ -77,6 +78,11 @@ const chartStyles = {
       stroke: theme.colors.primary,
       strokeWidth: scale(4),
       strokeLinejoin: 'round'
+    }
+  },
+  scatter: {
+    data: {
+      fill: theme.colors.primary
     }
   }
 };
@@ -166,6 +172,13 @@ export const SleepEfficiency = ({ navigation }: Props) => {
           style={chartStyles.line}
           interpolation="monotoneX"
         />
+        <VictoryScatter
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="sleepEfficiency"
+          style={chartStyles.scatter}
+          size={scale(5)}
+        />
       </VictoryChart>
     </WizardContentScreen>
   );
@@ -223,6 +236,13 @@ export const SleepOnset = ({ navigation }: Props) => {
           y="minsToFallAsleep"
           style={chartStyles.line}
           interpolation="monotoneX"
+        />
+        <VictoryScatter
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="minsToFallAsleep"
+          style={chartStyles.scatter}
+          size={scale(5)}
         />
       </VictoryChart>
     </WizardContentScreen>
@@ -282,6 +302,13 @@ export const SleepMaintenance = ({ navigation }: Props) => {
           y="nightMinsAwake"
           style={chartStyles.line}
           interpolation="monotoneX"
+        />
+        <VictoryScatter
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="nightMinsAwake"
+          style={chartStyles.scatter}
+          size={scale(5)}
         />
       </VictoryChart>
     </WizardContentScreen>
@@ -377,6 +404,7 @@ export const WhySleepDrives = ({ navigation }: Props) => {
   );
 };
 
+// TODO: ONLY SAY THIS IF THEIR SLEEP IS FUCKING FRAGMENTED (e.g. Snehan is an exception)
 export const FragmentedSleep = ({ navigation }: Props) => {
   return (
     <WizardContentScreen
@@ -716,6 +744,13 @@ export const SleepDurationCalculation = ({ navigation }: Props) => {
           y="sleepDuration"
           style={chartStyles.line}
           interpolation="monotoneX"
+        />
+        <VictoryScatter
+          data={recentSleepLogs}
+          x={(d) => d.upTime.toDate()}
+          y="sleepDuration"
+          style={chartStyles.scatter}
+          size={scale(5)}
         />
       </VictoryChart>
     </WizardContentScreen>
