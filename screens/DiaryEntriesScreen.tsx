@@ -5,11 +5,13 @@ import {
   Platform,
   ActivityIndicator,
   View,
-  Alert
+  Alert,
+  FlatList
 } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
 import '@firebase/firestore';
+import * as firebase from 'firebase';
 import { Entypo } from '@expo/vector-icons';
 import Intl from 'intl';
 import { scale } from 'react-native-size-matters';
@@ -18,8 +20,9 @@ import { BaselineProgressCard } from '../components/BaselineProgressCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
-import fetchSleepLogs from '../utilities/fetchSleepLogs.ts';
+import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { AuthContext } from '../utilities/authContext';
+import { Navigation, SleepLog } from '../types/custom';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -28,11 +31,15 @@ if (Platform.OS === 'android') {
   Intl.__disableRegExpRestore(); /*For syntaxerror invalid regular expression unmatched parentheses*/
 }
 
-const SleepLogsView = (props) => {
+const SleepLogsView = (props: {
+  isLoading: boolean;
+  sleepLogs: Array<SleepLog>;
+  logEntryRedirect: Function;
+}) => {
   const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
   let loggedToday = false;
-  let selectedSleepLogs = [];
+  let selectedSleepLogs: Array<SleepLog> = [];
 
   // Determine whether user has logged sleep for the previous night
   if (props.sleepLogs != [] && props.sleepLogs[0]) {
@@ -48,7 +55,7 @@ const SleepLogsView = (props) => {
   if (props.isLoading) {
     // If sleep logs haven't loaded, show indicator
     return (
-      <View horizontal={false}>
+      <View>
         <IconTitleSubtitleButton
           onPress={() => props.logEntryRedirect()}
           backgroundColor={
@@ -136,15 +143,15 @@ const SleepLogsView = (props) => {
   }
 };
 
-const SleepLogsScreen = (props) => {
+const SleepLogsScreen = (props: { navigation: Navigation }) => {
   // Get global state & dispatch
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Set local state for loading/not loading
   const [logsLoading, setLogsLoading] = React.useState(true);
 
-  let colRef;
-  let db;
+  let colRef: firebase.firestore.CollectionReference;
+  let db: firebase.firestore.Firestore;
 
   // Set Firebase DB references if userToken is defined
   if (state.userToken) {
@@ -158,9 +165,8 @@ const SleepLogsScreen = (props) => {
   // Function to fetch sleep logs from Firebase and put them in global state
   async function setSleepLogs() {
     async function fetchData() {
-      // So fetchData is getting run, but fetchSleepLogs loads forever on Android.
       fetchSleepLogs(db, state.userToken)
-        .then((sleepLogs) => {
+        .then((sleepLogs: Array<SleepLog>) => {
           // Check that theres >1 entry. If no, set state accordingly
           if (sleepLogs.length === 0) {
             setLogsLoading(false);
@@ -178,7 +184,7 @@ const SleepLogsScreen = (props) => {
             dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
           }
 
-          return 0;
+          return;
         })
         .catch(function (error) {
           console.log('Error getting sleep logs:', error);
@@ -186,9 +192,9 @@ const SleepLogsScreen = (props) => {
     }
 
     // Setup a listener to fetch new logs from Firebase
-    const fetchDataBound = fetchData.bind(this);
+    // const fetchDataBound = fetchData.bind(this);
     colRef.onSnapshot(function () {
-      fetchDataBound();
+      fetchData();
     });
   }
 

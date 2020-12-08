@@ -1,11 +1,11 @@
 import '@firebase/firestore';
 import * as firebase from 'firebase';
-import { DebugPromiseLike } from 'react-test-renderer';
+import { SleepLog } from '../types/custom';
 
 async function fetchSleepLogs(
   db: firebase.firestore.Firestore,
   userId: string
-) {
+): Promise<SleepLog[]> {
   // Retrieving sleep logs from Firestore
   return new Promise((resolve) => {
     if (userId === undefined) {
@@ -19,7 +19,7 @@ async function fetchSleepLogs(
       .orderBy('upTime', 'desc')
       .get()
       .then((res: firebase.firestore.QuerySnapshot) => {
-        let sleepLogs: object[] = [];
+        let sleepLogs: Array<SleepLog> = [];
 
         // Check that theres >1 entry. If no, set state accordingly
         if (res.size === 0) {
