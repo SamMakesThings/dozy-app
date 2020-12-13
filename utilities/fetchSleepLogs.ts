@@ -9,7 +9,7 @@ async function fetchSleepLogs(
   // Retrieving sleep logs from Firestore
   return new Promise((resolve) => {
     if (userId === undefined) {
-      console.log('ERROR: userId passed to fetchSleepLogs is undefined');
+      console.error('ERROR: userId passed to fetchSleepLogs is undefined');
     }
 
     // Pull the sleep diary collection from Firestore, array it
