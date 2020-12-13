@@ -4,11 +4,11 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  YellowBox,
+  LogBox,
   Text
 } from 'react-native';
 import { Provider as ThemeProvider } from '@draftbit/ui';
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import * as Icon from '@expo/vector-icons';
 import * as Google from 'expo-google-app-auth';
@@ -23,7 +23,7 @@ import { AuthContext } from './utilities/authContext';
 import refreshUserData from './utilities/refreshUserData';
 
 // Mute "setting a timer" firebase warnings in console
-YellowBox.ignoreWarnings(['Setting a timer']);
+LogBox.ignoreLogs(['Setting a timer']);
 const _console = { ...console };
 console.warn = (message) => {
   if (message.indexOf('Setting a timer') <= -1) {
