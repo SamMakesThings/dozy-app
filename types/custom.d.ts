@@ -6,6 +6,7 @@ declare module '*.svg?inline' {
 export interface Navigation {
   navigate: Function;
   goBack: Function;
+  setParams: Function;
 }
 
 export interface SleepLog {

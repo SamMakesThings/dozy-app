@@ -10,21 +10,51 @@ import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
+import { Navigation, SleepLog } from '../types/custom';
 
 // Define the theme & state objects for the file globally
 const theme = dozy_theme;
-let state = {};
+interface Props {
+  navigation: Navigation;
+}
+let globalState = {
+  sleepLogs: [] as SleepLog[],
+  userData: {
+    currentTreatments: {
+      RLX: undefined as undefined | Date,
+      PIT: undefined as undefined | Date,
+      SCTSRT: undefined as undefined | Date
+    }
+  }
+};
+let logState = {
+  bedTime: new Date(),
+  minsToFallAsleep: 0,
+  PMRPractice: undefined as undefined | string,
+  PITPractice: undefined as undefined | boolean,
+  wakeCount: 0,
+  SCTUpCount: undefined as undefined | number,
+  SCTAnythingNonSleepInBed: undefined as undefined | boolean,
+  nightMinsAwake: 0,
+  SCTNonSleepActivities: undefined as undefined | string,
+  SCTDaytimeNaps: undefined as undefined | boolean,
+  wakeTime: new Date(),
+  upTime: new Date(),
+  sleepRating: 0,
+  notes: '',
+  tags: [] as string[]
+};
 
-export const BedTimeInput = ({ navigation }) => {
+export const BedTimeInput = ({ navigation }: Props) => {
   // If there is a sleep log recorded, use the most recent
   // bedtime value as a default.
-  // Also use hook to set state value for the file
-  state = React.useContext(AuthContext).state;
+  // Also use hook to set globalState value for the file
+  globalState = React.useContext(AuthContext).state;
   let defaultDate = moment().hour(22).minute(0).toDate();
-  if (state.sleepLogs && state.sleepLogs.length > 0) {
+  if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
     defaultDate = moment()
-      .hour(state.sleepLogs[0].bedTime.toDate().getHours())
-      .minute(state.sleepLogs[0].bedTime.toDate().getMinutes())
+      .hour(globalState.sleepLogs[0].bedTime.toDate().getHours())
+      .minute(globalState.sleepLogs[0].bedTime.toDate().getMinutes())
       .toDate();
   }
 
@@ -32,14 +62,14 @@ export const BedTimeInput = ({ navigation }) => {
     <DateTimePickerScreen
       theme={theme}
       defaultValue={defaultDate}
-      onQuestionSubmit={(value) => {
-        GLOBAL.bedTime = value;
+      onQuestionSubmit={(value: Date) => {
+        logState.bedTime = value;
         navigation.setParams({ progressBarPercent: 0.13 });
         navigation.navigate('MinsToFallAsleepInput', {
           progressBarPercent: 0.26
         });
       }}
-      validInputChecker={(val) => {
+      validInputChecker={(val: Date) => {
         // Make sure the selected time isn't between 8:00 and 18:00, a likely sign of AM/PM mixup
         return !(moment(val).hour() > 8 && moment(val).hour() < 18)
           ? true
@@ -52,22 +82,22 @@ export const BedTimeInput = ({ navigation }) => {
   );
 };
 
-export const MinsToFallAsleepInput = ({ navigation }) => {
+export const MinsToFallAsleepInput = ({ navigation }: Props) => {
   return (
     <NumInputScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.minsToFallAsleep = value;
+      onQuestionSubmit={(value: number) => {
+        logState.minsToFallAsleep = value;
         // If RLX (PMR) started, navigate to RLX. If PIT but no RLX, then PIT. Otherwise wakeCount
-        if (state.userData.currentTreatments.RLX) {
+        if (globalState.userData.currentTreatments.RLX) {
           navigation.navigate('PMRAsk', { progressBarPercent: 0.3 });
-        } else if (state.userData.currentTreatments.PIT) {
+        } else if (globalState.userData.currentTreatments.PIT) {
           navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
         } else {
           navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
         }
       }}
-      validInputChecker={(val) => {
+      validInputChecker={(val: number) => {
         if (val < 0) {
           return 'Please enter a non-negative number';
         } else if (val > 1200) {
@@ -82,14 +112,14 @@ export const MinsToFallAsleepInput = ({ navigation }) => {
   );
 };
 
-export const PMRAsk = ({ navigation }) => {
+export const PMRAsk = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.PMRPractice = value;
+      onQuestionSubmit={(value: string) => {
+        logState.PMRPractice = value;
         // If PIT started, navigate to PIT. Otherwise navigate to WakeCountInput
-        if (state.userData.currentTreatments.PIT) {
+        if (globalState.userData.currentTreatments.PIT) {
           navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
         } else {
           navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
@@ -109,12 +139,12 @@ export const PMRAsk = ({ navigation }) => {
   );
 };
 
-export const PITAsk = ({ navigation }) => {
+export const PITAsk = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.PITPractice = value;
+      onQuestionSubmit={(value: boolean) => {
+        logState.PITPractice = value;
         navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
       }}
       buttonValues={[
@@ -126,29 +156,29 @@ export const PITAsk = ({ navigation }) => {
   );
 };
 
-export const WakeCountInput = ({ navigation }) => {
+export const WakeCountInput = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.wakeCount = value;
+      onQuestionSubmit={(value: number) => {
+        logState.wakeCount = value;
         if (
-          state.userData.currentTreatments.SCTSRT &&
-          (GLOBAL.minsToFallAsleep >= 20 || value >= 1)
+          globalState.userData.currentTreatments.SCTSRT &&
+          (logState.minsToFallAsleep >= 20 || value >= 1)
         ) {
           // If SCTSRT has started AND user woke 1+ times or took 20+ mins to sleep, navigate to SCT questions
           navigation.navigate('SCTUpCountInput', { progressBarPercent: 0.44 });
-        } else if (state.userData.currentTreatments.SCTSRT) {
+        } else if (globalState.userData.currentTreatments.SCTSRT) {
           // If user started SCTSRT but slept quickly, skip to asking about daytime naps
           // & set SCT values appropriately
-          GLOBAL.SCTUpCount = 0;
-          GLOBAL.SCTAnythingNonSleepInBed = false;
+          logState.SCTUpCount = 0;
+          logState.SCTAnythingNonSleepInBed = false;
           navigation.navigate('SCTDaytimeNapsInput', {
             progressBarPercent: 0.5
           });
         } else if (value === 0) {
           // If user didn't wake in the night, skip asking how long they were awake
-          GLOBAL.nightMinsAwake = 0;
+          logState.nightMinsAwake = 0;
           navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
         } else {
           // Otherwise, ask how long they were awake
@@ -171,12 +201,12 @@ export const WakeCountInput = ({ navigation }) => {
 };
 
 // If SCTSRT started, show SCT question screens
-export const SCTUpCountInput = ({ navigation }) => {
+export const SCTUpCountInput = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.SCTUpCount = value;
+      onQuestionSubmit={(value: number) => {
+        logState.SCTUpCount = value;
         navigation.navigate('SCTAnythingNonSleepInBedInput', {
           progressBarPercent: 0.55
         });
@@ -194,12 +224,12 @@ export const SCTUpCountInput = ({ navigation }) => {
   );
 };
 
-export const SCTAnythingNonSleepInBedInput = ({ navigation }) => {
+export const SCTAnythingNonSleepInBedInput = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.SCTAnythingNonSleepInBed = value === 1;
+      onQuestionSubmit={(value: number) => {
+        logState.SCTAnythingNonSleepInBed = value === 1;
         // If user says they did something not sleep in bed, ask what (text input)
         if (value === 1) {
           navigation.navigate('SCTNonSleepActivitiesInput', {
@@ -220,12 +250,12 @@ export const SCTAnythingNonSleepInBedInput = ({ navigation }) => {
   );
 };
 
-export const SCTNonSleepActivitiesInput = ({ navigation }) => {
+export const SCTNonSleepActivitiesInput = ({ navigation }: Props) => {
   return (
     <TextInputScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.SCTNonSleepActivities = value;
+      onQuestionSubmit={(value: string) => {
+        logState.SCTNonSleepActivities = value;
         navigation.navigate('SCTDaytimeNapsInput', {
           progressBarPercent: 0.63
         });
@@ -236,16 +266,16 @@ export const SCTNonSleepActivitiesInput = ({ navigation }) => {
   );
 };
 
-export const SCTDaytimeNapsInput = ({ navigation }) => {
+export const SCTDaytimeNapsInput = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.SCTDaytimeNaps = value === 1;
+      onQuestionSubmit={(value: number) => {
+        logState.SCTDaytimeNaps = value === 1;
         // If user didn't wake in the night, skip asking how long they were awake
-        if (GLOBAL.wakeCount === 0) {
+        if (logState.wakeCount === 0) {
           navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
-          GLOBAL.nightMinsAwake = 0;
+          logState.nightMinsAwake = 0;
         } else {
           navigation.navigate('NightMinsAwakeInput', {
             progressBarPercent: 0.61
@@ -261,15 +291,15 @@ export const SCTDaytimeNapsInput = ({ navigation }) => {
   );
 };
 
-export const NightMinsAwakeInput = ({ navigation }) => {
+export const NightMinsAwakeInput = ({ navigation }: Props) => {
   return (
     <NumInputScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.nightMinsAwake = value;
+      onQuestionSubmit={(value: number) => {
+        logState.nightMinsAwake = value;
         navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
       }}
-      validInputChecker={(val) => {
+      validInputChecker={(val: number) => {
         if (val < 0) {
           return 'Please enter a non-negative number';
         } else if (val > 1000) {
@@ -285,14 +315,14 @@ export const NightMinsAwakeInput = ({ navigation }) => {
   );
 };
 
-export const WakeTimeInput = ({ navigation }) => {
+export const WakeTimeInput = ({ navigation }: Props) => {
   // If there is a sleep log recorded, use the most recent
   // wake time value as a default
   let defaultDate = moment().hour(9).minute(0).toDate();
-  if (state.sleepLogs && state.sleepLogs.length > 0) {
+  if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
     defaultDate = moment()
-      .hour(state.sleepLogs[0].wakeTime.toDate().getHours())
-      .minute(state.sleepLogs[0].wakeTime.toDate().getMinutes())
+      .hour(globalState.sleepLogs[0].wakeTime.toDate().getHours())
+      .minute(globalState.sleepLogs[0].wakeTime.toDate().getMinutes())
       .toDate();
   }
 
@@ -300,18 +330,18 @@ export const WakeTimeInput = ({ navigation }) => {
     <DateTimePickerScreen
       theme={theme}
       defaultValue={defaultDate}
-      onQuestionSubmit={(value) => {
-        GLOBAL.wakeTime = value;
+      onQuestionSubmit={(value: Date) => {
+        logState.wakeTime = value;
         navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
       }}
-      validInputChecker={(val) => {
+      validInputChecker={(val: Date) => {
         // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
         // Also make sure the wake time occurs after the bedtime (complex b/c PM>AM crossover)
         if (!(moment(val).hour() < 17)) {
           return 'Did you set AM/PM correctly? Selected time is late for a wake time.';
         } else if (
-          val < GLOBAL.bedTime &&
-          !(moment(GLOBAL.bedTime).hour() > 17)
+          val < logState.bedTime &&
+          !(moment(logState.bedTime).hour() > 17)
         ) {
           return 'Did you set AM/PM correctly? Selected wake time is before your entered bed time.';
         } else {
@@ -325,39 +355,39 @@ export const WakeTimeInput = ({ navigation }) => {
   );
 };
 
-export const UpTimeInput = ({ navigation }) => {
+export const UpTimeInput = ({ navigation }: Props) => {
   return (
     <DateTimePickerScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.upTime = value;
+      onQuestionSubmit={(value: Date) => {
+        logState.upTime = value;
         navigation.navigate('SleepRatingInput', { progressBarPercent: 0.87 });
       }}
-      validInputChecker={(val) => {
+      validInputChecker={(val: Date) => {
         // Make sure the selected time is before 18:00, otherwise it's a likely sign of AM/PM mixup
         // Also make sure up time is after or equal to wake time
         if (moment(val).hour() > 18) {
           return 'Did you set AM/PM correctly? Selected time is late for a wake time.';
-        } else if (moment(val).add(1, 'minutes').toDate() < GLOBAL.wakeTime) {
+        } else if (moment(val).add(1, 'minutes').toDate() < logState.wakeTime) {
           return 'Selected up time is earlier than selected wake time. Did you set AM/PM correctly?';
         } else {
           return true;
         }
       }}
       mode="time"
-      defaultValue={GLOBAL.wakeTime}
+      defaultValue={logState.wakeTime}
       questionLabel="What time did you get up?"
       inputLabel="The time you got out of bed"
     />
   );
 };
 
-export const SleepRatingInput = ({ navigation }) => {
+export const SleepRatingInput = ({ navigation }: Props) => {
   return (
     <MultiButtonScreen
       theme={theme}
-      onQuestionSubmit={(value) => {
-        GLOBAL.sleepRating = value;
+      onQuestionSubmit={(value: number) => {
+        logState.sleepRating = value;
         navigation.navigate('TagsNotesInput', { progressBarPercent: 0.95 });
       }}
       buttonValues={[
@@ -372,7 +402,7 @@ export const SleepRatingInput = ({ navigation }) => {
   );
 };
 
-export const TagsNotesInput = ({ navigation }) => {
+export const TagsNotesInput = ({ navigation }: Props) => {
   return (
     <TagSelectScreen
       theme={theme}
@@ -391,14 +421,13 @@ export const TagsNotesInput = ({ navigation }) => {
         { label: 'pain', icon: 'flash' },
         { label: 'restroom', icon: 'warning' }
       ]}
-      onFormSubmit={async (res) => {
-        // Update global state with new values
-        GLOBAL.notes = res.notes;
-        GLOBAL.tags = res.tags;
+      onFormSubmit={async (res: { notes: string; tags: string[] }) => {
+        // Update state with new values
+        logState.notes = res.notes;
+        logState.tags = res.tags;
 
         // Submit data to Firebase thru helper function
-        // TODO: Make submitSleepDiaryData a pure function
-        submitSleepDiaryData();
+        submitSleepDiaryData(logState);
 
         // Navigate back to the main app
         navigation.navigate('App');
