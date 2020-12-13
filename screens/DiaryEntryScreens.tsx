@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
+import { Platform } from 'react-native';
 import moment from 'moment';
 import NumInputScreen from '../components/screens/NumInputScreen';
 import TextInputScreen from '../components/screens/TextInputScreen';
@@ -7,7 +8,6 @@ import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import TagSelectScreen from '../components/screens/TagSelectScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
-import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 import { Navigation, SleepLog } from '../types/custom';
@@ -57,6 +57,8 @@ export const BedTimeInput = ({ navigation }: Props) => {
       .minute(globalState.sleepLogs[0].bedTime.toDate().getMinutes())
       .toDate();
   }
+
+  console.log(Platform.Version);
 
   return (
     <DateTimePickerScreen
