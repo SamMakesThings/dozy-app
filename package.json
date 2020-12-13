@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@draftbit/ui": "^37.3.0",
-    "@expo/samples": "2.1.1",
     "@expo/vector-icons": "^10.0.0",
     "@firebase/app": "^0.6.11",
     "@firebase/app-types": "^0.6.1",
