@@ -30,7 +30,7 @@ enum States {
 }
 
 const NumInputScreen: React.FC<Props> = (props) => {
-  const [selectedNum, setSelectedNum] = React.useState(NaN);
+  const [selectedNum, setSelectedNum] = React.useState(0);
 
   // Create state to manage possible screen states
   const [screenState, setScreenState] = React.useState(States.Empty);
@@ -125,7 +125,7 @@ const NumInputScreen: React.FC<Props> = (props) => {
                 setSelectedNum(parseInt(event.nativeEvent.text));
               } else {
                 setSelectedNum(parseInt(event.nativeEvent.text));
-                props.onQuestionSubmit(event.nativeEvent.text);
+                props.onQuestionSubmit(parseInt(event.nativeEvent.text));
               }
             }}
           />
