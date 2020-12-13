@@ -58,8 +58,6 @@ export const BedTimeInput = ({ navigation }: Props) => {
       .toDate();
   }
 
-  console.log(Platform.Version);
-
   return (
     <DateTimePickerScreen
       theme={theme}
