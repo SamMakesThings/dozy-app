@@ -1,6 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, View, Text } from 'react-native';
+import { DatePicker } from '@draftbit/ui';
+import { scale } from 'react-native-size-matters';
 import moment from 'moment';
 import NumInputScreen from '../components/screens/NumInputScreen';
 import TextInputScreen from '../components/screens/TextInputScreen';
@@ -28,6 +30,7 @@ let globalState = {
   }
 };
 let logState = {
+  logDate: new Date(),
   bedTime: new Date(),
   minsToFallAsleep: 0,
   PMRPractice: undefined as undefined | string,
@@ -57,28 +60,58 @@ export const BedTimeInput = ({ navigation }: Props) => {
       .minute(globalState.sleepLogs[0].bedTime.toDate().getMinutes())
       .toDate();
   }
+  // Create state to display selected log date
+  let [selectedDate, setSelectedDate] = React.useState(logState.logDate);
 
   return (
-    <DateTimePickerScreen
-      theme={theme}
-      defaultValue={defaultDate}
-      onQuestionSubmit={(value: Date) => {
-        logState.bedTime = value;
-        navigation.setParams({ progressBarPercent: 0.13 });
-        navigation.navigate('MinsToFallAsleepInput', {
-          progressBarPercent: 0.26
-        });
-      }}
-      validInputChecker={(val: Date) => {
-        // Make sure the selected time isn't between 8:00 and 18:00, a likely sign of AM/PM mixup
-        return !(moment(val).hour() > 8 && moment(val).hour() < 18)
-          ? true
-          : 'Did you set AM/PM correctly? Selected time is unusual for a bedtime';
-      }}
-      mode="time"
-      questionLabel="What time did you go to bed last night?"
-      inputLabel="Bedtime"
-    />
+    <>
+      <DateTimePickerScreen
+        theme={theme}
+        defaultValue={defaultDate}
+        onQuestionSubmit={(value: Date) => {
+          logState.bedTime = value;
+          navigation.setParams({ progressBarPercent: 0.13 });
+          navigation.navigate('MinsToFallAsleepInput', {
+            progressBarPercent: 0.26
+          });
+        }}
+        validInputChecker={(val: Date) => {
+          // Make sure the selected time isn't between 8:00 and 18:00, a likely sign of AM/PM mixup
+          return !(moment(val).hour() > 8 && moment(val).hour() < 18)
+            ? true
+            : 'Did you set AM/PM correctly? Selected time is unusual for a bedtime';
+        }}
+        mode="time"
+        questionLabel="What time did you go to bed last night?"
+        inputLabel="Bedtime"
+      />
+      <DatePicker
+        style={{
+          position: 'absolute',
+          marginTop: scale(Platform.OS === 'ios' ? 50 : 29),
+          alignSelf: 'center',
+          opacity: 0.35
+        }}
+        mode={'date'}
+        type="underline"
+        disabled={false}
+        color={theme.colors.light}
+        leftIconMode="inset"
+        format={'dddd, mmmm dS'}
+        date={selectedDate}
+        onDateChange={(selectedDay: Date) => {
+          let dateSetting = selectedDay; // why do dates have to be mutable like this
+          dateSetting.setHours(new Date().getHours());
+          dateSetting.setMinutes(new Date().getMinutes() - 7); // TODO: Make this less hacky
+          logState.logDate = dateSetting;
+          if (moment(selectedDay).diff(new Date(), 'days') >= 1) {
+            // Make sure it's not a future date
+            dateSetting = new Date();
+          }
+          setSelectedDate(dateSetting);
+        }}
+      />
+    </>
   );
 };
 
@@ -425,6 +458,10 @@ export const TagsNotesInput = ({ navigation }: Props) => {
         // Update state with new values
         logState.notes = res.notes;
         logState.tags = res.tags;
+
+        // TODO: Write a dates conversion function, that updates (or doesn't) all dates
+        // ...in the log by checking the different between log date and current date.
+        // Maybe do this within submitSleepDiaryData?
 
         // Submit data to Firebase thru helper function
         submitSleepDiaryData(logState);

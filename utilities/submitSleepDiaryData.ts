@@ -1,8 +1,9 @@
 import * as SecureStore from 'expo-secure-store';
 import { FbLib } from '../config/firebaseConfig';
-import GLOBAL from './global';
+import moment from 'moment';
 
 interface LogState {
+  logDate: Date;
   bedTime: Date;
   wakeTime: Date;
   upTime: Date;
@@ -35,6 +36,23 @@ export default async function submitSleepDiaryData(logState: LogState) {
     logState.bedTime = new Date(
       logState.bedTime.setDate(logState.bedTime.getDate() - 1)
     );
+  }
+
+  // Add a helper function for adding/removing days
+  function addDays(date: Date, daysToAdd: number): Date {
+    let newDate = new Date(date.valueOf());
+    newDate.setDate(date.getDate() + daysToAdd);
+    return newDate;
+  }
+
+  // If log isn't for today, adjust all date values accordingly
+  const logDate = logState.logDate;
+  let daysDiff = moment(logDate).diff(new Date(), 'days');
+  daysDiff = logDate > new Date() ? daysDiff + 1 : daysDiff; // Add 1 if set date is larger than today. To make sure it catches diff accurately
+  if (daysDiff !== 0) {
+    logState.bedTime = addDays(logState.bedTime, daysDiff);
+    logState.wakeTime = addDays(logState.wakeTime, daysDiff);
+    logState.upTime = addDays(logState.upTime, daysDiff);
   }
 
   // calculate total time in bed, time between waking & getting up, and time awake in bed
@@ -94,6 +112,6 @@ export default async function submitSleepDiaryData(logState: LogState) {
       ...treatmentModuleData
     })
     .catch(function (error) {
-      console.log('Error pushing sleep log data:', error);
+      console.error('Error pushing sleep log data:', error);
     });
 }
