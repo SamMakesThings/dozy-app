@@ -157,4 +157,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withTheme(LoginScreen);
+export default LoginScreen;

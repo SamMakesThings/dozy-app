@@ -228,8 +228,8 @@ export default function App() {
     // TODO: Why TF does this work?? How can I make it not this??
     // Getting AppLoading errors when the dispatch isn't in a setTimeout.
     // Doesn't seem to wait 4 seconds though... confused what's happening
-    setTimeout(() => dispatch({ type: 'FINISH_LOADING' }));
-    // dispatch({ type: 'FINISH_LOADING' });
+    // setTimeout(() => dispatch({ type: 'FINISH_LOADING' }));
+    dispatch({ type: 'FINISH_LOADING' });
   }
 
   // Load assets async w/Expo tools
