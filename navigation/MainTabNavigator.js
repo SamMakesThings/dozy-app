@@ -83,7 +83,9 @@ export default function BottomTabs() {
             <TabBarIcon
               focused={focused}
               color={color}
-              name={Platform.OS === 'ios' ? 'ios-text' : 'md-text'}
+              name={
+                Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatbubbles'
+              }
             />
           )
         }}
