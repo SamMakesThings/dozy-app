@@ -1,15 +1,7 @@
 import React from 'react';
-import {
-  withTheme,
-  Button,
-  ScreenContainer,
-  Container,
-  Image,
-  Touchable
-} from '@draftbit/ui';
-import { StyleSheet, Text } from 'react-native';
+import { Button, ScreenContainer, Container, Touchable } from '@draftbit/ui';
+import { StyleSheet, Text, ImageBackground } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
-import Images from '../config/Images';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
 import WordmarkTrans from '../assets/images/WordmarkTrans.svg';
@@ -28,12 +20,10 @@ function LoginScreen() {
       hasSafeArea={true}
       style={styles.View_RootContainer}
     >
-      <Container
-        backgroundImage={Images.DreamBgExtended}
-        useThemeGutterPadding={false}
-        backgroundImageResizeMode="contain"
-        elevation={0}
+      <ImageBackground
+        source={require('../assets/images/DreamBgExtended.png')}
         style={styles.View_ContentContainer}
+        imageStyle={{ resizeMode: 'contain' }}
       >
         <Container
           elevation={0}
@@ -107,7 +97,7 @@ function LoginScreen() {
             </Text>
           </Touchable>
         </Container>
-      </Container>
+      </ImageBackground>
     </ScreenContainer>
   );
 }
