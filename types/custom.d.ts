@@ -10,6 +10,7 @@ export interface Navigation {
 }
 
 export interface SleepLog {
+  logId: string;
   bedTime: firebase.firestore.Timestamp;
   fallAsleepTime: firebase.firestore.Timestamp;
   wakeTime: firebase.firestore.Timestamp;

@@ -28,7 +28,8 @@ async function fetchSleepLogs(
 
         // Otherwise, arrange data and update state
         res.forEach(function (doc: firebase.firestore.QueryDocumentSnapshot) {
-          sleepLogs.push(doc.data());
+          let docData = doc.data();
+          sleepLogs.push({ logId: doc.id, ...doc.data() });
         });
         resolve(sleepLogs);
       })
