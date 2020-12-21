@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { Platform, View, Text } from 'react-native';
+import { Platform } from 'react-native';
 import { DatePicker } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
@@ -18,6 +18,11 @@ import { Navigation, SleepLog } from '../types/custom';
 const theme = dozy_theme;
 interface Props {
   navigation: Navigation;
+  route: {
+    params: {
+      logId?: string;
+    };
+  };
 }
 let globalState = {
   sleepLogs: [] as SleepLog[],
@@ -29,7 +34,11 @@ let globalState = {
     }
   }
 };
+
+// Architecture: pass an optional prop logId, which if defined, signals it's an edit.
+// TODO: Update screens to use these values as defaults
 let logState = {
+  logId: undefined as undefined | string,
   logDate: new Date(),
   bedTime: new Date(),
   minsToFallAsleep: 0,
@@ -48,7 +57,7 @@ let logState = {
   tags: [] as string[]
 };
 
-export const BedTimeInput = ({ navigation }: Props) => {
+export const BedTimeInput = ({ navigation, route }: Props) => {
   // If there is a sleep log recorded, use the most recent
   // bedtime value as a default.
   // Also use hook to set globalState value for the file
@@ -60,6 +69,15 @@ export const BedTimeInput = ({ navigation }: Props) => {
       .minute(globalState.sleepLogs[0].bedTime.toDate().getMinutes())
       .toDate();
   }
+
+  // TODO: If editing existing sleep log, set defaults from that. Otherwise, set defaults normally
+  if (route.params?.logId) {
+    // TODO: Fetch data for that log from Firebase or elsewhere
+    // TODO: Once done, update logState with new default values
+  } else {
+    // TODO: Set default values for relevant screens
+  }
+
   // Create state to display selected log date
   let [selectedDate, setSelectedDate] = React.useState(logState.logDate);
 
@@ -67,7 +85,7 @@ export const BedTimeInput = ({ navigation }: Props) => {
     <>
       <DateTimePickerScreen
         theme={theme}
-        defaultValue={defaultDate}
+        defaultValue={logState.logId ? logState.bedTime : defaultDate}
         onQuestionSubmit={(value: Date) => {
           logState.bedTime = value;
           navigation.setParams({ progressBarPercent: 0.13 });
@@ -119,6 +137,7 @@ export const MinsToFallAsleepInput = ({ navigation }: Props) => {
   return (
     <NumInputScreen
       theme={theme}
+      defaultValue={logState.logId ? logState.minsToFallAsleep : undefined}
       onQuestionSubmit={(value: number) => {
         logState.minsToFallAsleep = value;
         // If RLX (PMR) started, navigate to RLX. If PIT but no RLX, then PIT. Otherwise wakeCount
@@ -287,6 +306,7 @@ export const SCTNonSleepActivitiesInput = ({ navigation }: Props) => {
   return (
     <TextInputScreen
       theme={theme}
+      defaultValue={logState.logId ? logState.SCTNonSleepActivities : undefined}
       onQuestionSubmit={(value: string) => {
         logState.SCTNonSleepActivities = value;
         navigation.navigate('SCTDaytimeNapsInput', {
@@ -328,6 +348,7 @@ export const NightMinsAwakeInput = ({ navigation }: Props) => {
   return (
     <NumInputScreen
       theme={theme}
+      defaultValue={logState.logId ? logState.nightMinsAwake : undefined}
       onQuestionSubmit={(value: number) => {
         logState.nightMinsAwake = value;
         navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
@@ -362,7 +383,7 @@ export const WakeTimeInput = ({ navigation }: Props) => {
   return (
     <DateTimePickerScreen
       theme={theme}
-      defaultValue={defaultDate}
+      defaultValue={logState.logId ? logState.wakeTime : defaultDate}
       onQuestionSubmit={(value: Date) => {
         logState.wakeTime = value;
         navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
@@ -408,7 +429,7 @@ export const UpTimeInput = ({ navigation }: Props) => {
         }
       }}
       mode="time"
-      defaultValue={logState.wakeTime}
+      defaultValue={logState.logId ? logState.upTime : logState.wakeTime}
       questionLabel="What time did you get up?"
       inputLabel="The time you got out of bed"
     />
@@ -439,6 +460,8 @@ export const TagsNotesInput = ({ navigation }: Props) => {
   return (
     <TagSelectScreen
       theme={theme}
+      defaultTags={logState.logId ? logState.tags : undefined}
+      defaultNotes={logState.logId ? logState.notes : undefined}
       touchableTags={[
         { label: 'nothing', icon: 'emoji-happy' },
         { label: 'light', icon: 'light-bulb' },
@@ -459,10 +482,6 @@ export const TagsNotesInput = ({ navigation }: Props) => {
         // Update state with new values
         logState.notes = res.notes;
         logState.tags = res.tags;
-
-        // TODO: Write a dates conversion function, that updates (or doesn't) all dates
-        // ...in the log by checking the different between log date and current date.
-        // Maybe do this within submitSleepDiaryData?
 
         // Submit data to Firebase thru helper function
         submitSleepDiaryData(logState);
