@@ -51,7 +51,7 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
             day: 'numeric'
           })}
         </Text>
-        <TouchableOpacity onPress={(event) => onEdit(sleepLog.logId)}>
+        <TouchableOpacity onPress={(event) => onEdit(event)}>
           <Entypo
             name="pencil"
             size={scale(18)}

@@ -141,7 +141,7 @@ const SleepLogsView = (props: {
             <SleepLogEntryCard
               sleepLog={log}
               key={log.logId}
-              onEdit={() =>
+              onEdit={(event) =>
                 props.navigation.navigate('SleepDiaryEntry', {
                   screen: 'BedTimeInput',
                   params: { logId: log.logId }

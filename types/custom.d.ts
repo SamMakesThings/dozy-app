@@ -19,4 +19,9 @@ export interface SleepLog {
   sleepEfficiency: number;
   nightMinsAwake: number;
   minsToFallAsleep: number;
+  wakeCount: number;
+  SCTAnythingNonSleepInBed?: boolean;
+  SCTNonSleepActivities?: string;
+  notes: string;
+  tags: string[];
 }
