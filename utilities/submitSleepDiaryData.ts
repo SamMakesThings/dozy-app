@@ -3,6 +3,7 @@ import { FbLib } from '../config/firebaseConfig';
 import moment from 'moment';
 
 interface LogState {
+  logId?: string;
   logDate: Date;
   bedTime: Date;
   wakeTime: Date;
@@ -46,9 +47,10 @@ export default async function submitSleepDiaryData(logState: LogState) {
   }
 
   // If log isn't for today, adjust all date values accordingly
+  const dateToCompare = logState.logId ? logState.upTime : new Date();
   const logDate = logState.logDate;
-  let daysDiff = moment(logDate).diff(new Date(), 'days');
-  daysDiff = logDate > new Date() ? daysDiff + 1 : daysDiff; // Add 1 if set date is larger than today. To make sure it catches diff accurately
+  let daysDiff = moment(logDate).diff(dateToCompare, 'days');
+  daysDiff = logDate > dateToCompare ? daysDiff + 1 : daysDiff; // Add 1 if set date is larger than today. To make sure it catches diff accurately
   if (daysDiff !== 0) {
     logState.bedTime = addDays(logState.bedTime, daysDiff);
     logState.wakeTime = addDays(logState.wakeTime, daysDiff);
@@ -71,7 +73,7 @@ export default async function submitSleepDiaryData(logState: LogState) {
   // Create an object, add any additional treatment module data
   // Currently added: SCT, RLX (PMR), PIT
   let treatmentModuleData = {};
-  if (logState.SCTUpCount) {
+  if (logState.SCTAnythingNonSleepInBed) {
     treatmentModuleData = Object.assign(treatmentModuleData, {
       SCTUpCount: logState.SCTUpCount,
       SCTAnythingNonSleepInBed: logState.SCTAnythingNonSleepInBed,
@@ -90,28 +92,39 @@ export default async function submitSleepDiaryData(logState: LogState) {
     });
   }
 
-  // Write the data to the user's sleep log document in Firebase
-  sleepLogsRef
-    .add({
-      bedTime: logState.bedTime,
-      minsToFallAsleep: logState.minsToFallAsleep,
-      wakeCount: logState.wakeCount,
-      nightMinsAwake: logState.nightMinsAwake,
-      wakeTime: logState.wakeTime,
-      upTime: logState.upTime,
-      sleepRating: logState.sleepRating,
-      notes: logState.notes,
-      fallAsleepTime: new Date(
-        logState.bedTime.getTime() + logState.minsToFallAsleep * 60000
-      ),
-      sleepEfficiency: sleepEfficiency,
-      sleepDuration: sleepDuration,
-      minsInBedTotal: minsInBedTotal,
-      minsAwakeInBedTotal: minsAwakeInBedTotal,
-      tags: logState.tags,
-      ...treatmentModuleData
-    })
-    .catch(function (error) {
+  // Prepare object for pushing to Firebase
+  const logDataForDoc = {
+    bedTime: logState.bedTime,
+    minsToFallAsleep: logState.minsToFallAsleep,
+    wakeCount: logState.wakeCount,
+    nightMinsAwake: logState.nightMinsAwake,
+    wakeTime: logState.wakeTime,
+    upTime: logState.upTime,
+    sleepRating: logState.sleepRating,
+    notes: logState.notes,
+    fallAsleepTime: new Date(
+      logState.bedTime.getTime() + logState.minsToFallAsleep * 60000
+    ),
+    sleepEfficiency: sleepEfficiency,
+    sleepDuration: sleepDuration,
+    minsInBedTotal: minsInBedTotal,
+    minsAwakeInBedTotal: minsAwakeInBedTotal,
+    tags: logState.tags,
+    ...treatmentModuleData
+  };
+
+  // If entry is an edit, update existing log document in Firebase
+  // Otherwise, create a new document
+  if (logState.logId) {
+    sleepLogsRef
+      .doc(logState.logId)
+      .update(logDataForDoc)
+      .catch(function (error) {
+        console.error('Error pushing sleep log data:', error);
+      });
+  } else {
+    sleepLogsRef.add(logDataForDoc).catch(function (error) {
       console.error('Error pushing sleep log data:', error);
     });
+  }
 }

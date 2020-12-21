@@ -61,7 +61,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
   // If there is a sleep log recorded, use the most recent
   // bedtime value as a default.
   // Also use hook to set globalState value for the file
-  globalState = React.useContext(AuthContext).state;
+  globalState = React.useContext(AuthContext).state || globalState;
   let defaultDate = moment().hour(22).minute(0).toDate();
   if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
     defaultDate = moment()
@@ -70,16 +70,37 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
       .toDate();
   }
 
-  // TODO: If editing existing sleep log, set defaults from that. Otherwise, set defaults normally
+  let initialDateVal = new Date(); // Declare variable for the initial selectedState value
+
+  // If editing existing sleep log, set defaults from that. Otherwise, use normal defaults
   if (route.params?.logId) {
-    // TODO: Fetch data for that log from Firebase or elsewhere
-    // TODO: Once done, update logState with new default values
-  } else {
-    // TODO: Set default values for relevant screens
+    let baseSleepLog: SleepLog | undefined = globalState.sleepLogs.find(
+      (sleepLog) => sleepLog.logId === route.params.logId
+    );
+
+    if (baseSleepLog) {
+      initialDateVal = baseSleepLog.upTime.toDate(); // If editing, use upTime as initial logDate value
+
+      logState = {
+        ...logState,
+        logId: route.params.logId,
+        bedTime: baseSleepLog.bedTime.toDate(),
+        minsToFallAsleep: baseSleepLog.minsToFallAsleep,
+        wakeCount: baseSleepLog.wakeCount,
+        nightMinsAwake: baseSleepLog.nightMinsAwake,
+        SCTNonSleepActivities: baseSleepLog.SCTNonSleepActivities,
+        wakeTime: baseSleepLog.wakeTime.toDate(),
+        upTime: baseSleepLog.upTime.toDate(),
+        notes: baseSleepLog.notes,
+        tags: baseSleepLog.tags
+      };
+    } else {
+      console.error("Attempted to edit sleep log that doesn't exist!");
+    }
   }
 
   // Create state to display selected log date
-  let [selectedDate, setSelectedDate] = React.useState(logState.logDate);
+  let [selectedDate, setSelectedDate] = React.useState(initialDateVal);
 
   return (
     <>
@@ -88,6 +109,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
         defaultValue={logState.logId ? logState.bedTime : defaultDate}
         onQuestionSubmit={(value: Date) => {
           logState.bedTime = value;
+          logState.logDate = selectedDate; // Make sure this is set even if user doesn't change it
           navigation.setParams({ progressBarPercent: 0.13 });
           navigation.navigate('MinsToFallAsleepInput', {
             progressBarPercent: 0.26
