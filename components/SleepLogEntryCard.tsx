@@ -1,25 +1,21 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, TouchableOpacity, GestureResponderEvent } from 'react-native';
 import { Container } from '@draftbit/ui';
 import '@firebase/firestore';
 import * as firebase from 'firebase';
 import { scale } from 'react-native-size-matters';
+import { Entypo } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
 import HighlightedText from './HighlightedText';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
+import { SleepLog } from '../types/custom';
 
 interface Props {
-  sleepLog: {
-    bedTime: firebase.firestore.Timestamp;
-    fallAsleepTime: firebase.firestore.Timestamp;
-    wakeTime: firebase.firestore.Timestamp;
-    upTime: firebase.firestore.Timestamp;
-    sleepDuration: number;
-    sleepEfficiency: number;
-  };
+  sleepLog: SleepLog;
+  onEdit: (event: GestureResponderEvent) => void;
 }
 
-const SleepLogEntryCard: React.FC<Props> = ({ sleepLog }) => {
+const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
   const theme = dozy_theme;
   return (
     <Container
@@ -33,7 +29,9 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog }) => {
         style={{
           paddingLeft: 0,
           marginLeft: scale(24),
-          marginBottom: scale(2)
+          marginBottom: scale(2),
+          flexDirection: 'row',
+          alignItems: 'center'
         }}
         elevation={0}
         useThemeGutterPadding={false}
@@ -43,8 +41,7 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog }) => {
             theme.typography.headline6,
             {
               color: theme.colors.light,
-
-              width: '100%'
+              width: '85%'
             }
           ]}
         >
@@ -54,6 +51,14 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog }) => {
             day: 'numeric'
           })}
         </Text>
+        <TouchableOpacity onPress={(event) => onEdit(sleepLog.logId)}>
+          <Entypo
+            name="pencil"
+            size={scale(18)}
+            color={theme.colors.light}
+            style={{ opacity: 0.3 }}
+          />
+        </TouchableOpacity>
       </Container>
       <Container
         style={{

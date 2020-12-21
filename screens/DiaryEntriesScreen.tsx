@@ -35,6 +35,7 @@ const SleepLogsView = (props: {
   isLoading: boolean;
   sleepLogs: Array<SleepLog>;
   logEntryRedirect: Function;
+  navigation: Navigation;
 }) => {
   const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
@@ -136,7 +137,18 @@ const SleepLogsView = (props: {
           <BaselineProgressCard nightsLogged={props.sleepLogs.length} />
         )}
         {sleepLogs.map((log) => {
-          return <SleepLogEntryCard sleepLog={log} key={log.upTime.seconds} />;
+          return (
+            <SleepLogEntryCard
+              sleepLog={log}
+              key={log.logId}
+              onEdit={() =>
+                props.navigation.navigate('SleepDiaryEntry', {
+                  screen: 'BedTimeInput',
+                  params: { logId: log.logId }
+                })
+              }
+            />
+          );
         })}
       </ScrollView>
     );
@@ -214,6 +226,7 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
           isLoading={logsLoading}
           sleepLogs={state.sleepLogs || []}
           logEntryRedirect={() => props.navigation.navigate('SleepDiaryEntry')}
+          navigation={props.navigation}
         />
       </Container>
     </ScreenContainer>
