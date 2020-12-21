@@ -85,13 +85,18 @@ const TagSelectScreen: React.FC<Props> = (props) => {
         >
           {touchableTags.map((tag) => {
             // Create ToggleTag elements based on props
-            const { label, selected, icon } = tag;
+            const { label, icon } = tag;
+            // If editing log and tag is present, mark it selected
+            const selected =
+              props.defaultTags && props.defaultTags.includes(label)
+                ? true
+                : false;
 
             return (
               <ToggleTag
                 key={label}
                 theme={theme}
-                selected={selected}
+                initialSelected={selected}
                 entypoIcon={icon}
                 label={label}
                 onPress={() => {
@@ -129,6 +134,7 @@ const TagSelectScreen: React.FC<Props> = (props) => {
             }}
             placeholder={props.inputLabel}
             placeholderTextColor={theme.colors.light}
+            defaultValue={props.defaultNotes}
             keyboardType="default"
             keyboardAppearance="dark"
             returnKeyType="done"

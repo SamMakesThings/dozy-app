@@ -31,10 +31,12 @@ enum States {
 }
 
 const NumInputScreen: React.FC<Props> = (props) => {
-  const [selectedNum, setSelectedNum] = React.useState(0);
+  const [selectedNum, setSelectedNum] = React.useState(props.defaultValue || 0);
 
   // Create state to manage possible screen states
-  const [screenState, setScreenState] = React.useState(States.Empty);
+  const [screenState, setScreenState] = React.useState(
+    props.defaultValue ? States.Valid : States.Empty
+  );
   const [errorMsg, setErrorMsg] = React.useState('Error');
 
   // Function to update screen state when data changes
@@ -116,7 +118,7 @@ const NumInputScreen: React.FC<Props> = (props) => {
             keyboardType="number-pad"
             keyboardAppearance="dark"
             returnKeyType="done"
-            defaultValue={props.defaultValue || undefined}
+            defaultValue={props.defaultValue?.toString() || undefined}
             enablesReturnKeyAutomatically={true}
             onChangeText={(inputValue) => {
               setSelectedNum(parseInt(inputValue));

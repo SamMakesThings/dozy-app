@@ -11,12 +11,13 @@ interface Props {
   theme: Theme;
   onPress: Function;
   entypoIcon: string;
+  initialSelected: boolean;
 }
 
 // Component for the icon/button that toggles
 const ToggleTag: React.FC<Props> = (props) => {
   const { theme } = props;
-  const [selected, setSelected] = React.useState(false);
+  const [selected, setSelected] = React.useState(props.initialSelected);
 
   return (
     <TouchableWithoutFeedback
