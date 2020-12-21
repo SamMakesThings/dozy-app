@@ -9,6 +9,7 @@ interface Props {
   questionLabel: string;
   questionSubtitle?: string;
   inputLabel: string;
+  defaultValue?: string;
   progressBarPercent?: number;
   onQuestionSubmit: Function;
   optional?: boolean;
@@ -110,6 +111,7 @@ const TextInputScreen: React.FC<Props> = (props) => {
             keyboardType="default"
             keyboardAppearance="dark"
             returnKeyType="done"
+            defaultValue={props.defaultValue || undefined}
             enablesReturnKeyAutomatically={true}
             onChangeText={(inputValue) => {
               setTextContent(inputValue);

@@ -29,6 +29,8 @@ interface Props {
     selected: boolean;
     icon: string;
   }>;
+  defaultTags?: string[];
+  defaultNotes?: string;
   questionLabel: string;
   inputLabel: string;
   onFormSubmit: Function;
@@ -39,8 +41,10 @@ const TagSelectScreen: React.FC<Props> = (props) => {
   const { theme, touchableTags } = props;
 
   // Set up component state for tags and note field
-  const [selectedTags, updateTags] = React.useState([]) as any;
-  const [notes, setNotes] = React.useState('');
+  const [selectedTags, updateTags] = React.useState(
+    props.defaultTags || []
+  ) as any;
+  const [notes, setNotes] = React.useState(props.defaultNotes || []);
 
   return (
     <ScreenContainer

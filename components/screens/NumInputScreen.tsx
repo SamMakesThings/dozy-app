@@ -14,6 +14,7 @@ interface Props {
   questionLabel: string;
   questionSubtitle?: string;
   inputLabel: string;
+  defaultValue?: string;
   progressBarPercent?: number;
   onQuestionSubmit: Function;
   optional?: boolean;
@@ -115,6 +116,7 @@ const NumInputScreen: React.FC<Props> = (props) => {
             keyboardType="number-pad"
             keyboardAppearance="dark"
             returnKeyType="done"
+            defaultValue={props.defaultValue || undefined}
             enablesReturnKeyAutomatically={true}
             onChangeText={(inputValue) => {
               setSelectedNum(parseInt(inputValue));
