@@ -59,16 +59,6 @@ export default {
     optional: false,
     ready: true
   },
-  COG2: {
-    title: 'Revisiting Harmful Beliefs About Sleep',
-    subTitle: "Checking the progress you've made",
-    image: Images.WomanInBed,
-    todos: ['Notice harmful thoughts and replace with healthy ones'],
-    url:
-      'https://dozy.customerly.help/dysfunctional-beliefs-attitudes-about-sleep-dbas/',
-    optional: false,
-    ready: false
-  },
   HYG: {
     title: 'Fixing Sleep Hygiene',
     subTitle: 'Improving sleep duration & quality',
@@ -79,6 +69,16 @@ export default {
     url: 'https://dozy.customerly.help/sleep-hygiene/',
     optional: false,
     ready: true
+  },
+  COG2: {
+    title: 'Revisiting Harmful Beliefs About Sleep',
+    subTitle: "Checking the progress you've made",
+    image: Images.WomanInBed,
+    todos: ['Notice harmful thoughts and replace with healthy ones'],
+    url:
+      'https://dozy.customerly.help/dysfunctional-beliefs-attitudes-about-sleep-dbas/',
+    optional: false,
+    ready: false
   },
   END: {
     title: 'Maintaining Sleep Improvements',
