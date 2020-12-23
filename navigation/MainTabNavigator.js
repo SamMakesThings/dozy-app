@@ -86,6 +86,7 @@ export default function BottomTabs() {
               name={
                 Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatbubbles'
               }
+              badge={state.userData?.livechatUnreadMsg}
             />
           )
         }}
