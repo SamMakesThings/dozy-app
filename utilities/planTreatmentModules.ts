@@ -1,11 +1,10 @@
 import moment from 'moment';
 import * as firebase from 'firebase';
 import treatments from '../constants/Treatments';
+import { SleepLog } from '../types/custom';
 
 interface Args {
-  sleepLogs: Array<{
-    tags: Array<string>;
-  }>;
+  sleepLogs: SleepLog[];
   currentTreatments: {
     [key: string]: firebase.firestore.Timestamp;
   };
@@ -35,9 +34,9 @@ function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
 
   // At the moment, there are 3 main treatment paths (with additions if noncompliance or jet lag):
   // Relaxation, cognitive, then hygiene is the default
-  // If sleep log tags often contain temperature, light, or noise, then hygiene goes first
+  // If sleep log tags contain a repeated measure, then hygiene goes first
   // If user complains of tension, stress, or anxiety, then start w/relaxation
-  // If harmful beliefs (measured in a sleep log maybe?), then prioritize that
+  // If harmful beliefs (measured in an in-sleep-log quiz maybe?), then prioritize that
   //
   // First task is to determine if there are more hygiene or stress related tags in the logs.
   let daysDisturbedByHygiene = 0;
@@ -52,7 +51,7 @@ function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
     'cold',
     'bad bed'
   ];
-  const stressStrings = ['worry', 'stress'];
+  const stressStrings = ['worry', 'stress', 'pain'];
 
   // Count each day where tags are present
   sleepLogs.forEach((log) => {
@@ -68,7 +67,10 @@ function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
 
   // Define a priority order based on the above tags
   // Duplicates are filtered out so shouldn't matter
-  if (daysDisturbedByHygiene > daysDisturbedByStress + 4) {
+  if (
+    daysDisturbedByHygiene >= 6 &&
+    daysDisturbedByHygiene > daysDisturbedByStress
+  ) {
     defaultTreatmentOrder.splice(2, 0, 'HYG');
   }
 
