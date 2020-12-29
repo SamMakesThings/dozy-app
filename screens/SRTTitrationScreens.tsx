@@ -411,9 +411,9 @@ export const SleepDuration = ({ navigation }: Props) => {
   );
 
   function getLabel(sleepDurationAvg: number) {
-    if (sleepDurationAvg < baselineSleepDurationAvg + 10) {
+    if (sleepDurationAvg < baselineSleepDurationAvg - 8) {
       return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is a bit worse than your previous baseline of ${baselineSleepDurationAvgLabel} hours. This should improve as treatment progresses.`;
-    } else if (sleepDurationAvg < baselineSleepDurationAvg - 4) {
+    } else if (sleepDurationAvg < baselineSleepDurationAvg + 5) {
       return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is about the same as your previous baseline of ${baselineSleepDurationAvgLabel} hours. This should improve as treatment progresses.`;
     } else {
       return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is improved over your ${baselineSleepDurationAvgLabel} hours before treatment. You're making progress!`;
