@@ -60,7 +60,7 @@ export default function submitCheckinData({
     userDocRef.update({
       nextCheckin: {
         nextCheckinDatetime: nextCheckinDatetime,
-        treatmentModule: lastCheckinModule
+        treatmentModule: nextCheckinModule
       },
       'currentTreatments.nextCheckinDatetime': nextCheckinDatetime,
       'currentTreatments.lastCheckinDatetime': lastCheckinDatetime
