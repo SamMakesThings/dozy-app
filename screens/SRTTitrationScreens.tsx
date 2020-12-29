@@ -197,7 +197,7 @@ export const SRTTitration = ({ navigation }: Props) => {
   let newTargetBedTime = oldTargetBedTime;
   GLOBAL.targetTimeInBed = state.userData.currentTreatments.targetTimeInBed;
   if (sleepEfficiencyAvg >= 90) {
-    newTargetBedTime.setMinutes(oldTargetBedTime.getMinutes() + 15);
+    newTargetBedTime.setMinutes(oldTargetBedTime.getMinutes() - 15);
     GLOBAL.targetTimeInBed =
       state.userData.currentTreatments.targetTimeInBed + 15;
   }
