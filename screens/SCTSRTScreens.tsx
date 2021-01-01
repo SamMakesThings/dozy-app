@@ -670,7 +670,11 @@ export const WakeTimeSetting = ({ navigation }: Props) => {
         // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
         return moment(val).hour() < 17
           ? true
-          : 'Did you set AM/PM correctly? Selected time is late for a wake time.';
+          : {
+              severity: 'WARNING',
+              errorMsg:
+                'Did you set AM/PM correctly? Selected time is late for a wake time.'
+            };
       }}
       questionLabel="What time do you want to get up every morning this week?"
       questionSubtitle="Pick a consistent time and try to stick to it - our treatments won't be as effective if you change your hours on the weekend."
@@ -893,9 +897,15 @@ export const CheckinScheduling = ({ navigation }: Props) => {
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
         if (moment().add(7, 'days').hour(0).toDate() > val) {
-          return 'Please select a day 7 or more days from today';
+          return {
+            severity: 'ERROR',
+            errorMsg: 'Please select a day 7 or more days from today'
+          };
         } else if (moment().add(14, 'days').hour(0).toDate() < val) {
-          return 'Please select a day within 14 days of today';
+          return {
+            severity: 'WARNING',
+            errorMsg: 'Please select a day within 14 days of today'
+          };
         } else {
           return true;
         }

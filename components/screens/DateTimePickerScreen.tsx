@@ -28,7 +28,8 @@ interface Props {
 enum States {
   Empty = 0,
   Invalid = 1,
-  Valid = 2
+  Warning = 2,
+  Valid = 3
 }
 
 // A unified date, time, and datetime picker screen. Has a label and input.
@@ -47,20 +48,38 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
     // Use a passed-in function to validate input value.
     // If no function passed, all is valid
     // If valid, passed function should return true.
-    // If invalid, function should return an error string to display.
+    // If invalid, function should return an error object, with a severity prop and a message prop.
+    // Severity can be either "WARNING" or "ERROR"
 
-    if (
-      props.validInputChecker === undefined ||
-      props.validInputChecker(val) === true
-    ) {
+    interface ErrorObj {
+      severity: string;
+      errorMsg: string;
+    }
+    const validationResult:
+      | ErrorObj
+      | boolean
+      | undefined = props.validInputChecker
+      ? props.validInputChecker(val)
+      : undefined;
+
+    if (validationResult === undefined || validationResult === true) {
       setScreenState(States.Valid);
-    } else {
-      setErrorMsg(props.validInputChecker(val));
+    } else if (validationResult === false) {
+      console.error('Validation function should never return false');
+    } else if (validationResult.severity === 'WARNING') {
+      setErrorMsg(validationResult.errorMsg);
+      setScreenState(States.Warning);
+    } else if (validationResult.severity === 'ERROR') {
+      setErrorMsg(validationResult.errorMsg);
       setScreenState(States.Invalid);
+    } else {
+      console.error('Validation function did something unexpected');
     }
   }
 
   const { theme } = props;
+  const displayErrorMsg =
+    screenState === States.Invalid || screenState === States.Warning;
   return (
     <ScreenContainer
       style={{ backgroundColor: theme.colors.background }}
@@ -89,23 +108,20 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
           >
             {props.questionLabel}
           </Text>
-          {(props.questionSubtitle || screenState === States.Invalid) && ( // If invalid input, replace subtitle with error message
+          {(props.questionSubtitle || displayErrorMsg) && ( // If invalid input, replace subtitle with error message
             <Text
               style={[
                 styles.Text_QuestionLabel,
                 theme.typography.body1,
                 styles.Text_QuestionSubtitle,
                 {
-                  color:
-                    screenState === States.Invalid
-                      ? theme.colors.error
-                      : theme.colors.secondary
+                  color: displayErrorMsg
+                    ? theme.colors.error
+                    : theme.colors.secondary
                 }
               ]}
             >
-              {screenState === States.Invalid
-                ? errorMsg
-                : props.questionSubtitle}
+              {displayErrorMsg ? errorMsg : props.questionSubtitle}
             </Text>
           )}
         </View>
@@ -115,7 +131,7 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
               style={styles.DatePickerHalf}
               mode="date"
               type="underline"
-              error={screenState === States.Invalid}
+              error={displayErrorMsg}
               label="Date"
               disabled={false}
               leftIconMode="inset"
@@ -130,7 +146,7 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
               style={styles.DatePickerHalf}
               mode="time"
               type="underline"
-              error={screenState === States.Invalid}
+              error={displayErrorMsg}
               label="Time"
               disabled={false}
               leftIconMode="inset"
@@ -147,7 +163,7 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
             style={styles.DatePicker}
             mode={props.mode}
             type="underline"
-            error={screenState === States.Invalid}
+            error={displayErrorMsg}
             label={props.inputLabel}
             disabled={false}
             leftIconMode="inset"
@@ -174,7 +190,7 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
         bottomBackButton={props.bottomBackButton || null}
         bottomGreyButtonLabel={props.bottomGreyButtonLabel}
         buttonLabel={props.buttonLabel}
-        disabled={screenState !== States.Valid}
+        disabled={screenState === States.Invalid}
       />
     </ScreenContainer>
   );

@@ -119,7 +119,11 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
           // Make sure the selected time isn't between 8:00 and 18:00, a likely sign of AM/PM mixup
           return !(moment(val).hour() > 8 && moment(val).hour() < 18)
             ? true
-            : 'Did you set AM/PM correctly? Selected time is unusual for a bedtime';
+            : {
+                severity: 'WARNING',
+                errorMsg:
+                  'Did you set AM/PM correctly? Selected time is unusual for a bedtime'
+              };
         }}
         mode="time"
         questionLabel="What time did you go to bed last night?"
@@ -173,9 +177,15 @@ export const MinsToFallAsleepInput = ({ navigation }: Props) => {
       }}
       validInputChecker={(val: number) => {
         if (val < 0) {
-          return 'Please enter a non-negative number';
+          return {
+            severity: 'ERROR',
+            errorMsg: 'Please enter a non-negative number'
+          };
         } else if (val > 1200) {
-          return 'Entered number of minutes is too large. Is this a typo?';
+          return {
+            severity: 'ERROR',
+            errorMsg: 'Entered number of minutes is too large. Is this a typo?'
+          };
         } else {
           return true;
         }
@@ -377,9 +387,15 @@ export const NightMinsAwakeInput = ({ navigation }: Props) => {
       }}
       validInputChecker={(val: number) => {
         if (val < 0) {
-          return 'Please enter a non-negative number';
+          return {
+            severity: 'ERROR',
+            errorMsg: 'Please enter a non-negative number'
+          };
         } else if (val > 1000) {
-          return 'Entered number of minutes is too large. Is this a typo?';
+          return {
+            severity: 'ERROR',
+            errorMsg: 'Entered number of minutes is too large. Is this a typo?'
+          };
         } else {
           return true;
         }
@@ -414,12 +430,20 @@ export const WakeTimeInput = ({ navigation }: Props) => {
         // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
         // Also make sure the wake time occurs after the bedtime (complex b/c PM>AM crossover)
         if (!(moment(val).hour() < 17)) {
-          return 'Did you set AM/PM correctly? Selected time is late for a wake time.';
+          return {
+            severity: 'WARNING',
+            errorMsg:
+              'Did you set AM/PM correctly? Selected time is late for a wake time.'
+          };
         } else if (
           val < logState.bedTime &&
           !(moment(logState.bedTime).hour() > 17)
         ) {
-          return 'Did you set AM/PM correctly? Selected wake time is before your entered bed time.';
+          return {
+            severity: 'ERROR',
+            errorMsg:
+              'Did you set AM/PM correctly? Selected wake time is before your entered bed time.'
+          };
         } else {
           return true;
         }
@@ -443,9 +467,17 @@ export const UpTimeInput = ({ navigation }: Props) => {
         // Make sure the selected time is before 18:00, otherwise it's a likely sign of AM/PM mixup
         // Also make sure up time is after or equal to wake time
         if (moment(val).hour() > 18) {
-          return 'Did you set AM/PM correctly? Selected time is late for a wake time.';
+          return {
+            severity: 'WARNING',
+            errorMsg:
+              'Did you set AM/PM correctly? Selected time is late for a wake time.'
+          };
         } else if (moment(val).add(1, 'minutes').toDate() < logState.wakeTime) {
-          return 'Selected up time is earlier than selected wake time. Did you set AM/PM correctly?';
+          return {
+            severity: 'ERROR',
+            errorMsg:
+              'Selected up time is earlier than selected wake time. Did you set AM/PM correctly?'
+          };
         } else {
           return true;
         }

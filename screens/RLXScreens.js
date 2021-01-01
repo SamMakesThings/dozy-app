@@ -346,9 +346,15 @@ export const CheckinScheduling = ({ navigation }) => {
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
         if (moment().add(7, 'days').hour(0).toDate() > val) {
-          return 'Please select a day 7 or more days from today';
+          return {
+            severity: 'ERROR',
+            errorMsg: 'Please select a day 7 or more days from today'
+          };
         } else if (moment().add(14, 'days').hour(0).toDate() < val) {
-          return 'Please select a day within 14 days of today';
+          return {
+            severity: 'WARNING',
+            errorMsg: 'Please select a day within 14 days of today'
+          };
         } else {
           return true;
         }
