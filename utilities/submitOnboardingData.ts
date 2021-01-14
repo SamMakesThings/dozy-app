@@ -93,7 +93,9 @@ export default async function submitOnboardingData(
         nextCheckinDatetime: onboardingState.firstCheckinTime,
         nextTreatmentModule: 'SCTSRT'
       },
-      logReminderId: notifDocRef.id
+      logReminderId: notifDocRef.id,
+      testingGroup: 'beta2',
+      userStatus: 'onboarded'
     })
     .catch(function (error) {
       console.error('Error adding health history data: ', error);

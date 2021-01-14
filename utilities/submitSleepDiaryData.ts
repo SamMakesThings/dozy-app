@@ -127,4 +127,13 @@ export default async function submitSleepDiaryData(logState: LogState) {
       console.error('Error pushing sleep log data:', error);
     });
   }
+
+  // Make sure userStatus is "active" in Firebase
+  let userDocRef =
+    typeof userId === 'string'
+      ? db.collection('users').doc(userId)
+      : db.collection('users').doc('ERRORDELETEME');
+  userDocRef
+    .update({ userStatus: 'active' })
+    .catch((error) => console.error('Error marking user as active:', error));
 }
