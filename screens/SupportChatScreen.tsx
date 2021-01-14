@@ -29,7 +29,7 @@ const SupportChatScreen = () => {
         }}
         style={{ marginTop: scale(10) }}
         injectedJavaScript={livechatJavascript}
-        onScroll={(syntheticEvent) => {
+        onLoad={(syntheticEvent) => {
           // If LiveChat has a msg marked as unread, mark it as read in Firebase
           if (state.userData?.livechatUnreadMsg) {
             FbLib.firestore().collection('users').doc(state.userToken).update({
