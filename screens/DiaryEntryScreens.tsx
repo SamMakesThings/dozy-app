@@ -530,7 +530,12 @@ export const TagsNotesInput = ({ navigation }: Props) => {
         { label: 'stress', icon: 'new' },
         { label: 'pain', icon: 'flash' },
         { label: 'restroom', icon: 'warning' },
-        { label: 'hot flashes', icon: 'air' }
+        { label: 'hot flashes', icon: 'air' },
+        { label: 'phone or devices', icon: 'mobile' },
+        { label: 'eating', icon: 'bowl' },
+        { label: 'smoking', icon: 'cloud' },
+        { label: 'late caffeine', icon: 'drop' },
+        { label: 'late alcohol', icon: 'cup' }
       ]}
       onFormSubmit={async (res: { notes: string; tags: string[] }) => {
         // Update state with new values
