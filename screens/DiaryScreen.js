@@ -18,7 +18,8 @@ function DiaryScreen() {
 
   // Set date value from selected month
   const selectedDate = new Date();
-  selectedDate.setMonth(state.selectedMonth, 15);
+  selectedDate.setMonth(state.selectedDate.month, 15);
+  selectedDate.setFullYear(state.selectedDate.year);
 
   const currentMonthString = selectedDate.toLocaleDateString('en-US', {
     month: 'long',

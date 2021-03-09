@@ -38,16 +38,21 @@ Text.defaultProps.allowFontScaling = false;
 
 // A utility function to always return a valid date number given a starting date and a delta
 // TODO: Move this to its own file
-function alterMonthSelection(prevMonth, changeBy) {
-  const addedValue = prevMonth + changeBy;
+function alterMonthSelection(prevDate, changeBy) {
+  let { month, year } = prevDate;
+  const adjustedMonth = month + changeBy;
 
-  if (addedValue === 13) {
-    return 1;
-  } else if (addedValue === 0) {
-    return 12;
+  if (adjustedMonth === 12) {
+    month = 0;
+    year += 1;
+  } else if (adjustedMonth === -1) {
+    month = 11;
+    year += -1;
   } else {
-    return addedValue;
+    month = adjustedMonth;
   }
+
+  return { month: month, year: year };
 }
 
 // Root app component
@@ -91,8 +96,8 @@ export default function App() {
         case 'CHANGE_SELECTED_MONTH':
           return {
             ...prevState,
-            selectedMonth: alterMonthSelection(
-              prevState.selectedMonth,
+            selectedDate: alterMonthSelection(
+              prevState.selectedDate,
               action.changeMonthBy
             )
           };
@@ -120,7 +125,10 @@ export default function App() {
       onboardingComplete: true,
       profileData: null,
       sleepLogs: [],
-      selectedMonth: new Date().getMonth()
+      selectedDate: {
+        month: new Date().getMonth(),
+        year: new Date().getFullYear()
+      }
     }
   );
 
