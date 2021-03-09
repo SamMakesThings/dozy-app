@@ -224,8 +224,6 @@ const styles = StyleSheet.create({
   View_HeaderContainer: {
     width: '100%',
     height: '10%',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
     marginTop: 20
   },
   Text_QuestionLabel: {
