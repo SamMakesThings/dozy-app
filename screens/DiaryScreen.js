@@ -5,7 +5,7 @@ import { Entypo } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import DiaryEntriesScreen from './DiaryEntriesScreen';
-import TreatmentPlaceholderScreen from './TreatmentPlaceholderScreen';
+import { DiaryStatsScreen } from './DiaryStatsScreen';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 
@@ -82,7 +82,7 @@ function DiaryScreen() {
         style={{ backgroundColor: theme.colors.primary }}
       >
         <Tab.Screen name="Entries" component={DiaryEntriesScreen} />
-        <Tab.Screen name="Stats" component={TreatmentPlaceholderScreen} />
+        <Tab.Screen name="Stats" component={DiaryStatsScreen} />
       </Tab.Navigator>
     </ScreenContainer>
   );
