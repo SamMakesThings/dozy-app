@@ -53,10 +53,16 @@ export const DiaryStatsScreen = () => {
   // Trim sleepLogs to only show most recent 10
   let selectedSleepLogs = allSleepLogs.filter(
     (s) =>
-      s.bedTime.toDate().getMonth() === state.selectedDate.month &&
-      s.bedTime.toDate().getFullYear() === state.selectedDate.year
+      s.upTime.toDate().getMonth() === state.selectedDate.month &&
+      s.upTime.toDate().getFullYear() === state.selectedDate.year
   );
-  console.log(selectedSleepLogs);
+
+  const highestValueForDomain = Math.max.apply(
+    Math,
+    selectedSleepLogs.map(function (o) {
+      return o.sleepDuration;
+    })
+  );
 
   return (
     <ScreenContainer
@@ -88,7 +94,7 @@ export const DiaryStatsScreen = () => {
               ...styles.Text_CardTitle
             }}
           >
-            Sleep duration (hours)
+            Sleep efficiency (%)
           </Text>
           <View
             style={{
@@ -131,6 +137,63 @@ export const DiaryStatsScreen = () => {
                 data={selectedSleepLogs}
                 x={(d) => d.upTime.toDate()}
                 y="sleepEfficiency"
+                style={chartStyles.scatter}
+                size={scale(5)}
+              />
+            </VictoryChart>
+          </View>
+        </CardContainer>
+        <CardContainer
+          style={{ ...styles.CardContainer, paddingBottom: scale(5) }}
+        >
+          <Text
+            style={{
+              ...dozy_theme.typography.headline5,
+              ...styles.Text_CardTitle
+            }}
+          >
+            Sleep duration (hours)
+          </Text>
+          <View
+            style={{
+              alignItems: 'center',
+              marginTop: scale(-25),
+              marginLeft: scale(17)
+            }}
+          >
+            <VictoryChart
+              width={chartStyles.chart.width}
+              height={chartStyles.chart.height}
+              theme={VictoryTheme.material}
+              scale={{ x: 'time' }}
+              domainPadding={chartStyles.chart.domainPadding}
+            >
+              <VictoryAxis
+                dependentAxis
+                style={chartStyles.axis}
+                tickCount={5}
+              />
+              <VictoryAxis
+                style={chartStyles.axis}
+                tickFormat={(tick) => {
+                  return tick.toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                  });
+                }}
+                tickCount={7}
+              />
+              <VictoryLine
+                data={selectedSleepLogs}
+                x={(d) => d.upTime.toDate()}
+                y="sleepDuration"
+                style={chartStyles.line}
+                interpolation="monotoneX"
+              />
+              <VictoryScatter
+                data={selectedSleepLogs}
+                x={(d) => d.upTime.toDate()}
+                y="sleepDuration"
                 style={chartStyles.scatter}
                 size={scale(5)}
               />
