@@ -1,6 +1,6 @@
 import React from 'react';
-import { Platform, View, Text, StyleSheet } from 'react-native';
-import { DatePicker, ScreenContainer, Container } from '@draftbit/ui';
+import { View, Text, StyleSheet } from 'react-native';
+import { ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
 import {
@@ -18,7 +18,7 @@ import { Navigation, SleepLog } from '../types/custom';
 // Define default chart styles
 const chartStyles = {
   chart: {
-    width: scale(320),
+    width: scale(335),
     height: scale(220),
     domainPadding: { x: 3, y: 35 }
   },
@@ -48,10 +48,15 @@ const chartStyles = {
 
 export const DiaryStatsScreen = () => {
   const { state } = React.useContext(AuthContext);
+  let allSleepLogs: Array<SleepLog> = state.sleepLogs;
 
   // Trim sleepLogs to only show most recent 10
-  let recentSleepLogs = state.sleepLogs.slice(0, 10);
-  console.log(recentSleepLogs);
+  let selectedSleepLogs = allSleepLogs.filter(
+    (s) =>
+      s.bedTime.toDate().getMonth() === state.selectedDate.month &&
+      s.bedTime.toDate().getFullYear() === state.selectedDate.year
+  );
+  console.log(selectedSleepLogs);
 
   return (
     <ScreenContainer
@@ -116,14 +121,14 @@ export const DiaryStatsScreen = () => {
                 tickCount={7}
               />
               <VictoryLine
-                data={recentSleepLogs}
+                data={selectedSleepLogs}
                 x={(d) => d.upTime.toDate()}
                 y="sleepEfficiency"
                 style={chartStyles.line}
                 interpolation="monotoneX"
               />
               <VictoryScatter
-                data={recentSleepLogs}
+                data={selectedSleepLogs}
                 x={(d) => d.upTime.toDate()}
                 y="sleepEfficiency"
                 style={chartStyles.scatter}
@@ -139,7 +144,7 @@ export const DiaryStatsScreen = () => {
 
 const styles = StyleSheet.create({
   CardContainer: {
-    marginTop: scale(15),
+    marginTop: scale(5),
     padding: scale(20)
   },
   Container_Screen: {
