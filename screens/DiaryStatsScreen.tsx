@@ -138,7 +138,8 @@ export const DiaryStatsScreen = () => {
                 }
               ]}
             >
-              No data for this month. Add sleep logs from the entries screen
+              Not enough data for this month. Add sleep logs from the entries
+              screen!
             </Text>
           </View>
         </Container>
