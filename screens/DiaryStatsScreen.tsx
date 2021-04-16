@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
+import { Entypo } from '@expo/vector-icons';
 import moment from 'moment';
 import {
   VictoryChart,
@@ -105,10 +106,50 @@ export const DiaryStatsScreen = () => {
       hasSafeArea={true}
       scrollable={true}
     >
+      {selectedSleepLogs.length < 2 && ( // Suggest user add sleep log if no data for selected month
+        <Container
+          elevation={0}
+          useThemeGutterPadding={true}
+          style={styles.Container_Screen}
+        >
+          <View
+            style={{
+              height: scale(150),
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: 1
+            }}
+          >
+            <Entypo
+              name={'arrow-with-circle-up'}
+              size={scale(51)}
+              color={dozy_theme.colors.medium}
+              style={{ alignSelf: 'flex-start', marginLeft: scale(50) }}
+            />
+            <Text
+              style={[
+                dozy_theme.typography.smallLabel,
+                {
+                  color: dozy_theme.colors.medium,
+                  textAlign: 'center',
+                  width: '100%',
+                  fontSize: scale(16),
+                  marginTop: scale(17)
+                }
+              ]}
+            >
+              No data for this month. Add sleep logs from the entries screen
+            </Text>
+          </View>
+        </Container>
+      )}
       <Container
         elevation={0}
         useThemeGutterPadding={true}
-        style={styles.Container_Screen}
+        style={{
+          ...styles.Container_Screen,
+          opacity: selectedSleepLogs.length < 2 ? 0.3 : 1
+        }}
       >
         <CardContainer style={styles.CardContainer}>
           <Text
