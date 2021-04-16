@@ -205,12 +205,14 @@ export const DiaryStatsScreen = () => {
               domain={{
                 y: [
                   0,
-                  Math.max.apply(
-                    Math,
-                    selectedSleepLogs.map(function (o) {
-                      return o.sleepDuration;
-                    })
-                  )
+                  !selectedSleepLogs.length
+                    ? 300
+                    : Math.max.apply(
+                        Math,
+                        selectedSleepLogs.map(function (o) {
+                          return o.sleepDuration;
+                        })
+                      )
                 ]
               }}
             >
@@ -274,12 +276,14 @@ export const DiaryStatsScreen = () => {
               domain={{
                 y: [
                   0,
-                  Math.max.apply(
-                    Math,
-                    selectedSleepLogs.map(function (o) {
-                      return o.minsToFallAsleep;
-                    })
-                  )
+                  !selectedSleepLogs.length
+                    ? 100
+                    : Math.max.apply(
+                        Math,
+                        selectedSleepLogs.map(function (o) {
+                          return o.minsToFallAsleep;
+                        })
+                      )
                 ]
               }}
             >
@@ -343,12 +347,14 @@ export const DiaryStatsScreen = () => {
               domain={{
                 y: [
                   0,
-                  Math.max.apply(
-                    Math,
-                    selectedSleepLogs.map(function (o) {
-                      return o.nightMinsAwake;
-                    })
-                  )
+                  !selectedSleepLogs.length
+                    ? 60
+                    : Math.max.apply(
+                        Math,
+                        selectedSleepLogs.map(function (o) {
+                          return o.nightMinsAwake;
+                        })
+                      )
                 ]
               }}
             >
