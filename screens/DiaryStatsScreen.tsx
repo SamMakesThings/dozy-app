@@ -159,7 +159,8 @@ export const DiaryStatsScreen = () => {
               ...styles.Text_CardTitle
             }}
           >
-            Sleep log streak: {streakLength}
+            Sleep log streak: {streakLength}{' '}
+            {streakLength > 0 ? '\u270C' : '\u2b55'}
           </Text>
         </CardContainer>
         <CardContainer
