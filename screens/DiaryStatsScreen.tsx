@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import { ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
-import moment from 'moment';
 import {
   VictoryChart,
   VictoryTheme,
@@ -14,38 +13,8 @@ import {
 import { CardContainer } from '../components/CardContainer';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
-import { Navigation, SleepLog } from '../types/custom';
-
-// Define default chart styles
-const chartStyles = {
-  chart: {
-    width: scale(335),
-    height: scale(220),
-    domainPadding: { x: 3, y: 35 }
-  },
-  axis: {
-    tickLabels: {
-      angle: -45,
-      fontSize: scale(11),
-      fill: dozy_theme.colors.light
-    },
-    grid: {
-      stroke: dozy_theme.colors.medium
-    }
-  },
-  line: {
-    data: {
-      stroke: dozy_theme.colors.primary,
-      strokeWidth: scale(4),
-      strokeLinejoin: 'round'
-    }
-  },
-  scatter: {
-    data: {
-      fill: dozy_theme.colors.primary
-    }
-  }
-};
+import { SleepLog } from '../types/custom';
+import { chartStyles } from '../constants/diaryChartStyles';
 
 // Return true if date2 is the day before date1 (or same day)
 function isPreviousDay(date1: Date, date2: Date) {
