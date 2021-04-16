@@ -3,19 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import { ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
-import {
-  VictoryChart,
-  VictoryTheme,
-  VictoryLine,
-  VictoryAxis,
-  VictoryScatter
-} from 'victory-native';
 import { CardContainer } from '../components/CardContainer';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 import { SleepLog } from '../types/custom';
-import { chartStyles } from '../constants/diaryChartStyles';
 import { getLogStreakLength } from '../utilities/getLogStreakLength';
+import { LogStatsLineGraph } from '../components/LogStatsLineGraphComponent';
 
 export const DiaryStatsScreen = () => {
   const { state } = React.useContext(AuthContext);
@@ -43,14 +36,7 @@ export const DiaryStatsScreen = () => {
           useThemeGutterPadding={true}
           style={styles.Container_Screen}
         >
-          <View
-            style={{
-              height: scale(150),
-              justifyContent: 'center',
-              alignItems: 'center',
-              flex: 1
-            }}
-          >
+          <View style={styles.View_WarningContainer}>
             <Entypo
               name={'arrow-with-circle-up'}
               size={scale(51)}
@@ -58,16 +44,7 @@ export const DiaryStatsScreen = () => {
               style={{ alignSelf: 'flex-start', marginLeft: scale(50) }}
             />
             <Text
-              style={[
-                dozy_theme.typography.smallLabel,
-                {
-                  color: dozy_theme.colors.medium,
-                  textAlign: 'center',
-                  width: '100%',
-                  fontSize: scale(16),
-                  marginTop: scale(17)
-                }
-              ]}
+              style={[dozy_theme.typography.smallLabel, styles.Text_Warning]}
             >
               Not enough data for this month. Add sleep logs from the entries
               screen!
@@ -112,44 +89,11 @@ export const DiaryStatsScreen = () => {
               marginLeft: scale(17)
             }}
           >
-            <VictoryChart
-              width={chartStyles.chart.width}
-              height={chartStyles.chart.height}
-              theme={VictoryTheme.material}
-              scale={{ x: 'time' }}
-              domainPadding={chartStyles.chart.domainPadding}
-            >
-              <VictoryAxis
-                dependentAxis
-                tickFormat={(tick) => tick.toFixed(3) * 100 + '%'}
-                style={chartStyles.axis}
-                tickCount={5}
-              />
-              <VictoryAxis
-                style={chartStyles.axis}
-                tickFormat={(tick) => {
-                  return tick.toLocaleString('en-US', {
-                    month: 'short',
-                    day: 'numeric'
-                  });
-                }}
-                tickCount={7}
-              />
-              <VictoryLine
-                data={selectedSleepLogs}
-                x={(d) => d.upTime.toDate()}
-                y="sleepEfficiency"
-                style={chartStyles.line}
-                interpolation="monotoneX"
-              />
-              <VictoryScatter
-                data={selectedSleepLogs}
-                x={(d) => d.upTime.toDate()}
-                y="sleepEfficiency"
-                style={chartStyles.scatter}
-                size={scale(5)}
-              />
-            </VictoryChart>
+            <LogStatsLineGraph
+              sleepLogs={selectedSleepLogs}
+              yAxis="sleepEfficiency"
+              yTickFormat={(tick: any) => tick.toFixed(3) * 100 + '%'}
+            />
           </View>
         </CardContainer>
         <CardContainer
@@ -170,12 +114,10 @@ export const DiaryStatsScreen = () => {
               marginLeft: scale(17)
             }}
           >
-            <VictoryChart
-              width={chartStyles.chart.width}
-              height={chartStyles.chart.height}
-              theme={VictoryTheme.material}
-              scale={{ x: 'time' }}
-              domainPadding={chartStyles.chart.domainPadding}
+            <LogStatsLineGraph
+              sleepLogs={selectedSleepLogs}
+              yAxis="sleepDuration"
+              yTickFormat={(tick) => tick.toFixed(0)}
               domain={{
                 y: [
                   0,
@@ -189,38 +131,7 @@ export const DiaryStatsScreen = () => {
                       )
                 ]
               }}
-            >
-              <VictoryAxis
-                dependentAxis
-                style={chartStyles.axis}
-                tickFormat={(tick) => tick.toFixed(0)}
-                tickCount={5}
-              />
-              <VictoryAxis
-                style={chartStyles.axis}
-                tickFormat={(tick) => {
-                  return tick.toLocaleString('en-US', {
-                    month: 'short',
-                    day: 'numeric'
-                  });
-                }}
-                tickCount={7}
-              />
-              <VictoryLine
-                data={selectedSleepLogs}
-                x={(d) => d.upTime.toDate()}
-                y="sleepDuration"
-                style={chartStyles.line}
-                interpolation="monotoneX"
-              />
-              <VictoryScatter
-                data={selectedSleepLogs}
-                x={(d) => d.upTime.toDate()}
-                y="sleepDuration"
-                style={chartStyles.scatter}
-                size={scale(5)}
-              />
-            </VictoryChart>
+            />
           </View>
         </CardContainer>
         <CardContainer
@@ -241,12 +152,10 @@ export const DiaryStatsScreen = () => {
               marginLeft: scale(17)
             }}
           >
-            <VictoryChart
-              width={chartStyles.chart.width}
-              height={chartStyles.chart.height}
-              theme={VictoryTheme.material}
-              scale={{ x: 'time' }}
-              domainPadding={chartStyles.chart.domainPadding}
+            <LogStatsLineGraph
+              sleepLogs={selectedSleepLogs}
+              yAxis="minsToFallAsleep"
+              yTickFormat={(tick) => tick.toFixed(0)}
               domain={{
                 y: [
                   0,
@@ -260,38 +169,7 @@ export const DiaryStatsScreen = () => {
                       )
                 ]
               }}
-            >
-              <VictoryAxis
-                dependentAxis
-                style={chartStyles.axis}
-                tickCount={5}
-                tickFormat={(t) => t.toFixed(0)}
-              />
-              <VictoryAxis
-                style={chartStyles.axis}
-                tickFormat={(tick) => {
-                  return tick.toLocaleString('en-US', {
-                    month: 'short',
-                    day: 'numeric'
-                  });
-                }}
-                tickCount={7}
-              />
-              <VictoryLine
-                data={selectedSleepLogs}
-                x={(d) => d.upTime.toDate()}
-                y="minsToFallAsleep"
-                style={chartStyles.line}
-                interpolation="monotoneX"
-              />
-              <VictoryScatter
-                data={selectedSleepLogs}
-                x={(d) => d.upTime.toDate()}
-                y="minsToFallAsleep"
-                style={chartStyles.scatter}
-                size={scale(5)}
-              />
-            </VictoryChart>
+            />
           </View>
         </CardContainer>
         <CardContainer
@@ -312,12 +190,10 @@ export const DiaryStatsScreen = () => {
               marginLeft: scale(17)
             }}
           >
-            <VictoryChart
-              width={chartStyles.chart.width}
-              height={chartStyles.chart.height}
-              theme={VictoryTheme.material}
-              scale={{ x: 'time' }}
-              domainPadding={chartStyles.chart.domainPadding}
+            <LogStatsLineGraph
+              sleepLogs={selectedSleepLogs}
+              yAxis="nightMinsAwake"
+              yTickFormat={(tick) => tick.toFixed(0)}
               domain={{
                 y: [
                   0,
@@ -331,37 +207,7 @@ export const DiaryStatsScreen = () => {
                       )
                 ]
               }}
-            >
-              <VictoryAxis
-                dependentAxis
-                style={chartStyles.axis}
-                tickCount={5}
-              />
-              <VictoryAxis
-                style={chartStyles.axis}
-                tickFormat={(tick) => {
-                  return tick.toLocaleString('en-US', {
-                    month: 'short',
-                    day: 'numeric'
-                  });
-                }}
-                tickCount={7}
-              />
-              <VictoryLine
-                data={selectedSleepLogs}
-                x={(d) => d.upTime.toDate()}
-                y="nightMinsAwake"
-                style={chartStyles.line}
-                interpolation="monotoneX"
-              />
-              <VictoryScatter
-                data={selectedSleepLogs}
-                x={(d) => d.upTime.toDate()}
-                y="nightMinsAwake"
-                style={chartStyles.scatter}
-                size={scale(5)}
-              />
-            </VictoryChart>
+            />
           </View>
         </CardContainer>
       </Container>
@@ -378,5 +224,18 @@ const styles = StyleSheet.create({
   },
   Text_CardTitle: {
     color: dozy_theme.colors.secondary
+  },
+  View_WarningContainer: {
+    height: scale(150),
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1
+  },
+  Text_Warning: {
+    color: dozy_theme.colors.medium,
+    textAlign: 'center',
+    width: '100%',
+    fontSize: scale(16),
+    marginTop: scale(17)
   }
 });
