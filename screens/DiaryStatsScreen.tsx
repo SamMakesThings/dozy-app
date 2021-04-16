@@ -70,14 +70,17 @@ export const DiaryStatsScreen = () => {
   let streakLength = 0;
   while (true) {
     // Check that most recent log is yesterday or today. If not, break here at streak 0
-    if (!isPreviousDay(new Date(), allSleepLogs[0].upTime.toDate())) {
+    if (
+      !allSleepLogs.length ||
+      !isPreviousDay(new Date(), allSleepLogs[0].upTime.toDate())
+    ) {
       break;
     }
 
     // Increment streak to start, since zero indexed
     streakLength++;
 
-    // Check if current log day is the day after previous log day. If so, increment streak by 1. Otherwise, break
+    // Check if current log day is the day after previous log day. If not, break
     if (
       !isPreviousDay(
         allSleepLogs[streakLength].upTime.toDate(),
