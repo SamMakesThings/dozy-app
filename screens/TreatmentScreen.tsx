@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-import { withTheme, ScreenContainer, Icon } from '@draftbit/ui';
+import { ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,14 +16,11 @@ import treatments from '../constants/Treatments';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import planTreatmentModules from '../utilities/planTreatmentModules';
 import GLOBAL from '../utilities/global';
+import { Navigation } from '../types/custom';
 
-type Props = {
-  navigation: {
-    navigate: Function;
-  };
-};
-
-export const TreatmentScreen: React.FC<Props> = ({ navigation }) => {
+export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
 
@@ -229,8 +226,7 @@ const styles = StyleSheet.create({
   View_ContentContainer: {
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    paddingLeft: scale(10),
-    paddingRight: scale(10)
+    paddingHorizontal: scale(10)
   },
   View_CardHeaderContainer: {
     flexDirection: 'column',
@@ -242,8 +238,7 @@ const styles = StyleSheet.create({
   },
   View_NoCard: {
     flex: 1,
-    marginTop: scale(15),
-    marginBottom: scale(15)
+    marginVertical: scale(15)
   },
   Text_CardTitle: {
     color: dozy_theme.colors.secondary
@@ -260,4 +255,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withTheme(TreatmentScreen);
+export default TreatmentScreen;
