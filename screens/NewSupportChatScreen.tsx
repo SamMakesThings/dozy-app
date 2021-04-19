@@ -4,7 +4,8 @@ import {
   Text,
   View,
   ActivityIndicator,
-  SafeAreaView
+  SafeAreaView,
+  ScrollView
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
@@ -25,9 +26,15 @@ export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
           <View style={styles.View_HeaderContainer}>
             <Text>Sam Stowers</Text>
           </View>
-          <View style={styles.View_ContentContainer}>
+          <ScrollView contentContainerStyle={styles.View_ContentContainer}>
             <Text>test</Text>
-          </View>
+            <View style={styles.View_MsgContainer}>
+              <Text>Sam Stowers 4:20 PM</Text>
+              <View style={styles.View_MsgBubble}>
+                <Text>Message content</Text>
+              </View>
+            </View>
+          </ScrollView>
         </View>
       </SafeAreaView>
     );
@@ -71,6 +78,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     paddingHorizontal: scale(10)
+  },
+  View_MsgContainer: {},
+  View_MsgBubble: {
+    backgroundColor: dozy_theme.colors.primary
+  },
+  SentMsg: {
+    backgroundColor: dozy_theme.colors.primary
+  },
+  ReceivedMsg: {
+    backgroundColor: dozy_theme.colors.medium
   }
 });
 
