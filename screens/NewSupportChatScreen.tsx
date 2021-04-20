@@ -36,6 +36,11 @@ export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
               >
                 Sam Stowers
               </Text>
+              <Text
+                style={{ ...theme.typography.body2, ...styles.Text_CoachTitle }}
+              >
+                Founder & Sleep Coach
+              </Text>
             </View>
           </View>
           <ScrollView contentContainerStyle={styles.View_ContentContainer}>
@@ -83,12 +88,14 @@ const styles = StyleSheet.create({
   View_HeaderContainer: {
     backgroundColor: dozy_theme.colors.medium,
     flexDirection: 'row',
-    padding: scale(10),
+    padding: scale(14),
     paddingTop: 0
   },
   View_ChatNameContainer: {
     flexDirection: 'column',
-    marginLeft: scale(10)
+    marginLeft: scale(10),
+    marginTop: scale(-2),
+    justifyContent: 'flex-start'
   },
   ItemMargin: {
     marginTop: scale(10)
@@ -109,13 +116,17 @@ const styles = StyleSheet.create({
     backgroundColor: dozy_theme.colors.medium
   },
   Img_Profile: {
-    width: scale(55),
-    height: scale(55),
+    width: scale(40),
+    height: scale(40),
     borderRadius: 500
   },
   Text_CoachName: {
     color: dozy_theme.colors.secondary,
-    fontSize: scale(17)
+    fontSize: scale(15)
+  },
+  Text_CoachTitle: {
+    color: dozy_theme.colors.secondary,
+    marginTop: scale(-5)
   }
 });
 
