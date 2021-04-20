@@ -5,12 +5,14 @@ import {
   View,
   ActivityIndicator,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  Image
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
 import { Navigation } from '../types/custom';
+import Images from '../config/Images';
 
 export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   navigation
@@ -24,7 +26,17 @@ export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
       <SafeAreaView style={styles.SafeAreaView}>
         <View style={styles.Root}>
           <View style={styles.View_HeaderContainer}>
-            <Text>Sam Stowers</Text>
+            <Image source={Images.SamProfile} style={styles.Img_Profile} />
+            <View style={styles.View_ChatNameContainer}>
+              <Text
+                style={{
+                  ...theme.typography.headline5,
+                  ...styles.Text_CoachName
+                }}
+              >
+                Sam Stowers
+              </Text>
+            </View>
           </View>
           <ScrollView contentContainerStyle={styles.View_ContentContainer}>
             <Text>test</Text>
@@ -69,7 +81,14 @@ const styles = StyleSheet.create({
     flex: 1
   },
   View_HeaderContainer: {
-    backgroundColor: dozy_theme.colors.medium
+    backgroundColor: dozy_theme.colors.medium,
+    flexDirection: 'row',
+    padding: scale(10),
+    paddingTop: 0
+  },
+  View_ChatNameContainer: {
+    flexDirection: 'column',
+    marginLeft: scale(10)
   },
   ItemMargin: {
     marginTop: scale(10)
@@ -88,6 +107,15 @@ const styles = StyleSheet.create({
   },
   ReceivedMsg: {
     backgroundColor: dozy_theme.colors.medium
+  },
+  Img_Profile: {
+    width: scale(55),
+    height: scale(55),
+    borderRadius: 500
+  },
+  Text_CoachName: {
+    color: dozy_theme.colors.secondary,
+    fontSize: scale(17)
   }
 });
 
