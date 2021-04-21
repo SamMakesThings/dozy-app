@@ -49,7 +49,8 @@ export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
             </View>
           </View>
           <KeyboardAvoidingView
-            behavior={'padding'}
+            behavior={Platform.select({ ios: 'padding' })}
+            keyboardVerticalOffset={Platform.select({ ios: scale(60) })}
             style={styles.KbAvoidingView}
           >
             <ScrollView contentContainerStyle={styles.View_ContentContainer}>
