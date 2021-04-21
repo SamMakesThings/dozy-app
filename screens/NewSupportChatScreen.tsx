@@ -44,11 +44,24 @@ export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
             </View>
           </View>
           <ScrollView contentContainerStyle={styles.View_ContentContainer}>
-            <Text>test</Text>
-            <View style={styles.View_MsgContainer}>
-              <Text>Sam Stowers 4:20 PM</Text>
-              <View style={styles.View_MsgBubble}>
-                <Text>Message content</Text>
+            <View
+              style={{ ...styles.View_MsgContainer, alignItems: 'flex-end' }}
+            >
+              <Text style={styles.Text_MetaMsg}>Sam Stowers 4:20 PM</Text>
+              <View style={{ ...styles.View_MsgBubble, ...styles.SentMsg }}>
+                <Text style={{ ...theme.typography.body2, ...styles.Text_Msg }}>
+                  Message content{' '}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{ ...styles.View_MsgContainer, alignItems: 'flex-start' }}
+            >
+              <Text style={styles.Text_MetaMsg}>Sam Stowers 4:20 PM</Text>
+              <View style={{ ...styles.View_MsgBubble, ...styles.ReceivedMsg }}>
+                <Text style={{ ...theme.typography.body2, ...styles.Text_Msg }}>
+                  Message content longer and more message stuff here
+                </Text>
               </View>
             </View>
           </ScrollView>
@@ -105,15 +118,21 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: scale(10)
   },
-  View_MsgContainer: {},
+  View_MsgContainer: {
+    marginTop: scale(15),
+    alignSelf: 'stretch'
+  },
   View_MsgBubble: {
-    backgroundColor: dozy_theme.colors.primary
+    padding: scale(12),
+    borderRadius: scale(6)
   },
   SentMsg: {
-    backgroundColor: dozy_theme.colors.primary
+    backgroundColor: dozy_theme.colors.primary,
+    marginLeft: scale(10)
   },
   ReceivedMsg: {
-    backgroundColor: dozy_theme.colors.medium
+    backgroundColor: dozy_theme.colors.medium,
+    marginRight: scale(10)
   },
   Img_Profile: {
     width: scale(40),
@@ -127,6 +146,14 @@ const styles = StyleSheet.create({
   Text_CoachTitle: {
     color: dozy_theme.colors.secondary,
     marginTop: scale(-5)
+  },
+  Text_Msg: {
+    color: dozy_theme.colors.secondary
+  },
+  Text_MetaMsg: {
+    color: dozy_theme.colors.secondary,
+    opacity: 0.8,
+    marginBottom: scale(2)
   }
 });
 
