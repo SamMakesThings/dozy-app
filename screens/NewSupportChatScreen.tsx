@@ -6,8 +6,13 @@ import {
   ActivityIndicator,
   SafeAreaView,
   ScrollView,
-  Image
+  Image,
+  KeyboardAvoidingView,
+  TextInput,
+  Platform,
+  TouchableOpacity
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
@@ -43,33 +48,61 @@ export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
               </Text>
             </View>
           </View>
-          <ScrollView contentContainerStyle={styles.View_ContentContainer}>
-            <View
-              style={{ ...styles.View_MsgContainer, alignItems: 'flex-end' }}
-            >
-              <Text style={styles.Text_MetaMsg}>Sam Stowers 4:20 PM</Text>
-              <View style={{ ...styles.View_MsgBubble, ...styles.SentMsg }}>
-                <Text style={{ ...theme.typography.body2, ...styles.Text_Msg }}>
-                  Message content{' '}
-                </Text>
+          <KeyboardAvoidingView
+            behavior={'padding'}
+            style={styles.KbAvoidingView}
+          >
+            <ScrollView contentContainerStyle={styles.View_ContentContainer}>
+              <View
+                style={{ ...styles.View_MsgContainer, alignItems: 'flex-end' }}
+              >
+                <Text style={styles.Text_MetaMsg}>Sam Stowers 4:20 PM</Text>
+                <View style={{ ...styles.View_MsgBubble, ...styles.SentMsg }}>
+                  <Text
+                    style={{ ...theme.typography.body2, ...styles.Text_Msg }}
+                  >
+                    Message content{' '}
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View
-              style={{ ...styles.View_MsgContainer, alignItems: 'flex-start' }}
-            >
-              <Text style={styles.Text_MetaMsg}>Sam Stowers 4:20 PM</Text>
-              <View style={{ ...styles.View_MsgBubble, ...styles.ReceivedMsg }}>
-                <Text style={{ ...theme.typography.body2, ...styles.Text_Msg }}>
-                  Message content longer and more message stuff here
-                </Text>
+              <View
+                style={{
+                  ...styles.View_MsgContainer,
+                  alignItems: 'flex-start'
+                }}
+              >
+                <Text style={styles.Text_MetaMsg}>Sam Stowers 4:20 PM</Text>
+                <View
+                  style={{ ...styles.View_MsgBubble, ...styles.ReceivedMsg }}
+                >
+                  <Text
+                    style={{ ...theme.typography.body2, ...styles.Text_Msg }}
+                  >
+                    Message content longer and more message stuff here
+                  </Text>
+                </View>
               </View>
+            </ScrollView>
+            <View style={styles.View_ChatInput}>
+              <TextInput
+                style={{ ...theme.typography.body2, ...styles.TextInput }}
+                placeholder={'Ask a question...'}
+              />
+              <TouchableOpacity>
+                <Ionicons
+                  name={'send'}
+                  size={scale(25)}
+                  style={styles.SendIcon}
+                  color={theme.colors.primary}
+                />
+              </TouchableOpacity>
             </View>
-          </ScrollView>
+          </KeyboardAvoidingView>
         </View>
       </SafeAreaView>
     );
   } else {
-    // If sleep logs haven't loaded, show indicator
+    // If chats haven't loaded, show indicator
     return (
       <View>
         <ActivityIndicator
@@ -90,7 +123,6 @@ export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
 const styles = StyleSheet.create({
   Root: {
     marginTop: scale(20),
-    paddingBottom: scale(25),
     flex: 1,
     backgroundColor: dozy_theme.colors.background
   },
@@ -112,6 +144,9 @@ const styles = StyleSheet.create({
   },
   ItemMargin: {
     marginTop: scale(10)
+  },
+  KbAvoidingView: {
+    flex: 1
   },
   View_ContentContainer: {
     justifyContent: 'flex-start',
@@ -154,6 +189,22 @@ const styles = StyleSheet.create({
     color: dozy_theme.colors.secondary,
     opacity: 0.8,
     marginBottom: scale(2)
+  },
+  View_ChatInput: {
+    backgroundColor: dozy_theme.colors.secondary,
+    marginBottom: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  TextInput: {
+    paddingLeft: scale(15),
+    paddingVertical: scale(15),
+    paddingBottom: Platform.OS == 'ios' ? scale(18) : scale(15),
+    flex: 1
+  },
+  SendIcon: {
+    padding: scale(10)
   }
 });
 
