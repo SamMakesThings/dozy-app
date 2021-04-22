@@ -18,6 +18,7 @@ import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
 import { Navigation } from '../types/custom';
 import Images from '../config/Images';
+import { ChatMessage } from '../components/ChatMessage';
 
 export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   navigation
@@ -54,35 +55,12 @@ export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
             style={styles.KbAvoidingView}
           >
             <ScrollView contentContainerStyle={styles.View_ContentContainer}>
-              <View
-                style={{ ...styles.View_MsgContainer, alignItems: 'flex-end' }}
-              >
-                <Text style={styles.Text_MetaMsg}>Sam Stowers 4:20 PM</Text>
-                <View style={{ ...styles.View_MsgBubble, ...styles.SentMsg }}>
-                  <Text
-                    style={{ ...theme.typography.body2, ...styles.Text_Msg }}
-                  >
-                    Message content{' '}
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  ...styles.View_MsgContainer,
-                  alignItems: 'flex-start'
-                }}
-              >
-                <Text style={styles.Text_MetaMsg}>Sam Stowers 4:20 PM</Text>
-                <View
-                  style={{ ...styles.View_MsgBubble, ...styles.ReceivedMsg }}
-                >
-                  <Text
-                    style={{ ...theme.typography.body2, ...styles.Text_Msg }}
-                  >
-                    Message content longer and more message stuff here
-                  </Text>
-                </View>
-              </View>
+              <ChatMessage
+                name={'Sam Stowers'}
+                time={new Date()}
+                message={'Hey there new component who dis'}
+                sentByUser={false}
+              />
             </ScrollView>
             <View style={styles.View_ChatInput}>
               <TextInput
@@ -154,22 +132,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: scale(10)
   },
-  View_MsgContainer: {
-    marginTop: scale(15),
-    alignSelf: 'stretch'
-  },
-  View_MsgBubble: {
-    padding: scale(12),
-    borderRadius: scale(6)
-  },
-  SentMsg: {
-    backgroundColor: dozy_theme.colors.primary,
-    marginLeft: scale(10)
-  },
-  ReceivedMsg: {
-    backgroundColor: dozy_theme.colors.medium,
-    marginRight: scale(10)
-  },
   Img_Profile: {
     width: scale(40),
     height: scale(40),
@@ -182,14 +144,6 @@ const styles = StyleSheet.create({
   Text_CoachTitle: {
     color: dozy_theme.colors.secondary,
     marginTop: scale(-5)
-  },
-  Text_Msg: {
-    color: dozy_theme.colors.secondary
-  },
-  Text_MetaMsg: {
-    color: dozy_theme.colors.secondary,
-    opacity: 0.8,
-    marginBottom: scale(2)
   },
   View_ChatInput: {
     backgroundColor: dozy_theme.colors.secondary,
