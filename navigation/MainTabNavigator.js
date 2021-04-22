@@ -6,7 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import DiaryScreen from '../screens/DiaryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import { TreatmentScreen } from '../screens/TreatmentScreen';
-import SupportChatScreen from '../screens/SupportChatScreen';
+import { SupportChatScreen } from '../screens/SupportChatScreen';
 import { AuthContext } from '../utilities/authContext';
 import treatments from '../constants/Treatments';
 

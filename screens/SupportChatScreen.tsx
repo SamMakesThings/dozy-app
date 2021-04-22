@@ -1,51 +1,175 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  SafeAreaView,
+  FlatList,
+  Image,
+  KeyboardAvoidingView,
+  TextInput,
+  Platform,
+  TouchableOpacity
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
-import { FbLib } from '../config/firebaseConfig';
-import { WebView } from 'react-native-webview';
-import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
-import refreshUserData from '../utilities/refreshUserData';
+import { dozy_theme } from '../config/Themes';
+import Images from '../config/Images';
+import { ChatMessage } from '../components/ChatMessage';
 
-const SupportChatScreen = () => {
+export const SupportChatScreen: React.FC = () => {
   const theme = dozy_theme;
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state } = React.useContext(AuthContext);
 
-  const livechatJavascript = `
-  setTimeout(function(){
-    LC_API.set_visitor_name("${state.profileData.name}");
-    LC_API.set_visitor_email("${state.profileData.email}");
-    LC_API.update_custom_variables([
-    {name: "userId", value: state.userToken},
-    {name: "currentTreatmentModule", value: state.userData.currentTreatments.currentModule}]);
-    }, 6000);
-  `;
-
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.medium }}>
-      <WebView
-        source={{
-          uri: 'https://direct.lc.chat/12002154/'
-        }}
-        style={{ marginTop: scale(10) }}
-        injectedJavaScript={livechatJavascript}
-        onLoad={(syntheticEvent) => {
-          // If LiveChat has a msg marked as unread, mark it as read in Firebase
-          if (state.userData?.livechatUnreadMsg) {
-            FbLib.firestore().collection('users').doc(state.userToken).update({
-              livechatUnreadMsg: false
-            });
-            refreshUserData(dispatch);
-          }
-        }}
-        onMessage={() =>
-          console.log(
-            'Got a message from webview?? This should not happen. This is just here bc it is a required prop'
-          )
-        }
-      />
-    </SafeAreaView>
-  );
+  // If state is available, show screen. Otherwise, show loading indicator.
+  if (state.sleepLogs && state.userData?.currentTreatments) {
+    return (
+      <SafeAreaView style={styles.SafeAreaView}>
+        <View style={styles.Root}>
+          <View style={styles.View_HeaderContainer}>
+            <Image source={Images.SamProfile} style={styles.Img_Profile} />
+            <View style={styles.View_ChatNameContainer}>
+              <Text
+                style={{
+                  ...theme.typography.headline5,
+                  ...styles.Text_CoachName
+                }}
+              >
+                Sam Stowers
+              </Text>
+              <Text
+                style={{ ...theme.typography.body2, ...styles.Text_CoachTitle }}
+              >
+                Founder & Sleep Coach
+              </Text>
+            </View>
+          </View>
+          <KeyboardAvoidingView
+            behavior={Platform.select({ ios: 'padding' })}
+            keyboardVerticalOffset={Platform.select({ ios: scale(60) })}
+            style={styles.KbAvoidingView}
+          >
+            <FlatList
+              contentContainerStyle={styles.View_ContentContainer}
+              renderItem={({ item, index, separators }) => ChatMessage(item)}
+              inverted={true}
+              data={[
+                {
+                  name: 'Sam Stowers',
+                  message: 'Testing 123',
+                  time: new Date(),
+                  sentByUser: true,
+                  key: 'asdflksjdlkfj'
+                },
+                {
+                  name: 'Sam Stowers',
+                  message: 'Testing sdfasdfasdfasdf',
+                  time: new Date(),
+                  sentByUser: false,
+                  key: 'asdflksjsddlkfj'
+                }
+              ]}
+            />
+            <View style={styles.View_ChatInput}>
+              <TextInput
+                style={{ ...theme.typography.body2, ...styles.TextInput }}
+                placeholder={'Ask a question...'}
+              />
+              <TouchableOpacity>
+                <Ionicons
+                  name={'send'}
+                  size={scale(25)}
+                  style={styles.SendIcon}
+                  color={theme.colors.primary}
+                />
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </View>
+      </SafeAreaView>
+    );
+  } else {
+    // If chats haven't loaded, show indicator
+    return (
+      <View>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.primary}
+          style={{
+            width: scale(45),
+            height: scale(45),
+            marginTop: '45%',
+            alignSelf: 'center'
+          }}
+        />
+      </View>
+    );
+  }
 };
 
-export default SupportChatScreen;
+const styles = StyleSheet.create({
+  Root: {
+    marginTop: scale(20),
+    flex: 1,
+    backgroundColor: dozy_theme.colors.background
+  },
+  SafeAreaView: {
+    backgroundColor: dozy_theme.colors.medium,
+    flex: 1
+  },
+  View_HeaderContainer: {
+    backgroundColor: dozy_theme.colors.medium,
+    flexDirection: 'row',
+    padding: scale(14),
+    paddingTop: 0
+  },
+  View_ChatNameContainer: {
+    flexDirection: 'column',
+    marginLeft: scale(10),
+    marginTop: scale(-2),
+    justifyContent: 'flex-start'
+  },
+  ItemMargin: {
+    marginTop: scale(10)
+  },
+  KbAvoidingView: {
+    flex: 1
+  },
+  View_ContentContainer: {
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    paddingHorizontal: scale(10),
+    paddingTop: scale(10)
+  },
+  Img_Profile: {
+    width: scale(40),
+    height: scale(40),
+    borderRadius: 500
+  },
+  Text_CoachName: {
+    color: dozy_theme.colors.secondary,
+    fontSize: scale(15)
+  },
+  Text_CoachTitle: {
+    color: dozy_theme.colors.secondary,
+    marginTop: scale(-5)
+  },
+  View_ChatInput: {
+    backgroundColor: dozy_theme.colors.secondary,
+    marginBottom: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  TextInput: {
+    paddingLeft: scale(15),
+    paddingVertical: scale(15),
+    paddingBottom: Platform.OS == 'ios' ? scale(18) : scale(15),
+    flex: 1
+  },
+  SendIcon: {
+    padding: scale(10)
+  }
+});
