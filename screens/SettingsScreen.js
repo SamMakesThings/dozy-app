@@ -172,40 +172,6 @@ function Root() {
             />
           </Container>
         </Touchable>
-        <Touchable
-          style={styles.Touchable_n0}
-          onPress={async () =>
-            planTreatmentModules({
-              currentTreatments: state.userData.currentTreatments,
-              sleepLogs: state.sleepLogs
-            })
-          }
-        >
-          <Container
-            style={styles.Container_nf}
-            elevation={0}
-            useThemeGutterPadding={true}
-          >
-            <Text
-              style={[
-                styles.Text_nl,
-                theme.typography.smallLabel,
-                {
-                  color: theme.colors.strong,
-                  textAlign: 'left'
-                }
-              ]}
-            >
-              Log treatment object
-            </Text>
-            <Icon
-              style={styles.Icon_nf}
-              name="Ionicons/md-mail"
-              size={36}
-              color={theme.colors.primary}
-            />
-          </Container>
-        </Touchable>
         <Container
           style={styles.Container_ni}
           elevation={0}
