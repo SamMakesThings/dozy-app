@@ -3,23 +3,25 @@ import { StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
-export const ChatMessage: React.FC<{
+export function ChatMessage(item: {
   name: string;
   message: string;
   time: Date;
   sentByUser: boolean;
-}> = ({ name, message, time, sentByUser }) => {
+  key: string;
+}) {
   const theme = dozy_theme;
   return (
     <View
       style={{
         ...styles.View_MsgContainer,
-        alignItems: sentByUser ? 'flex-end' : 'flex-start'
+        alignItems: item.sentByUser ? 'flex-end' : 'flex-start'
       }}
+      key={item.key}
     >
       <Text style={styles.Text_MetaMsg}>
-        {name}{' '}
-        {time.toLocaleString('en-US', {
+        {item.name}{' '}
+        {item.time.toLocaleString('en-US', {
           month: 'short',
           day: 'numeric',
           hour: 'numeric',
@@ -29,16 +31,16 @@ export const ChatMessage: React.FC<{
       <View
         style={Object.assign(
           { ...styles.View_MsgBubble },
-          sentByUser ? styles.SentMsg : styles.ReceivedMsg
+          item.sentByUser ? styles.SentMsg : styles.ReceivedMsg
         )}
       >
         <Text style={{ ...theme.typography.body2, ...styles.Text_Msg }}>
-          {message}
+          {item.message}
         </Text>
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   View_MsgContainer: {

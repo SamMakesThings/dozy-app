@@ -5,7 +5,7 @@ import {
   View,
   ActivityIndicator,
   SafeAreaView,
-  ScrollView,
+  FlatList,
   Image,
   KeyboardAvoidingView,
   TextInput,
@@ -16,13 +16,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
-import { Navigation } from '../types/custom';
 import Images from '../config/Images';
 import { ChatMessage } from '../components/ChatMessage';
 
-export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
-  navigation
-}) => {
+export const NewSupportChatScreen: React.FC = () => {
   const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
 
@@ -54,14 +51,27 @@ export const NewSupportChatScreen: React.FC<{ navigation: Navigation }> = ({
             keyboardVerticalOffset={Platform.select({ ios: scale(60) })}
             style={styles.KbAvoidingView}
           >
-            <ScrollView contentContainerStyle={styles.View_ContentContainer}>
-              <ChatMessage
-                name={'Sam Stowers'}
-                time={new Date()}
-                message={'Hey there new component who dis'}
-                sentByUser={false}
-              />
-            </ScrollView>
+            <FlatList
+              contentContainerStyle={styles.View_ContentContainer}
+              renderItem={({ item, index, separators }) => ChatMessage(item)}
+              inverted={true}
+              data={[
+                {
+                  name: 'Sam Stowers',
+                  message: 'Testing 123',
+                  time: new Date(),
+                  sentByUser: true,
+                  key: 'asdflksjdlkfj'
+                },
+                {
+                  name: 'Sam Stowers',
+                  message: 'Testing sdfasdfasdfasdf',
+                  time: new Date(),
+                  sentByUser: false,
+                  key: 'asdflksjsddlkfj'
+                }
+              ]}
+            />
             <View style={styles.View_ChatInput}>
               <TextInput
                 style={{ ...theme.typography.body2, ...styles.TextInput }}
@@ -129,8 +139,9 @@ const styles = StyleSheet.create({
   },
   View_ContentContainer: {
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    paddingHorizontal: scale(10)
+    alignItems: 'stretch',
+    paddingHorizontal: scale(10),
+    paddingTop: scale(10)
   },
   Img_Profile: {
     width: scale(40),
