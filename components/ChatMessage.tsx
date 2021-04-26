@@ -3,17 +3,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import * as firebase from 'firebase';
 import { dozy_theme } from '../config/Themes';
+import { Chat } from '../types/custom';
 
-export function ChatMessage(
-  item: {
-    name: string;
-    message: string;
-    time: firebase.firestore.Timestamp;
-    sentByUser: boolean;
-  },
-  index: number
-) {
+export function ChatMessage(item: Chat, index: number) {
   const theme = dozy_theme;
+
+  // Shorten type check to be able to handle fb timestamps or JS dates
+  const firebaseTime = item.time as firebase.firestore.Timestamp;
+
   return (
     <View
       style={{
@@ -23,8 +20,11 @@ export function ChatMessage(
       key={index}
     >
       <Text style={styles.Text_MetaMsg}>
-        {item.name}{' '}
-        {item.time.toDate().toLocaleString('en-US', {
+        {item.sender}{' '}
+        {(firebaseTime
+          ? firebaseTime.toDate()
+          : (item.time as Date)
+        ).toLocaleString('en-US', {
           month: 'short',
           day: 'numeric',
           hour: 'numeric',

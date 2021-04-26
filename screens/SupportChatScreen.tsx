@@ -19,6 +19,7 @@ import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
 import Images from '../config/Images';
 import fetchChats from '../utilities/fetchChats';
+import sendChatMessage from '../utilities/sendChatMessage';
 import { ChatMessage } from '../components/ChatMessage';
 import { Chat } from '../types/custom';
 
@@ -26,10 +27,12 @@ export const SupportChatScreen: React.FC = () => {
   // Get global state & dispatch
   const { state, dispatch } = React.useContext(AuthContext);
 
-  let colRef: firebase.firestore.CollectionReference;
-  let db: firebase.firestore.Firestore;
+  // Set up local state for chat message
+  const [typedMsg, setTypedMsg] = React.useState('');
 
   // Set Firebase DB references if userToken is defined
+  let colRef: firebase.firestore.CollectionReference;
+  let db: firebase.firestore.Firestore;
   if (state.userToken) {
     db = FbLib.firestore();
     colRef = db
@@ -111,8 +114,20 @@ export const SupportChatScreen: React.FC = () => {
               <TextInput
                 style={{ ...theme.typography.body2, ...styles.TextInput }}
                 placeholder={'Ask a question...'}
+                value={typedMsg}
+                onChangeText={setTypedMsg}
               />
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  sendChatMessage(db, state.userToken, {
+                    sender: state.profileData.name,
+                    message: typedMsg,
+                    time: new Date(),
+                    sentByUser: true
+                  });
+                  setTypedMsg('');
+                }}
+              >
                 <Ionicons
                   name={'send'}
                   size={scale(25)}

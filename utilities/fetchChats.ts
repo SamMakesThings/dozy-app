@@ -32,7 +32,13 @@ async function fetchChats(
         // Otherwise, arrange data and update state
         res.forEach(function (doc: firebase.firestore.QueryDocumentSnapshot) {
           let docData = doc.data();
-          chats.push({ chatId: doc.id, ...doc.data() });
+          const currentChat = {
+            sender: docData.sender,
+            message: docData.message,
+            sentByUser: docData.sentByUser,
+            time: docData.time
+          };
+          chats.push({ chatId: doc.id, ...currentChat });
         });
         resolve(chats);
       })
