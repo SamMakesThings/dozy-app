@@ -12,19 +12,66 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
+import { FbLib } from '../config/firebaseConfig';
 import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
 import Images from '../config/Images';
+import fetchChats from '../utilities/fetchChats';
 import { ChatMessage } from '../components/ChatMessage';
+import { Chat } from '../types/custom';
 
 export const SupportChatScreen: React.FC = () => {
+  // Get global state & dispatch
+  const { state, dispatch } = React.useContext(AuthContext);
+
+  let colRef: firebase.firestore.CollectionReference;
+  let db: firebase.firestore.Firestore;
+
+  // Set Firebase DB references if userToken is defined
+  if (state.userToken) {
+    db = FbLib.firestore();
+    colRef = db
+      .collection('users')
+      .doc(state.userToken)
+      .collection('supportMessages');
+  }
+
+  // Function to fetch chats from Firebase and put them in global state
+  async function setChats() {
+    async function fetchData() {
+      fetchChats(db, state.userToken)
+        .then((chats: Array<Chat>) => {
+          // Check that theres >1 entry. If no, set state accordingly
+          if (chats.length === 0) {
+            dispatch({ type: 'SET_CHATS', chats: [] });
+          } else {
+            dispatch({ type: 'SET_CHATS', chats: chats });
+          }
+
+          return;
+        })
+        .catch(function (error) {
+          console.log('Error getting chats:', error);
+        });
+    }
+
+    // Setup a listener to fetch new chats from Firebase
+    colRef.onSnapshot(function () {
+      fetchData();
+    });
+  }
+
+  // Set chats once upon loading
+  React.useEffect(() => {
+    setChats();
+  }, []);
+
   const theme = dozy_theme;
-  const { state } = React.useContext(AuthContext);
 
   // If state is available, show screen. Otherwise, show loading indicator.
-  if (state.sleepLogs && state.userData?.currentTreatments) {
+  if (state.chats && state.userData?.currentTreatments) {
     return (
       <SafeAreaView style={styles.SafeAreaView}>
         <View style={styles.Root}>
@@ -53,24 +100,12 @@ export const SupportChatScreen: React.FC = () => {
           >
             <FlatList
               contentContainerStyle={styles.View_ContentContainer}
-              renderItem={({ item, index, separators }) => ChatMessage(item)}
+              renderItem={({ item, index }) => ChatMessage(item, index)}
+              keyExtractor={(item, index) => {
+                return index.toString();
+              }}
               inverted={true}
-              data={[
-                {
-                  name: 'Sam Stowers',
-                  message: 'Testing 123',
-                  time: new Date(),
-                  sentByUser: true,
-                  key: 'asdflksjdlkfj'
-                },
-                {
-                  name: 'Sam Stowers',
-                  message: 'Testing sdfasdfasdfasdf',
-                  time: new Date(),
-                  sentByUser: false,
-                  key: 'asdflksjsddlkfj'
-                }
-              ]}
+              data={state.chats}
             />
             <View style={styles.View_ChatInput}>
               <TextInput

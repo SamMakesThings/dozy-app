@@ -25,3 +25,13 @@ export interface SleepLog {
   notes: string;
   tags: string[];
 }
+
+export type Chat =
+  | {
+      chatId: string;
+      sender: string;
+      message: string;
+      time: firebase.firestore.Timestamp;
+      sentByUser: boolean;
+    }
+  | { chatId: string };

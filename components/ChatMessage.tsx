@@ -1,15 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import * as firebase from 'firebase';
 import { dozy_theme } from '../config/Themes';
 
-export function ChatMessage(item: {
-  name: string;
-  message: string;
-  time: Date;
-  sentByUser: boolean;
-  key: string;
-}) {
+export function ChatMessage(
+  item: {
+    name: string;
+    message: string;
+    time: firebase.firestore.Timestamp;
+    sentByUser: boolean;
+  },
+  index: number
+) {
   const theme = dozy_theme;
   return (
     <View
@@ -17,11 +20,11 @@ export function ChatMessage(item: {
         ...styles.View_MsgContainer,
         alignItems: item.sentByUser ? 'flex-end' : 'flex-start'
       }}
-      key={item.key}
+      key={index}
     >
       <Text style={styles.Text_MetaMsg}>
         {item.name}{' '}
-        {item.time.toLocaleString('en-US', {
+        {item.time.toDate().toLocaleString('en-US', {
           month: 'short',
           day: 'numeric',
           hour: 'numeric',

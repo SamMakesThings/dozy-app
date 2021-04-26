@@ -93,6 +93,11 @@ export default function App() {
             ...prevState,
             sleepLogs: action.sleepLogs
           };
+        case 'SET_CHATS':
+          return {
+            ...prevState,
+            chats: action.chats
+          };
         case 'CHANGE_SELECTED_MONTH':
           return {
             ...prevState,
