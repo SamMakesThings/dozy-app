@@ -712,8 +712,8 @@ export const DiaryReminder = ({ navigation }: Props) => {
       onQuestionSubmit={(value: Date | boolean) => {
         // TODO: Can I just make the arrow function async instead of below
         async function setPushToken() {
-          let pushToken = await registerForPushNotificationsAsync();
-
+          let pushToken = await registerForPushNotificationsAsync(); // lol wtf why did I do this twice, will fix later
+          // TODO: Make less dumb
           onboardingState.expoPushToken = await registerForPushNotificationsAsync();
         }
         if (typeof value != 'boolean') {
