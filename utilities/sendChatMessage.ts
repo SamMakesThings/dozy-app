@@ -7,9 +7,9 @@ export default async function sendChatMessage(
   msg: Chat
 ) {
   // Check for errors
-  let chatsRef;
+  let userDocRef;
   if (typeof userId === 'string') {
-    chatsRef = db.collection('users').doc(userId).collection('supportMessages');
+    userDocRef = db.collection('users').doc(userId);
   } else if (
     userId === undefined ||
     !('message' in msg) ||
@@ -22,8 +22,19 @@ export default async function sendChatMessage(
     return;
   }
 
-  chatsRef.add(msg).catch(function (error: object) {
-    console.error('Error pushing chat message data:', error);
-  });
+  // Add message to convo, also add to user document (for easy browsing)
+  userDocRef
+    .collection('supportMessages')
+    .add(msg)
+    .catch(function (error: object) {
+      console.error('Error pushing chat message data:', error);
+    });
+  userDocRef
+    .update({
+      lastChat: msg
+    })
+    .catch((err) => {
+      console.error('Error pushing chat message data to user doc:', err);
+    });
   return;
 }
