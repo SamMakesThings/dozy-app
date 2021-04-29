@@ -6,23 +6,19 @@ export default async function sendChatMessage(
   userId: string,
   msg: Chat
 ) {
-  // If userId is a string, set Firebase ref. If not, mark an error
-  let chatsRef =
-    typeof userId === 'string'
-      ? db.collection('users').doc(userId).collection('supportMessages')
-      : db
-          .collection('users')
-          .doc('ERRORDELETEME')
-          .collection('supportMessages');
-
-  if (userId === undefined) {
-    console.log('ERROR IN SENDCHATMESSAGE: userId is undefined');
+  // Check for errors
+  let chatsRef;
+  if (typeof userId === 'string') {
+    chatsRef = db.collection('users').doc(userId).collection('supportMessages');
+  } else if (
+    userId === undefined ||
+    !('message' in msg) ||
+    ('message' in msg && msg.message === '')
+  ) {
+    console.log('ERROR IN SENDCHATMESSAGE: Invalid chat message');
     return;
-  } else if (!('message' in msg)) {
-    console.log('ERROR IN SENDCHATMESSAGE: msg is empty');
-    return;
-  } else if ('message' in msg && msg.message === '') {
-    console.log('ERROR IN SENDCHATMESSAGE: Cannot send blank message');
+  } else {
+    console.error('ERROR IN SENDCHATMESSAGE: Invalid UserID');
     return;
   }
 
