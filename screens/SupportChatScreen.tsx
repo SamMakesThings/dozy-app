@@ -155,7 +155,7 @@ export const SupportChatScreen: React.FC = () => {
   } else {
     // If chats haven't loaded, show indicator
     return (
-      <View>
+      <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
         <ActivityIndicator
           size="large"
           color={theme.colors.primary}
