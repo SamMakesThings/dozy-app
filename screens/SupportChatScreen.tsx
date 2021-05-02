@@ -12,6 +12,7 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { FbLib } from '../config/firebaseConfig';
 import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
@@ -40,6 +41,17 @@ export const SupportChatScreen: React.FC = () => {
       .doc(state.userToken)
       .collection('supportMessages');
   }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // If LiveChat has a msg marked as unread, mark it as read in Firebase
+      if (state.userData?.livechatUnreadMsg) {
+        FbLib.firestore().collection('users').doc(state.userToken).update({
+          livechatUnreadMsg: false
+        });
+      }
+    }, [])
+  );
 
   // Function to fetch chats from Firebase and put them in global state
   async function setChats() {
