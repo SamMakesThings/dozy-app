@@ -35,6 +35,17 @@ export default async function refreshUserData(dispatch) {
           onboardingComplete: userData.data() != undefined
         });
       });
+
+    // Add a listener so user doc state updates live
+    FbDb.collection('users')
+      .doc(userToken)
+      .onSnapshot((docSnapshot) => {
+        dispatch({
+          type: 'UPDATE_USERDATA',
+          userData: docSnapshot.data(),
+          onboardingComplete: docSnapshot.data() != undefined
+        });
+      });
   } catch (e) {
     console.log('Error in restoring token:', e);
   }
