@@ -72,10 +72,12 @@ export default function InitialAuthNavigator({
               component={OnboardingNavigator}
             />
           )}
-          <TopStack.Screen
-            name="App"
-            component={BottomTabs /* If logged in, go to the tab navigator */}
-          />
+          {onboardingComplete === true && (
+            <TopStack.Screen
+              name="App"
+              component={BottomTabs /* If logged in, go to the tab navigator */}
+            />
+          )}
           <TopStack.Screen
             name="TreatmentReview"
             component={TreatmentReviewScreen}
