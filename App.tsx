@@ -14,7 +14,7 @@ import * as Icon from '@expo/vector-icons';
 import * as Google from 'expo-google-app-auth';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
-import { FbAuth, FbLib } from './config/firebaseConfig';
+import { FbAuth, FbLib, FbDb } from './config/firebaseConfig';
 import * as firebase from 'firebase';
 import { dozy_theme } from './config/Themes';
 import '@firebase/firestore';
@@ -190,7 +190,9 @@ export default function App() {
 
       // Use my previously defined login function to get user data and store the token
       _loginWithGoogle().then(
-        (result: firebase.auth.UserCredential | { cancelled: boolean }) => {
+        async (
+          result: firebase.auth.UserCredential | { cancelled: boolean }
+        ) => {
           // Store credentials in SecureStore
           if ('credential' in result) {
             SecureStore.setItemAsync(
@@ -205,11 +207,19 @@ export default function App() {
               console.log('Error signing in: ' + error);
             });
 
+            // Check if that user's document exists, in order to direct them to or past onboarding
+            const userDocExists = await FbDb.collection('users')
+              .doc(result.user.uid)
+              .get()
+              .then((docSnapshot) => {
+                return docSnapshot.exists;
+              });
+
             // Update app state accordingly thru context hook function
             dispatch({
               type: 'SIGN_IN',
               token: result.user.uid,
-              onboardingComplete: !result.additionalUserInfo.isNewUser,
+              onboardingComplete: userDocExists,
               profileData: result.additionalUserInfo.profile,
               isAuthLoading: false
             });
