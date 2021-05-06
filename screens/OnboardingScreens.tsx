@@ -22,6 +22,7 @@ import WarningTriangle from '../assets/images/WarningTriangle.svg';
 import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import BlankCalendar from '../assets/images/BlankCalendar.svg';
+import { ChatMessage } from '../components/ChatMessage';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
@@ -775,7 +776,7 @@ export const PaywallPlaceholder = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       image={<MonocleEmoji width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        navigation.navigate('ScheduleOnboardingCall', {
+        navigation.navigate('SendFirstChat', {
           progressBarPercent: 0.9
         });
       }}
@@ -785,25 +786,62 @@ export const PaywallPlaceholder = ({ navigation }: Props) => {
   );
 };
 
-export const ScheduleOnboardingCall = ({ navigation }: Props) => {
-  let imgSize = 0.4 * useWindowDimensions().width;
-
+export const SendFirstChat = ({ navigation }: Props) => {
+  // TODO: Turn this into chat scheduling
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      textLabel="We recommend scheduling a 15-minute call with us at your convenience. This is so we can give you a clear idea of what to expect & to maximize your chances of success."
+      textLabel="Your sleep coach will provide support and answer questions for you during the process. Let's send them a message now!"
       onQuestionSubmit={(value: string) => {
-        if (value === 'Skip scheduling a call') {
-          navigation.navigate('OnboardingEnd');
-        } else {
-          navigation.navigate('CallSchedulingWebview');
-        }
+        navigation.navigate('SendFirstChatContd');
       }}
-      buttonLabel="Schedule 15-minute call"
-      bottomGreyButtonLabel="Skip scheduling a call"
+      buttonLabel="Continue"
     >
-      <BlankCalendar width={imgSize} height={imgSize} />
+      <View>
+        <ChatMessage
+          sender="Sam Stowers"
+          message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
+          time={new Date()}
+          sentByUser={false}
+        />
+        <ChatMessage
+          sender="Sam Stowers"
+          message="Why do you want to improve your sleep?"
+          time={new Date()}
+          sentByUser={false}
+        />
+      </View>
+    </WizardContentScreen>
+  );
+};
+
+export const SendFirstChatContd = ({ navigation }: Props) => {
+  // TODO: Turn this into chat scheduling
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      textLabel="Your sleep coach will provide support and answer questions for you during the process. Let's send them a message now!"
+      onQuestionSubmit={(value: string) => {
+        navigation.navigate('CallSchedulingWebview');
+      }}
+      buttonLabel="Continue"
+    >
+      <View>
+        <ChatMessage
+          sender="Sam Stowers"
+          message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
+          time={new Date()}
+          sentByUser={false}
+        />
+        <ChatMessage
+          sender="Sam Stowers"
+          message="Why do you want to improve your sleep?"
+          time={new Date()}
+          sentByUser={false}
+        />
+      </View>
     </WizardContentScreen>
   );
 };
