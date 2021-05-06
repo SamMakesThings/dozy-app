@@ -21,7 +21,7 @@ export function ChatMessage(item: Chat, index: number) {
     >
       <Text style={styles.Text_MetaMsg}>
         {item.sender}{' '}
-        {(firebaseTime
+        {(firebaseTime.toDate != undefined
           ? firebaseTime.toDate()
           : (item.time as Date)
         ).toLocaleString('en-US', {
