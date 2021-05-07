@@ -128,7 +128,7 @@ export default async function submitOnboardingData(
   });
 
   // Add initial support chat messages to chat collection
-  const chatColRef = db.collection('supportMessages');
+  const chatColRef = userDocRef.collection('supportMessages');
   chatColRef.add({
     sender: 'Sam Stowers',
     message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
