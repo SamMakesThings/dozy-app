@@ -10,14 +10,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
-export const ChatTextInput = (props: { onSend: Function }) => {
+export const ChatTextInput = (props: { onSend: Function; viewStyle?: {} }) => {
   const theme = dozy_theme;
 
   // Set up local state for chat message
   const [typedMsg, setTypedMsg] = React.useState('');
 
   return (
-    <View style={styles.View_ChatInput}>
+    <View style={{ ...styles.View_ChatInput, ...props.viewStyle }}>
       <TextInput
         style={{ ...theme.typography.body2, ...styles.TextInput }}
         placeholder={'Ask a question...'}
