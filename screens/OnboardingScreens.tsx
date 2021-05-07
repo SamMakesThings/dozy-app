@@ -749,7 +749,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
       onQuestionSubmit={(value: Date) => {
         onboardingState.firstCheckinTime = value;
-        navigation.navigate('PaywallPlaceholder', { progressBarPercent: 0.8 });
+        navigation.navigate('SendFirstChat', { progressBarPercent: 0.8 });
       }}
       validInputChecker={(val: Date) => {
         // Make sure the selected date is 7+ days from today
@@ -773,23 +773,6 @@ export const CheckinScheduling = ({ navigation }: Props) => {
       questionSubtitle="Check-ins take 5-10 minutes and introduce you to new treatment techniques based on your sleep patterns."
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"
-    />
-  );
-};
-
-export const PaywallPlaceholder = ({ navigation }: Props) => {
-  return (
-    <IconExplainScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      image={<MonocleEmoji width={imgSize} height={imgSize} />}
-      onQuestionSubmit={() => {
-        navigation.navigate('SendFirstChat', {
-          progressBarPercent: 0.9
-        });
-      }}
-      textLabel="Ordinarily this is the subscription screen, but you've got free access.  :)"
-      buttonLabel="Nice"
     />
   );
 };
