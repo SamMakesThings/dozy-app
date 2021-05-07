@@ -22,14 +22,12 @@ import Images from '../config/Images';
 import fetchChats from '../utilities/fetchChats';
 import sendChatMessage from '../utilities/sendChatMessage';
 import { ChatMessage } from '../components/ChatMessage';
+import { ChatTextInput } from '../components/ChatTextInput';
 import { Chat } from '../types/custom';
 
 export const SupportChatScreen: React.FC = () => {
   // Get global state & dispatch
   const { state, dispatch } = React.useContext(AuthContext);
-
-  // Set up local state for chat message
-  const [typedMsg, setTypedMsg] = React.useState('');
 
   // Set Firebase DB references if userToken is defined
   let colRef: firebase.firestore.CollectionReference;
@@ -122,32 +120,16 @@ export const SupportChatScreen: React.FC = () => {
               inverted={true}
               data={state.chats}
             />
-            <View style={styles.View_ChatInput}>
-              <TextInput
-                style={{ ...theme.typography.body2, ...styles.TextInput }}
-                placeholder={'Ask a question...'}
-                value={typedMsg}
-                onChangeText={setTypedMsg}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  sendChatMessage(db, state.userToken, {
-                    sender: state.profileData.name,
-                    message: typedMsg,
-                    time: new Date(),
-                    sentByUser: true
-                  });
-                  setTypedMsg('');
-                }}
-              >
-                <Ionicons
-                  name={'send'}
-                  size={scale(25)}
-                  style={styles.SendIcon}
-                  color={theme.colors.primary}
-                />
-              </TouchableOpacity>
-            </View>
+            <ChatTextInput
+              onSend={(typedMsg: string) => {
+                sendChatMessage(db, state.userToken, {
+                  sender: state.profileData.name,
+                  message: typedMsg,
+                  time: new Date(),
+                  sentByUser: true
+                });
+              }}
+            />
           </KeyboardAvoidingView>
         </View>
       </SafeAreaView>
