@@ -4,7 +4,8 @@ import {
   View,
   TextInput,
   Platform,
-  TouchableOpacity
+  TouchableOpacity,
+  Keyboard
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
@@ -23,6 +24,13 @@ export const ChatTextInput = (props: { onSend: Function; viewStyle?: {} }) => {
         placeholder={'Ask a question...'}
         value={typedMsg}
         onChangeText={setTypedMsg}
+        multiline
+        returnKeyType={'done'}
+        onKeyPress={(event) => {
+          if (event.nativeEvent.key === 'Enter') {
+            Keyboard.dismiss();
+          }
+        }}
       />
       <TouchableOpacity
         onPress={() => {
