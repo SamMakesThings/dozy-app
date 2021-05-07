@@ -1,9 +1,16 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
-import { scale, verticalScale } from 'react-native-size-matters';
+import {
+  useWindowDimensions,
+  Text,
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard
+} from 'react-native';
+import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import { WebView } from 'react-native-webview';
 import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -21,8 +28,8 @@ import Stop from '../assets/images/Stop.svg';
 import WarningTriangle from '../assets/images/WarningTriangle.svg';
 import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
-import BlankCalendar from '../assets/images/BlankCalendar.svg';
 import { ChatMessage } from '../components/ChatMessage';
+import { ChatTextInput } from '../components/ChatTextInput';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
@@ -56,7 +63,8 @@ let onboardingState = {
   diaryHabitTrigger: 'ERROR',
   expoPushToken: undefined as undefined | string,
   diaryReminderTime: undefined as Date | undefined,
-  firstCheckinTime: new Date()
+  firstCheckinTime: new Date(),
+  firstChatMessageContent: 'Hi'
 };
 
 export const Welcome = ({ navigation }: Props) => {
@@ -817,18 +825,33 @@ export const SendFirstChat = ({ navigation }: Props) => {
 };
 
 export const SendFirstChatContd = ({ navigation }: Props) => {
-  // TODO: Turn this into chat scheduling
+  const [message, setMessage] = React.useState('');
+  const [replyVisible, makeReplyVisible] = React.useState(false);
+
+  const messageSent = message != '';
+
+  if (messageSent) {
+    // Send message after a delay to simulate actual reply
+    setTimeout(() => makeReplyVisible(true), 1500);
+  }
+
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      textLabel="Your sleep coach will provide support and answer questions for you during the process. Let's send them a message now!"
       onQuestionSubmit={(value: string) => {
-        navigation.navigate('CallSchedulingWebview');
+        navigation.navigate('OnboardingEnd');
       }}
       buttonLabel="Continue"
+      flexibleLayout
+      onlyBackButton={!replyVisible}
     >
-      <View>
+      <KeyboardAvoidingView
+        behavior={Platform.select({ ios: 'padding' })}
+        keyboardVerticalOffset={Platform.select({ ios: scale(60) })}
+        style={{ justifyContent: 'space-around' }}
+      >
+        <View style={{ flex: 0.6 }} />
         <ChatMessage
           sender="Sam Stowers"
           message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
@@ -841,37 +864,32 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
           time={new Date()}
           sentByUser={false}
         />
-      </View>
-    </WizardContentScreen>
-  );
-};
-
-export const CallSchedulingWebview = ({ navigation }: Props) => {
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      textLabel=""
-      onQuestionSubmit={() => {
-        navigation.navigate('OnboardingEnd', { progressBarPercent: 1 });
-      }}
-      buttonLabel="I've scheduled a call"
-      flexibleLayout
-    >
-      <View
-        style={{
-          width: useWindowDimensions().width,
-          height: verticalScale(600),
-          backgroundColor: theme.colors.primary
-        }}
-      >
-        <WebView
-          source={{
-            uri: 'https://calendly.com/dozysleep/closed-beta-onboarding'
+        <View style={{ display: messageSent ? 'flex' : 'none' }}>
+          <ChatMessage
+            sender="You"
+            message={message}
+            time={new Date()}
+            sentByUser={true}
+          />
+        </View>
+        <View style={{ display: replyVisible ? 'flex' : 'none' }}>
+          <ChatMessage
+            sender="Sam Stowers"
+            message="Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)"
+            time={new Date()}
+            sentByUser={false}
+          />
+        </View>
+        <View style={{ flex: 1 }} />
+        <ChatTextInput
+          onSend={(typedMsg: string) => {
+            onboardingState.firstChatMessageContent = typedMsg;
+            setMessage(typedMsg);
+            Keyboard.dismiss();
           }}
-          style={{ width: '100%', marginTop: verticalScale(55) }}
+          viewStyle={{ display: !messageSent ? 'flex' : 'none' }}
         />
-      </View>
+      </KeyboardAvoidingView>
     </WizardContentScreen>
   );
 };
