@@ -20,6 +20,7 @@ interface OnboardingState {
   ISI6: number;
   ISI7: number;
   ISITotal: number;
+  firstChatMessageContent: string;
 }
 
 export default async function submitOnboardingData(
@@ -95,7 +96,16 @@ export default async function submitOnboardingData(
       },
       logReminderId: notifDocRef.id,
       testingGroup: 'beta2',
-      userStatus: 'onboarded'
+      userStatus: 'onboarded',
+      lastChat: {
+        message:
+          "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
+        sender: 'Sam Stowers',
+        time: new Date(),
+        sentByUser: false
+      },
+      lastSupportNotifSent: new Date(),
+      livechatUnreadMsg: false
     })
     .catch(function (error) {
       console.error('Error adding health history data: ', error);
@@ -115,6 +125,34 @@ export default async function submitOnboardingData(
     timestamp: new Date()
   }).catch(function (error) {
     console.error('Error adding ISI data: ', error);
+  });
+
+  // Add initial support chat messages to chat collection
+  const chatColRef = db.collection('supportMessages');
+  chatColRef.add({
+    sender: 'Sam Stowers',
+    message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
+    time: new Date(),
+    sentByUser: false
+  });
+  chatColRef.add({
+    sender: 'Sam Stowers',
+    message: 'Why do you want to improve your sleep?',
+    time: new Date(),
+    sentByUser: false
+  });
+  chatColRef.add({
+    sender: 'You',
+    message: onboardingState.firstChatMessageContent,
+    time: new Date(),
+    sentByUser: true
+  });
+  chatColRef.add({
+    sender: 'Sam Stowers',
+    message:
+      "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
+    time: new Date(),
+    sentByUser: false
   });
 
   // Manually refresh user data in state once all the above has completed
