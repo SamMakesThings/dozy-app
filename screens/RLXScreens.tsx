@@ -18,6 +18,7 @@ import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
 import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
+import { Navigation } from '../types/custom';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -26,32 +27,16 @@ const theme = dozy_theme;
 const imgSizePercent = 0.4;
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
-// Define default chart styles
-const chartStyles = {
-  chart: {
-    width: scale(300),
-    height: scale(300),
-    domainPadding: { x: [3, 3], y: [35, 35] }
-  },
-  axis: {
-    tickLabels: {
-      angle: -45,
-      fontSize: scale(11)
-    },
-    grid: {
-      stroke: theme.colors.medium
-    }
-  },
-  line: {
-    data: {
-      stroke: theme.colors.primary,
-      strokeWidth: scale(4),
-      strokeLinejoin: 'round'
-    }
-  }
+// Set up state for this check-in
+let RLXState = {
+  PMRIntentionAction: 'None',
+  PMRIntentionTime: new Date(),
+  nextCheckinTime: new Date()
 };
 
-export const Welcome = ({ navigation }) => {
+export const Welcome: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
@@ -72,7 +57,9 @@ export const Welcome = ({ navigation }) => {
 // First screen to navigate to is 'SRTTitrationStart'
 // Screen it targets for return navigation is 'TreatmentPlan'
 
-export const TreatmentPlan = ({ navigation }) => {
+export const TreatmentPlan: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -94,7 +81,9 @@ export const TreatmentPlan = ({ navigation }) => {
   );
 };
 
-export const WhyPMR = ({ navigation }) => {
+export const WhyPMR: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -116,7 +105,9 @@ export const WhyPMR = ({ navigation }) => {
   );
 };
 
-export const PMROverview = ({ navigation }) => {
+export const PMROverview: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -142,7 +133,9 @@ It's all about noticing & releasing muscular tension.`}
   );
 };
 
-export const PMRWalkthrough = ({ navigation }) => {
+export const PMRWalkthrough: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -167,7 +160,9 @@ export const PMRWalkthrough = ({ navigation }) => {
   );
 };
 
-export const PostPMR = ({ navigation }) => {
+export const PostPMR: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -189,12 +184,14 @@ export const PostPMR = ({ navigation }) => {
   );
 };
 
-export const CalibrationStart = ({ navigation }) => {
+export const CalibrationStart: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(res) => {
+      onQuestionSubmit={(res: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
             module: 'RLX'
@@ -218,13 +215,15 @@ export const CalibrationStart = ({ navigation }) => {
   );
 };
 
-export const PMRIntentionAction = ({ navigation }) => {
+export const PMRIntentionAction: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.PMRIntentionAction = value;
+      onQuestionSubmit={(value: string) => {
+        RLXState.PMRIntentionAction = value;
         navigation.navigate('PMRIntentionTime', { progressBarPercent: 0.67 });
       }}
       buttonValues={[
@@ -243,14 +242,16 @@ export const PMRIntentionAction = ({ navigation }) => {
   );
 };
 
-export const PMRIntentionTime = ({ navigation }) => {
+export const PMRIntentionTime: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().hour(11).minute(0).toDate()}
-      onQuestionSubmit={(value) => {
-        GLOBAL.PMRIntentionTime = value;
+      onQuestionSubmit={(value: Date) => {
+        RLXState.PMRIntentionTime = value;
         navigation.navigate('TreatmentRecommit', {
           progressBarPercent: 0.72
         });
@@ -262,7 +263,9 @@ export const PMRIntentionTime = ({ navigation }) => {
   );
 };
 
-export const TreatmentRecommit = ({ navigation }) => {
+export const TreatmentRecommit: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -284,7 +287,9 @@ export const TreatmentRecommit = ({ navigation }) => {
   );
 };
 
-export const RulesRecap = ({ navigation }) => {
+export const RulesRecap: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -331,17 +336,19 @@ export const RulesRecap = ({ navigation }) => {
   );
 };
 
-export const CheckinScheduling = ({ navigation }) => {
+export const CheckinScheduling: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
-      onQuestionSubmit={(value) => {
-        GLOBAL.nextCheckinTime = value;
+      onQuestionSubmit={(value: Date) => {
+        RLXState.nextCheckinTime = value;
         navigation.navigate('SCTSRTEnd', { progressBarPercent: 1 });
       }}
-      validInputChecker={(val) => {
+      validInputChecker={(val: Date) => {
         // Make sure the selected date is 7+ days from today
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
@@ -367,7 +374,9 @@ export const CheckinScheduling = ({ navigation }) => {
   );
 };
 
-export const SCTSRTEnd = ({ navigation }) => {
+export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder objects, put them in an array
@@ -377,18 +386,18 @@ export const SCTSRTEnd = ({ navigation }) => {
       title: 'Next checkin is ready',
       body: 'Open the app now to get started',
       type: 'CHECKIN_REMINDER',
-      time: GLOBAL.nextCheckinTime,
+      time: RLXState.nextCheckinTime,
       enabled: true
     }
   ];
   // Give the option to not set a reminder for PMR practice
-  if (GLOBAL.PMRIntentionTime) {
+  if (RLXState.PMRIntentionTime) {
     reminderArray.push({
       expoPushToken: state.userData.reminders.expoPushToken,
       title: 'Remember to practice PMR',
       body: 'Go to the Treatments screen to practice',
       type: 'PMR_REMINDER',
-      time: GLOBAL.PMRIntentionTime,
+      time: RLXState.PMRIntentionTime,
       enabled: true
     });
   }
@@ -403,7 +412,7 @@ export const SCTSRTEnd = ({ navigation }) => {
         submitCheckinData({
           userId: state.userToken,
           checkinPostponed: false,
-          nextCheckinDatetime: GLOBAL.nextCheckinTime,
+          nextCheckinDatetime: RLXState.nextCheckinTime,
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
             (v) => v.started === false && v.module !== 'RLX'
@@ -413,8 +422,8 @@ export const SCTSRTEnd = ({ navigation }) => {
           targetWakeTime: GLOBAL.targetWakeTime,
           targetTimeInBed: GLOBAL.targetTimeInBed,
           additionalCheckinData: {
-            PMRIntentionAction: GLOBAL.PMRIntentionAction,
-            PMRIntentionTime: GLOBAL.PMRIntentionTime
+            PMRIntentionAction: RLXState.PMRIntentionAction,
+            PMRIntentionTime: RLXState.PMRIntentionTime
           },
           reminderObject: reminderArray
         });
