@@ -34,7 +34,8 @@ export default {
     image: Images.WomanInBed,
     todos: [
       'Practice PMR once during the day',
-      'Use PMR before trying to sleep'
+      'Use PMR before trying to sleep',
+      'Relax muscles, then gently maintain focus on breath'
     ],
     url: 'https://dozy.customerly.help/progressive-muscle-relaxation-pmr/',
     optional: false,
