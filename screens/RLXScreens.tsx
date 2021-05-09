@@ -16,6 +16,7 @@ import RaisedHands from '../assets/images/RaisedHands.svg';
 import AlarmClock from '../assets/images/AlarmClock.svg';
 import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
 import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
+import SleepingFace from '../assets/images/SleepingFace.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation } from '../types/custom';
@@ -295,7 +296,7 @@ export const RulesRecap: React.FC<{ navigation: Navigation }> = ({
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('CheckinScheduling', {
+        navigation.navigate('LastTip', {
           progressBarPercent: 0.83
         });
       }}
@@ -332,6 +333,30 @@ export const RulesRecap: React.FC<{ navigation: Navigation }> = ({
         <Rule2Illustration width={imgSize * 1.2} height={imgSize} />
         <Rule3Illustration width={imgSize * 0.7} height={imgSize * 0.7} />
       </View>
+    </WizardContentScreen>
+  );
+};
+
+export const LastTip: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('CheckinScheduling', {
+          progressBarPercent: 0.9
+        });
+      }}
+      titleLabel="One last tip"
+      textLabel={
+        'For a powerful combo: try relaxing your muscles thoroughly, then gently maintaining focus on the sensation of breathing until you fall asleep.'
+      }
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <SleepingFace width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
