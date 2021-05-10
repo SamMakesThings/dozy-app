@@ -22,7 +22,7 @@ import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 
-// TODO: Use a local state object instead of GLOBAL for GSES score, next checkin time
+// Use a local state object instead of GLOBAL for GSES score, next checkin time
 interface Global {
   GSES1: number;
   GSES2: number;

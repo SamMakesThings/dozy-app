@@ -778,7 +778,6 @@ export const CheckinScheduling = ({ navigation }: Props) => {
 };
 
 export const SendFirstChat = ({ navigation }: Props) => {
-  // TODO: Turn this into chat scheduling
   return (
     <WizardContentScreen
       theme={theme}
