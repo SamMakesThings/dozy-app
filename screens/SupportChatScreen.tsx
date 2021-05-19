@@ -8,13 +8,12 @@ import {
   FlatList,
   Image,
   KeyboardAvoidingView,
-  TextInput,
   Platform,
   TouchableOpacity
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { FbLib } from '../config/firebaseConfig';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
@@ -23,9 +22,11 @@ import fetchChats from '../utilities/fetchChats';
 import sendChatMessage from '../utilities/sendChatMessage';
 import { ChatMessage } from '../components/ChatMessage';
 import { ChatTextInput } from '../components/ChatTextInput';
-import { Chat } from '../types/custom';
+import { Chat, Navigation } from '../types/custom';
 
-export const SupportChatScreen: React.FC = () => {
+export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
+  navigation
+}) => {
   // Get global state & dispatch
   const { state, dispatch } = React.useContext(AuthContext);
 
@@ -105,6 +106,19 @@ export const SupportChatScreen: React.FC = () => {
                 Founder & Sleep Coach
               </Text>
             </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('TreatmentReview')}
+              style={{ flex: 1, alignItems: 'flex-end' }}
+            >
+              <AntDesign
+                name="questioncircle"
+                size={scale(25)}
+                color={theme.colors.secondary}
+              />
+              <Text style={{ ...theme.typography.body2, ...styles.Text_FAQ }}>
+                FAQ
+              </Text>
+            </TouchableOpacity>
           </View>
           <KeyboardAvoidingView
             behavior={Platform.select({ ios: 'padding' })}
@@ -199,6 +213,10 @@ const styles = StyleSheet.create({
   Text_CoachTitle: {
     color: dozy_theme.colors.secondary,
     marginTop: scale(-5)
+  },
+  Text_FAQ: {
+    color: dozy_theme.colors.secondary,
+    marginBottom: -7
   },
   View_ChatInput: {
     backgroundColor: dozy_theme.colors.secondary,
