@@ -23,7 +23,7 @@
       "jsx": true
     },
     "babelOptions": {
-      "configFile": "./babelrc"
+      "configFile": "./babel.config.js"
     }
   },
   "rules": {
