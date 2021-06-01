@@ -33,3 +33,16 @@ export type Chat = {
   time: firebase.firestore.Timestamp | Date;
   sentByUser: boolean;
 };
+
+export type Task = {
+  label: string;
+  completedTimestamp?: firebase.firestore.Timestamp;
+  dailyRecurring: boolean;
+  source: string;
+  visibleAfterDate?: firebase.firestore.Timestamp;
+  notification?: {
+    enabled: boolean;
+    notifTime: firebase.firestore.Timestamp;
+  };
+  taskId: string;
+};
