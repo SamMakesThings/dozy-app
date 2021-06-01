@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../utilities/authContext';
 import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
+import TasksCard from '../components/TasksCard';
 import { CardContainer } from '../components/CardContainer';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
@@ -101,6 +102,8 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
               navigation.navigate('TreatmentReview', { module: currentModule });
             }}
           />
+          {/* Add new todo card */}
+          <TasksCard todosArray={treatments[currentModule].todos} />
           {
             // Display target sleep schedule card if defined in backend
             state.userData.currentTreatments.targetBedTime && (
