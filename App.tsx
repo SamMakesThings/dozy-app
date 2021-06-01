@@ -139,8 +139,6 @@ export default function App() {
 
   async function _loginWithGoogle() {
     try {
-      // NOTE: Current keys only work in Expo dev environment!! To work in standalone apps, need to update hostnames
-      // on these keys through the Google Cloud Console.
       const result = await Google.logInAsync({
         // TODO: Move these client IDs to the manifest or another file for cleaner code.
         androidClientId:
