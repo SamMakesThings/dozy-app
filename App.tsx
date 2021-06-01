@@ -98,6 +98,11 @@ export default function App() {
             ...prevState,
             chats: action.chats
           };
+        case 'SET_TASKS':
+          return {
+            ...prevState,
+            tasks: action.tasks
+          };
         case 'CHANGE_SELECTED_MONTH':
           return {
             ...prevState,
