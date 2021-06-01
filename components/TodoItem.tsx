@@ -1,22 +1,30 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { MaterialIcons } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
 
 export const TodoItem = (props: { label: string; completed: boolean }) => {
   const theme = dozy_theme;
+
+  const [checked, setChecked] = React.useState(false);
+
   return (
-    <View style={styles.View_TodoItem}>
+    <TouchableOpacity
+      style={styles.View_TodoItem}
+      onPress={() => {
+        setChecked(!checked);
+      }}
+    >
       <MaterialIcons
-        name={'check-box-outline-blank'}
+        name={checked ? 'check-box' : 'check-box-outline-blank'}
         size={scale(21)}
         color={theme.colors.secondary}
       />
       <Text style={{ ...theme.typography.body2, ...styles.Text_TodoItem }}>
         {props.label}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
