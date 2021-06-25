@@ -24,7 +24,7 @@ export default {
       'If awake for 15+ mins, get up and return later'
     ],
     url:
-      'https://dozy.customerly.help/stimulus-control-therapy-and-sleep-restriction-therapy/',
+      'https://dozy.customerly.help/stimulus-control-therapy-and-sleep-restriction-therapy-sct-srt/',
     optional: false,
     ready: true
   },
