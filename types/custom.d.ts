@@ -39,7 +39,7 @@ export type Chat = {
 
 export type Task = {
   label: string;
-  completedTimestamp?: firebase.firestore.Timestamp;
+  completedTimestamp: firebase.firestore.Timestamp | null;
   dailyRecurring: boolean;
   source: string;
   visibleAfterDate?: firebase.firestore.Timestamp;
