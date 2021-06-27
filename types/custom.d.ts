@@ -1,3 +1,6 @@
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+
 declare module '*.svg?inline' {
   const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
   export default content;
