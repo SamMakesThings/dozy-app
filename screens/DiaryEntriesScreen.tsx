@@ -23,6 +23,7 @@ import { dozy_theme } from '../config/Themes';
 import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { AuthContext } from '../utilities/authContext';
 import { Navigation, SleepLog } from '../types/custom';
+import fetchTasks from '../utilities/fetchTasks';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -168,6 +169,7 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
 
   let colRef: firebase.firestore.CollectionReference;
   let db: firebase.firestore.Firestore;
+  let tasksColRef: firebase.firestore.CollectionReference;
 
   // Set Firebase DB references if userToken is defined
   if (state.userToken) {
@@ -176,6 +178,10 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
       .collection('users')
       .doc(state.userToken)
       .collection('sleepLogs');
+    tasksColRef = db
+      .collection('users')
+      .doc(state.userToken)
+      .collection('tasks');
   }
 
   // Function to fetch sleep logs from Firebase and put them in global state
@@ -185,10 +191,8 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
         .then((sleepLogs: Array<SleepLog>) => {
           // Check that theres >1 entry. If no, set state accordingly
           if (sleepLogs.length === 0) {
-            setLogsLoading(false);
             dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: [] });
           } else if (sleepLogs.length === 1) {
-            setLogsLoading(false);
             dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
             Alert.alert(
               'Done for now',
@@ -196,9 +200,10 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
               [{ text: 'Ok' }]
             );
           } else {
-            setLogsLoading(false);
             dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
           }
+
+          setLogsLoading(false);
 
           return;
         })
@@ -208,9 +213,15 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
     }
 
     // Setup a listener to fetch new logs from Firebase
-    // const fetchDataBound = fetchData.bind(this);
     colRef.onSnapshot(function () {
       fetchData();
+    });
+
+    // Setup a listener to get new tasks from Firebase
+    tasksColRef.onSnapshot(async function () {
+      const tasks = await fetchTasks(db, state.userToken);
+      dispatch({ type: 'SET_TASKS', tasks: tasks });
+      console.log(tasks);
     });
   }
 
