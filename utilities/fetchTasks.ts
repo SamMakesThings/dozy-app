@@ -16,7 +16,7 @@ async function fetchTasks(
     let colRef = db.collection('users').doc(userId).collection('tasks');
 
     colRef
-      .where('completedTimestamp', 'not-in', false)
+      .where('completedTimestamp', '==', null)
       .get()
       .then((res: firebase.firestore.QuerySnapshot) => {
         let tasks: Array<Task> = [];
