@@ -1,5 +1,5 @@
 import '@firebase/firestore';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import { FbLib } from '../config/firebaseConfig';
 
 interface ReminderObject {

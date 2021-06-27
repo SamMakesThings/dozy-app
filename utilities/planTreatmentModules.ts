@@ -1,5 +1,5 @@
 import moment from 'moment';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import treatments from '../constants/Treatments';
 import { SleepLog } from '../types/custom';
 
