@@ -11,7 +11,7 @@ import {
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
 import '@firebase/firestore';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import { Entypo } from '@expo/vector-icons';
 import Intl from 'intl';
 import { scale } from 'react-native-size-matters';

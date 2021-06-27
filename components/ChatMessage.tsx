@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import { dozy_theme } from '../config/Themes';
 import { Chat } from '../types/custom';
 

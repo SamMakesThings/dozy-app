@@ -15,7 +15,7 @@ import * as Google from 'expo-google-app-auth';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
 import { FbAuth, FbLib, FbDb } from './config/firebaseConfig';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import { dozy_theme } from './config/Themes';
 import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';

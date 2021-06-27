@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   GestureResponderEvent
 } from 'react-native';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { CardContainer } from './CardContainer';

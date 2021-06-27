@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, TouchableOpacity, GestureResponderEvent } from 'react-native';
 import { Container } from '@draftbit/ui';
 import '@firebase/firestore';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
