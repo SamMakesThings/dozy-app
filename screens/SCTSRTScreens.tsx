@@ -369,11 +369,11 @@ export const DriversOfSleep = ({ navigation }: Props) => {
       titleLabel="The two main drivers of human sleep"
       textLabel={
         <Text>
-          Are <Text style={styles.BoldLabelText}>circadian sleep drive</Text>{' '}
-          and <Text style={styles.BoldLabelText}>homeostatic sleep drive.</Text>{' '}
-          Homeostatic sleep drive means the longer you&apos;ve been awake, the
-          sleepier you become. Circadian sleep drive is your body&apos;s
-          internal clock - it controls your energy with the day/night cycle.
+          Are <Text style={styles.BoldLabelText}>circadian rhythm</Text> and{' '}
+          <Text style={styles.BoldLabelText}>sleep debt.</Text> Sleep debt means
+          the longer you&apos;ve been awake, the sleepier you become. Circadian
+          rhythm is your body&apos;s internal clock - it controls your energy
+          with the day/night cycle.
         </Text>
       }
       flexibleLayout
@@ -395,7 +395,7 @@ export const WhySleepDrives = ({ navigation }: Props) => {
         });
       }}
       textLabel={
-        'By making both your circadian and homeostatic sleep drives stronger, we help you fall asleep faster and stay asleep longer.'
+        'By making both your circadian rhythm and sleep debt systems stronger, we help you fall asleep faster and stay asleep longer.'
       }
       buttonLabel="Great!"
     >
@@ -476,7 +476,7 @@ export const SCTSRTIntro = ({ navigation }: Props) => {
         });
       }}
       titleLabel="This is where SCT and SRT come in."
-      textLabel="By following 3 simple rules, we can break the vicious cycle, boost your homeostatic sleep drive, and start improving your sleep."
+      textLabel="By following 3 simple rules, we can break the vicious cycle, boost your body's natural rhythms, and start improving your sleep."
       buttonLabel="What's the first rule?"
     >
       <Clipboard width={imgSize} height={imgSize} />
