@@ -17,6 +17,9 @@ import AlarmClock from '../assets/images/AlarmClock.svg';
 import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
 import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import SleepingFace from '../assets/images/SleepingFace.svg';
+import TiredFace from '../assets/images/TiredFace.svg';
+import BarChart from '../assets/images/BarChart.svg';
+import Expressionless from '../assets/images/Expressionless.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation } from '../types/custom';
@@ -32,8 +35,21 @@ let imgSize = 0; // This value is replaced on the first screen to adjust for win
 let ENDState = {
   PMRIntentionAction: 'None',
   PMRIntentionTime: new Date(),
-  nextCheckinTime: new Date()
+  nextCheckinTime: new Date(),
+  ISI1: 0,
+  ISI2: 0,
+  ISI3: 0,
+  ISI4: 0,
+  ISI5: 0,
+  ISI6: 0,
+  ISI7: 0,
+  ISITotal: 0
 };
+
+interface Props {
+  navigation: Navigation;
+  route: { params: { nextScreen: string; warnAbout: string } };
+}
 
 export const Welcome: React.FC<{ navigation: Navigation }> = ({
   navigation
@@ -49,7 +65,7 @@ export const Welcome: React.FC<{ navigation: Navigation }> = ({
           progressBarPercent: 0.06
         });
       }}
-      textLabel="Welcome back! This week, we'll cover how to maintain your sleep improvements long after you stop using Dozy."
+      textLabel="Welcome back! Today we'll review your target schedule, then ask a few questions to check how your sleep is doing. Finally, we'll talk about how you can maintain your improved sleep, and what to do if insomnia appears again later."
     />
   );
 };
@@ -66,18 +82,308 @@ export const TreatmentPlan: React.FC<{ navigation: Navigation }> = ({
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('WhatCanIStop', {
+        navigation.navigate('ISIIntro', {
           progressBarPercent: 0.28
         });
       }}
       textLabel={
-        "No new treatment technique this week - just keep doing what you're doing. In the meantime, let's talk about the end of your treatment, and what to do to prevent insomnia from reappearing later."
+        "To check on your sleep, we'll ask you 7 questions. These are the same questions you answered when you first started Dozy!"
       }
       buttonLabel="Next"
-      flexibleLayout
     >
       <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
+  );
+};
+
+//
+// ISI RETEST SCREENS
+//
+
+export const ISI1 = ({ navigation }: Props) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        ENDState.ISI1 = value;
+        navigation.navigate('ISI2', { progressBarPercent: 0.28 });
+      }}
+      buttonValues={[
+        { label: 'No difficulty', value: 0, solidColor: true },
+        { label: 'Mild difficulty', value: 1, solidColor: true },
+        { label: 'Moderate difficulty', value: 2, solidColor: true },
+        { label: 'Severe difficulty', value: 3, solidColor: true },
+        { label: 'Extreme difficulty', value: 4, solidColor: true }
+      ]}
+      questionLabel="How much difficulty do you have falling asleep?"
+    />
+  );
+};
+
+export const ISI2 = ({ navigation }: Props) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        ENDState.ISI2 = value;
+        navigation.navigate('ISI3', { progressBarPercent: 0.42 });
+      }}
+      buttonValues={[
+        { label: 'No difficulty', value: 0, solidColor: true },
+        { label: 'Mild difficulty', value: 1, solidColor: true },
+        { label: 'Moderate difficulty', value: 2, solidColor: true },
+        { label: 'Severe difficulty', value: 3, solidColor: true },
+        { label: 'Extreme difficulty', value: 4, solidColor: true }
+      ]}
+      questionLabel="How much difficulty do you have *staying* asleep?"
+    />
+  );
+};
+
+export const ISI3 = ({ navigation }: Props) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        ENDState.ISI3 = value;
+        navigation.navigate('ISI4', { progressBarPercent: 0.56 });
+      }}
+      buttonValues={[
+        { label: 'Not a problem', value: 0, solidColor: true },
+        { label: 'I rarely wake up too early', value: 1, solidColor: true },
+        { label: 'I sometimes wake up too early', value: 2, solidColor: true },
+        {
+          label: 'I often wake up too early',
+          value: 3,
+          solidColor: true
+        },
+        { label: 'I always wake up too early', value: 4, solidColor: true }
+      ]}
+      questionLabel="How much of a problem do you have with waking up too early?"
+    />
+  );
+};
+
+export const ISI4 = ({ navigation }: Props) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        ENDState.ISI4 = value;
+        navigation.navigate('ISI5', { progressBarPercent: 0.7 });
+      }}
+      buttonValues={[
+        { label: 'Very satisfied', value: 0, solidColor: true },
+        { label: 'Satisfied', value: 1, solidColor: true },
+        {
+          label: 'Could be better, could be worse',
+          value: 2,
+          solidColor: true
+        },
+        { label: 'Dissatisfied', value: 3, solidColor: true },
+        { label: 'Very dissatisfied', value: 4, solidColor: true }
+      ]}
+      questionLabel="How satisfied/dissatisfied are you with your current sleep pattern?"
+    />
+  );
+};
+
+export const ISI5 = ({ navigation }: Props) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        ENDState.ISI5 = value;
+        navigation.navigate('ISI6', { progressBarPercent: 0.84 });
+      }}
+      buttonValues={[
+        { label: 'Not at all noticeable', value: 0, solidColor: true },
+        { label: 'A little', value: 1, solidColor: true },
+        { label: 'Somewhat', value: 2, solidColor: true },
+        { label: 'Much', value: 3, solidColor: true },
+        { label: 'Very much noticeable', value: 4, solidColor: true }
+      ]}
+      questionLabel="How noticeable to others do you think your sleep problem is? (in terms of impairing the quality of your life)"
+    />
+  );
+};
+
+export const ISI6 = ({ navigation }: Props) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        ENDState.ISI6 = value;
+        navigation.navigate('ISI7', { progressBarPercent: 0.95 });
+      }}
+      buttonValues={[
+        { label: 'Not at all worried', value: 0, solidColor: true },
+        { label: 'A little', value: 1, solidColor: true },
+        { label: 'Somewhat', value: 2, solidColor: true },
+        { label: 'Much', value: 3, solidColor: true },
+        { label: 'Very much worried', value: 4, solidColor: true }
+      ]}
+      questionLabel="How worried are you about your current sleep pattern?"
+    />
+  );
+};
+
+export const ISI7 = ({ navigation }: Props) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value: number) => {
+        // Sum ISI scores, store value & navigate accordingly
+        const { ISI1, ISI2, ISI3, ISI4, ISI5, ISI6 } = ENDState;
+        ENDState.ISI7 = value;
+        ENDState.ISITotal = ISI1 + ISI2 + ISI3 + ISI4 + ISI5 + ISI6 + value;
+        navigation.navigate('ISIProcessing', { progressBarPercent: null });
+      }}
+      buttonValues={[
+        { label: 'Not at all interfering', value: 0, solidColor: true },
+        { label: 'A little', value: 1, solidColor: true },
+        { label: 'Somewhat', value: 2, solidColor: true },
+        { label: 'Much', value: 3, solidColor: true },
+        { label: 'Very much interfering', value: 4, solidColor: true }
+      ]}
+      questionLabel="How much does your sleep problem interfere with your daily life? (e.g. tiredness, mood, ability to function at work, concentration, etc.)?"
+    />
+  );
+};
+
+export const ISIProcessing = ({ navigation }: Props) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('ISIResults', {
+          progressBarPercent: 0.14
+        });
+      }}
+      textLabel="Done! Let's look at your results."
+      buttonLabel="Next"
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const ISIResults = ({ navigation }: Props) => {
+  const { state } = React.useContext(AuthContext);
+
+  const severityText = () => {
+    if (ENDState.ISITotal <= 7) {
+      return 'no clinically significant insomnia';
+    } else if (ENDState.ISITotal <= 14) {
+      return 'clinically mild insomnia';
+    } else if (ENDState.ISITotal <= 21) {
+      return 'clinically moderate insomnia';
+    } else {
+      return 'clinically severe insomnia';
+    }
+  };
+
+  // Get % improvement in ISI score, format it nicely
+  const prevISITotal = state.userData.baselineInfo.isiTotal;
+  const rawISIPercentImprovement = (prevISITotal - ENDState.ISITotal) / 28;
+  const ISIPercentImprovement =
+    parseFloat(rawISIPercentImprovement.toFixed(2)) * 100;
+
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<BarChart width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate(
+          ENDState.ISITotal > 7 ? 'ISISignificant' : 'ISINoSignificant',
+          {
+            progressBarPercent: null
+          }
+        );
+      }}
+      textLabel={
+        <Text>
+          According to the Insomnia Severity Index, you’ve got
+          {ENDState.ISITotal >= 7 ? '\n' : ' '}
+          <Text style={styles.BoldLabelText}>{severityText() + ' '}</Text>
+          with a total of {ENDState.ISITotal} points. That's{' '}
+          {ISIPercentImprovement}% improvement over your previous score!
+        </Text>
+      }
+      buttonLabel="What's that mean?"
+    />
+  );
+};
+
+export const ISISignificant = ({ navigation }: Props) => {
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<TiredFace width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('SafetyIntro', {
+          progressBarPercent: null
+        });
+      }}
+      longText
+      textLabel={
+        <>
+          <Text style={styles.BoldLabelText}>
+            Clinically significant insomnia{'\n'}
+          </Text>
+          <Text style={{ lineHeight: scale(18) }}>
+            Your insomnia is {ENDState.ISITotal >= 14 ? 'definitely' : 'likely'}{' '}
+            interfering with your life. However, there&apos;s good news:
+            You&apos;re exactly the person our app was designed to help! With
+            your support, Dozy can take you from your current insomnia to no
+            insomnia.
+          </Text>
+        </>
+      }
+      buttonLabel="Let's get started"
+    />
+  );
+};
+
+export const ISINoSignificant = ({ navigation }: Props) => {
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<Expressionless width={imgSize} height={imgSize} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('SafetyIntro', {
+          progressBarPercent: null
+        });
+      }}
+      longText
+      textLabel={
+        <>
+          <Text style={styles.BoldLabelText}>
+            No significant insomnia{'\n'}
+          </Text>
+          <Text style={{ lineHeight: scale(18) }}>
+            We&apos;re glad to tell you that you don&apos;t have serious
+            problems with insomnia. That said, this app is designed for people
+            with more severe sleep problems. The techniques used may temporarily
+            disrupt your sleep and may not improve it much. If you&apos;d still
+            like to use the app, be our guest, just be aware that you may not
+            get much out of it.
+          </Text>
+        </>
+      }
+      buttonLabel="Whatever, I'll use it anyway"
+    />
   );
 };
 
