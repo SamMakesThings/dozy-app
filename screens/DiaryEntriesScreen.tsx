@@ -221,7 +221,6 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
     tasksColRef.onSnapshot(async function () {
       const tasks = await fetchTasks(db, state.userToken);
       dispatch({ type: 'SET_TASKS', tasks: tasks });
-      console.log(tasks);
     });
   }
 
