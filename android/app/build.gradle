@@ -137,6 +137,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 15
         versionName "0.5.10"
+        manifestPlaceholders = [
+            appAuthRedirectScheme: 'com.dozyhealth.dozy'
+        ]
     }
     splits {
         abi {
