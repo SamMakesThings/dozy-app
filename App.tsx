@@ -15,7 +15,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
 import { FbAuth, FbLib, FbDb } from './config/firebaseConfig';
-import firebase from 'firebase/app';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { dozy_theme } from './config/Themes';
 import '@firebase/firestore';
 import AppNavigator from './navigation/AppNavigator';
@@ -226,6 +226,24 @@ export default function App() {
     signIn: async () => {
       // Fetch and store the relevant auth token
       promptLoginAsync();
+    },
+    signInWithApple: async () => {
+      try {
+        const credential = await AppleAuthentication.signInAsync({
+          requestedScopes: [
+            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+            AppleAuthentication.AppleAuthenticationScope.EMAIL
+          ]
+        });
+        // TODO: Continue to Firebase auth
+        console.log('>>>> SIGNED IN WITH APPLE', credential);
+      } catch (e) {
+        if (e.code === 'ERR_CANCELED') {
+          // handle that the user canceled the sign-in flow
+        } else {
+          // handle other errors
+        }
+      }
     },
     signOut: () => {
       SecureStore.deleteItemAsync('userId');
