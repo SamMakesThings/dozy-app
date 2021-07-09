@@ -7,6 +7,8 @@ import {
   LogBox,
   Text
 } from 'react-native';
+import * as Crypto from 'expo-crypto';
+import firebase from 'firebase';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
@@ -154,23 +156,35 @@ export default function App() {
   React.useEffect(() => {
     if (response?.type === 'success') {
       const { authentication } = response;
-      firebaseAuth(authentication);
+      firebaseAuthGoogle(authentication);
     } else {
       console.log('Login did not succeed');
     }
   }, [response]);
 
-  async function firebaseAuth(googleAuthResponse) {
+  async function firebaseAuthApple(appleAuthResponse, nonce) {
+    dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
+    // Pipe the result of Sign in with Apple into Firebase auth
+    const { identityToken } = appleAuthResponse;
+    const provider = new firebase.auth.OAuthProvider('apple.com');
+    const credential = provider.credential({
+      idToken: identityToken!,
+      rawNonce: nonce
+    });
+    const fbSigninResult = FbAuth.signInWithCredential(credential);
+    await processFbLogin(fbSigninResult);
+  }
+
+  async function firebaseAuthGoogle(googleAuthResponse) {
+    dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
     // Pipe the result of Google login into Firebase auth
     const { idToken, accessToken } = googleAuthResponse;
-    dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
     const credential = FbLib.auth.GoogleAuthProvider.credential(
       idToken,
       accessToken
     );
     await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
     const fbSigninResult = await FbAuth.signInWithCredential(credential);
-
     await processFbLogin(fbSigninResult);
   }
 
@@ -229,14 +243,22 @@ export default function App() {
     },
     signInWithApple: async () => {
       try {
+        const nonce = Math.random().toString(36).substring(2, 10);
+        const hashedNonce = await Crypto.digestStringAsync(
+          Crypto.CryptoDigestAlgorithm.SHA256,
+          nonce
+        );
+
         const credential = await AppleAuthentication.signInAsync({
           requestedScopes: [
             AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
             AppleAuthentication.AppleAuthenticationScope.EMAIL
-          ]
+          ],
+          nonce: hashedNonce
         });
-        // TODO: Continue to Firebase auth
-        console.log('>>>> SIGNED IN WITH APPLE', credential);
+
+        // console.log('>>>> SIGNED IN WITH APPLE', credential);
+        firebaseAuthApple(credential, hashedNonce);
       } catch (e) {
         if (e.code === 'ERR_CANCELED') {
           // handle that the user canceled the sign-in flow
