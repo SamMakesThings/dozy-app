@@ -11,7 +11,7 @@ import { Provider as ThemeProvider } from '@draftbit/ui';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import * as Icon from '@expo/vector-icons';
-import * as Google from 'expo-google-app-auth';
+import * as Google from 'expo-auth-session/providers/google';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
 import { FbAuth, FbLib, FbDb } from './config/firebaseConfig';
@@ -142,37 +142,72 @@ export default function App() {
     }
   );
 
-  async function _loginWithGoogle() {
-    try {
-      const result = await Google.logInAsync({
-        // TODO: Move these client IDs to the manifest or another file for cleaner code.
-        androidClientId:
-          '713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com',
-        iosClientId:
-          '713165282203-fr943kvhd9rbst5i5ss4g3htgjho143a.apps.googleusercontent.com',
-        androidStandaloneAppClientId:
-          '713165282203-15rbcpiu517fikvak6c9okehpusbk84e.apps.googleusercontent.com',
-        iosStandaloneAppClientId:
-          '713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf.apps.googleusercontent.com',
-        scopes: ['profile', 'email']
+  // Auth code snippet from https://docs.expo.io/guides/authentication/#google
+  const [request, response, promptLoginAsync] = Google.useAuthRequest({
+    // TODO: Move these client IDs to the manifest or another file for cleaner code.
+    iosClientId:
+      '713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf.apps.googleusercontent.com',
+    androidClientId:
+      '713165282203-15rbcpiu517fikvak6c9okehpusbk84e.apps.googleusercontent.com'
+  });
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      firebaseAuth(authentication);
+    } else {
+      console.log('Login did not succeed');
+    }
+  }, [response]);
+
+  async function firebaseAuth(googleAuthResponse) {
+    // Pipe the result of Google login into Firebase auth
+    const { idToken, accessToken } = googleAuthResponse;
+    dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
+    const credential = FbLib.auth.GoogleAuthProvider.credential(
+      idToken,
+      accessToken
+    );
+    await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
+    const fbSigninResult = await FbAuth.signInWithCredential(credential);
+
+    await processFbLogin(fbSigninResult);
+  }
+
+  async function processFbLogin(result) {
+    // Store credentials in SecureStore
+    if ('credential' in result) {
+      SecureStore.setItemAsync('providerId', result.credential.providerId);
+      SecureStore.setItemAsync('userId', result.user.uid);
+      SecureStore.setItemAsync(
+        'profileData',
+        JSON.stringify(result.additionalUserInfo.profile)
+      ).catch((error) => {
+        console.log('Error signing in: ' + error);
       });
 
-      if (result.type === 'success') {
-        const { idToken, accessToken } = result;
-        dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
-        const credential = FbLib.auth.GoogleAuthProvider.credential(
-          idToken,
-          accessToken
-        );
-        await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
-        let fbSigninResult = FbAuth.signInWithCredential(credential);
-        return await fbSigninResult;
-      } else {
-        return { cancelled: true };
-      }
-    } catch (err) {
-      console.log('err from App.js:', err);
+      // Check if that user's document exists, in order to direct them to or past onboarding
+      const userDocExists = await FbDb.collection('users')
+        .doc(result.user.uid)
+        .get()
+        .then((docSnapshot) => {
+          return docSnapshot.exists;
+        });
+
+      // Update app state accordingly thru context hook function
+      dispatch({
+        type: 'SIGN_IN',
+        token: result.user.uid,
+        onboardingComplete: userDocExists,
+        profileData: result.additionalUserInfo.profile,
+        isAuthLoading: false
+      });
+    } else {
+      console.log('Error signing in (maybe cancelled)');
     }
+
+    // Update user's data from Firestore db
+    refreshUserData(dispatch);
   }
 
   React.useEffect(() => {
@@ -190,50 +225,7 @@ export default function App() {
     state: state,
     signIn: async () => {
       // Fetch and store the relevant auth token
-
-      // Use my previously defined login function to get user data and store the token
-      _loginWithGoogle().then(
-        async (
-          result: firebase.auth.UserCredential | { cancelled: boolean }
-        ) => {
-          // Store credentials in SecureStore
-          if ('credential' in result) {
-            SecureStore.setItemAsync(
-              'providerId',
-              result.credential.providerId
-            );
-            SecureStore.setItemAsync('userId', result.user.uid);
-            SecureStore.setItemAsync(
-              'profileData',
-              JSON.stringify(result.additionalUserInfo.profile)
-            ).catch((error) => {
-              console.log('Error signing in: ' + error);
-            });
-
-            // Check if that user's document exists, in order to direct them to or past onboarding
-            const userDocExists = await FbDb.collection('users')
-              .doc(result.user.uid)
-              .get()
-              .then((docSnapshot) => {
-                return docSnapshot.exists;
-              });
-
-            // Update app state accordingly thru context hook function
-            dispatch({
-              type: 'SIGN_IN',
-              token: result.user.uid,
-              onboardingComplete: userDocExists,
-              profileData: result.additionalUserInfo.profile,
-              isAuthLoading: false
-            });
-          } else {
-            console.log('Error signing in (maybe cancelled)');
-          }
-
-          // Update user's data from Firestore db
-          refreshUserData(dispatch);
-        }
-      );
+      promptLoginAsync();
     },
     signOut: () => {
       SecureStore.deleteItemAsync('userId');
