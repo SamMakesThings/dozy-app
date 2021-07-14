@@ -1,7 +1,7 @@
 import React from 'react';
-import * as AppleAuthentication from 'expo-apple-authentication';
+import * as AppleAuthentication from 'expo-apple-authentication'; // @ts-ignore
 import { Button, ScreenContainer, Container, Touchable } from '@draftbit/ui';
-import { StyleSheet, Text, ImageBackground } from 'react-native';
+import { StyleSheet, Text, ImageBackground, Platform } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
@@ -75,20 +75,23 @@ function LoginScreen() {
           elevation={0}
           style={styles.View_ButtonsContainer}
         >
-          <AppleAuthentication.AppleAuthenticationButton
-            buttonType={
-              AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
-            }
-            buttonStyle={
-              AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
-            }
-            cornerRadius={theme.borderRadius.button}
-            style={StyleSheet.flatten([
-              theme.buttonLayout,
-              { borderRadius: theme.borderRadius.button }
-            ])}
-            onPress={signInWithApple}
-          />
+          {Platform.OS === 'ios' && ( // Show Apple signin if iPhone
+            <AppleAuthentication.AppleAuthenticationButton
+              buttonType={
+                AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+              }
+              buttonStyle={
+                AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+              }
+              cornerRadius={theme.borderRadius.button}
+              style={StyleSheet.flatten([
+                theme.buttonLayout,
+                { borderRadius: theme.borderRadius.button }
+              ])}
+              onPress={signInWithApple}
+            />
+          )}
+
           <Button
             type="solid"
             color={theme.colors.primary}
