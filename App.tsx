@@ -36,7 +36,9 @@ console.warn = (message) => {
 
 // Disable font scaling app-wide, enable on things it doesn't break
 // Hmm - this code throws TS undefined errors, but works. Not sure why.
+// @ts-expect-error
 Text.defaultProps = Text.defaultProps || {};
+// @ts-expect-error
 Text.defaultProps.allowFontScaling = false;
 
 // Root app component
