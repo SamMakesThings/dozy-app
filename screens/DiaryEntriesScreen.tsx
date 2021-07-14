@@ -7,7 +7,7 @@ import {
   View,
   Alert,
   FlatList
-} from 'react-native';
+} from 'react-native'; // @ts-ignore draftbit TS error below
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
 import '@react-native-firebase/firestore';
@@ -29,7 +29,7 @@ import fetchTasks from '../utilities/fetchTasks';
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/tr-TR');
-  require('date-time-format-timezone');
+  require('date-time-format-timezone'); // @ts-ignore This code works, TS yells
   Intl.__disableRegExpRestore(); /*For syntaxerror invalid regular expression unmatched parentheses*/
 }
 
@@ -222,7 +222,6 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
     tasksColRef.onSnapshot(async function () {
       const tasks = await fetchTasks(db, state.userToken);
       dispatch({ type: 'SET_TASKS', tasks: tasks });
-      console.log(tasks);
     });
   }
 
