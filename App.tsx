@@ -8,7 +8,6 @@ import {
   Text
 } from 'react-native';
 import * as Crypto from 'expo-crypto';
-import firebase from 'firebase';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
@@ -19,7 +18,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { FbAuth, FbLib, FbDb } from './config/firebaseConfig';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { dozy_theme } from './config/Themes';
-import '@firebase/firestore';
+import '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/auth';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './utilities/authContext';
 import refreshUserData from './utilities/refreshUserData';
@@ -166,11 +166,8 @@ export default function App() {
     dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
     // Pipe the result of Sign in with Apple into Firebase auth
     const { identityToken } = appleAuthResponse;
-    const provider = new firebase.auth.OAuthProvider('apple.com');
-    const credential = provider.credential({
-      idToken: identityToken!,
-      rawNonce: nonce
-    });
+    const provider = firebase.auth.AppleAuthProvider;
+    const credential = provider.credential(identityToken!, nonce);
     const fbSigninResult = FbAuth.signInWithCredential(credential);
     await processFbLogin(fbSigninResult);
   }
@@ -183,15 +180,15 @@ export default function App() {
       idToken,
       accessToken
     );
-    await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
+    // await firebase.auth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
     const fbSigninResult = await FbAuth.signInWithCredential(credential);
     await processFbLogin(fbSigninResult);
   }
 
   async function processFbLogin(result) {
     // Store credentials in SecureStore
-    if ('credential' in result) {
-      SecureStore.setItemAsync('providerId', result.credential.providerId);
+    if ('user' in result) {
+      SecureStore.setItemAsync('providerId', result.user.providerId);
       SecureStore.setItemAsync('userId', result.user.uid);
       SecureStore.setItemAsync(
         'profileData',
