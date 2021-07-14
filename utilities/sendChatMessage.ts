@@ -1,8 +1,8 @@
-import firebase from 'firebase/app';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { Chat } from '../types/custom';
 
 export default async function sendChatMessage(
-  db: firebase.firestore.Firestore,
+  db: FirebaseFirestoreTypes.Module,
   userId: string,
   msg: Chat
 ) {

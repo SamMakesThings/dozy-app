@@ -1,9 +1,8 @@
-import '@firebase/firestore';
-import firebase from 'firebase/app';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { Chat } from '../types/custom';
 
 async function fetchChats(
-  db: firebase.firestore.Firestore,
+  db: FirebaseFirestoreTypes.Module,
   userId: string
 ): Promise<Chat[]> {
   // Retrieving chats from Firestore
@@ -21,7 +20,7 @@ async function fetchChats(
     colRef
       .orderBy('time', 'desc')
       .get()
-      .then((res: firebase.firestore.QuerySnapshot) => {
+      .then((res: FirebaseFirestoreTypes.QuerySnapshot) => {
         let chats: Array<Chat> = [];
 
         // Check that theres >1 entry. If no, set state accordingly
@@ -30,7 +29,9 @@ async function fetchChats(
         }
 
         // Otherwise, arrange data and update state
-        res.forEach(function (doc: firebase.firestore.QueryDocumentSnapshot) {
+        res.forEach(function (
+          doc: FirebaseFirestoreTypes.QueryDocumentSnapshot
+        ) {
           let docData = doc.data();
           const currentChat = {
             sender: docData.sender,

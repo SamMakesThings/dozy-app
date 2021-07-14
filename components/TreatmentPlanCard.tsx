@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   GestureResponderEvent
 } from 'react-native';
-import firebase from 'firebase/app';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { CardContainer } from './CardContainer';
@@ -18,7 +18,7 @@ interface Props {
   onPress?: (event: GestureResponderEvent) => void;
   title?: string;
   titleOpacity?: number;
-  nextCheckinDate: firebase.firestore.Timestamp;
+  nextCheckinDate: FirebaseFirestoreTypes.Timestamp;
   completionPercentProgress: number;
 }
 

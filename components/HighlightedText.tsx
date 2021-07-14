@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { Container } from '@draftbit/ui';
-import '@firebase/firestore';
+import '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 

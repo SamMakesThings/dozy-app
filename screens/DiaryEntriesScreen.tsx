@@ -10,15 +10,16 @@ import {
 } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
-import '@firebase/firestore';
-import firebase from 'firebase/app';
+import '@react-native-firebase/firestore';
+import firestore, {
+  FirebaseFirestoreTypes
+} from '@react-native-firebase/firestore';
 import { Entypo } from '@expo/vector-icons';
 import Intl from 'intl';
 import { scale } from 'react-native-size-matters';
 import SleepLogEntryCard from '../components/SleepLogEntryCard';
 import { BaselineProgressCard } from '../components/BaselineProgressCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
-import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
 import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { AuthContext } from '../utilities/authContext';
@@ -167,13 +168,13 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
   // Set local state for loading/not loading
   const [logsLoading, setLogsLoading] = React.useState(true);
 
-  let colRef: firebase.firestore.CollectionReference;
-  let db: firebase.firestore.Firestore;
-  let tasksColRef: firebase.firestore.CollectionReference;
+  let colRef: FirebaseFirestoreTypes.CollectionReference;
+  let db: FirebaseFirestoreTypes.Module;
+  let tasksColRef: FirebaseFirestoreTypes.CollectionReference;
 
   // Set Firebase DB references if userToken is defined
   if (state.userToken) {
-    db = FbLib.firestore();
+    db = firestore();
     colRef = db
       .collection('users')
       .doc(state.userToken)

@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { FbLib } from '../config/firebaseConfig';
+import { FbDb } from '../config/firebaseConfig';
 import refreshUserData from './refreshUserData';
 
 interface OnboardingState {
@@ -28,7 +28,7 @@ export default async function submitOnboardingData(
   dispatch: Function
 ) {
   // Initialize relevant Firebase values
-  let db = FbLib.firestore();
+  let db = FbDb;
   let userId = await SecureStore.getItemAsync('userId');
   let userDocRef =
     typeof userId === 'string'
