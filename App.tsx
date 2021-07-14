@@ -23,6 +23,7 @@ import { firebase } from '@react-native-firebase/auth';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './utilities/authContext';
 import refreshUserData from './utilities/refreshUserData';
+import alterMonthSelection from './utilities/alterMonthSelection';
 
 // Mute "setting a timer" firebase warnings in console
 LogBox.ignoreLogs(['Setting a timer']);
@@ -37,25 +38,6 @@ console.warn = (message) => {
 // Hmm - this code throws TS undefined errors, but works. Not sure why.
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
-
-// A utility function to always return a valid date number given a starting date and a delta
-// TODO: Move this to its own file
-function alterMonthSelection(prevDate, changeBy) {
-  let { month, year } = prevDate;
-  const adjustedMonth = month + changeBy;
-
-  if (adjustedMonth === 12) {
-    month = 0;
-    year += 1;
-  } else if (adjustedMonth === -1) {
-    month = 11;
-    year += -1;
-  } else {
-    month = adjustedMonth;
-  }
-
-  return { month: month, year: year };
-}
 
 // Root app component
 export default function App() {
