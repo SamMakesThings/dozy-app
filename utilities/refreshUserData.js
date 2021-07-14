@@ -12,7 +12,7 @@ export default async function refreshUserData(dispatch) {
     userId = await SecureStore.getItemAsync('userId');
     if (userId === null) {
       console.error("userId isn't stored in SecureStore, aborting");
-      throw new Error("userId isn't stored in SecureStore, aborting");
+      throw "userId isn't stored in SecureStore, aborting";
     }
     // accessToken = await SecureStore.getItemAsync('accessToken');
     // idToken = await SecureStore.getItemAsync('idToken');
