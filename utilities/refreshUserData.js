@@ -43,11 +43,15 @@ export default async function refreshUserData(dispatch) {
     FbDb.collection('users')
       .doc(userId)
       .onSnapshot((docSnapshot) => {
-        dispatch({
-          type: 'UPDATE_USERDATA',
-          userData: docSnapshot.data(),
-          onboardingComplete: docSnapshot.data() != undefined
-        });
+        if (docSnapshot) {
+          dispatch({
+            type: 'UPDATE_USERDATA',
+            userData: docSnapshot.data(),
+            onboardingComplete: docSnapshot.data() != undefined
+          });
+        } else {
+          console.log("docSnapshot isn't defined at this point");
+        }
       });
   } catch (e) {
     console.log('Error in restoring token:', e);

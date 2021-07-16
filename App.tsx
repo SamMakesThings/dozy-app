@@ -137,7 +137,7 @@ export default function App() {
       dispatch(argsObject);
     },
     state: state,
-    signIn: async () => {
+    signIn: () => {
       // Fetch and store the relevant auth token
       promptLoginAsync();
     },
@@ -170,6 +170,7 @@ export default function App() {
     signOut: () => {
       SecureStore.deleteItemAsync('userId');
       dispatch({ type: 'SIGN_OUT' });
+      FbAuth.signOut();
     },
     finishOnboarding: () => {
       dispatch({ type: 'FINISH_ONBOARDING' });
