@@ -172,23 +172,17 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
   let db: FirebaseFirestoreTypes.Module;
   let tasksColRef: FirebaseFirestoreTypes.CollectionReference;
 
-  // Set Firebase DB references if userToken is defined
-  if (state.userToken) {
+  // Set Firebase DB references if userId is defined
+  if (state.userId) {
     db = firestore();
-    colRef = db
-      .collection('users')
-      .doc(state.userToken)
-      .collection('sleepLogs');
-    tasksColRef = db
-      .collection('users')
-      .doc(state.userToken)
-      .collection('tasks');
+    colRef = db.collection('users').doc(state.userId).collection('sleepLogs');
+    tasksColRef = db.collection('users').doc(state.userId).collection('tasks');
   }
 
   // Function to fetch sleep logs from Firebase and put them in global state
   async function setSleepLogs() {
     async function fetchData() {
-      fetchSleepLogs(db, state.userToken)
+      fetchSleepLogs(db, state.userId)
         .then((sleepLogs: Array<SleepLog>) => {
           // Check that theres >1 entry. If no, set state accordingly
           if (sleepLogs.length === 0) {
@@ -220,7 +214,7 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
 
     // Setup a listener to get new tasks from Firebase
     tasksColRef.onSnapshot(async function () {
-      const tasks = await fetchTasks(db, state.userToken);
+      const tasks = await fetchTasks(db, state.userId);
       dispatch({ type: 'SET_TASKS', tasks: tasks });
     });
   }

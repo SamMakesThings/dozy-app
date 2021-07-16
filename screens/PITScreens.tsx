@@ -514,7 +514,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
         submitCheckinData({
-          userId: state.userToken,
+          userId: state.userId,
           checkinPostponed: false,
           nextCheckinDatetime: GLOBAL.nextCheckinTime,
           lastCheckinDatetime: new Date(),

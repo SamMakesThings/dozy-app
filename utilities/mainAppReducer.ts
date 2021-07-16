@@ -8,14 +8,14 @@ export function getMainAppReducer() {
         case 'RESTORE_TOKEN':
           return {
             ...prevState,
-            userToken: action.token,
+            userId: action.token,
             profileData: action.profileData
           };
         case 'SIGN_IN':
           return {
             ...prevState,
             isSignout: false,
-            userToken: action.token,
+            userId: action.token,
             onboardingComplete: action.onboardingComplete,
             authLoading: action.isAuthLoading,
             profileData: action.profileData
@@ -24,7 +24,7 @@ export function getMainAppReducer() {
           return {
             ...prevState,
             isSignout: true,
-            userToken: null
+            userId: null
           };
         case 'UPDATE_USERDATA':
           return {
@@ -75,7 +75,7 @@ export function getMainAppReducer() {
     {
       isLoading: true,
       isSignout: false,
-      userToken: null,
+      userId: null,
       onboardingComplete: true,
       profileData: null,
       sleepLogs: [],
