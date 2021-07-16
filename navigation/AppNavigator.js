@@ -49,7 +49,7 @@ function LoadingScreen() {
 
 // Export the navigation components and screens, with if/then for auth state
 export default function InitialAuthNavigator({
-  userToken,
+  userId,
   authLoading,
   onboardingComplete
 }) {
@@ -64,7 +64,7 @@ export default function InitialAuthNavigator({
         headerShown: false
       }}
     >
-      {userToken != undefined ? (
+      {userId != undefined ? (
         <>
           {onboardingComplete === false && (
             <TopStack.Screen
@@ -135,6 +135,6 @@ export default function InitialAuthNavigator({
 }
 
 InitialAuthNavigator.propTypes = {
-  userToken: PropTypes.string,
+  userId: PropTypes.string,
   authLoading: PropTypes.bool
 };

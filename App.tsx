@@ -218,7 +218,7 @@ export default function App() {
                 []
               )}
               <AppNavigator
-                userToken={state.userToken}
+                userId={state.userId}
                 authLoading={state.authLoading}
                 onboardingComplete={state.onboardingComplete}
               />
