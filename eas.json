@@ -8,8 +8,8 @@
         "gradleCommand": ":app:assembleDebug",
         "distribution": "internal"
       },
-      "apkdev:": {
-        "buildType": "apk"
+      "special:": {
+        "gradleCommand": ":app:assembleRelease"
       }
     },
     "ios": {
