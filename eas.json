@@ -5,7 +5,7 @@
         "gradleCommand": ":app:assembleRelease"
       },
       "release": {
-        "gradleCommand": ":app:bundleRelease"
+        "gradleCommand": ":app:assembleRelease"
       },
       "development": {
         "gradleCommand": ":app:assembleDebug",
