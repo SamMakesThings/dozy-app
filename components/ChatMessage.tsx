@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import firebase from 'firebase/app';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { dozy_theme } from '../config/Themes';
 import { Chat } from '../types/custom';
 
@@ -9,7 +9,7 @@ export function ChatMessage(item: Chat, index: number) {
   const theme = dozy_theme;
 
   // Shorten type check to be able to handle fb timestamps or JS dates
-  const firebaseTime = item.time as firebase.firestore.Timestamp;
+  const firebaseTime = item.time as FirebaseFirestoreTypes.Timestamp;
 
   return (
     <View

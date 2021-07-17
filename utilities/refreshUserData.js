@@ -2,14 +2,17 @@ import * as SecureStore from 'expo-secure-store';
 import { FbLib, FbDb } from '../config/firebaseConfig';
 
 export default async function refreshUserData(dispatch) {
-  let userToken;
+  let userId;
   // let accessToken;
   // let idToken;
   // let providerId;
   let profileData;
 
   try {
-    userToken = await SecureStore.getItemAsync('userId');
+    userId = await SecureStore.getItemAsync('userId');
+    if (userId === null) {
+      throw "userId isn't stored in SecureStore, aborting";
+    }
     // accessToken = await SecureStore.getItemAsync('accessToken');
     // idToken = await SecureStore.getItemAsync('idToken');
     // providerId = await SecureStore.getItemAsync('providerId');
@@ -20,13 +23,13 @@ export default async function refreshUserData(dispatch) {
     // TODO: Add token validation
     dispatch({
       type: 'RESTORE_TOKEN',
-      token: userToken,
+      token: userId,
       profileData: profileData
     });
 
     // Update user's data from Firestore db
     FbDb.collection('users')
-      .doc(userToken)
+      .doc(userId)
       .get()
       .then((userData) => {
         dispatch({
@@ -38,13 +41,17 @@ export default async function refreshUserData(dispatch) {
 
     // Add a listener so user doc state updates live
     FbDb.collection('users')
-      .doc(userToken)
+      .doc(userId)
       .onSnapshot((docSnapshot) => {
-        dispatch({
-          type: 'UPDATE_USERDATA',
-          userData: docSnapshot.data(),
-          onboardingComplete: docSnapshot.data() != undefined
-        });
+        if (docSnapshot) {
+          dispatch({
+            type: 'UPDATE_USERDATA',
+            userData: docSnapshot.data(),
+            onboardingComplete: docSnapshot.data() != undefined
+          });
+        } else {
+          console.log("docSnapshot isn't defined at this point");
+        }
       });
   } catch (e) {
     console.log('Error in restoring token:', e);

@@ -1,9 +1,8 @@
-import '@firebase/firestore';
-import firebase from 'firebase/app';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { Task } from '../types/custom';
 
 async function fetchTasks(
-  db: firebase.firestore.Firestore,
+  db: FirebaseFirestoreTypes.Module,
   userId: string
 ): Promise<Task[]> {
   // Retrieving tasks from Firestore
@@ -18,7 +17,7 @@ async function fetchTasks(
     colRef
       .where('completedTimestamp', '==', null)
       .get()
-      .then((res: firebase.firestore.QuerySnapshot) => {
+      .then((res: FirebaseFirestoreTypes.QuerySnapshot) => {
         let tasks: Array<Task> = [];
 
         // Check that theres >1 entry. If no, set state accordingly
@@ -27,7 +26,9 @@ async function fetchTasks(
         }
 
         // Otherwise, arrange data and update state
-        res.forEach(function (doc: firebase.firestore.QueryDocumentSnapshot) {
+        res.forEach(function (
+          doc: FirebaseFirestoreTypes.QueryDocumentSnapshot
+        ) {
           let docData = doc.data();
           const currentTask = {
             label: docData.label,

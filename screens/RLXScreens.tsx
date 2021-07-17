@@ -435,7 +435,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
         submitCheckinData({
-          userId: state.userToken,
+          userId: state.userId,
           checkinPostponed: false,
           nextCheckinDatetime: RLXState.nextCheckinTime,
           lastCheckinDatetime: new Date(),

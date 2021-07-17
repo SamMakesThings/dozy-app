@@ -16,7 +16,7 @@ const SupportChatScreen = () => {
     LC_API.set_visitor_name("${state.profileData.name}");
     LC_API.set_visitor_email("${state.profileData.email}");
     LC_API.update_custom_variables([
-    {name: "userId", value: state.userToken},
+    {name: "userId", value: state.userId},
     {name: "currentTreatmentModule", value: state.userData.currentTreatments.currentModule}]);
     }, 6000);
   `;
@@ -32,7 +32,7 @@ const SupportChatScreen = () => {
         onLoad={(syntheticEvent) => {
           // If LiveChat has a msg marked as unread, mark it as read in Firebase
           if (state.userData?.livechatUnreadMsg) {
-            FbLib.firestore().collection('users').doc(state.userToken).update({
+            FbLib.firestore().collection('users').doc(state.userId).update({
               livechatUnreadMsg: false
             });
             refreshUserData(dispatch);

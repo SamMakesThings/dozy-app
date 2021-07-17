@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { FbLib } from '../config/firebaseConfig';
+import { FbDb } from '../config/firebaseConfig';
 import moment from 'moment';
 
 interface LogState {
@@ -24,7 +24,7 @@ interface LogState {
 
 export default async function submitSleepDiaryData(logState: LogState) {
   // Initialize relevant Firebase values
-  let db = FbLib.firestore();
+  let db = FbDb;
   let userId = await SecureStore.getItemAsync('userId');
   // If userId is a string, set Firebase ref. If not, mark an error
   let sleepLogsRef =

@@ -972,7 +972,7 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
         submitCheckinData({
-          userId: state.userToken,
+          userId: state.userId,
           checkinPostponed: SCTSRTState.checkinPostponed,
           nextCheckinDatetime: SCTSRTState.nextCheckinTime,
           lastCheckinDatetime: new Date(),

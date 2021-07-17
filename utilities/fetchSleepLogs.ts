@@ -1,9 +1,8 @@
-import '@firebase/firestore';
-import firebase from 'firebase/app';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { SleepLog } from '../types/custom';
 
 async function fetchSleepLogs(
-  db: firebase.firestore.Firestore,
+  db: FirebaseFirestoreTypes.Module,
   userId: string
 ): Promise<SleepLog[]> {
   // Retrieving sleep logs from Firestore
@@ -18,7 +17,7 @@ async function fetchSleepLogs(
     colRef
       .orderBy('upTime', 'desc')
       .get()
-      .then((res: firebase.firestore.QuerySnapshot) => {
+      .then((res: FirebaseFirestoreTypes.QuerySnapshot) => {
         let sleepLogs: Array<SleepLog> = [];
 
         // Check that theres >1 entry. If no, set state accordingly
@@ -27,7 +26,9 @@ async function fetchSleepLogs(
         }
 
         // Otherwise, arrange data and update state
-        res.forEach(function (doc: firebase.firestore.QueryDocumentSnapshot) {
+        res.forEach(function (
+          doc: FirebaseFirestoreTypes.QueryDocumentSnapshot
+        ) {
           let docData = doc.data();
           sleepLogs.push({ logId: doc.id, ...doc.data() });
         });

@@ -1,6 +1,6 @@
-import '@firebase/firestore';
-import firebase from 'firebase/app';
-import { FbLib } from '../config/firebaseConfig';
+import '@react-native-firebase/firestore';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { FbDb } from '../config/firebaseConfig';
 
 interface ReminderObject {
   expoPushToken: string;
@@ -51,7 +51,7 @@ export default function submitCheckinData({
 }: Args) {
   try {
     // Initialize relevant Firebase values
-    const db: firebase.firestore.Firestore = FbLib.firestore();
+    const db: FirebaseFirestoreTypes.Module = FbDb;
     const userDocRef = db.collection('users').doc(userId);
     const userTreatmentsColRef = userDocRef.collection('treatmentsHistory');
 

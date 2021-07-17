@@ -24,10 +24,10 @@ function Root() {
   let notifLogReminderRef;
 
   // Get various Firebase refs for keeping settings updated
-  if (state.userToken !== null && state.userData?.logReminderId !== undefined) {
+  if (state.userId !== null && state.userData?.logReminderId !== undefined) {
     const notifColRef = FbLib.firestore()
       .collection('users')
-      .doc(state.userToken)
+      .doc(state.userId)
       .collection('notifications');
 
     notifLogReminderRef = notifColRef.doc(state.userData.logReminderId);

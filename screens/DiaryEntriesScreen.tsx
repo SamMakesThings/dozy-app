@@ -7,18 +7,19 @@ import {
   View,
   Alert,
   FlatList
-} from 'react-native';
+} from 'react-native'; // @ts-ignore draftbit TS error below
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
-import '@firebase/firestore';
-import firebase from 'firebase/app';
+import '@react-native-firebase/firestore';
+import firestore, {
+  FirebaseFirestoreTypes
+} from '@react-native-firebase/firestore';
 import { Entypo } from '@expo/vector-icons';
 import Intl from 'intl';
 import { scale } from 'react-native-size-matters';
 import SleepLogEntryCard from '../components/SleepLogEntryCard';
 import { BaselineProgressCard } from '../components/BaselineProgressCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
-import { FbLib } from '../config/firebaseConfig';
 import { dozy_theme } from '../config/Themes';
 import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { AuthContext } from '../utilities/authContext';
@@ -28,7 +29,7 @@ import fetchTasks from '../utilities/fetchTasks';
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/tr-TR');
-  require('date-time-format-timezone');
+  require('date-time-format-timezone'); // @ts-ignore This code works, TS yells
   Intl.__disableRegExpRestore(); /*For syntaxerror invalid regular expression unmatched parentheses*/
 }
 
@@ -167,27 +168,21 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
   // Set local state for loading/not loading
   const [logsLoading, setLogsLoading] = React.useState(true);
 
-  let colRef: firebase.firestore.CollectionReference;
-  let db: firebase.firestore.Firestore;
-  let tasksColRef: firebase.firestore.CollectionReference;
+  let colRef: FirebaseFirestoreTypes.CollectionReference;
+  let db: FirebaseFirestoreTypes.Module;
+  let tasksColRef: FirebaseFirestoreTypes.CollectionReference;
 
-  // Set Firebase DB references if userToken is defined
-  if (state.userToken) {
-    db = FbLib.firestore();
-    colRef = db
-      .collection('users')
-      .doc(state.userToken)
-      .collection('sleepLogs');
-    tasksColRef = db
-      .collection('users')
-      .doc(state.userToken)
-      .collection('tasks');
+  // Set Firebase DB references if userId is defined
+  if (state.userId) {
+    db = firestore();
+    colRef = db.collection('users').doc(state.userId).collection('sleepLogs');
+    tasksColRef = db.collection('users').doc(state.userId).collection('tasks');
   }
 
   // Function to fetch sleep logs from Firebase and put them in global state
   async function setSleepLogs() {
     async function fetchData() {
-      fetchSleepLogs(db, state.userToken)
+      fetchSleepLogs(db, state.userId)
         .then((sleepLogs: Array<SleepLog>) => {
           // Check that theres >1 entry. If no, set state accordingly
           if (sleepLogs.length === 0) {
@@ -219,7 +214,7 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
 
     // Setup a listener to get new tasks from Firebase
     tasksColRef.onSnapshot(async function () {
-      const tasks = await fetchTasks(db, state.userToken);
+      const tasks = await fetchTasks(db, state.userId);
       dispatch({ type: 'SET_TASKS', tasks: tasks });
     });
   }

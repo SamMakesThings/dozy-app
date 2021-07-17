@@ -7,20 +7,24 @@ import {
   LogBox,
   Text
 } from 'react-native';
+import * as Crypto from 'expo-crypto';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import * as Icon from '@expo/vector-icons';
-import * as Google from 'expo-google-app-auth';
+import { revokeAsync } from 'expo-auth-session';
+import * as Google from 'expo-auth-session/providers/google';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
 import { FbAuth, FbLib, FbDb } from './config/firebaseConfig';
-import firebase from 'firebase/app';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { dozy_theme } from './config/Themes';
-import '@firebase/firestore';
+import '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/auth';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './utilities/authContext';
 import refreshUserData from './utilities/refreshUserData';
+import { getMainAppReducer } from './utilities/mainAppReducer';
 
 // Mute "setting a timer" firebase warnings in console
 LogBox.ignoreLogs(['Setting a timer']);
@@ -33,146 +37,93 @@ console.warn = (message) => {
 
 // Disable font scaling app-wide, enable on things it doesn't break
 // Hmm - this code throws TS undefined errors, but works. Not sure why.
+// @ts-expect-error
 Text.defaultProps = Text.defaultProps || {};
+// @ts-expect-error
 Text.defaultProps.allowFontScaling = false;
-
-// A utility function to always return a valid date number given a starting date and a delta
-// TODO: Move this to its own file
-function alterMonthSelection(prevDate, changeBy) {
-  let { month, year } = prevDate;
-  const adjustedMonth = month + changeBy;
-
-  if (adjustedMonth === 12) {
-    month = 0;
-    year += 1;
-  } else if (adjustedMonth === -1) {
-    month = 11;
-    year += -1;
-  } else {
-    month = adjustedMonth;
-  }
-
-  return { month: month, year: year };
-}
 
 // Root app component
 export default function App() {
   // Using auth functions from react-navigation guide
-  const [state, dispatch] = React.useReducer(
-    (prevState, action) => {
-      switch (action.type) {
-        case 'RESTORE_TOKEN':
-          return {
-            ...prevState,
-            userToken: action.token,
-            profileData: action.profileData
-          };
-        case 'SIGN_IN':
-          return {
-            ...prevState,
-            isSignout: false,
-            userToken: action.token,
-            onboardingComplete: action.onboardingComplete,
-            authLoading: action.isAuthLoading,
-            profileData: action.profileData
-          };
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignout: true,
-            userToken: null
-          };
-        case 'UPDATE_USERDATA':
-          return {
-            ...prevState,
-            userData: action.userData,
-            onboardingComplete: action.onboardingComplete
-          };
-        case 'SET_SLEEPLOGS':
-          return {
-            ...prevState,
-            sleepLogs: action.sleepLogs
-          };
-        case 'SET_CHATS':
-          return {
-            ...prevState,
-            chats: action.chats
-          };
-        case 'SET_TASKS':
-          return {
-            ...prevState,
-            tasks: action.tasks
-          };
-        case 'CHANGE_SELECTED_MONTH':
-          return {
-            ...prevState,
-            selectedDate: alterMonthSelection(
-              prevState.selectedDate,
-              action.changeMonthBy
-            )
-          };
-        case 'AUTH_LOADING':
-          return {
-            ...prevState,
-            authLoading: action.isAuthLoading
-          };
-        case 'FINISH_LOADING':
-          return {
-            ...prevState,
-            isLoading: false
-          };
-        case 'FINISH_ONBOARDING':
-          return {
-            ...prevState,
-            onboardingComplete: true
-          };
-      }
-    },
-    {
-      isLoading: true,
-      isSignout: false,
-      userToken: null,
-      onboardingComplete: true,
-      profileData: null,
-      sleepLogs: [],
-      selectedDate: {
-        month: new Date().getMonth(),
-        year: new Date().getFullYear()
-      }
-    }
-  );
+  // Full dispatch code in mainAppReducer.ts
+  const [state, dispatch] = getMainAppReducer();
 
-  async function _loginWithGoogle() {
-    try {
-      const result = await Google.logInAsync({
-        // TODO: Move these client IDs to the manifest or another file for cleaner code.
-        androidClientId:
-          '713165282203-7j7bg1vrl51fnf84rbnvbeeght01o603.apps.googleusercontent.com',
-        iosClientId:
-          '713165282203-fr943kvhd9rbst5i5ss4g3htgjho143a.apps.googleusercontent.com',
-        androidStandaloneAppClientId:
-          '713165282203-15rbcpiu517fikvak6c9okehpusbk84e.apps.googleusercontent.com',
-        iosStandaloneAppClientId:
-          '713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf.apps.googleusercontent.com',
-        scopes: ['profile', 'email']
+  // Auth code snippet from https://docs.expo.io/guides/authentication/#google
+  const [request, response, promptLoginAsync] = Google.useAuthRequest({
+    // TODO: Move these client IDs to the manifest or another file for cleaner code.
+    iosClientId:
+      '713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf.apps.googleusercontent.com',
+    androidClientId:
+      '713165282203-15rbcpiu517fikvak6c9okehpusbk84e.apps.googleusercontent.com'
+  });
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      firebaseAuthGoogle(authentication);
+    } else {
+      console.log('Login did not succeed');
+    }
+  }, [response]);
+
+  async function firebaseAuthApple(appleAuthResponse, nonce) {
+    dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
+    // Pipe the result of Sign in with Apple into Firebase auth
+    const { identityToken } = appleAuthResponse;
+    const provider = firebase.auth.AppleAuthProvider;
+    const credential = provider.credential(identityToken!, nonce);
+    const fbSigninResult = FbAuth.signInWithCredential(credential);
+    await processFbLogin(fbSigninResult);
+  }
+
+  async function firebaseAuthGoogle(googleAuthResponse) {
+    dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
+    // Pipe the result of Google login into Firebase auth
+    const { idToken, accessToken } = googleAuthResponse;
+    SecureStore.setItemAsync('accessToken', accessToken);
+    const credential = FbLib.auth.GoogleAuthProvider.credential(
+      idToken,
+      accessToken
+    );
+    // await firebase.auth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
+    const fbSigninResult = await FbAuth.signInWithCredential(credential);
+    await processFbLogin(fbSigninResult);
+  }
+
+  async function processFbLogin(result) {
+    // Store credentials in SecureStore
+    if ('user' in result) {
+      SecureStore.setItemAsync('providerId', result.user.providerId);
+      SecureStore.setItemAsync('userId', result.user.uid);
+      SecureStore.setItemAsync(
+        'profileData',
+        JSON.stringify(result.additionalUserInfo.profile)
+      ).catch((error) => {
+        console.log('Error signing in: ' + error);
       });
 
-      if (result.type === 'success') {
-        const { idToken, accessToken } = result;
-        dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
-        const credential = FbLib.auth.GoogleAuthProvider.credential(
-          idToken,
-          accessToken
-        );
-        await FbAuth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
-        let fbSigninResult = FbAuth.signInWithCredential(credential);
-        return await fbSigninResult;
-      } else {
-        return { cancelled: true };
-      }
-    } catch (err) {
-      console.log('err from App.js:', err);
+      // Check if that user's document exists, in order to direct them to or past onboarding
+      const userDocExists = await FbDb.collection('users')
+        .doc(result.user.uid)
+        .get()
+        .then((docSnapshot) => {
+          return docSnapshot.exists;
+        });
+
+      // Update app state accordingly thru context hook function
+      dispatch({
+        type: 'SIGN_IN',
+        token: result.user.uid,
+        onboardingComplete: userDocExists,
+        profileData: result.additionalUserInfo.profile,
+        isAuthLoading: false
+      });
+    } else {
+      console.log('Error signing in (maybe cancelled)');
     }
+
+    // Update user's data from Firestore db
+    refreshUserData(dispatch);
   }
 
   React.useEffect(() => {
@@ -190,54 +141,54 @@ export default function App() {
     state: state,
     signIn: async () => {
       // Fetch and store the relevant auth token
-
-      // Use my previously defined login function to get user data and store the token
-      _loginWithGoogle().then(
-        async (
-          result: firebase.auth.UserCredential | { cancelled: boolean }
-        ) => {
-          // Store credentials in SecureStore
-          if ('credential' in result) {
-            SecureStore.setItemAsync(
-              'providerId',
-              result.credential.providerId
-            );
-            SecureStore.setItemAsync('userId', result.user.uid);
-            SecureStore.setItemAsync(
-              'profileData',
-              JSON.stringify(result.additionalUserInfo.profile)
-            ).catch((error) => {
-              console.log('Error signing in: ' + error);
-            });
-
-            // Check if that user's document exists, in order to direct them to or past onboarding
-            const userDocExists = await FbDb.collection('users')
-              .doc(result.user.uid)
-              .get()
-              .then((docSnapshot) => {
-                return docSnapshot.exists;
-              });
-
-            // Update app state accordingly thru context hook function
-            dispatch({
-              type: 'SIGN_IN',
-              token: result.user.uid,
-              onboardingComplete: userDocExists,
-              profileData: result.additionalUserInfo.profile,
-              isAuthLoading: false
-            });
-          } else {
-            console.log('Error signing in (maybe cancelled)');
-          }
-
-          // Update user's data from Firestore db
-          refreshUserData(dispatch);
-        }
-      );
+      await promptLoginAsync();
+      // Fixes issue where user can't log in after logging out w/o app reload
+      if (response?.type === 'success') {
+        const { authentication } = response;
+        firebaseAuthGoogle(authentication);
+      } else {
+        // console.log('Login did not succeed');
+      }
     },
-    signOut: () => {
+    signInWithApple: async () => {
+      try {
+        const nonce = Math.random().toString(36).substring(2, 10);
+        const hashedNonce = await Crypto.digestStringAsync(
+          Crypto.CryptoDigestAlgorithm.SHA256,
+          nonce
+        );
+
+        const credential = await AppleAuthentication.signInAsync({
+          requestedScopes: [
+            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+            AppleAuthentication.AppleAuthenticationScope.EMAIL
+          ],
+          nonce: hashedNonce
+        });
+
+        // console.log('>>>> SIGNED IN WITH APPLE', credential);
+        firebaseAuthApple(credential, hashedNonce);
+      } catch (e) {
+        if (e.code === 'ERR_CANCELED') {
+          // handle that the user canceled the sign-in flow
+        } else {
+          // handle other errors
+        }
+      }
+    },
+    signOut: async () => {
       SecureStore.deleteItemAsync('userId');
       dispatch({ type: 'SIGN_OUT' });
+      FbAuth.signOut();
+      const accessToken = await SecureStore.getItemAsync('accessToken');
+      revokeAsync(
+        {
+          token: accessToken,
+          clientId:
+            '713165282203-15rbcpiu517fikvak6c9okehpusbk84e.apps.googleusercontent.com'
+        },
+        Google.discovery
+      );
     },
     finishOnboarding: () => {
       dispatch({ type: 'FINISH_ONBOARDING' });
@@ -286,7 +237,7 @@ export default function App() {
                 []
               )}
               <AppNavigator
-                userToken={state.userToken}
+                userId={state.userId}
                 authLoading={state.authLoading}
                 onboardingComplete={state.onboardingComplete}
               />

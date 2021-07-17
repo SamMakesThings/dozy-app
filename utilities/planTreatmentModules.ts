@@ -1,12 +1,12 @@
 import moment from 'moment';
-import firebase from 'firebase/app';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import treatments from '../constants/Treatments';
 import { SleepLog } from '../types/custom';
 
 interface Args {
   sleepLogs: SleepLog[];
   currentTreatments: {
-    [key: string]: firebase.firestore.Timestamp;
+    [key: string]: FirebaseFirestoreTypes.Timestamp;
   };
 }
 

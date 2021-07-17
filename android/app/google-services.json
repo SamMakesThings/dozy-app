@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "713165282203",
+    "firebase_url": "https://slumber-app.firebaseio.com",
+    "project_id": "slumber-app",
+    "storage_bucket": "slumber-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713165282203:android:e5d129ed1857441d5bdf3e",
+        "android_client_info": {
+          "package_name": "com.dozyhealth.dozy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713165282203-jjc54if1n7krahda9gvkio0siqltq57t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcOD4KTAkB5ES6txe9BRi0N8SJtJjkQpo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713165282203-jjc54if1n7krahda9gvkio0siqltq57t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.slumbertech.slumber"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

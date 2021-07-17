@@ -1,6 +1,5 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
+import '@react-native-firebase/auth';
+import firestore, { firebase } from '@react-native-firebase/firestore';
 import Constants from 'expo-constants';
 
 export const FbApp = !firebase.apps.length
@@ -11,7 +10,7 @@ export const FbAuth = firebase.auth();
 
 export const FbLib = firebase;
 
-export const FbDb = firebase.firestore();
+export const FbDb = firestore();
 
 // Need projectId, apiKey, appId and messagingSenderId
 

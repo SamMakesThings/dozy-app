@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
-import '@firebase/firestore';
+import '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import Intl from 'intl';
 import ToggleTag from '../ToggleTag';
