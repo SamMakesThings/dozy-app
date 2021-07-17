@@ -12,6 +12,7 @@ import { Provider as ThemeProvider } from '@draftbit/ui';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import * as Icon from '@expo/vector-icons';
+import { revokeAsync } from 'expo-auth-session';
 import * as Google from 'expo-auth-session/providers/google';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
@@ -79,6 +80,7 @@ export default function App() {
     dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
     // Pipe the result of Google login into Firebase auth
     const { idToken, accessToken } = googleAuthResponse;
+    SecureStore.setItemAsync('accessToken', accessToken);
     const credential = FbLib.auth.GoogleAuthProvider.credential(
       idToken,
       accessToken
@@ -137,9 +139,16 @@ export default function App() {
       dispatch(argsObject);
     },
     state: state,
-    signIn: () => {
+    signIn: async () => {
       // Fetch and store the relevant auth token
-      promptLoginAsync();
+      await promptLoginAsync();
+      // Fixes issue where user can't log in after logging out w/o app reload
+      if (response?.type === 'success') {
+        const { authentication } = response;
+        firebaseAuthGoogle(authentication);
+      } else {
+        // console.log('Login did not succeed');
+      }
     },
     signInWithApple: async () => {
       try {
@@ -167,10 +176,19 @@ export default function App() {
         }
       }
     },
-    signOut: () => {
+    signOut: async () => {
       SecureStore.deleteItemAsync('userId');
       dispatch({ type: 'SIGN_OUT' });
       FbAuth.signOut();
+      const accessToken = await SecureStore.getItemAsync('accessToken');
+      revokeAsync(
+        {
+          token: accessToken,
+          clientId:
+            '713165282203-15rbcpiu517fikvak6c9okehpusbk84e.apps.googleusercontent.com'
+        },
+        Google.discovery
+      );
     },
     finishOnboarding: () => {
       dispatch({ type: 'FINISH_ONBOARDING' });
