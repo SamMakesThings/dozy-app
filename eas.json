@@ -1,15 +1,15 @@
 {
   "builds": {
     "android": {
+      "special:": {
+        "gradleCommand": ":app:assembleRelease"
+      },
       "release": {
         "gradleCommand": ":app:bundleRelease"
       },
       "development": {
         "gradleCommand": ":app:assembleDebug",
         "distribution": "internal"
-      },
-      "special:": {
-        "gradleCommand": ":app:assembleRelease"
       }
     },
     "ios": {
