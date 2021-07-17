@@ -1,0 +1,22 @@
+{
+  "builds": {
+    "android": {
+      "release": {
+        "gradleCommand": ":app:bundleRelease"
+      },
+      "development": {
+        "gradleCommand": ":app:assembleDebug",
+        "distribution": "internal"
+      }
+    },
+    "ios": {
+      "release": {
+        "schemeBuildConfiguration": "Release"
+      },
+      "development": {
+        "schemeBuildConfiguration": "Debug",
+        "distribution": "internal"
+      }
+    }
+  }
+}
