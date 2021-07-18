@@ -5,10 +5,10 @@
         "gradleCommand": ":app:assembleRelease"
       },
       "release": {
-        "gradleCommand": ":app:assembleRelease"
+        "buildType": "app-bundle"
       },
       "development": {
-        "gradleCommand": ":app:assembleDebug",
+        "gradleCommand": ":app:assembleRelease",
         "distribution": "internal"
       }
     },
