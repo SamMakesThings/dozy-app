@@ -46,7 +46,6 @@
     "expo-google-app-auth": "^8.0.1",
     "expo-in-app-purchases": "~10.1.1",
     "expo-notifications": "~0.11.6",
-    "expo-permissions": "~12.0.1",
     "expo-random": "~11.1.2",
     "expo-secure-store": "~10.1.0",
     "expo-splash-screen": "~0.10.2",
