@@ -3,7 +3,6 @@ import { FbLib, FbDb } from '../config/firebaseConfig';
 
 export default async function refreshUserData(dispatch) {
   let userId;
-  // let accessToken;
   // let idToken;
   // let providerId;
   let profileData;
@@ -13,7 +12,6 @@ export default async function refreshUserData(dispatch) {
     if (userId === null) {
       throw "userId isn't stored in SecureStore, aborting";
     }
-    // accessToken = await SecureStore.getItemAsync('accessToken');
     // idToken = await SecureStore.getItemAsync('idToken');
     // providerId = await SecureStore.getItemAsync('providerId');
     profileData = await JSON.parse(

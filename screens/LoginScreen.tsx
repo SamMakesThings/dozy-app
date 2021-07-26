@@ -1,7 +1,13 @@
 import React from 'react';
 import * as AppleAuthentication from 'expo-apple-authentication'; // @ts-ignore
 import { Button, ScreenContainer, Container, Touchable } from '@draftbit/ui';
-import { StyleSheet, Text, ImageBackground, Platform } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ImageBackground,
+  Platform,
+  ViewStyle
+} from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
@@ -85,7 +91,7 @@ function LoginScreen() {
               }
               cornerRadius={theme.borderRadius.button}
               style={StyleSheet.flatten([
-                theme.buttonLayout,
+                theme.buttonLayout as ViewStyle,
                 { borderRadius: theme.borderRadius.button }
               ])}
               onPress={signInWithApple}

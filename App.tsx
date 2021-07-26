@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Platform,
   StatusBar,
   StyleSheet,
   View,
   LogBox,
-  Text
+  Text,
+  Alert
 } from 'react-native';
 import * as Crypto from 'expo-crypto';
 import { Provider as ThemeProvider } from '@draftbit/ui';
@@ -21,6 +22,11 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { dozy_theme } from './config/Themes';
 import '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/auth';
+import {
+  GoogleSignin,
+  statusCodes,
+  User as GoogleUserInfo
+} from '@react-native-google-signin/google-signin';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './utilities/authContext';
 import refreshUserData from './utilities/refreshUserData';
@@ -44,27 +50,10 @@ Text.defaultProps.allowFontScaling = false;
 
 // Root app component
 export default function App() {
+  const isGoogleSigninConfiguredRef = useRef(false);
   // Using auth functions from react-navigation guide
   // Full dispatch code in mainAppReducer.ts
   const [state, dispatch] = getMainAppReducer();
-
-  // Auth code snippet from https://docs.expo.io/guides/authentication/#google
-  const [request, response, promptLoginAsync] = Google.useAuthRequest({
-    // TODO: Move these client IDs to the manifest or another file for cleaner code.
-    iosClientId:
-      '713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf.apps.googleusercontent.com',
-    androidClientId:
-      '713165282203-15rbcpiu517fikvak6c9okehpusbk84e.apps.googleusercontent.com'
-  });
-
-  React.useEffect(() => {
-    if (response?.type === 'success') {
-      const { authentication } = response;
-      firebaseAuthGoogle(authentication);
-    } else {
-      console.log('Login did not succeed');
-    }
-  }, [response]);
 
   async function firebaseAuthApple(appleAuthResponse, nonce) {
     dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
@@ -76,15 +65,11 @@ export default function App() {
     await processFbLogin(fbSigninResult);
   }
 
-  async function firebaseAuthGoogle(googleAuthResponse) {
+  async function firebaseAuthGoogle(googleAuthResponse: GoogleUserInfo) {
     dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
     // Pipe the result of Google login into Firebase auth
-    const { idToken, accessToken } = googleAuthResponse;
-    SecureStore.setItemAsync('accessToken', accessToken);
-    const credential = FbLib.auth.GoogleAuthProvider.credential(
-      idToken,
-      accessToken
-    );
+    const { idToken } = googleAuthResponse;
+    const credential = FbLib.auth.GoogleAuthProvider.credential(idToken);
     // await firebase.auth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
     const fbSigninResult = await FbAuth.signInWithCredential(credential);
     await processFbLogin(fbSigninResult);
@@ -140,15 +125,46 @@ export default function App() {
     },
     state: state,
     signIn: async () => {
+      let googleUserInfo: GoogleUserInfo | undefined;
+
       // Fetch and store the relevant auth token
-      await promptLoginAsync();
-      // Fixes issue where user can't log in after logging out w/o app reload
-      if (response?.type === 'success') {
-        const { authentication } = response;
-        firebaseAuthGoogle(authentication);
-      } else {
-        // console.log('Login did not succeed');
+      if (!isGoogleSigninConfiguredRef.current) {
+        GoogleSignin.configure({
+          scopes: [
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email'
+          ],
+          webClientId:
+            '713165282203-jjc54if1n7krahda9gvkio0siqltq57t.apps.googleusercontent.com',
+          offlineAccess: false,
+          forceCodeForRefreshToken: false
+        });
+        isGoogleSigninConfiguredRef.current = true;
       }
+      try {
+        await GoogleSignin.hasPlayServices({
+          showPlayServicesUpdateDialog: true
+        });
+        googleUserInfo = await GoogleSignin.signIn();
+      } catch (error) {
+        console.log('error: ', error);
+        error.message =
+          error.code === statusCodes.SIGN_IN_CANCELLED
+            ? ''
+            : error.code === statusCodes.IN_PROGRESS
+            ? 'Sign in is in progress already.'
+            : error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+            ? 'Google play services are not available or outdated.'
+            : 'Unknown error happened! Please try again later.';
+
+        if (error.message) {
+          Alert.alert('Google Sigin Error', error.message);
+        }
+
+        return;
+      }
+
+      return firebaseAuthGoogle(googleUserInfo);
     },
     signInWithApple: async () => {
       try {
@@ -179,16 +195,9 @@ export default function App() {
     signOut: async () => {
       SecureStore.deleteItemAsync('userId');
       dispatch({ type: 'SIGN_OUT' });
-      FbAuth.signOut();
-      const accessToken = await SecureStore.getItemAsync('accessToken');
-      revokeAsync(
-        {
-          token: accessToken,
-          clientId:
-            '713165282203-15rbcpiu517fikvak6c9okehpusbk84e.apps.googleusercontent.com'
-        },
-        Google.discovery
-      );
+      await FbAuth.signOut();
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
     },
     finishOnboarding: () => {
       dispatch({ type: 'FINISH_ONBOARDING' });
