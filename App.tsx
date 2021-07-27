@@ -13,8 +13,6 @@ import { Provider as ThemeProvider } from '@draftbit/ui';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import * as Icon from '@expo/vector-icons';
-import { revokeAsync } from 'expo-auth-session';
-import * as Google from 'expo-auth-session/providers/google';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
