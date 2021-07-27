@@ -38,7 +38,6 @@
           "apiKey": "AIzaSyC0GREVi9E3rPHvX35XHmk7y3lsccH2zPA"
         }
       },
-      "googleServicesFile": "./google-services.json",
       "permissions": []
     },
     "packagerOpts": {

@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { FbLib, FbDb } from '../config/firebaseConfig';
+import firestore from '@react-native-firebase/firestore';
 
 export default async function refreshUserData(dispatch) {
   let userId;
@@ -26,7 +26,8 @@ export default async function refreshUserData(dispatch) {
     });
 
     // Update user's data from Firestore db
-    FbDb.collection('users')
+    firestore()
+      .collection('users')
       .doc(userId)
       .get()
       .then((userData) => {
@@ -38,7 +39,8 @@ export default async function refreshUserData(dispatch) {
       });
 
     // Add a listener so user doc state updates live
-    FbDb.collection('users')
+    firestore()
+      .collection('users')
       .doc(userId)
       .onSnapshot((docSnapshot) => {
         if (docSnapshot) {

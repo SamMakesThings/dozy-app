@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { FbDb } from '../config/firebaseConfig';
+import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 
 interface LogState {
@@ -24,13 +24,15 @@ interface LogState {
 
 export default async function submitSleepDiaryData(logState: LogState) {
   // Initialize relevant Firebase values
-  let db = FbDb;
   let userId = await SecureStore.getItemAsync('userId');
   // If userId is a string, set Firebase ref. If not, mark an error
   let sleepLogsRef =
     typeof userId === 'string'
-      ? db.collection('users').doc(userId).collection('sleepLogs')
-      : db.collection('users').doc('ERRORDELETEME').collection('sleepLogs');
+      ? firestore().collection('users').doc(userId).collection('sleepLogs')
+      : firestore()
+          .collection('users')
+          .doc('ERRORDELETEME')
+          .collection('sleepLogs');
 
   // If bedtime/sleeptime are in the evening, change them to be the day before
   if (logState.bedTime > logState.wakeTime) {
@@ -131,8 +133,8 @@ export default async function submitSleepDiaryData(logState: LogState) {
   // Make sure userStatus is "active" in Firebase
   let userDocRef =
     typeof userId === 'string'
-      ? db.collection('users').doc(userId)
-      : db.collection('users').doc('ERRORDELETEME');
+      ? firestore().collection('users').doc(userId)
+      : firestore().collection('users').doc('ERRORDELETEME');
   userDocRef
     .update({ userStatus: 'active' })
     .catch((error) => console.error('Error marking user as active:', error));

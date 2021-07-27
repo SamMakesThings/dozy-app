@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { FbDb } from '../config/firebaseConfig';
+import firestore from '@react-native-firebase/firestore';
 import refreshUserData from './refreshUserData';
 
 interface OnboardingState {
@@ -28,12 +28,11 @@ export default async function submitOnboardingData(
   dispatch: Function
 ) {
   // Initialize relevant Firebase values
-  let db = FbDb;
   let userId = await SecureStore.getItemAsync('userId');
   let userDocRef =
     typeof userId === 'string'
-      ? db.collection('users').doc(userId)
-      : db.collection('users').doc('ERRORDELETEME');
+      ? firestore().collection('users').doc(userId)
+      : firestore().collection('users').doc('ERRORDELETEME');
 
   // Collect the relevant onboarding values into a map for Firebase & store it
   const healthHistory = {
