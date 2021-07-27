@@ -17,7 +17,8 @@ import { revokeAsync } from 'expo-auth-session';
 import * as Google from 'expo-auth-session/providers/google';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
-import { FbAuth, FbLib, FbDb } from './config/firebaseConfig';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { dozy_theme } from './config/Themes';
 import '@react-native-firebase/firestore';
@@ -61,7 +62,7 @@ export default function App() {
     const { identityToken } = appleAuthResponse;
     const provider = firebase.auth.AppleAuthProvider;
     const credential = provider.credential(identityToken!, nonce);
-    const fbSigninResult = FbAuth.signInWithCredential(credential);
+    const fbSigninResult = auth().signInWithCredential(credential);
     await processFbLogin(fbSigninResult);
   }
 
@@ -69,9 +70,8 @@ export default function App() {
     dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
     // Pipe the result of Google login into Firebase auth
     const { idToken } = googleAuthResponse;
-    const credential = FbLib.auth.GoogleAuthProvider.credential(idToken);
-    // await firebase.auth.setPersistence(FbLib.auth.Auth.Persistence.LOCAL);
-    const fbSigninResult = await FbAuth.signInWithCredential(credential);
+    const credential = auth.GoogleAuthProvider.credential(idToken);
+    const fbSigninResult = await auth().signInWithCredential(credential);
     await processFbLogin(fbSigninResult);
   }
 
@@ -88,7 +88,8 @@ export default function App() {
       });
 
       // Check if that user's document exists, in order to direct them to or past onboarding
-      const userDocExists = await FbDb.collection('users')
+      const userDocExists = await firestore()
+        .collection('users')
         .doc(result.user.uid)
         .get()
         .then((docSnapshot) => {
@@ -195,7 +196,7 @@ export default function App() {
     signOut: async () => {
       SecureStore.deleteItemAsync('userId');
       dispatch({ type: 'SIGN_OUT' });
-      await FbAuth.signOut();
+      await auth().signOut();
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
     },

@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import { FbLib } from '../config/firebaseConfig';
+import firestore from '@react-native-firebase/firestore';
 import { WebView } from 'react-native-webview';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
@@ -32,7 +32,7 @@ const SupportChatScreen = () => {
         onLoad={(syntheticEvent) => {
           // If LiveChat has a msg marked as unread, mark it as read in Firebase
           if (state.userData?.livechatUnreadMsg) {
-            FbLib.firestore().collection('users').doc(state.userId).update({
+            firestore().collection('users').doc(state.userId).update({
               livechatUnreadMsg: false
             });
             refreshUserData(dispatch);
