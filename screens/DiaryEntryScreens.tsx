@@ -203,7 +203,7 @@ export const PMRAsk = ({ navigation }: Props) => {
       onQuestionSubmit={(value: string) => {
         logState.PMRPractice = value;
         // If PIT started, navigate to PIT. Otherwise navigate to WakeCountInput
-        if (globalState.userData.currentTreatments.PIT) {
+        if (globalState.userData?.currentTreatments?.PIT) {
           navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
         } else {
           navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
@@ -247,12 +247,12 @@ export const WakeCountInput = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         logState.wakeCount = value;
         if (
-          globalState.userData.currentTreatments.SCTSRT &&
+          globalState.userData?.currentTreatments?.SCTSRT &&
           (logState.minsToFallAsleep >= 20 || value >= 1)
         ) {
           // If SCTSRT has started AND user woke 1+ times or took 20+ mins to sleep, navigate to SCT questions
           navigation.navigate('SCTUpCountInput', { progressBarPercent: 0.44 });
-        } else if (globalState.userData.currentTreatments.SCTSRT) {
+        } else if (globalState.userData?.currentTreatments?.SCTSRT) {
           // If user started SCTSRT but slept quickly, skip to asking about daytime naps
           // & set SCT values appropriately
           logState.SCTUpCount = 0;
