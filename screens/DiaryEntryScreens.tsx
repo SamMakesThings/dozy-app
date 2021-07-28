@@ -167,9 +167,9 @@ export const MinsToFallAsleepInput = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         logState.minsToFallAsleep = value;
         // If RLX (PMR) started, navigate to RLX. If PIT but no RLX, then PIT. Otherwise wakeCount
-        if (globalState.userData.currentTreatments.RLX) {
+        if (globalState.userData?.currentTreatments?.RLX) {
           navigation.navigate('PMRAsk', { progressBarPercent: 0.3 });
-        } else if (globalState.userData.currentTreatments.PIT) {
+        } else if (globalState.userData?.currentTreatments?.PIT) {
           navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
         } else {
           navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
