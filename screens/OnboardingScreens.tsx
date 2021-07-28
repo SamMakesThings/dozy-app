@@ -61,8 +61,8 @@ let onboardingState = {
   parasomnias: false,
   otherCondition: false,
   diaryHabitTrigger: 'ERROR',
-  expoPushToken: undefined as undefined | string,
-  diaryReminderTime: undefined as Date | undefined,
+  expoPushToken: 'No push token provided',
+  diaryReminderTime: new Date(),
   firstCheckinTime: new Date(),
   firstChatMessageContent: 'Hi'
 };
