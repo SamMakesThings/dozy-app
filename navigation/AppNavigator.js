@@ -16,48 +16,15 @@ import HYGNavigator from './HYGNavigator';
 import COG1Navigator from './COG1Navigator';
 import ENDNavigator from './ENDNavigator';
 import HeaderProgressBar from '../components/HeaderProgressBar';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
 // (do I need individual definitions, or should I just use "Stack" every time?)
 const TopStack = createStackNavigator();
 
-// Set up a loading screen for waiting on Firebase response
-function LoadingScreen() {
-  return (
-    <View
-      styles={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        backgroundColor: '#232B3F',
-        padding: 20
-      }}
-    >
-      <ActivityIndicator
-        size="large"
-        color={dozy_theme.colors.primary}
-        style={{
-          width: 50,
-          height: 50,
-          marginTop: '100%',
-          alignSelf: 'center'
-        }}
-      />
-    </View>
-  );
-}
-
 // Export the navigation components and screens, with if/then for auth state
-export default function InitialAuthNavigator({
-  userId,
-  authLoading,
-  onboardingComplete
-}) {
-  if (authLoading) {
-    return <LoadingScreen />;
-  }
-
+export default function InitialAuthNavigator({ userId, onboardingComplete }) {
   return (
     <TopStack.Navigator
       initialRouteName="Onboarding"

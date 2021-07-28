@@ -12,7 +12,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore';
+import firestore, {
+  FirebaseFirestoreTypes
+} from '@react-native-firebase/firestore';
 import { AntDesign } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
@@ -31,7 +33,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Set Firebase DB references if userId is defined
-  let colRef: firebase.firestore.CollectionReference;
+  let colRef: FirebaseFirestoreTypes.CollectionReference;
   if (state.userId) {
     colRef = firestore()
       .collection('users')
