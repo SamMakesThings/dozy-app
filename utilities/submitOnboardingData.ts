@@ -8,8 +8,8 @@ interface OnboardingState {
   rls: boolean;
   parasomnias: boolean;
   otherCondition: boolean;
-  expoPushToken: string | undefined;
-  diaryReminderTime: Date | undefined;
+  expoPushToken: string;
+  diaryReminderTime: Date;
   firstCheckinTime: Date;
   diaryHabitTrigger: string;
   ISI1: number;
@@ -79,7 +79,8 @@ export default async function submitOnboardingData(
               diaryHabitTrigger: onboardingState.diaryHabitTrigger,
               diaryReminderTime: onboardingState.diaryReminderTime
             },
-            expoPushToken: onboardingState.expoPushToken
+            expoPushToken:
+              onboardingState.expoPushToken || 'No push token provided'
           }
         : {},
       nextCheckin: {
