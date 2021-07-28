@@ -30,6 +30,8 @@ import AppNavigator from './navigation/AppNavigator';
 import { AuthContext } from './utilities/authContext';
 import refreshUserData from './utilities/refreshUserData';
 import { getMainAppReducer } from './utilities/mainAppReducer';
+import { Updates } from './utilities/updates.service';
+import LoadingOverlay from './components/LoadingOverlay';
 
 // Mute "setting a timer" firebase warnings in console
 LogBox.ignoreLogs(['Setting a timer']);
@@ -53,6 +55,7 @@ export default function App() {
   // Using auth functions from react-navigation guide
   // Full dispatch code in mainAppReducer.ts
   const [state, dispatch] = getMainAppReducer();
+  const isCheckingUpdate: boolean = Updates.useUpdating();
 
   async function firebaseAuthApple(appleAuthResponse, nonce) {
     dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
@@ -239,16 +242,16 @@ export default function App() {
         <NavigationContainer>
           <View style={styles.container}>
             <ThemeProvider theme={dozy_theme}>
-              {Platform.OS === 'ios' ? (
-                <StatusBar barStyle="light-content" />
-              ) : (
-                []
-              )}
+              {Platform.OS === 'ios' && <StatusBar barStyle="light-content" />}
               <AppNavigator
                 userId={state.userId}
-                authLoading={state.authLoading}
                 onboardingComplete={state.onboardingComplete}
               />
+              {(state.authLoading || isCheckingUpdate) && (
+                <LoadingOverlay
+                  title={isCheckingUpdate ? 'Downloading updates...' : ''}
+                />
+              )}
             </ThemeProvider>
           </View>
         </NavigationContainer>
