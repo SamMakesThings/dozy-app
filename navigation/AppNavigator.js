@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import React, { useContext } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PropTypes from 'prop-types';
-import { dozy_theme } from '../config/Themes';
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
@@ -16,7 +16,8 @@ import HYGNavigator from './HYGNavigator';
 import COG1Navigator from './COG1Navigator';
 import ENDNavigator from './ENDNavigator';
 import HeaderProgressBar from '../components/HeaderProgressBar';
-import LoadingOverlay from '../components/LoadingOverlay';
+import { Analytics } from '../utilities/analytics.service';
+import { AuthContext } from '../utilities/authContext';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -24,7 +25,7 @@ import LoadingOverlay from '../components/LoadingOverlay';
 const TopStack = createStackNavigator();
 
 // Export the navigation components and screens, with if/then for auth state
-export default function InitialAuthNavigator({ userId, onboardingComplete }) {
+function InitialAuthNavigator({ userId, onboardingComplete }) {
   return (
     <TopStack.Navigator
       initialRouteName="Onboarding"
@@ -107,3 +108,26 @@ InitialAuthNavigator.propTypes = {
   userId: PropTypes.string,
   authLoading: PropTypes.bool
 };
+
+export default function AppNavigator() {
+  const { state } = useContext(AuthContext);
+  const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
+
+  return (
+    <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
+      <View style={styles.container}>
+        <InitialAuthNavigator
+          userId={state.userId}
+          onboardingComplete={state.onboardingComplete}
+        />
+      </View>
+    </NavigationContainer>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#232B3F'
+  }
+});
