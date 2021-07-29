@@ -1,20 +1,11 @@
 import React, { useRef } from 'react';
-import {
-  Platform,
-  StatusBar,
-  StyleSheet,
-  View,
-  LogBox,
-  Text,
-  Alert
-} from 'react-native';
+import { Platform, StatusBar, LogBox, Text, Alert } from 'react-native';
 import * as Crypto from 'expo-crypto';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import * as Icon from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
-import { NavigationContainer } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -239,30 +230,16 @@ export default function App() {
   } else {
     return (
       <AuthContext.Provider value={authContext}>
-        <NavigationContainer>
-          <View style={styles.container}>
-            <ThemeProvider theme={dozy_theme}>
-              {Platform.OS === 'ios' && <StatusBar barStyle="light-content" />}
-              <AppNavigator
-                userId={state.userId}
-                onboardingComplete={state.onboardingComplete}
-              />
-              {(state.authLoading || isCheckingUpdate) && (
-                <LoadingOverlay
-                  title={isCheckingUpdate ? 'Downloading updates...' : ''}
-                />
-              )}
-            </ThemeProvider>
-          </View>
-        </NavigationContainer>
+        <ThemeProvider theme={dozy_theme}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="light-content" />}
+          <AppNavigator />
+          {(state.authLoading || isCheckingUpdate) && (
+            <LoadingOverlay
+              title={isCheckingUpdate ? 'Downloading updates...' : ''}
+            />
+          )}
+        </ThemeProvider>
       </AuthContext.Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#232B3F'
-  }
-});
