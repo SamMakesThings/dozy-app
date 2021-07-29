@@ -11,6 +11,7 @@ target 'Dozy' do
   use_react_native!(:path => config["reactNativePath"])
 
   pod 'GoogleSignIn', '~> 5.0.2'
+  $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
   # Uncomment the code below to enable Flipper.
   #
