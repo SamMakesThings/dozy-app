@@ -6102,6 +6102,11 @@ babel-plugin-transform-regenerator@^6.5.0:
   dependencies:
     regenerator-transform "^0.10.0"
 
+babel-plugin-transform-remove-console@^6.9.4:
+  version "6.9.4"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-remove-console/-/babel-plugin-transform-remove-console-6.9.4.tgz#b980360c067384e24b357a588d807d3c83527780"
+  integrity sha1-uYA2DAZzhOJLNXpYjYB9PINSd4A=
+
 babel-plugin-transform-strict-mode@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-strict-mode/-/babel-plugin-transform-strict-mode-6.24.1.tgz#d5faf7aa578a65bbe591cf5edae04a0c67020758"
@@ -9226,18 +9231,6 @@ expo-asset@~8.2.1:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
-expo-auth-session@~3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/expo-auth-session/-/expo-auth-session-3.0.0.tgz#784471b9609cd81ef736c87ac65fe6783c32798d"
-  integrity sha512-7iSAMFQZnH6eTV3L0buRFpKaaBgqU1df23lw9uoVrgmmFbHImZioMpr0XEgAhOiY1+lVRYNvxb93fAH2iLoh+g==
-  dependencies:
-    expo-constants "^9.3.3"
-    expo-crypto "^8.4.0"
-    expo-linking "~2.0.0"
-    expo-web-browser "^8.6.0"
-    invariant "^2.2.4"
-    qs "6.9.1"
-
 expo-av@^8.7.0:
   version "8.7.0"
   resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-8.7.0.tgz#01030256dc75cebd5d02060393ba0ad36c10a7f8"
@@ -9315,7 +9308,12 @@ expo-cli@^4.8.1:
     wrap-ansi "^7.0.0"
     xdl "59.0.50"
 
-expo-constants@^9.3.3, expo-constants@~9.3.0, expo-constants@~9.3.3:
+expo-constants@~9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.0.0.tgz#35c600079ee91d38fe4f56375caae6e90f122fdd"
+  integrity sha512-1kqZMM8Ez5JT3sTEx8I69fP6NYFLOJjeM6Z63dD/m2NiwvzSADiO5+BhghnWNGN1L3bxbgOjXS6EHtS7CdSfxA==
+
+expo-constants@~9.3.0, expo-constants@~9.3.3:
   version "9.3.5"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.3.5.tgz#78085763e8ed100a5f2df7c682fd99631aa03d5e"
   integrity sha512-qIlv2ffSjQl3wrvJwXYoNfQNfH/sK46EXcgyEQnQ1SAQO4ukwTEpG9j3fdW6aTiVEVrv/DsA1IaVRqKrUwSd3A==
@@ -9324,12 +9322,7 @@ expo-constants@^9.3.3, expo-constants@~9.3.0, expo-constants@~9.3.3:
     fbjs "1.0.0"
     uuid "^3.3.2"
 
-expo-constants@~9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.0.0.tgz#35c600079ee91d38fe4f56375caae6e90f122fdd"
-  integrity sha512-1kqZMM8Ez5JT3sTEx8I69fP6NYFLOJjeM6Z63dD/m2NiwvzSADiO5+BhghnWNGN1L3bxbgOjXS6EHtS7CdSfxA==
-
-expo-crypto@^8.4.0:
+expo-crypto@~8.4.0:
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/expo-crypto/-/expo-crypto-8.4.0.tgz#59a5b0640bb39db93e6857feafa2c9514b172cef"
   integrity sha512-EHEFx5sHTDVIuQH8/juuecQWj1uQ7ClM98fKXPFcNYcBlYSCQvkik37hwfJC5WLcVnelFDpvZJmHxiTfB5GKCg==
@@ -9455,7 +9448,7 @@ expo-updates@~0.4.0:
     fbemitter "^2.1.1"
     uuid "^3.4.0"
 
-expo-web-browser@^8.6.0, expo-web-browser@~8.6.0:
+expo-web-browser@~8.6.0:
   version "8.6.0"
   resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-8.6.0.tgz#121ad81b2597b8273739b630c278a6f6937b95ae"
   integrity sha512-VHFuBl0im00yEVbEzOZUrQVvq8uGhyU/4WivJkfLF4GA3Pj7CaG6PMo0+6YNzkzB1JoVx5AfuKgBbSuOuETP9Q==
@@ -15974,7 +15967,7 @@ qs@6.7.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
 
-qs@6.9.1, qs@^6.5.0:
+qs@^6.5.0:
   version "6.9.1"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.1.tgz#20082c65cb78223635ab1a9eaca8875a29bf8ec9"
   integrity sha512-Cxm7/SS/y/Z3MHWSxXb8lIFqgqBowP5JMlTUFyJN88y0SGQhVmZnqFK/PeuMX9LzUyWsqqhNxIyg0jlzq946yA==
