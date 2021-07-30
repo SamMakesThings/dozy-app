@@ -84,7 +84,7 @@ function LoginScreen() {
           {Platform.OS === 'ios' && ( // Show Apple signin if iPhone
             <AppleAuthentication.AppleAuthenticationButton
               buttonType={
-                AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+                AppleAuthentication.AppleAuthenticationButtonType.CONTINUE
               }
               buttonStyle={
                 AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
@@ -103,11 +103,14 @@ function LoginScreen() {
             color={theme.colors.primary}
             style={StyleSheet.flatten([
               theme.buttonLayout,
-              { borderRadius: theme.borderRadius.button }
+              {
+                borderRadius: theme.borderRadius.button,
+                marginTop: Platform.OS === 'ios' ? scale(5) : 0
+              }
             ])}
             onPress={signIn}
           >
-            Get Started
+            {Platform.OS === 'ios' ? 'Continue with Google' : 'Get Started'}
           </Button>
           <Touchable style={styles.Touchable_BackButton} onPress={signIn}>
             <Text
@@ -132,7 +135,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     width: '100%',
     height: '60%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingBottom: Platform.OS === 'ios' ? scale(20) : 0
   },
   View_LogoContainer: {
     height: '15%'
