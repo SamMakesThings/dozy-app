@@ -6,7 +6,7 @@ import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import * as Icon from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { dozy_theme } from './config/Themes';
@@ -48,14 +48,20 @@ export default function App() {
   const [state, dispatch] = getMainAppReducer();
   const isCheckingUpdate: boolean = Updates.useUpdating();
 
-  async function firebaseAuthApple(appleAuthResponse, nonce) {
+  async function firebaseAuthApple(
+    appleAuthResponse: AppleAuthentication.AppleAuthenticationCredential,
+    rawNonce?: string
+  ): Promise<void> {
     dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
     // Pipe the result of Sign in with Apple into Firebase auth
     const { identityToken } = appleAuthResponse;
-    const provider = firebase.auth.AppleAuthProvider;
-    const credential = provider.credential(identityToken!, nonce);
-    const fbSigninResult = auth().signInWithCredential(credential);
-    await processFbLogin(fbSigninResult);
+    const credential = firebase.auth.AppleAuthProvider.credential(
+      identityToken!,
+      rawNonce
+    );
+    const fbSigninResult = await auth().signInWithCredential(credential);
+
+    return processFbLogin(fbSigninResult);
   }
 
   async function firebaseAuthGoogle(googleAuthResponse: GoogleUserInfo) {
@@ -64,10 +70,13 @@ export default function App() {
     const { idToken } = googleAuthResponse;
     const credential = auth.GoogleAuthProvider.credential(idToken);
     const fbSigninResult = await auth().signInWithCredential(credential);
-    await processFbLogin(fbSigninResult);
+
+    return processFbLogin(fbSigninResult);
   }
 
-  async function processFbLogin(result) {
+  async function processFbLogin(
+    result: FirebaseAuthTypes.UserCredential
+  ): Promise<void> {
     // Store credentials in SecureStore
     if ('user' in result) {
       SecureStore.setItemAsync('providerId', result.user.providerId);
@@ -76,7 +85,10 @@ export default function App() {
         'profileData',
         JSON.stringify(result.additionalUserInfo.profile)
       ).catch((error) => {
-        console.log('Error signing in: ' + error);
+        Alert.alert('Signin failed', error.message);
+        if (__DEV__) {
+          console.log('Error signing in: ' + error);
+        }
       });
 
       // Check if that user's document exists, in order to direct them to or past onboarding
@@ -97,6 +109,10 @@ export default function App() {
         isAuthLoading: false
       });
     } else {
+      Alert.alert(
+        'Signin failed',
+        'Unexpected error occurred! Please try again later.'
+      );
       console.log('Error signing in (maybe cancelled)');
     }
 
@@ -161,10 +177,10 @@ export default function App() {
     },
     signInWithApple: async () => {
       try {
-        const nonce = Math.random().toString(36).substring(2, 10);
+        const rawNonce = Math.random().toString(36).substring(2, 10);
         const hashedNonce = await Crypto.digestStringAsync(
           Crypto.CryptoDigestAlgorithm.SHA256,
-          nonce
+          rawNonce
         );
 
         const credential = await AppleAuthentication.signInAsync({
@@ -175,13 +191,10 @@ export default function App() {
           nonce: hashedNonce
         });
 
-        // console.log('>>>> SIGNED IN WITH APPLE', credential);
-        firebaseAuthApple(credential, hashedNonce);
-      } catch (e) {
-        if (e.code === 'ERR_CANCELED') {
-          // handle that the user canceled the sign-in flow
-        } else {
-          // handle other errors
+        return firebaseAuthApple(credential, rawNonce);
+      } catch (error) {
+        if (error.code !== 'ERR_CANCELED') {
+          Alert.alert('Signin failed', error.message);
         }
       }
     },
