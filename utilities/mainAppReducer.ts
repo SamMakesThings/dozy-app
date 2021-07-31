@@ -76,7 +76,7 @@ export function getMainAppReducer() {
       isLoading: true,
       isSignout: false,
       userId: null,
-      onboardingComplete: true,
+      onboardingComplete: false,
       profileData: null,
       sleepLogs: [],
       selectedDate: {

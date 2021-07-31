@@ -1,6 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import firestore from '@react-native-firebase/firestore';
 import refreshUserData from './refreshUserData';
+import { sub } from 'date-fns';
 
 interface OnboardingState {
   pills: string;
@@ -67,7 +68,7 @@ export default async function submitOnboardingData(
 
   // Also store reminder info & next check-in datetime
   userDocRef
-    .set({
+    .update({
       healthHistory: healthHistory,
       baselineInfo: {
         baselineStartDate: new Date(),
@@ -97,6 +98,7 @@ export default async function submitOnboardingData(
       logReminderId: notifDocRef.id,
       testingGroup: 'beta2',
       userStatus: 'onboarded',
+      onboardingComplete: true,
       lastChat: {
         message:
           "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
@@ -132,26 +134,26 @@ export default async function submitOnboardingData(
   chatColRef.add({
     sender: 'Sam Stowers',
     message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
-    time: new Date(),
+    time: sub(new Date(), { minutes: 4 }),
     sentByUser: false
   });
   chatColRef.add({
     sender: 'Sam Stowers',
     message: 'Why do you want to improve your sleep?',
-    time: new Date(),
+    time: sub(new Date(), { minutes: 3 }),
     sentByUser: false
   });
   chatColRef.add({
     sender: 'You',
     message: onboardingState.firstChatMessageContent,
-    time: new Date(),
+    time: sub(new Date(), { minutes: 2 }),
     sentByUser: true
   });
   chatColRef.add({
     sender: 'Sam Stowers',
     message:
       "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
-    time: new Date(),
+    time: sub(new Date(), { minutes: 1 }),
     sentByUser: false
   });
 

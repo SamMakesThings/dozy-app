@@ -885,7 +885,7 @@ export const OnboardingEnd = ({ navigation }: Props) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         submitOnboardingData(onboardingState, dispatch);
-        finishOnboarding();
+        // finishOnboarding(); TODO: Remove this if everything is working fine
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
       buttonLabel="Continue"

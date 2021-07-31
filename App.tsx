@@ -92,19 +92,40 @@ export default function App() {
       });
 
       // Check if that user's document exists, in order to direct them to or past onboarding
-      const userDocExists = await firestore()
+      const onboardingComplete = await firestore()
         .collection('users')
         .doc(result.user.uid)
         .get()
         .then((docSnapshot) => {
-          return docSnapshot.exists;
+          // Check if the user document exists and if onboarding is marked complete.
+          // If user doc doesn't exist, create it
+          if (!docSnapshot.exists) {
+            firestore()
+              .collection('users')
+              .doc(result.user.uid)
+              .set({
+                profile: {
+                  name: result.user.displayName,
+                  email: result.user.email
+                },
+                onboardingComplete: false
+              })
+              .catch((error) => {
+                console.error('Error creating user document: ', error);
+              });
+            return false; // Report onboarding as incomplete
+          } else {
+            const onboardingMarkedComplete = docSnapshot.data()
+              .onboardingComplete; // might be undefined
+            return onboardingMarkedComplete ? onboardingMarkedComplete : false;
+          }
         });
 
       // Update app state accordingly thru context hook function
       dispatch({
         type: 'SIGN_IN',
         token: result.user.uid,
-        onboardingComplete: userDocExists,
+        onboardingComplete: onboardingComplete,
         profileData: result.additionalUserInfo.profile,
         isAuthLoading: false
       });

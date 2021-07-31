@@ -34,7 +34,8 @@ export default async function refreshUserData(dispatch) {
         dispatch({
           type: 'UPDATE_USERDATA',
           userData: userData.data(),
-          onboardingComplete: userData.data() != undefined
+          onboardingComplete:
+            userData.exists && userData.data().onboardingComplete === true
         });
       });
 
@@ -42,12 +43,13 @@ export default async function refreshUserData(dispatch) {
     firestore()
       .collection('users')
       .doc(userId)
-      .onSnapshot((docSnapshot) => {
-        if (docSnapshot) {
+      .onSnapshot((userData) => {
+        if (userData) {
           dispatch({
             type: 'UPDATE_USERDATA',
-            userData: docSnapshot.data(),
-            onboardingComplete: docSnapshot.data() != undefined
+            userData: userData.data(),
+            onboardingComplete:
+              userData.exists && userData.data().onboardingComplete === true
           });
         } else {
           console.log("docSnapshot isn't defined at this point");
