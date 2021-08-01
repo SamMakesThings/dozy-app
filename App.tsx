@@ -105,7 +105,7 @@ export default function App() {
               .doc(result.user.uid)
               .set({
                 userInfo: {
-                  name: result.user.displayName,
+                  displayName: result.user.displayName,
                   email: result.user.email,
                   uid: result.user.uid
                 },
