@@ -106,7 +106,8 @@ export default function App() {
               .set({
                 userInfo: {
                   name: result.user.displayName,
-                  email: result.user.email
+                  email: result.user.email,
+                  uid: result.user.uid
                 },
                 onboardingComplete: false
               })
