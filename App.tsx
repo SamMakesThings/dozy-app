@@ -104,7 +104,7 @@ export default function App() {
               .collection('users')
               .doc(result.user.uid)
               .set({
-                profile: {
+                userInfo: {
                   name: result.user.displayName,
                   email: result.user.email
                 },
