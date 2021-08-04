@@ -107,7 +107,8 @@ export default function App() {
                 userInfo: {
                   displayName: result.user.displayName,
                   email: result.user.email,
-                  uid: result.user.uid
+                  uid: result.user.uid,
+                  photoURL: result.user.photoURL ?? ''
                 },
                 onboardingComplete: false
               })
@@ -146,7 +147,17 @@ export default function App() {
     StatusBar.setBarStyle('light-content');
 
     // Update user data from storage and Firebase, update state w/dispatch
-    refreshUserData(dispatch);
+    const subscriber = auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        refreshUserData(dispatch);
+      } else {
+        dispatch({ type: 'SIGN_OUT' });
+        await auth().signOut();
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      }
+    });
+    return subscriber;
   }, []);
 
   // Create authContext so relevant functions are available through the app
