@@ -9,9 +9,12 @@ import {
   KeyboardEvent,
   EmitterSubscription
 } from 'react-native';
-import { InferProps } from 'prop-types';
+import PropTypes, { InferProps } from 'prop-types';
 
-const KeyboardAwareViewPropTypes = ViewPropTypes;
+const KeyboardAwareViewPropTypes = {
+  ...ViewPropTypes,
+  enabled: PropTypes.bool
+};
 
 export type KeyboardAwareViewProps = InferProps<
   typeof KeyboardAwareViewPropTypes
@@ -21,6 +24,7 @@ const { State: TextInputState } = TextInput;
 
 const KeyboardAwareView: React.FC<KeyboardAwareViewProps> = ({
   style,
+  enabled = false,
   ...props
 }) => {
   const [shiftForKeyboard] = useState(new Animated.Value(0));
@@ -52,7 +56,7 @@ const KeyboardAwareView: React.FC<KeyboardAwareViewProps> = ({
               (fieldTop + fieldHeight);
             if (gap < 0) {
               Animated.timing(shiftForKeyboard, {
-                toValue: gap,
+                toValue: enabled ? gap : 0,
                 duration: 300,
                 useNativeDriver: true
               }).start();
@@ -61,7 +65,7 @@ const KeyboardAwareView: React.FC<KeyboardAwareViewProps> = ({
         );
       }
     },
-    [shiftForKeyboard]
+    [shiftForKeyboard, enabled]
   );
 
   const keyboardDidHide = useCallback(() => {
