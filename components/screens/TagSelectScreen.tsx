@@ -6,7 +6,8 @@ import {
   View,
   TextInput,
   useWindowDimensions,
-  ScrollView
+  ScrollView,
+  InteractionManager
 } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import '@react-native-firebase/firestore';
@@ -49,6 +50,15 @@ const TagSelectScreen: React.FC<Props> = (props) => {
   const [notes, setNotes] = React.useState(props.defaultNotes || []);
   const { top, bottom } = useSafeAreaInsets();
   const { height } = useWindowDimensions();
+  const scrollViewRef = React.useRef<ScrollView>(null);
+
+  const onAndroidLayout = React.useCallback((): void => {
+    InteractionManager.runAfterInteractions(() => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollToEnd({ animated: false });
+      }
+    });
+  }, []);
 
   return (
     <ScreenContainer
@@ -73,8 +83,16 @@ const TagSelectScreen: React.FC<Props> = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       />
-      <ScrollView contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
-        <KeyboardAwareView style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        scrollEnabled={false}
+        ref={scrollViewRef}
+        onLayout={Platform.OS === 'android' ? onAndroidLayout : undefined}
+      >
+        <KeyboardAwareView
+          style={styles.container}
+          enabled={Platform.OS === 'ios'}
+        >
           <Container style={styles.Container_nuv} useThemeGutterPadding>
             <Text
               style={[
@@ -177,6 +195,9 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 1
   },
+  container: {
+    flexGrow: 1
+  },
   View_TextInputContainer: {
     alignSelf: 'stretch',
     marginTop: 0,
@@ -199,8 +220,8 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   Container_nuv: {
-    flex: 1,
-    justifyContent: 'center',
+    flexGrow: 1,
+    justifyContent: 'space-between',
     alignItems: 'center'
   },
   IconButton_n9u: {
