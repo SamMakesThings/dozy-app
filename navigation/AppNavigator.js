@@ -35,16 +35,15 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
     >
       {userId != undefined ? (
         <>
-          {onboardingComplete === false && (
-            <TopStack.Screen
-              name="Onboarding"
-              component={OnboardingNavigator}
-            />
-          )}
-          {onboardingComplete === true && (
+          {onboardingComplete ? (
             <TopStack.Screen
               name="App"
               component={BottomTabs /* If logged in, go to the tab navigator */}
+            />
+          ) : (
+            <TopStack.Screen
+              name="Onboarding"
+              component={OnboardingNavigator}
             />
           )}
           <TopStack.Screen
