@@ -96,7 +96,7 @@ export default async function submitOnboardingData(
         nextTreatmentModule: 'SCTSRT'
       },
       logReminderId: notifDocRef.id,
-      testingGroup: 'beta2',
+      testingGroup: 'beta3',
       userStatus: 'onboarded',
       onboardingComplete: true,
       lastChat: {
