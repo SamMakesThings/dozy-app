@@ -46,7 +46,10 @@ const ToggleTag: React.FC<Props> = (props) => {
             color={selected ? theme.colors.secondary : theme.colors.primary}
           />
         </View>
-        <Text style={[styles.Text_ToggleLabel, { color: theme.colors.light }]}>
+        <Text
+          numberOfLines={2}
+          style={[styles.Text_ToggleLabel, { color: theme.colors.light }]}
+        >
           {props.label}
         </Text>
       </View>
@@ -56,7 +59,7 @@ const ToggleTag: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   View_ToggleContainer: {
-    width: '15%',
+    width: '17%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',

@@ -13,15 +13,18 @@ export interface Navigation {
 }
 
 export interface SleepLog {
-  logId: string;
+  logId?: string;
   bedTime: FirebaseFirestoreTypes.Timestamp;
   fallAsleepTime: FirebaseFirestoreTypes.Timestamp;
   wakeTime: FirebaseFirestoreTypes.Timestamp;
   upTime: FirebaseFirestoreTypes.Timestamp;
+  sleepRating: number;
   sleepDuration: number;
   sleepEfficiency: number;
   nightMinsAwake: number;
   minsToFallAsleep: number;
+  minsInBedTotal: number;
+  minsAwakeInBedTotal: number;
   wakeCount: number;
   SCTAnythingNonSleepInBed?: boolean;
   SCTNonSleepActivities?: string;

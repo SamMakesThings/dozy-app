@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   Text,
@@ -17,6 +17,8 @@ import ToggleTag from '../ToggleTag';
 import BottomNavButtons from '../BottomNavButtons';
 import { Theme } from '../../types/theme';
 import KeyboardAwareView from '../KeyboardAwareView';
+import ConfirmSleepTimeModal from '../ConfirmSleepTimeModal';
+import { SleepLog } from '../../types/custom';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -36,23 +38,33 @@ interface Props {
   defaultNotes?: string;
   questionLabel: string;
   inputLabel: string;
+  preFormSubmit: () => boolean;
+  onInvalidForm: () => void;
   onFormSubmit: Function;
+  sleepLog: SleepLog;
 }
 
-const TagSelectScreen: React.FC<Props> = (props) => {
-  // Set the available tags and icons
-  const { theme, touchableTags } = props;
-
+const TagSelectScreen: React.FC<Props> = ({
+  theme,
+  touchableTags,
+  defaultTags,
+  defaultNotes,
+  questionLabel,
+  inputLabel,
+  sleepLog,
+  preFormSubmit,
+  onInvalidForm,
+  onFormSubmit
+}) => {
   // Set up component state for tags and note field
-  const [selectedTags, updateTags] = React.useState(
-    props.defaultTags || []
-  ) as any;
-  const [notes, setNotes] = React.useState(props.defaultNotes || []);
+  const [selectedTags, updateTags] = React.useState(defaultTags || []) as any;
+  const [notes, setNotes] = useState(defaultNotes || '');
+  const [showingModal, setShowingModal] = useState(false);
   const { top, bottom } = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const scrollViewRef = React.useRef<ScrollView>(null);
 
-  const onAndroidLayout = React.useCallback((): void => {
+  const onAndroidLayout = useCallback((): void => {
     InteractionManager.runAfterInteractions(() => {
       if (scrollViewRef.current) {
         scrollViewRef.current.scrollToEnd({ animated: false });
@@ -60,12 +72,36 @@ const TagSelectScreen: React.FC<Props> = (props) => {
     });
   }, []);
 
+  const onFormSubmitWithNotesAndTags = useCallback((): void => {
+    onFormSubmit({ notes, tags: selectedTags });
+  }, [onFormSubmit, notes, selectedTags]);
+
+  const onSubmit = useCallback((): void => {
+    if (preFormSubmit()) {
+      onFormSubmitWithNotesAndTags();
+    } else {
+      setShowingModal(true);
+    }
+  }, [preFormSubmit, onFormSubmitWithNotesAndTags]);
+
+  const onFixSleepLog = useCallback((): void => {
+    setShowingModal(false);
+    onInvalidForm();
+  }, [onInvalidForm]);
+
   return (
     <ScreenContainer
       hasSafeArea={false}
       scrollable={false}
       style={{ paddingTop: top, paddingBottom: bottom }}
     >
+      <ConfirmSleepTimeModal
+        visible={showingModal}
+        sleepLog={sleepLog}
+        onRequestClose={() => setShowingModal((prevState) => !prevState)}
+        onFix={onFixSleepLog}
+        onProceed={onFormSubmitWithNotesAndTags}
+      />
       <View
         style={[
           styles.overlay,
@@ -103,7 +139,7 @@ const TagSelectScreen: React.FC<Props> = (props) => {
                 }
               ]}
             >
-              {props.questionLabel}
+              {questionLabel}
             </Text>
             <View
               style={{
@@ -121,9 +157,7 @@ const TagSelectScreen: React.FC<Props> = (props) => {
                 const { label, icon } = tag;
                 // If editing log and tag is present, mark it selected
                 const selected =
-                  props.defaultTags && props.defaultTags.includes(label)
-                    ? true
-                    : false;
+                  defaultTags && defaultTags.includes(label) ? true : false;
 
                 return (
                   <ToggleTag
@@ -165,9 +199,9 @@ const TagSelectScreen: React.FC<Props> = (props) => {
                   fontSize: scale(17),
                   paddingBottom: scale(10)
                 }}
-                placeholder={props.inputLabel}
+                placeholder={inputLabel}
                 placeholderTextColor={theme.colors.light}
-                defaultValue={props.defaultNotes}
+                defaultValue={defaultNotes}
                 keyboardType="default"
                 keyboardAppearance="dark"
                 returnKeyType="done"
@@ -178,11 +212,7 @@ const TagSelectScreen: React.FC<Props> = (props) => {
           </Container>
         </KeyboardAwareView>
       </ScrollView>
-      <BottomNavButtons
-        theme={theme}
-        onPress={() => props.onFormSubmit({ notes: notes, tags: selectedTags })}
-        buttonLabel="Finish"
-      />
+      <BottomNavButtons theme={theme} onPress={onSubmit} buttonLabel="Finish" />
     </ScreenContainer>
   );
 };
