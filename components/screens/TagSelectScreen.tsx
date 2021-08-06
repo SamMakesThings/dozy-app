@@ -58,7 +58,7 @@ const TagSelectScreen: React.FC<Props> = ({
 }) => {
   // Set up component state for tags and note field
   const [selectedTags, updateTags] = React.useState(defaultTags || []) as any;
-  const [notes, setNotes] = useState(defaultNotes || []);
+  const [notes, setNotes] = useState(defaultNotes || '');
   const [showingModal, setShowingModal] = useState(false);
   const { top, bottom } = useSafeAreaInsets();
   const { height } = useWindowDimensions();
