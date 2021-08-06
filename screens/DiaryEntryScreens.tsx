@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Platform } from 'react-native';
 import { DatePicker } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
@@ -9,7 +9,10 @@ import TextInputScreen from '../components/screens/TextInputScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import TagSelectScreen from '../components/screens/TagSelectScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
-import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
+import submitSleepDiaryData, {
+  validateSleepLog,
+  normalizeSleepLog
+} from '../utilities/submitSleepDiaryData';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 import { Navigation, SleepLog } from '../types/custom';
@@ -511,11 +514,21 @@ export const SleepRatingInput = ({ navigation }: Props) => {
 };
 
 export const TagsNotesInput = ({ navigation }: Props) => {
+  const preFormSubmit = useCallback((): boolean => {
+    return validateSleepLog(logState);
+  }, []);
+
+  const onInvalidForm = useCallback((): void => {
+    navigation.navigate('BedTimeInput');
+    console.log('navigate to sleepdiaryentry');
+  }, [navigation.navigate]);
+
   return (
     <TagSelectScreen
       theme={theme}
       defaultTags={logState.logId ? logState.tags : undefined}
       defaultNotes={logState.logId ? logState.notes : undefined}
+      sleepLog={normalizeSleepLog(logState)}
       touchableTags={[
         { label: 'nothing', icon: 'emoji-happy' },
         { label: 'light', icon: 'light-bulb' },
@@ -537,6 +550,8 @@ export const TagsNotesInput = ({ navigation }: Props) => {
         { label: 'late caffeine', icon: 'drop' },
         { label: 'late alcohol', icon: 'cup' }
       ]}
+      preFormSubmit={preFormSubmit}
+      onInvalidForm={onInvalidForm}
       onFormSubmit={async (res: { notes: string; tags: string[] }) => {
         // Update state with new values
         logState.notes = res.notes;
