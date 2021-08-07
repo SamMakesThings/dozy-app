@@ -23,6 +23,8 @@ import refreshUserData from './utilities/refreshUserData';
 import { getMainAppReducer } from './utilities/mainAppReducer';
 import { Updates } from './utilities/updates.service';
 import LoadingOverlay from './components/LoadingOverlay';
+import { Analytics } from './utilities/analytics.service';
+import AnalyticsEvents from './constants/AnalyticsEvents';
 
 // Mute "setting a timer" firebase warnings in console
 LogBox.ignoreLogs(['Setting a timer']);
@@ -131,6 +133,7 @@ export default function App() {
         profileData: result.additionalUserInfo.profile,
         isAuthLoading: false
       });
+      Analytics.logEvent(AnalyticsEvents.logIn);
     } else {
       Alert.alert(
         'Signin failed',
@@ -237,6 +240,8 @@ export default function App() {
       await auth().signOut();
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
+      Analytics.logEvent(AnalyticsEvents.logOut);
+      Analytics.setUserId(null);
     },
     finishOnboarding: () => {
       dispatch({ type: 'FINISH_ONBOARDING' });
