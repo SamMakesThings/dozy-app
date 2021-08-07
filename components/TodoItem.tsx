@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { MaterialIcons } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
+import { Analytics } from '../utilities/analytics.service';
+import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 export const TodoItem = (props: { label: string; completed: boolean }) => {
   const theme = dozy_theme;
 
   const [checked, setChecked] = React.useState(false);
 
+  const onPress = useCallback((): void => {
+    setChecked(!checked);
+    Analytics.logEvent(AnalyticsEvents.updateTreatmentTask, {
+      completed: !checked
+    });
+  }, [checked]);
+
   return (
-    <TouchableOpacity
-      style={styles.View_TodoItem}
-      onPress={() => {
-        setChecked(!checked);
-      }}
-    >
+    <TouchableOpacity style={styles.View_TodoItem} onPress={onPress}>
       <MaterialIcons
         name={checked ? 'check-box' : 'check-box-outline-blank'}
         size={scale(21)}
