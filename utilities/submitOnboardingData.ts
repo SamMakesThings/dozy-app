@@ -1,6 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
-import { FbDb } from '../config/firebaseConfig';
+import firestore from '@react-native-firebase/firestore';
 import refreshUserData from './refreshUserData';
+import { sub } from 'date-fns';
 
 interface OnboardingState {
   pills: string;
@@ -8,8 +9,8 @@ interface OnboardingState {
   rls: boolean;
   parasomnias: boolean;
   otherCondition: boolean;
-  expoPushToken: string | undefined;
-  diaryReminderTime: Date | undefined;
+  expoPushToken: string;
+  diaryReminderTime: Date;
   firstCheckinTime: Date;
   diaryHabitTrigger: string;
   ISI1: number;
@@ -28,12 +29,11 @@ export default async function submitOnboardingData(
   dispatch: Function
 ) {
   // Initialize relevant Firebase values
-  let db = FbDb;
   let userId = await SecureStore.getItemAsync('userId');
   let userDocRef =
     typeof userId === 'string'
-      ? db.collection('users').doc(userId)
-      : db.collection('users').doc('ERRORDELETEME');
+      ? firestore().collection('users').doc(userId)
+      : firestore().collection('users').doc('ERRORDELETEME');
 
   // Collect the relevant onboarding values into a map for Firebase & store it
   const healthHistory = {
@@ -68,7 +68,7 @@ export default async function submitOnboardingData(
 
   // Also store reminder info & next check-in datetime
   userDocRef
-    .set({
+    .update({
       healthHistory: healthHistory,
       baselineInfo: {
         baselineStartDate: new Date(),
@@ -80,7 +80,8 @@ export default async function submitOnboardingData(
               diaryHabitTrigger: onboardingState.diaryHabitTrigger,
               diaryReminderTime: onboardingState.diaryReminderTime
             },
-            expoPushToken: onboardingState.expoPushToken
+            expoPushToken:
+              onboardingState.expoPushToken || 'No push token provided'
           }
         : {},
       nextCheckin: {
@@ -95,8 +96,9 @@ export default async function submitOnboardingData(
         nextTreatmentModule: 'SCTSRT'
       },
       logReminderId: notifDocRef.id,
-      testingGroup: 'beta2',
+      testingGroup: 'beta3',
       userStatus: 'onboarded',
+      onboardingComplete: true,
       lastChat: {
         message:
           "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
@@ -132,26 +134,26 @@ export default async function submitOnboardingData(
   chatColRef.add({
     sender: 'Sam Stowers',
     message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
-    time: new Date(),
+    time: sub(new Date(), { minutes: 4 }),
     sentByUser: false
   });
   chatColRef.add({
     sender: 'Sam Stowers',
     message: 'Why do you want to improve your sleep?',
-    time: new Date(),
+    time: sub(new Date(), { minutes: 3 }),
     sentByUser: false
   });
   chatColRef.add({
     sender: 'You',
     message: onboardingState.firstChatMessageContent,
-    time: new Date(),
+    time: sub(new Date(), { minutes: 2 }),
     sentByUser: true
   });
   chatColRef.add({
     sender: 'Sam Stowers',
     message:
       "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
-    time: new Date(),
+    time: sub(new Date(), { minutes: 1 }),
     sentByUser: false
   });
 

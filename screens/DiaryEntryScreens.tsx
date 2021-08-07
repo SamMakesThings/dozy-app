@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Platform } from 'react-native';
 import { DatePicker } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
@@ -9,7 +9,10 @@ import TextInputScreen from '../components/screens/TextInputScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import TagSelectScreen from '../components/screens/TagSelectScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
-import submitSleepDiaryData from '../utilities/submitSleepDiaryData';
+import submitSleepDiaryData, {
+  validateSleepLog,
+  normalizeSleepLog
+} from '../utilities/submitSleepDiaryData';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 import { Navigation, SleepLog } from '../types/custom';
@@ -167,9 +170,9 @@ export const MinsToFallAsleepInput = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         logState.minsToFallAsleep = value;
         // If RLX (PMR) started, navigate to RLX. If PIT but no RLX, then PIT. Otherwise wakeCount
-        if (globalState.userData.currentTreatments.RLX) {
+        if (globalState.userData?.currentTreatments?.RLX) {
           navigation.navigate('PMRAsk', { progressBarPercent: 0.3 });
-        } else if (globalState.userData.currentTreatments.PIT) {
+        } else if (globalState.userData?.currentTreatments?.PIT) {
           navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
         } else {
           navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
@@ -203,7 +206,7 @@ export const PMRAsk = ({ navigation }: Props) => {
       onQuestionSubmit={(value: string) => {
         logState.PMRPractice = value;
         // If PIT started, navigate to PIT. Otherwise navigate to WakeCountInput
-        if (globalState.userData.currentTreatments.PIT) {
+        if (globalState.userData?.currentTreatments?.PIT) {
           navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
         } else {
           navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
@@ -247,12 +250,12 @@ export const WakeCountInput = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         logState.wakeCount = value;
         if (
-          globalState.userData.currentTreatments.SCTSRT &&
+          globalState.userData?.currentTreatments?.SCTSRT &&
           (logState.minsToFallAsleep >= 20 || value >= 1)
         ) {
           // If SCTSRT has started AND user woke 1+ times or took 20+ mins to sleep, navigate to SCT questions
           navigation.navigate('SCTUpCountInput', { progressBarPercent: 0.44 });
-        } else if (globalState.userData.currentTreatments.SCTSRT) {
+        } else if (globalState.userData?.currentTreatments?.SCTSRT) {
           // If user started SCTSRT but slept quickly, skip to asking about daytime naps
           // & set SCT values appropriately
           logState.SCTUpCount = 0;
@@ -511,32 +514,44 @@ export const SleepRatingInput = ({ navigation }: Props) => {
 };
 
 export const TagsNotesInput = ({ navigation }: Props) => {
+  const preFormSubmit = useCallback((): boolean => {
+    return validateSleepLog(logState);
+  }, []);
+
+  const onInvalidForm = useCallback((): void => {
+    navigation.navigate('BedTimeInput');
+    console.log('navigate to sleepdiaryentry');
+  }, [navigation.navigate]);
+
   return (
     <TagSelectScreen
       theme={theme}
       defaultTags={logState.logId ? logState.tags : undefined}
       defaultNotes={logState.logId ? logState.notes : undefined}
+      sleepLog={normalizeSleepLog(logState)}
       touchableTags={[
         { label: 'nothing', icon: 'emoji-happy' },
         { label: 'light', icon: 'light-bulb' },
         { label: 'noise', icon: 'sound' },
         { label: 'pets', icon: 'baidu' },
-        { label: 'kids', icon: 'users' },
         { label: 'my partner', icon: 'user' },
+        { label: 'kids', icon: 'users' },
         { label: 'heat', icon: 'adjust' },
         { label: 'cold', icon: 'water' },
+        { label: 'hot flashes', icon: 'air' },
         { label: 'bad bed', icon: 'bug' },
         { label: 'worry', icon: 'emoji-sad' },
         { label: 'stress', icon: 'new' },
         { label: 'pain', icon: 'flash' },
         { label: 'restroom', icon: 'warning' },
-        { label: 'hot flashes', icon: 'air' },
-        { label: 'phone or devices', icon: 'mobile' },
+        { label: 'phone & devices', icon: 'mobile' },
         { label: 'eating', icon: 'bowl' },
         { label: 'smoking', icon: 'cloud' },
         { label: 'late caffeine', icon: 'drop' },
         { label: 'late alcohol', icon: 'cup' }
       ]}
+      preFormSubmit={preFormSubmit}
+      onInvalidForm={onInvalidForm}
       onFormSubmit={async (res: { notes: string; tags: string[] }) => {
         // Update state with new values
         logState.notes = res.notes;

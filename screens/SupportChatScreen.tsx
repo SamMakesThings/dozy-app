@@ -12,7 +12,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { FbLib } from '../config/firebaseConfig';
+import firestore, {
+  FirebaseFirestoreTypes
+} from '@react-native-firebase/firestore';
 import { AntDesign } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
@@ -31,11 +33,9 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Set Firebase DB references if userId is defined
-  let colRef: firebase.firestore.CollectionReference;
-  let db: firebase.firestore.Firestore;
+  let colRef: FirebaseFirestoreTypes.CollectionReference;
   if (state.userId) {
-    db = FbLib.firestore();
-    colRef = db
+    colRef = firestore()
       .collection('users')
       .doc(state.userId)
       .collection('supportMessages');
@@ -45,7 +45,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
     React.useCallback(() => {
       // If LiveChat has a msg marked as unread, mark it as read in Firebase
       if (state.userData?.livechatUnreadMsg) {
-        FbLib.firestore().collection('users').doc(state.userId).update({
+        firestore().collection('users').doc(state.userId).update({
           livechatUnreadMsg: false
         });
       }
@@ -55,7 +55,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   // Function to fetch chats from Firebase and put them in global state
   async function setChats() {
     async function fetchData() {
-      fetchChats(db, state.userId)
+      fetchChats(firestore(), state.userId)
         .then((chats: Array<Chat>) => {
           // Check that theres >1 entry. If no, set state accordingly
           if (chats.length === 0) {
@@ -136,7 +136,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
             />
             <ChatTextInput
               onSend={(typedMsg: string) => {
-                sendChatMessage(db, state.userId, {
+                sendChatMessage(firestore(), state.userId, {
                   sender: state.profileData.name,
                   message: typedMsg,
                   time: new Date(),

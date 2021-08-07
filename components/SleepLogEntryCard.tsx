@@ -11,7 +11,7 @@ import { SleepLog } from '../types/custom';
 
 interface Props {
   sleepLog: SleepLog;
-  onEdit: (event: GestureResponderEvent) => void;
+  onEdit?: (event: GestureResponderEvent) => void;
 }
 
 const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
@@ -50,14 +50,16 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
             day: 'numeric'
           })}
         </Text>
-        <TouchableOpacity onPress={(event) => onEdit(event)}>
-          <Entypo
-            name="pencil"
-            size={scale(18)}
-            color={theme.colors.light}
-            style={{ opacity: 0.3 }}
-          />
-        </TouchableOpacity>
+        {!!onEdit && (
+          <TouchableOpacity onPress={onEdit}>
+            <Entypo
+              name="pencil"
+              size={scale(18)}
+              color={theme.colors.light}
+              style={{ opacity: 0.3 }}
+            />
+          </TouchableOpacity>
+        )}
       </Container>
       <Container
         style={{

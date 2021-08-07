@@ -1,7 +1,13 @@
 import React from 'react';
 import * as AppleAuthentication from 'expo-apple-authentication'; // @ts-ignore
 import { Button, ScreenContainer, Container, Touchable } from '@draftbit/ui';
-import { StyleSheet, Text, ImageBackground, Platform } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ImageBackground,
+  Platform,
+  ViewStyle
+} from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { AuthContext } from '../utilities/authContext';
 import { dozy_theme } from '../config/Themes';
@@ -78,14 +84,14 @@ function LoginScreen() {
           {Platform.OS === 'ios' && ( // Show Apple signin if iPhone
             <AppleAuthentication.AppleAuthenticationButton
               buttonType={
-                AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+                AppleAuthentication.AppleAuthenticationButtonType.CONTINUE
               }
               buttonStyle={
                 AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
               }
               cornerRadius={theme.borderRadius.button}
               style={StyleSheet.flatten([
-                theme.buttonLayout,
+                theme.buttonLayout as ViewStyle,
                 { borderRadius: theme.borderRadius.button }
               ])}
               onPress={signInWithApple}
@@ -97,11 +103,14 @@ function LoginScreen() {
             color={theme.colors.primary}
             style={StyleSheet.flatten([
               theme.buttonLayout,
-              { borderRadius: theme.borderRadius.button }
+              {
+                borderRadius: theme.borderRadius.button,
+                marginTop: Platform.OS === 'ios' ? scale(5) : 0
+              }
             ])}
             onPress={signIn}
           >
-            Get Started
+            {Platform.OS === 'ios' ? 'Continue with Google' : 'Get Started'}
           </Button>
           <Touchable style={styles.Touchable_BackButton} onPress={signIn}>
             <Text
@@ -126,7 +135,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     width: '100%',
     height: '60%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingBottom: Platform.OS === 'ios' ? scale(20) : 0
   },
   View_LogoContainer: {
     height: '15%'

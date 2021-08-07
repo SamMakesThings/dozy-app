@@ -27,7 +27,8 @@ export function getLogStreakLength(sleepLogs: SleepLog[]) {
 
     // Check if current log day is the day after previous log day. If not, break
     if (
-      sleepLogs.length === 1 ||
+      sleepLogs.length === 1 || // If there's only 1 night logged, streak can be at most 1
+      !sleepLogs[streakLength + 1] || // Make sure the next index is defined or the below code breaks
       !isPreviousDay(
         sleepLogs[streakLength].upTime.toDate(),
         sleepLogs[streakLength + 1].upTime.toDate()

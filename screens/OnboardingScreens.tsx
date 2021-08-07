@@ -61,8 +61,8 @@ let onboardingState = {
   parasomnias: false,
   otherCondition: false,
   diaryHabitTrigger: 'ERROR',
-  expoPushToken: undefined as undefined | string,
-  diaryReminderTime: undefined as Date | undefined,
+  expoPushToken: 'No push token provided',
+  diaryReminderTime: new Date(),
   firstCheckinTime: new Date(),
   firstChatMessageContent: 'Hi'
 };
@@ -721,7 +721,7 @@ export const DiaryReminder = ({ navigation }: Props) => {
       onQuestionSubmit={(value: Date | boolean) => {
         // TODO: Can I just make the arrow function async instead of below
         async function setPushToken() {
-          let pushToken = await registerForPushNotificationsAsync(); // lol wtf why did I do this twice, will fix later
+          // let pushToken = await registerForPushNotificationsAsync(); // lol wtf why did I do this twice, will fix later
           // TODO: Make less dumb
           onboardingState.expoPushToken = await registerForPushNotificationsAsync();
         }
@@ -885,7 +885,7 @@ export const OnboardingEnd = ({ navigation }: Props) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         submitOnboardingData(onboardingState, dispatch);
-        finishOnboarding();
+        // finishOnboarding(); TODO: Remove this if everything is working fine
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
       buttonLabel="Continue"

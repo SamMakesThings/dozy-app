@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import React, { useContext } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PropTypes from 'prop-types';
-import { dozy_theme } from '../config/Themes';
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
@@ -16,48 +16,16 @@ import HYGNavigator from './HYGNavigator';
 import COG1Navigator from './COG1Navigator';
 import ENDNavigator from './ENDNavigator';
 import HeaderProgressBar from '../components/HeaderProgressBar';
+import { Analytics } from '../utilities/analytics.service';
+import { AuthContext } from '../utilities/authContext';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
 // (do I need individual definitions, or should I just use "Stack" every time?)
 const TopStack = createStackNavigator();
 
-// Set up a loading screen for waiting on Firebase response
-function LoadingScreen() {
-  return (
-    <View
-      styles={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        backgroundColor: '#232B3F',
-        padding: 20
-      }}
-    >
-      <ActivityIndicator
-        size="large"
-        color={dozy_theme.colors.primary}
-        style={{
-          width: 50,
-          height: 50,
-          marginTop: '100%',
-          alignSelf: 'center'
-        }}
-      />
-    </View>
-  );
-}
-
 // Export the navigation components and screens, with if/then for auth state
-export default function InitialAuthNavigator({
-  userId,
-  authLoading,
-  onboardingComplete
-}) {
-  if (authLoading) {
-    return <LoadingScreen />;
-  }
-
+function InitialAuthNavigator({ userId, onboardingComplete }) {
   return (
     <TopStack.Navigator
       initialRouteName="Onboarding"
@@ -67,16 +35,15 @@ export default function InitialAuthNavigator({
     >
       {userId != undefined ? (
         <>
-          {onboardingComplete === false && (
-            <TopStack.Screen
-              name="Onboarding"
-              component={OnboardingNavigator}
-            />
-          )}
-          {onboardingComplete === true && (
+          {onboardingComplete ? (
             <TopStack.Screen
               name="App"
               component={BottomTabs /* If logged in, go to the tab navigator */}
+            />
+          ) : (
+            <TopStack.Screen
+              name="Onboarding"
+              component={OnboardingNavigator}
             />
           )}
           <TopStack.Screen
@@ -140,3 +107,26 @@ InitialAuthNavigator.propTypes = {
   userId: PropTypes.string,
   authLoading: PropTypes.bool
 };
+
+export default function AppNavigator() {
+  const { state } = useContext(AuthContext);
+  const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
+
+  return (
+    <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
+      <View style={styles.container}>
+        <InitialAuthNavigator
+          userId={state.userId}
+          onboardingComplete={state.onboardingComplete}
+        />
+      </View>
+    </NavigationContainer>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#232B3F'
+  }
+});

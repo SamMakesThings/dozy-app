@@ -1,9 +1,8 @@
 import * as SecureStore from 'expo-secure-store';
-import { FbLib, FbDb } from '../config/firebaseConfig';
+import firestore from '@react-native-firebase/firestore';
 
 export default async function refreshUserData(dispatch) {
   let userId;
-  // let accessToken;
   // let idToken;
   // let providerId;
   let profileData;
@@ -13,7 +12,6 @@ export default async function refreshUserData(dispatch) {
     if (userId === null) {
       throw "userId isn't stored in SecureStore, aborting";
     }
-    // accessToken = await SecureStore.getItemAsync('accessToken');
     // idToken = await SecureStore.getItemAsync('idToken');
     // providerId = await SecureStore.getItemAsync('providerId');
     profileData = await JSON.parse(
@@ -28,26 +26,30 @@ export default async function refreshUserData(dispatch) {
     });
 
     // Update user's data from Firestore db
-    FbDb.collection('users')
+    firestore()
+      .collection('users')
       .doc(userId)
       .get()
       .then((userData) => {
         dispatch({
           type: 'UPDATE_USERDATA',
           userData: userData.data(),
-          onboardingComplete: userData.data() != undefined
+          onboardingComplete:
+            userData.exists && userData.data().onboardingComplete === true
         });
       });
 
     // Add a listener so user doc state updates live
-    FbDb.collection('users')
+    firestore()
+      .collection('users')
       .doc(userId)
-      .onSnapshot((docSnapshot) => {
-        if (docSnapshot) {
+      .onSnapshot((userData) => {
+        if (userData) {
           dispatch({
             type: 'UPDATE_USERDATA',
-            userData: docSnapshot.data(),
-            onboardingComplete: docSnapshot.data() != undefined
+            userData: userData.data(),
+            onboardingComplete:
+              userData.exists && userData.data().onboardingComplete === true
           });
         } else {
           console.log("docSnapshot isn't defined at this point");

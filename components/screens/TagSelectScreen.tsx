@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   Text,
   Platform,
   View,
   TextInput,
-  KeyboardAvoidingView
+  useWindowDimensions,
+  ScrollView,
+  InteractionManager
 } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
-import Intl from 'intl';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ToggleTag from '../ToggleTag';
 import BottomNavButtons from '../BottomNavButtons';
 import { Theme } from '../../types/theme';
+import KeyboardAwareView from '../KeyboardAwareView';
+import ConfirmSleepTimeModal from '../ConfirmSleepTimeModal';
+import { SleepLog } from '../../types/custom';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -33,141 +38,205 @@ interface Props {
   defaultNotes?: string;
   questionLabel: string;
   inputLabel: string;
+  preFormSubmit: () => boolean;
+  onInvalidForm: () => void;
   onFormSubmit: Function;
+  sleepLog: SleepLog;
 }
 
-const TagSelectScreen: React.FC<Props> = (props) => {
-  // Set the available tags and icons
-  const { theme, touchableTags } = props;
-
+const TagSelectScreen: React.FC<Props> = ({
+  theme,
+  touchableTags,
+  defaultTags,
+  defaultNotes,
+  questionLabel,
+  inputLabel,
+  sleepLog,
+  preFormSubmit,
+  onInvalidForm,
+  onFormSubmit
+}) => {
   // Set up component state for tags and note field
-  const [selectedTags, updateTags] = React.useState(
-    props.defaultTags || []
-  ) as any;
-  const [notes, setNotes] = React.useState(props.defaultNotes || []);
+  const [selectedTags, updateTags] = React.useState(defaultTags || []) as any;
+  const [notes, setNotes] = useState(defaultNotes || '');
+  const [showingModal, setShowingModal] = useState(false);
+  const { top, bottom } = useSafeAreaInsets();
+  const { height } = useWindowDimensions();
+  const scrollViewRef = React.useRef<ScrollView>(null);
+
+  const onAndroidLayout = useCallback((): void => {
+    InteractionManager.runAfterInteractions(() => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollToEnd({ animated: false });
+      }
+    });
+  }, []);
+
+  const onFormSubmitWithNotesAndTags = useCallback((): void => {
+    onFormSubmit({ notes, tags: selectedTags });
+  }, [onFormSubmit, notes, selectedTags]);
+
+  const onSubmit = useCallback((): void => {
+    if (preFormSubmit()) {
+      onFormSubmitWithNotesAndTags();
+    } else {
+      setShowingModal(true);
+    }
+  }, [preFormSubmit, onFormSubmitWithNotesAndTags]);
+
+  const onFixSleepLog = useCallback((): void => {
+    setShowingModal(false);
+    onInvalidForm();
+  }, [onInvalidForm]);
 
   return (
     <ScreenContainer
-      hasSafeArea={true}
+      hasSafeArea={false}
       scrollable={false}
-      style={styles.Root_nb1}
+      style={{ paddingTop: top, paddingBottom: bottom }}
     >
+      <ConfirmSleepTimeModal
+        visible={showingModal}
+        sleepLog={sleepLog}
+        onRequestClose={() => setShowingModal((prevState) => !prevState)}
+        onFix={onFixSleepLog}
+        onProceed={onFormSubmitWithNotesAndTags}
+      />
+      <View
+        style={[
+          styles.overlay,
+          {
+            backgroundColor: theme.colors.background,
+            height: top + height * 0.1
+          }
+        ]}
+      />
       <Container
-        style={styles.Container_nof}
+        style={[
+          styles.Container_nof,
+          { backgroundColor: theme.colors.background }
+        ]}
         elevation={0}
         useThemeGutterPadding={true}
-      ></Container>
-      <KeyboardAvoidingView
-        style={styles.Container_n8t}
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-      >
-        <Text
-          style={[
-            styles.Text_nqt,
-            theme.typography.headline5,
-            {
-              color: theme.colors.secondary
-            }
-          ]}
-        >
-          {props.questionLabel}
-        </Text>
-        <View
-          style={{
-            flex: 4,
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            flexWrap: 'wrap',
-            alignContent: 'center',
-            alignItems: 'flex-start',
-            backgroundColor: theme.colors.background
-          }}
-        >
-          {touchableTags.map((tag) => {
-            // Create ToggleTag elements based on props
-            const { label, icon } = tag;
-            // If editing log and tag is present, mark it selected
-            const selected =
-              props.defaultTags && props.defaultTags.includes(label)
-                ? true
-                : false;
-
-            return (
-              <ToggleTag
-                key={label}
-                theme={theme}
-                initialSelected={selected}
-                entypoIcon={icon}
-                label={label}
-                onPress={() => {
-                  let tempArray = selectedTags;
-                  const index = selectedTags.findIndex(
-                    (tag: string) => tag === label
-                  );
-                  if (index > -1) {
-                    tempArray.splice(index, 1);
-                    updateTags(tempArray);
-                  } else {
-                    tempArray.push(label);
-                    updateTags(tempArray);
-                  }
-                }}
-              />
-            );
-          })}
-        </View>
-        <View
-          style={[
-            styles.View_TextInputContainer,
-            {
-              borderColor: theme.colors.medium,
-              backgroundColor: theme.colors.background
-            }
-          ]}
-        >
-          <TextInput
-            style={{
-              height: scale(35),
-              color: '#ffffff',
-              fontSize: scale(17),
-              paddingBottom: scale(10)
-            }}
-            placeholder={props.inputLabel}
-            placeholderTextColor={theme.colors.light}
-            defaultValue={props.defaultNotes}
-            keyboardType="default"
-            keyboardAppearance="dark"
-            returnKeyType="done"
-            enablesReturnKeyAutomatically={true}
-            onChangeText={(value) => setNotes(value)}
-          />
-        </View>
-      </KeyboardAvoidingView>
-      <BottomNavButtons
-        theme={theme}
-        onPress={() => props.onFormSubmit({ notes: notes, tags: selectedTags })}
-        buttonLabel="Finish"
       />
+      <ScrollView
+        contentContainerStyle={styles.container}
+        scrollEnabled={false}
+        ref={scrollViewRef}
+        onLayout={Platform.OS === 'android' ? onAndroidLayout : undefined}
+      >
+        <KeyboardAwareView
+          style={styles.container}
+          enabled={Platform.OS === 'ios'}
+        >
+          <Container style={styles.Container_nuv} useThemeGutterPadding>
+            <Text
+              style={[
+                styles.Text_nqt,
+                theme.typography.headline5,
+                {
+                  color: theme.colors.secondary
+                }
+              ]}
+            >
+              {questionLabel}
+            </Text>
+            <View
+              style={{
+                flex: 4,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                flexWrap: 'wrap',
+                alignContent: 'center',
+                alignItems: 'flex-start',
+                backgroundColor: theme.colors.background
+              }}
+            >
+              {touchableTags.map((tag) => {
+                // Create ToggleTag elements based on props
+                const { label, icon } = tag;
+                // If editing log and tag is present, mark it selected
+                const selected =
+                  defaultTags && defaultTags.includes(label) ? true : false;
+
+                return (
+                  <ToggleTag
+                    key={label}
+                    theme={theme}
+                    initialSelected={selected}
+                    entypoIcon={icon}
+                    label={label}
+                    onPress={() => {
+                      let tempArray = selectedTags;
+                      const index = selectedTags.findIndex(
+                        (tag: string) => tag === label
+                      );
+                      if (index > -1) {
+                        tempArray.splice(index, 1);
+                        updateTags(tempArray);
+                      } else {
+                        tempArray.push(label);
+                        updateTags(tempArray);
+                      }
+                    }}
+                  />
+                );
+              })}
+            </View>
+            <View
+              style={[
+                styles.View_TextInputContainer,
+                {
+                  borderColor: theme.colors.medium,
+                  backgroundColor: theme.colors.background
+                }
+              ]}
+            >
+              <TextInput
+                style={{
+                  height: scale(35),
+                  color: '#ffffff',
+                  fontSize: scale(17),
+                  paddingBottom: scale(10)
+                }}
+                placeholder={inputLabel}
+                placeholderTextColor={theme.colors.light}
+                defaultValue={defaultNotes}
+                keyboardType="default"
+                keyboardAppearance="dark"
+                returnKeyType="done"
+                enablesReturnKeyAutomatically={true}
+                onChangeText={(value) => setNotes(value)}
+              />
+            </View>
+          </Container>
+        </KeyboardAwareView>
+      </ScrollView>
+      <BottomNavButtons theme={theme} onPress={onSubmit} buttonLabel="Finish" />
     </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1
+  },
+  container: {
+    flexGrow: 1
+  },
   View_TextInputContainer: {
+    alignSelf: 'stretch',
     marginTop: 0,
     marginBottom: '7%',
-    width: '80%',
-    alignSelf: 'center',
     borderBottomWidth: 1.5
   },
   Button_n5c: {
     paddingTop: 0,
     marginTop: scale(7)
-  },
-  Container_n8t: {
-    height: '72%',
-    justifyContent: 'center',
-    marginTop: scale(17)
   },
   Container_nmw: {
     height: '15%'
@@ -177,17 +246,17 @@ const styles = StyleSheet.create({
     height: '10%',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: scale(17)
+    marginTop: scale(17),
+    zIndex: 1
   },
   Container_nuv: {
-    width: '100%',
-    justifyContent: 'center',
+    flexGrow: 1,
+    justifyContent: 'space-between',
     alignItems: 'center'
   },
   IconButton_n9u: {
     paddingRight: 0
   },
-  Root_nb1: {},
   TextField_no0: {
     flex: 1
   },

@@ -128,7 +128,6 @@ const SleepLogsView = (props: {
     );
   } else {
     // Otherwise load sleep logs
-    var sleepLogs = selectedSleepLogs;
     return (
       <ScrollView horizontal={false}>
         <IconTitleSubtitleButton
@@ -142,12 +141,12 @@ const SleepLogsView = (props: {
         {props.sleepLogs.length < 7 && (
           <BaselineProgressCard nightsLogged={props.sleepLogs.length} />
         )}
-        {sleepLogs.map((log) => {
+        {selectedSleepLogs.map((log) => {
           return (
             <SleepLogEntryCard
               sleepLog={log}
               key={log.logId}
-              onEdit={(event) =>
+              onEdit={() =>
                 props.navigation.navigate('SleepDiaryEntry', {
                   screen: 'BedTimeInput',
                   params: { logId: log.logId }

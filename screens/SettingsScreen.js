@@ -9,7 +9,7 @@ import {
   Touchable,
   DatePicker
 } from '@draftbit/ui';
-import { FbLib } from '../config/firebaseConfig';
+import firestore from '@react-native-firebase/firestore';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 import planTreatmentModules from '../utilities/planTreatmentModules';
@@ -25,7 +25,7 @@ function Root() {
 
   // Get various Firebase refs for keeping settings updated
   if (state.userId !== null && state.userData?.logReminderId !== undefined) {
-    const notifColRef = FbLib.firestore()
+    const notifColRef = firestore()
       .collection('users')
       .doc(state.userId)
       .collection('notifications');

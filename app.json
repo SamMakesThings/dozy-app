@@ -3,9 +3,10 @@
     "name": "Dozy",
     "slug": "dozy_app",
     "privacy": "public",
+    "sdkVersion": "40.0.0",
     "platforms": ["ios", "android"],
     "primaryColor": "#00818A",
-    "version": "0.7.1",
+    "version": "0.7.6",
     "orientation": "portrait",
     "icon": "./assets/images/appleIcon.png",
     "splash": {
@@ -21,7 +22,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.dozyhealth.dozy",
       "icon": "./assets/images/appleIcon.png",
-      "buildNumber": "17",
+      "buildNumber": "21",
       "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf"
@@ -31,14 +32,13 @@
     "android": {
       "package": "com.dozyhealth.dozy",
       "icon": "./assets/images/appleIcon.png",
-      "versionCode": 17,
+      "versionCode": 21,
       "config": {
         "googleSignIn": {
           "certificateHash": "380B249EE454F973C64F8BE38A1604F5FF1A6B81",
           "apiKey": "AIzaSyC0GREVi9E3rPHvX35XHmk7y3lsccH2zPA"
         }
       },
-      "googleServicesFile": "./google-services.json",
       "permissions": []
     },
     "packagerOpts": {

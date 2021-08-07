@@ -4,12 +4,14 @@
   <dict>
     <key>EXUpdatesSDKVersion</key>
     <string>40.0.0</string>
+    <key>EXUpdatesCheckOnLaunch</key>
+    <string>ALWAYS</string>
     <key>EXUpdatesURL</key>
     <string>https://exp.host/@startupsam/dozy_app</string>
     <key>EXUpdatesEnabled</key>
     <true/>
-    <key>EXUpdatesCheckOnLaunch</key>
-    <string>ALWAYS</string>
+    <key>EXUpdatesReleaseChannel</key>
+    <string>default1</string>
     <key>EXUpdatesLaunchWaitMs</key>
     <integer>0</integer>
   </dict>
