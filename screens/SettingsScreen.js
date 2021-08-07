@@ -13,6 +13,8 @@ import firestore from '@react-native-firebase/firestore';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 import planTreatmentModules from '../utilities/planTreatmentModules';
+import { Analytics } from '../utilities/analytics.service';
+import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 function Root() {
   // Pass along the signOut function from the context provider
@@ -198,6 +200,9 @@ function Root() {
                 type: 'TOGGLE_LOG_NOTIFS',
                 enabledStatus: value
               });
+              Analytics.logEvent(AnalyticsEvents.switchSleepLogReminders, {
+                enabled: value
+              });
             }}
           />
         </Container>
@@ -229,6 +234,7 @@ function Root() {
             date={settings.logReminderTime}
             onDateChange={(result) => {
               dispatch({ type: 'SET_LOG_REMINDER_TIME', time: result });
+              Analytics.logEvent(AnalyticsEvents.editReminderTime);
             }}
           />
         </Container>
