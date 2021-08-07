@@ -47,7 +47,7 @@ const IconExplainScreen: React.FC<Props> = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        {/* <View style={{ flex: 1 }} /> */}
+        <View style={{ flex: 1 }} />
         <View style={styles.View_ImageContainer}>{props.image}</View>
         <Text
           style={{
