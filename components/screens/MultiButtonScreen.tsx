@@ -23,11 +23,6 @@ const MultiButtonScreen: React.FC<Props> = (props) => {
       style={styles.Root_ne0}
     >
       <Container
-        style={styles.View_HeaderContainer}
-        elevation={0}
-        useThemeGutterPadding={true}
-      ></Container>
-      <Container
         style={styles.View_ContentContainer}
         elevation={0}
         useThemeGutterPadding={true}

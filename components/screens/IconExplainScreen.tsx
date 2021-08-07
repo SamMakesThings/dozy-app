@@ -42,7 +42,7 @@ const IconExplainScreen: React.FC<Props> = (props) => {
           />
         </Container>
       </Container>
-      <View style={{ flex: 1, borderWidth: 5, borderColor: '#0FF' }} />
+      <View style={{ flex: 1 }} />
       <Container
         style={styles.View_ContentContainer}
         elevation={0}
@@ -78,15 +78,11 @@ const IconExplainScreen: React.FC<Props> = (props) => {
 const styles = StyleSheet.create({
   View_ImageContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 5,
-    borderColor: '#F00'
+    alignItems: 'center'
   },
   View_ContentContainer: {
     flex: 5,
-    justifyContent: 'center',
-    borderColor: '#FF0',
-    borderWidth: 5
+    justifyContent: 'center'
   },
   View_BarContainer: {
     width: '100%',

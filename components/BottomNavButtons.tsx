@@ -120,10 +120,7 @@ const styles = StyleSheet.create({
   },
   View_ButtonContainer: {
     flex: 1,
-    marginBottom: scale(15),
-    borderColor: '#FFF',
-    backgroundColor: '#F00',
-    borderWidth: 5
+    marginBottom: scale(15)
   },
   Touchable_BackButton: {
     paddingTop: scale(18),

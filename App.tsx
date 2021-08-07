@@ -110,6 +110,7 @@ export default function App() {
                   uid: result.user.uid,
                   photoURL: result.user.photoURL ?? ''
                 },
+
                 onboardingComplete: false
               })
               .catch((error) => {
@@ -117,8 +118,8 @@ export default function App() {
               });
             return false; // Report onboarding as incomplete
           } else {
-            const onboardingMarkedComplete = docSnapshot.data()
-              .onboardingComplete; // might be undefined
+            const onboardingMarkedComplete =
+              docSnapshot.data().onboardingComplete; // might be undefined
             return onboardingMarkedComplete ? onboardingMarkedComplete : false;
           }
         });
