@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   ScrollView,
   Text,
@@ -25,6 +25,8 @@ import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { AuthContext } from '../utilities/authContext';
 import { Navigation, SleepLog } from '../types/custom';
 import fetchTasks from '../utilities/fetchTasks';
+import { Analytics } from '../utilities/analytics.service';
+import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -58,6 +60,17 @@ const SleepLogsView = (props: {
       );
     });
   }
+
+  const onEditLog = useCallback(
+    (log: SleepLog): void => {
+      props.navigation.navigate('SleepDiaryEntry', {
+        screen: 'BedTimeInput',
+        params: { logId: log.logId }
+      });
+      Analytics.logEvent(AnalyticsEvents.editSleepLog);
+    },
+    [props.navigation]
+  );
 
   if (props.isLoading) {
     // If sleep logs haven't loaded, show indicator
@@ -146,12 +159,7 @@ const SleepLogsView = (props: {
             <SleepLogEntryCard
               sleepLog={log}
               key={log.logId}
-              onEdit={() =>
-                props.navigation.navigate('SleepDiaryEntry', {
-                  screen: 'BedTimeInput',
-                  params: { logId: log.logId }
-                })
-              }
+              onEdit={() => onEditLog(log)}
             />
           );
         })}
@@ -218,6 +226,11 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
     });
   }
 
+  const addSleepLog = useCallback((): void => {
+    props.navigation.navigate('SleepDiaryEntry');
+    Analytics.logEvent(AnalyticsEvents.addSleepLog);
+  }, [props.navigation]);
+
   // Set sleep logs once upon loading
   React.useEffect(() => {
     setSleepLogs();
@@ -233,7 +246,7 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
         <SleepLogsView
           isLoading={logsLoading}
           sleepLogs={state.sleepLogs || []}
-          logEntryRedirect={() => props.navigation.navigate('SleepDiaryEntry')}
+          logEntryRedirect={addSleepLog}
           navigation={props.navigation}
         />
       </Container>
