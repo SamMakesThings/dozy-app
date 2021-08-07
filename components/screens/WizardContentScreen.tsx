@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   View_ContentContainer: {
-    flex: 1,
+    flex: 5,
     alignItems: 'center'
   },
   View_TextContainer: {

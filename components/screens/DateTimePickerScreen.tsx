@@ -55,12 +55,8 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
       severity: string;
       errorMsg: string;
     }
-    const validationResult:
-      | ErrorObj
-      | boolean
-      | undefined = props.validInputChecker
-      ? props.validInputChecker(val)
-      : undefined;
+    const validationResult: ErrorObj | boolean | undefined =
+      props.validInputChecker ? props.validInputChecker(val) : undefined;
 
     if (validationResult === undefined || validationResult === true) {
       setScreenState(States.Valid);
@@ -212,7 +208,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   View_ContentContainer: {
-    flex: 1,
+    flex: 5,
     justifyContent: 'space-around',
     marginTop: 20
   },

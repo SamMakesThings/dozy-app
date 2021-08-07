@@ -26,6 +26,7 @@ interface Props {
 const BottomNavButtons: React.FC<Props> = (props) => {
   const { theme, bottomBackButton, bbbDisabled } = props;
 
+  console.log('props:', props.buttonValues);
   return (
     <Container
       style={{
@@ -35,25 +36,24 @@ const BottomNavButtons: React.FC<Props> = (props) => {
       elevation={0}
       useThemeGutterPadding={true}
     >
-      {props.buttonValues &&
-        props.buttonValues.map((val) => {
-          const { label, value, solidColor } = val;
-          return (
-            <Button
-              key={value}
-              style={{ ...theme.buttonLayout, ...styles.Button_Default }}
-              type={solidColor ? 'solid' : 'outline'}
-              color={solidColor ? theme.colors.primary : theme.colors.secondary}
-              loading={false}
-              disabled={false}
-              onPress={() => {
-                props.onPress(value);
-              }}
-            >
-              {label}
-            </Button>
-          );
-        })}
+      {props.buttonValues?.map((val) => {
+        const { label, value, solidColor } = val;
+        return (
+          <Button
+            key={value}
+            style={{ ...theme.buttonLayout, ...styles.Button_Default }}
+            type={solidColor ? 'solid' : 'outline'}
+            color={solidColor ? theme.colors.primary : theme.colors.secondary}
+            loading={false}
+            disabled={false}
+            onPress={() => {
+              props.onPress(value);
+            }}
+          >
+            {label}
+          </Button>
+        );
+      })}
       <Button
         style={{
           ...theme.buttonLayout,
@@ -119,8 +119,11 @@ const styles = StyleSheet.create({
     marginTop: scale(5)
   },
   View_ButtonContainer: {
-    // flex: 1,
-    marginBottom: scale(15)
+    flex: 1,
+    marginBottom: scale(15),
+    borderColor: '#FFF',
+    backgroundColor: '#F00',
+    borderWidth: 5
   },
   Touchable_BackButton: {
     paddingTop: scale(18),

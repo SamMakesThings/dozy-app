@@ -42,23 +42,25 @@ const IconExplainScreen: React.FC<Props> = (props) => {
           />
         </Container>
       </Container>
+      <View style={{ flex: 1, borderWidth: 5, borderColor: '#0FF' }} />
       <Container
         style={styles.View_ContentContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <View style={{ flex: 1 }} />
-        <View style={styles.View_ImageContainer}>{props.image}</View>
-        <Text
-          style={{
-            ...theme.typography.body1,
-            color: theme.colors.secondary,
-            flex: props.longText ? undefined : 3,
-            marginBottom: 10
-          }}
-        >
-          {props.textLabel}
-        </Text>
+        <View style={styles.View_ImageContainer}>
+          {props.image}
+          <Text
+            style={{
+              ...theme.typography.body1,
+              color: theme.colors.secondary,
+              // flex: props.longText ? undefined : 3
+              paddingTop: 30
+            }}
+          >
+            {props.textLabel}
+          </Text>
+        </View>
       </Container>
       <BottomNavButtons
         onPress={props.onQuestionSubmit}
@@ -75,13 +77,16 @@ const IconExplainScreen: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   View_ImageContainer: {
-    flex: 5,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 5,
+    borderColor: '#F00'
   },
   View_ContentContainer: {
-    flex: 1,
+    flex: 5,
     justifyContent: 'center',
-    alignItems: 'center'
+    borderColor: '#FF0',
+    borderWidth: 5
   },
   View_BarContainer: {
     width: '100%',

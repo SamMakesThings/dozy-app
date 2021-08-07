@@ -43,18 +43,16 @@ const MultiButtonScreen: React.FC<Props> = (props) => {
         >
           {props.questionLabel}
         </Text>
-        {props.questionSubtitle && ( // If invalid input, replace subtitle with error message
-          <Text
-            style={[
-              styles.Text_QuestionLabel,
-              theme.typography.body1,
-              styles.Text_QuestionSubtitle,
-              { color: theme.colors.secondary }
-            ]}
-          >
-            {props.questionSubtitle}
-          </Text>
-        )}
+        <Text
+          style={[
+            styles.Text_QuestionLabel,
+            theme.typography.body1,
+            styles.Text_QuestionSubtitle,
+            { color: theme.colors.secondary }
+          ]}
+        >
+          {props?.questionSubtitle}
+        </Text>
       </Container>
       <BottomNavButtons
         theme={theme}
@@ -106,7 +104,8 @@ const styles = StyleSheet.create({
   },
   Text_QuestionSubtitle: {
     fontWeight: 'normal',
-    opacity: 0.7
+    opacity: 0.7,
+    paddingBottom: 20
   }
 });
 
