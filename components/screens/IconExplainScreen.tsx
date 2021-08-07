@@ -25,11 +25,7 @@ const IconExplainScreen: React.FC<Props> = (props) => {
 
   return (
     <ScreenContainer hasSafeArea={true} scrollable={false}>
-      <Container
-        style={styles.View_HeaderContainer}
-        elevation={0}
-        useThemeGutterPadding={true}
-      >
+      <Container elevation={0} useThemeGutterPadding={true}>
         <Container
           style={styles.View_BarContainer}
           elevation={0}
@@ -37,7 +33,6 @@ const IconExplainScreen: React.FC<Props> = (props) => {
         >
           <ProgressBar
             style={{
-              ...styles.ProgressBar,
               ...{ display: props.progressBarPercent ? 'flex' : 'none' }
             }}
             color={theme.colors.primary}
@@ -52,11 +47,10 @@ const IconExplainScreen: React.FC<Props> = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <View style={{ flex: 1 }} />
+        {/* <View style={{ flex: 1 }} /> */}
         <View style={styles.View_ImageContainer}>{props.image}</View>
         <Text
           style={{
-            ...styles.Text_Explainer,
             ...theme.typography.body1,
             color: theme.colors.secondary,
             flex: props.longText ? undefined : 3,
@@ -96,15 +90,7 @@ const styles = StyleSheet.create({
   },
   Nav_BackButton: {
     paddingRight: 0
-  },
-  Text_Explainer: {
-    textAlign: 'left',
-    width: '90%',
-    alignItems: 'flex-start',
-    alignSelf: 'center'
-  },
-  ProgressBar: {},
-  View_HeaderContainer: {}
+  }
 });
 
 export default withTheme(IconExplainScreen);

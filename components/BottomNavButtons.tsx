@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     marginTop: scale(5)
   },
   View_ButtonContainer: {
+    flex: 1,
     marginBottom: scale(15)
   },
   Touchable_BackButton: {
