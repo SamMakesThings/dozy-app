@@ -140,7 +140,7 @@ function Root() {
             }
           ]}
         >
-          @dozyapp v0.5.10
+          @dozyapp
         </Text>
       </Container>
       <Container
