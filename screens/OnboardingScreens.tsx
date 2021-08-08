@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   useWindowDimensions,
   Text,
@@ -33,6 +33,8 @@ import { ChatTextInput } from '../components/ChatTextInput';
 import submitOnboardingData from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
+import { Analytics } from '../utilities/analytics.service';
+import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -69,6 +71,11 @@ let onboardingState = {
 
 export const Welcome = ({ navigation }: Props) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
+
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingWelcome);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -87,6 +94,10 @@ export const Welcome = ({ navigation }: Props) => {
 };
 
 export const Overview = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingOverview);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -104,6 +115,10 @@ export const Overview = ({ navigation }: Props) => {
 };
 
 export const Asks = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingAsks);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -121,6 +136,10 @@ export const Asks = ({ navigation }: Props) => {
 };
 
 export const ISIIntro = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISIIntro);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -138,6 +157,10 @@ export const ISIIntro = ({ navigation }: Props) => {
 };
 
 export const ISI1 = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISI1);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -145,6 +168,10 @@ export const ISI1 = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI1 = value;
         navigation.navigate('ISI2', { progressBarPercent: 0.28 });
+        Analytics.logEvent(
+          AnalyticsEvents.onboardingQuestionFallingAsleepDifficulty,
+          { answer: value }
+        );
       }}
       buttonValues={[
         { label: 'No difficulty', value: 0, solidColor: true },
@@ -159,6 +186,10 @@ export const ISI1 = ({ navigation }: Props) => {
 };
 
 export const ISI2 = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISI2);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -166,6 +197,10 @@ export const ISI2 = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI2 = value;
         navigation.navigate('ISI3', { progressBarPercent: 0.42 });
+        Analytics.logEvent(
+          AnalyticsEvents.onboardingQuestionStayingAsleepDifficulty,
+          { answer: value }
+        );
       }}
       buttonValues={[
         { label: 'No difficulty', value: 0, solidColor: true },
@@ -180,6 +215,10 @@ export const ISI2 = ({ navigation }: Props) => {
 };
 
 export const ISI3 = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISI3);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -187,6 +226,9 @@ export const ISI3 = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI3 = value;
         navigation.navigate('ISI4', { progressBarPercent: 0.56 });
+        Analytics.logEvent(AnalyticsEvents.onboardingQuestionWakingUpProblem, {
+          answer: value
+        });
       }}
       buttonValues={[
         { label: 'Not a problem', value: 0, solidColor: true },
@@ -205,6 +247,10 @@ export const ISI3 = ({ navigation }: Props) => {
 };
 
 export const ISI4 = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISI4);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -212,6 +258,10 @@ export const ISI4 = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI4 = value;
         navigation.navigate('ISI5', { progressBarPercent: 0.7 });
+        Analytics.logEvent(
+          AnalyticsEvents.onboardingQuestionSleepPatternSatisfaction,
+          { answer: value }
+        );
       }}
       buttonValues={[
         { label: 'Very satisfied', value: 0, solidColor: true },
@@ -230,6 +280,10 @@ export const ISI4 = ({ navigation }: Props) => {
 };
 
 export const ISI5 = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISI5);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -237,6 +291,10 @@ export const ISI5 = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI5 = value;
         navigation.navigate('ISI6', { progressBarPercent: 0.84 });
+        Analytics.logEvent(
+          AnalyticsEvents.onboardingQuestionSleepProblemImpairness,
+          { answer: value }
+        );
       }}
       buttonValues={[
         { label: 'Not at all noticeable', value: 0, solidColor: true },
@@ -251,6 +309,10 @@ export const ISI5 = ({ navigation }: Props) => {
 };
 
 export const ISI6 = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISI6);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -258,6 +320,10 @@ export const ISI6 = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI6 = value;
         navigation.navigate('ISI7', { progressBarPercent: 0.95 });
+        Analytics.logEvent(
+          AnalyticsEvents.onboardingQuestionSleepPatternWorries,
+          { answer: value }
+        );
       }}
       buttonValues={[
         { label: 'Not at all worried', value: 0, solidColor: true },
@@ -272,6 +338,10 @@ export const ISI6 = ({ navigation }: Props) => {
 };
 
 export const ISI7 = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISI7);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -283,6 +353,10 @@ export const ISI7 = ({ navigation }: Props) => {
         onboardingState.ISITotal =
           ISI1 + ISI2 + ISI3 + ISI4 + ISI5 + ISI6 + value;
         navigation.navigate('ISIResults', { progressBarPercent: null });
+        Analytics.logEvent(
+          AnalyticsEvents.onboardingQuestionSleepProblemInterference,
+          { answer: value }
+        );
       }}
       buttonValues={[
         { label: 'Not at all interfering', value: 0, solidColor: true },
@@ -297,6 +371,10 @@ export const ISI7 = ({ navigation }: Props) => {
 };
 
 export const ISIResults = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISIResults);
+  }, []);
+
   const severityText = () => {
     if (onboardingState.ISITotal <= 7) {
       return 'no clinically significant insomnia';
@@ -334,6 +412,10 @@ export const ISIResults = ({ navigation }: Props) => {
 };
 
 export const ISISignificant = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISISignificant);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -366,6 +448,10 @@ export const ISISignificant = ({ navigation }: Props) => {
 };
 
 export const ISINoSignificant = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingISINoSignificant);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -398,6 +484,10 @@ export const ISINoSignificant = ({ navigation }: Props) => {
 };
 
 export const SafetyIntro = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSafetyIntro);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -415,6 +505,10 @@ export const SafetyIntro = ({ navigation }: Props) => {
 };
 
 export const SafetyPills = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSafetyPills);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -425,6 +519,9 @@ export const SafetyPills = ({ navigation }: Props) => {
           value == 'none' ? 'SafetySnoring' : 'SafetyPillsStop',
           { progressBarPercent: null }
         );
+        Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyPills, {
+          answer: value
+        });
       }}
       buttonValues={[
         { label: 'Nope', value: 'none', solidColor: true },
@@ -446,6 +543,10 @@ export const SafetyPills = ({ navigation }: Props) => {
 };
 
 export const SafetyPillsStop = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSafetyPillsStop);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -457,6 +558,11 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
           {
             progressBarPercent: null
           }
+        );
+        Analytics.logEvent(
+          result === 'Continue anyway'
+            ? AnalyticsEvents.onboardingSafetyPillsStopContinue
+            : AnalyticsEvents.onboardingSafetyPillsStopContactDoctor
         );
       }}
       longText
@@ -479,6 +585,10 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
 };
 
 export const SafetyPillsBye = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSafetyPillsBye);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -496,6 +606,10 @@ export const SafetyPillsBye = ({ navigation }: Props) => {
 };
 
 export const SafetySnoring = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSafetySnoring);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -505,6 +619,9 @@ export const SafetySnoring = ({ navigation }: Props) => {
         navigation.navigate(!value ? 'SafetyLegs' : 'SafetyIllnessWarning', {
           warnAbout: 'sleep apneas',
           nextScreen: 'SafetyLegs'
+        });
+        Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetySnoring, {
+          answer: value
         });
       }}
       buttonValues={[
@@ -517,6 +634,10 @@ export const SafetySnoring = ({ navigation }: Props) => {
 };
 
 export const SafetyLegs = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSafetyLegs);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -526,6 +647,9 @@ export const SafetyLegs = ({ navigation }: Props) => {
         navigation.navigate(!value ? 'SafetyParas' : 'SafetyIllnessWarning', {
           warnAbout: 'Restless Leg Syndrome',
           nextScreen: 'SafetyParas'
+        });
+        Analytics.logEvent(AnalyticsEvents.onboardingSafetyLegs, {
+          answer: value
         });
       }}
       buttonValues={[
@@ -539,6 +663,10 @@ export const SafetyLegs = ({ navigation }: Props) => {
 };
 
 export const SafetyParas = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSafetyParas);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -549,6 +677,9 @@ export const SafetyParas = ({ navigation }: Props) => {
           !value ? 'SafetyCatchall' : 'SafetyIllnessWarning',
           { warnAbout: 'parasomnias', nextScreen: 'SafetyCatchall' }
         );
+        Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyParas, {
+          answer: value
+        });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
@@ -560,6 +691,10 @@ export const SafetyParas = ({ navigation }: Props) => {
 };
 
 export const SafetyCatchall = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSafetyCatchall);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -569,6 +704,9 @@ export const SafetyCatchall = ({ navigation }: Props) => {
         navigation.navigate(!value ? 'BaselineIntro' : 'SafetyIllnessWarning', {
           warnAbout: 'such conditions',
           nextScreen: 'BaselineIntro'
+        });
+        Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyCatchall, {
+          answer: value
         });
       }}
       buttonValues={[
@@ -581,6 +719,10 @@ export const SafetyCatchall = ({ navigation }: Props) => {
 };
 
 export const SafetyIllnessWarning = ({ navigation, route }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSafetyIllnessWarning);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -594,6 +736,11 @@ export const SafetyIllnessWarning = ({ navigation, route }: Props) => {
           {
             progressBarPercent: null
           }
+        );
+        Analytics.logEvent(
+          result === 'I understand the risks, continue anyway'
+            ? AnalyticsEvents.onboardingSafetyIllnessWarningSkipFinding
+            : AnalyticsEvents.onboardingSafetyIllnessWarningFindHumanProvider
         );
       }}
       longText
@@ -615,6 +762,10 @@ export const SafetyIllnessWarning = ({ navigation, route }: Props) => {
 };
 
 export const BaselineIntro = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingBaselineIntro);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -628,6 +779,11 @@ export const BaselineIntro = ({ navigation }: Props) => {
           {
             progressBarPercent: null
           }
+        );
+        Analytics.logEvent(
+          result === 'My sleep will be unusual, let’s postpone'
+            ? AnalyticsEvents.onboardingBaselineIntroPostpone
+            : AnalyticsEvents.onboardingBaselineIntroStartThisWeek
         );
       }}
       longText
@@ -651,6 +807,10 @@ export const BaselineIntro = ({ navigation }: Props) => {
 };
 
 export const BaselineBye = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingBaselineBye);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -668,6 +828,10 @@ export const BaselineBye = ({ navigation }: Props) => {
 };
 
 export const DiaryIntro = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingDiaryIntro);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -685,6 +849,10 @@ export const DiaryIntro = ({ navigation }: Props) => {
 };
 
 export const DiaryHabit = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingDiaryHabit);
+  }, []);
+
   return (
     <MultiButtonScreen
       theme={theme}
@@ -692,6 +860,9 @@ export const DiaryHabit = ({ navigation }: Props) => {
       onQuestionSubmit={(value: string) => {
         onboardingState.diaryHabitTrigger = value;
         navigation.navigate('DiaryReminder', { progressBarPercent: 0.4 });
+        Analytics.logEvent(AnalyticsEvents.onboardingQuestionDiaryHabit, {
+          answer: value
+        });
       }}
       buttonValues={[
         { label: 'After waking up', value: 'onWake', solidColor: true },
@@ -713,6 +884,10 @@ export const DiaryHabit = ({ navigation }: Props) => {
 };
 
 export const DiaryReminder = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingDiaryReminder);
+  }, []);
+
   return (
     <DateTimePickerScreen
       theme={theme}
@@ -728,8 +903,9 @@ export const DiaryReminder = ({ navigation }: Props) => {
         if (typeof value != 'boolean') {
           onboardingState.diaryReminderTime = value;
           setPushToken();
+          Analytics.logEvent(AnalyticsEvents.onboardingDiaryReminderSet);
         } else {
-          null;
+          Analytics.logEvent(AnalyticsEvents.onboardingDiaryReminderUnset);
         }
         navigation.navigate('CheckinScheduling', { progressBarPercent: 0.6 });
       }}
@@ -742,6 +918,10 @@ export const DiaryReminder = ({ navigation }: Props) => {
 };
 
 export const CheckinScheduling = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingCheckinScheduling);
+  }, []);
+
   return (
     <DateTimePickerScreen
       theme={theme}
@@ -778,6 +958,10 @@ export const CheckinScheduling = ({ navigation }: Props) => {
 };
 
 export const SendFirstChat = ({ navigation }: Props) => {
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChat);
+  }, []);
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -816,6 +1000,10 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
     // Send message after a delay to simulate actual reply
     setTimeout(() => makeReplyVisible(true), 1500);
   }
+
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChatContd);
+  }, []);
 
   return (
     <WizardContentScreen
@@ -878,6 +1066,11 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
 
 export const OnboardingEnd = ({ navigation }: Props) => {
   const { dispatch, finishOnboarding } = React.useContext(AuthContext);
+
+  useEffect((): void => {
+    Analytics.logEvent(AnalyticsEvents.onboardingOnboardingEnd);
+  }, []);
+
   return (
     <IconExplainScreen
       theme={theme}

@@ -16,6 +16,8 @@ import submitSleepDiaryData, {
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../utilities/authContext';
 import { Navigation, SleepLog } from '../types/custom';
+import { Analytics } from '../utilities/analytics.service';
+import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 // Define the theme & state objects for the file globally
 const theme = dozy_theme;
@@ -559,6 +561,12 @@ export const TagsNotesInput = ({ navigation }: Props) => {
 
         // Submit data to Firebase thru helper function
         submitSleepDiaryData(logState);
+
+        Analytics.logEvent(
+          logState.logId
+            ? AnalyticsEvents.updateSleepLog
+            : AnalyticsEvents.submitSleepLog
+        );
 
         // Navigate back to the main app
         navigation.navigate('App');
