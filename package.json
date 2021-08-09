@@ -54,7 +54,6 @@
     "expo-status-bar": "~1.0.3",
     "expo-updates": "~0.4.0",
     "expo-web-browser": "~8.6.0",
-    "grpc": "^1.20.2",
     "intl": "^1.2.5",
     "lodash": "^4.17.21",
     "moment": "^2.27.0",
