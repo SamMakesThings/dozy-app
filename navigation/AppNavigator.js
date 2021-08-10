@@ -1,23 +1,26 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PropTypes from 'prop-types';
-import BottomTabs from './MainTabNavigator';
-import LoginScreen from '../screens/LoginScreen';
-import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
-import TreatmentPlanScreen from '../screens/TreatmentPlanScreen';
-import DiaryEntryNavigator from './DiaryEntryNavigator';
-import OnboardingNavigator from './OnboardingNavigator';
-import SCTSRTNavigator from './SCTSRTNavigator';
-import RLXNavigator from './RLXNavigator';
-import PITNavigator from './PITNavigator';
-import HYGNavigator from './HYGNavigator';
-import COG1Navigator from './COG1Navigator';
-import ENDNavigator from './ENDNavigator';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import HeaderProgressBar from '../components/HeaderProgressBar';
+import LoginScreen from '../screens/LoginScreen';
+import TreatmentPlanScreen from '../screens/TreatmentPlanScreen';
+import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
 import { Analytics } from '../utilities/analytics.service';
-import { AuthContext } from '../utilities/authContext';
+import refreshUserData from '../utilities/refreshUserData';
+import COG1Navigator from './COG1Navigator';
+import DiaryEntryNavigator from './DiaryEntryNavigator';
+import ENDNavigator from './ENDNavigator';
+import HYGNavigator from './HYGNavigator';
+import BottomTabs from './MainTabNavigator';
+import OnboardingNavigator from './OnboardingNavigator';
+import PITNavigator from './PITNavigator';
+import RLXNavigator from './RLXNavigator';
+import SCTSRTNavigator from './SCTSRTNavigator';
+import '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/auth';
+import { useAuth } from '../utilities/authContext';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -25,7 +28,10 @@ import { AuthContext } from '../utilities/authContext';
 const TopStack = createStackNavigator();
 
 // Export the navigation components and screens, with if/then for auth state
-function InitialAuthNavigator({ userId, onboardingComplete }) {
+function InitialAuthNavigator() {
+  const {
+    state: { userId, onboardingComplete }
+  } = useAuth();
   return (
     <TopStack.Navigator
       initialRouteName="Onboarding"
@@ -109,16 +115,28 @@ InitialAuthNavigator.propTypes = {
 };
 
 export default function AppNavigator() {
-  const { state } = useContext(AuthContext);
+  const { state, dispatch } = useAuth();
+  React.useEffect(() => {
+    // Update user data from storage and Firebase, update state w/dispatch
+    const subscriber = firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        refreshUserData(dispatch);
+      } else {
+        dispatch({ type: 'SIGN_OUT' });
+        await auth().signOut();
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      }
+    });
+    return subscriber;
+  }, []);
+
   const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
 
   return (
     <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
       <View style={styles.container}>
-        <InitialAuthNavigator
-          userId={state.userId}
-          onboardingComplete={state.onboardingComplete}
-        />
+        <InitialAuthNavigator />
       </View>
     </NavigationContainer>
   );

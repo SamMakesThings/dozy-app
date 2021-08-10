@@ -143,6 +143,7 @@ export default async function submitOnboardingData(
     time: sub(new Date(), { minutes: 3 }),
     sentByUser: false
   });
+  // First chat message
   chatColRef.add({
     sender: 'You',
     message: onboardingState.firstChatMessageContent,
@@ -158,5 +159,5 @@ export default async function submitOnboardingData(
   });
 
   // Manually refresh user data in state once all the above has completed
-  refreshUserData(dispatch);
+  // refreshUserData(dispatch);
 }

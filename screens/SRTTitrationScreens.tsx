@@ -9,7 +9,7 @@ import {
   VictoryAxis,
   VictoryScatter
 } from 'victory-native';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext, AuthType } from '../utilities/authContext';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
@@ -100,7 +100,7 @@ export const SRTTitrationStart = ({ navigation }: Props) => {
 };
 
 export const SleepEfficiency = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = React.useContext<AuthType>(AuthContext);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
