@@ -1065,7 +1065,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
 };
 
 export const OnboardingEnd = ({ navigation }: Props) => {
-  const { dispatch, finishOnboarding } = React.useContext(AuthContext);
+  const { state, dispatch, finishOnboarding } = React.useContext(AuthContext);
 
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingOnboardingEnd);
@@ -1077,7 +1077,11 @@ export const OnboardingEnd = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        submitOnboardingData(onboardingState, dispatch);
+        submitOnboardingData(
+          onboardingState,
+          dispatch,
+          state.userData.displayName
+        );
         // finishOnboarding(); TODO: Remove this if everything is working fine
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."

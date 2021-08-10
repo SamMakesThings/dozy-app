@@ -60,7 +60,6 @@ export const AuthProvider: React.FC = ({ children }) => {
         showPlayServicesUpdateDialog: true
       });
       googleUserInfo = await GoogleSignin.signIn();
-      console.log('Google user info:', googleUserInfo);
     } catch (error) {
       console.log('error: ', error);
       error.message =
@@ -207,7 +206,12 @@ export const AuthProvider: React.FC = ({ children }) => {
         token: result.user.uid,
         onboardingComplete: onboardingComplete,
         profileData: result.additionalUserInfo?.profile ?? {},
-        isAuthLoading: false
+        isAuthLoading: false,
+        userData: {
+          displayName: result.user.displayName,
+          email: result.user.email,
+          uid: result.user.uid
+        }
       });
       Analytics.logEvent(AnalyticsEvents.logIn);
     } else {

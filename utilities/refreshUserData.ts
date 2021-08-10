@@ -1,6 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import firestore from '@react-native-firebase/firestore';
 import { ACTION } from './mainAppReducer';
+import { UserType } from '../types/custom';
 
 export default async function refreshUserData(
   dispatch: React.Dispatch<ACTION>
@@ -19,7 +20,6 @@ export default async function refreshUserData(
     // TODO: Add token validation
     if (profileJson) {
       const profileData = await JSON.parse(profileJson);
-      console.log('profile Data:', profileData);
       dispatch({ type: 'RESTORE_TOKEN', token: userId, profileData });
     }
 

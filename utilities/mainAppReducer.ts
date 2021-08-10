@@ -1,6 +1,6 @@
 import React from 'react';
 import alterMonthSelection from './alterMonthSelection';
-import { Chat, SleepLog, Task } from '../types/custom';
+import { Chat, SleepLog, Task, UserType } from '../types/custom';
 
 export type AppState = {
   isLoading: boolean;
@@ -33,16 +33,25 @@ export const initialState: AppState = {
 };
 
 export type ACTION =
-  | { type: 'RESTORE_TOKEN'; token: string; profileData: {} }
+  | {
+      type: 'RESTORE_TOKEN';
+      token: string;
+      profileData: {};
+    }
   | {
       type: 'SIGN_IN';
       token: string;
       onboardingComplete: boolean;
       isAuthLoading: boolean;
       profileData: {};
+      userData: {};
     }
   | { type: 'SIGN_OUT' }
-  | { type: 'UPDATE_USERDATA'; userData: {}; onboardingComplete: boolean }
+  | {
+      type: 'UPDATE_USERDATA';
+      userData: {};
+      onboardingComplete: boolean;
+    }
   | { type: 'SET_SLEEPLOGS'; sleepLogs: [] }
   | { type: 'SET_CHATS'; chats: Chat[] | [] }
   | { type: 'SET_TASKS'; tasks: [] }
@@ -66,7 +75,8 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
         userId: action.token,
         onboardingComplete: action.onboardingComplete,
         authLoading: action.isAuthLoading,
-        profileData: action.profileData
+        profileData: action.profileData,
+        userData: action.userData
       };
     case 'SIGN_OUT':
       return {

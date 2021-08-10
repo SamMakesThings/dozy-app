@@ -55,6 +55,6 @@ export type Task = {
 
 export type UserType = {
   uid: string;
-  displayName: string;
-  email: string;
+  displayName: string | null;
+  email: string | null;
 };
