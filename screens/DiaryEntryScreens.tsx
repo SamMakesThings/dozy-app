@@ -455,6 +455,7 @@ export const WakeTimeInput = ({ navigation }: Props) => {
       }}
       mode="time"
       questionLabel="What time did you wake up?"
+      questionSubtitle="The approximate time you woke up and didn't fall asleep again"
       inputLabel="Wake time"
     />
   );
