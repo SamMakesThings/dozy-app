@@ -110,7 +110,7 @@ function LoginScreen() {
             ])}
             onPress={signIn}
           >
-            {Platform.OS === 'ios' ? 'Continue with Google' : 'Get Started'}
+            {Platform.OS === 'ios' ? 'Continue with Google' : 'Get started'}
           </Button>
           <Touchable style={styles.Touchable_BackButton} onPress={signIn}>
             <Text
@@ -120,7 +120,7 @@ function LoginScreen() {
                 { color: theme.colors.surface }
               ])}
             >
-              Sign In
+              {Platform.OS === 'ios' ? 'Returning users' : 'Sign in'}
             </Text>
           </Touchable>
         </Container>
