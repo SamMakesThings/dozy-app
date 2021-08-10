@@ -1,38 +1,23 @@
-import React, { useContext } from 'react';
-import { ACTION, appReducer, initialState } from './mainAppReducer';
-
+import auth, { firebase, FirebaseAuthTypes } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {
   GoogleSignin,
   statusCodes,
   User as GoogleUserInfo
 } from '@react-native-google-signin/google-signin';
-// import refreshUserData from './utilities/refreshUserData';
-
-import * as SecureStore from 'expo-secure-store';
-import auth, { firebase, FirebaseAuthTypes } from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Crypto from 'expo-crypto';
+// import refreshUserData from './utilities/refreshUserData';
+import * as SecureStore from 'expo-secure-store';
+import React, { useContext } from 'react';
 import { Alert } from 'react-native';
-import { Analytics } from './analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
+import { Analytics } from './analytics.service';
+import { ACTION, appReducer, AppState, initialState } from './mainAppReducer';
 import refreshUserData from './refreshUserData';
-// Prepare hooks for authentication functions
 
 export type AuthType = {
-  state: {
-    isLoading: boolean;
-    isSignout: boolean;
-    userId: any;
-    userData: Record<string, any>;
-    onboardingComplete: boolean;
-    profileData: any;
-    sleepLogs: any[];
-    authLoading: boolean;
-    chats: any[];
-    tasks: any[];
-    selectedDate: {};
-  };
+  state: AppState;
   dispatch: React.Dispatch<ACTION>;
   signIn: () => Promise<void>;
   signInWithApple: () => Promise<void>;
@@ -43,9 +28,9 @@ export type AuthType = {
 const initialAuth: AuthType = {
   state: initialState,
   dispatch: () => {},
-  signIn: () => new Promise<void>((resolve, reject) => {}),
-  signInWithApple: () => new Promise<void>((resolve, reject) => {}),
-  signOut: () => new Promise<void>((resolve, reject) => {}),
+  signIn: () => new Promise<void>(() => {}),
+  signInWithApple: () => new Promise<void>(() => {}),
+  signOut: () => new Promise<void>(() => {}),
   finishOnboarding: () => {}
 };
 
@@ -75,6 +60,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         showPlayServicesUpdateDialog: true
       });
       googleUserInfo = await GoogleSignin.signIn();
+      console.log('Google user info:', googleUserInfo);
     } catch (error) {
       console.log('error: ', error);
       error.message =
@@ -211,7 +197,7 @@ export const AuthProvider: React.FC = ({ children }) => {
           } else {
             const onboardingMarkedComplete = docSnapshot?.data()
               ?.onboardingComplete; // might be undefined
-            return onboardingMarkedComplete ? onboardingMarkedComplete : false;
+            return onboardingMarkedComplete ?? false;
           }
         });
 

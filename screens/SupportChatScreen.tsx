@@ -32,7 +32,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   navigation
 }) => {
   // Get global state & dispatch
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch, signOut } = React.useContext(AuthContext);
 
   // Set Firebase DB references if userId is defined
   let colRef: FirebaseFirestoreTypes.CollectionReference;
@@ -57,20 +57,24 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   // Function to fetch chats from Firebase and put them in global state
   async function setChats() {
     async function fetchData() {
-      fetchChats(firestore(), state.userId)
-        .then((chats: Array<Chat>) => {
-          // Check that theres >1 entry. If no, set state accordingly
-          if (chats.length === 0) {
-            dispatch({ type: 'SET_CHATS', chats: [] });
-          } else {
-            dispatch({ type: 'SET_CHATS', chats: chats });
-          }
+      if (state.userId) {
+        fetchChats(firestore(), state.userId)
+          .then((chats: Array<Chat>) => {
+            // Check that theres >1 entry. If no, set state accordingly
+            if (chats.length === 0) {
+              dispatch({ type: 'SET_CHATS', chats: [] });
+            } else {
+              dispatch({ type: 'SET_CHATS', chats: chats });
+            }
 
-          return;
-        })
-        .catch(function (error) {
-          console.log('Error getting chats:', error);
-        });
+            return;
+          })
+          .catch(function (error) {
+            console.log('Error getting chats:', error);
+          });
+      } else {
+        signOut();
+      }
     }
 
     // Setup a listener to fetch new chats from Firebase
@@ -138,12 +142,16 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
             />
             <ChatTextInput
               onSend={(typedMsg: string) => {
-                sendChatMessage(firestore(), state.userId, {
-                  sender: state.profileData.name,
-                  message: typedMsg,
-                  time: new Date(),
-                  sentByUser: true
-                });
+                if (state.userId) {
+                  sendChatMessage(firestore(), state.userId, {
+                    sender: state.profileData.name,
+                    message: typedMsg,
+                    time: new Date(),
+                    sentByUser: true
+                  });
+                } else {
+                  signOut();
+                }
                 Analytics.logEvent(AnalyticsEvents.sendMessage);
               }}
             />

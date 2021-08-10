@@ -19,7 +19,7 @@ export default async function refreshUserData(
     // TODO: Add token validation
     if (profileJson) {
       const profileData = await JSON.parse(profileJson);
-      console.log('profile Data:', userId);
+      console.log('profile Data:', profileData);
       dispatch({ type: 'RESTORE_TOKEN', token: userId, profileData });
     }
 

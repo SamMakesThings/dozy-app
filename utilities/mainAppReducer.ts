@@ -1,24 +1,24 @@
 import React from 'react';
 import alterMonthSelection from './alterMonthSelection';
-import { createCtx } from '../Context/ContextGet';
+import { Chat, SleepLog, Task } from '../types/custom';
 
-type AppState = {
+export type AppState = {
   isLoading: boolean;
   isSignout: boolean;
-  userId: string | null;
+  userId: string | undefined;
   userData: Record<string, any>;
   onboardingComplete: boolean;
   profileData: Record<string, any>;
-  sleepLogs: any[];
+  sleepLogs: SleepLog[];
   authLoading: boolean;
-  chats: any[];
-  tasks: any[];
+  chats: Chat[] | [];
+  tasks: Task[];
   selectedDate: Record<string, any>;
 };
 export const initialState: AppState = {
   isLoading: true,
   isSignout: false,
-  userId: null,
+  userId: undefined,
   userData: {},
   onboardingComplete: false,
   profileData: {},
@@ -44,7 +44,7 @@ export type ACTION =
   | { type: 'SIGN_OUT' }
   | { type: 'UPDATE_USERDATA'; userData: {}; onboardingComplete: boolean }
   | { type: 'SET_SLEEPLOGS'; sleepLogs: [] }
-  | { type: 'SET_CHATS'; chats: [] }
+  | { type: 'SET_CHATS'; chats: Chat[] | [] }
   | { type: 'SET_TASKS'; tasks: [] }
   | { type: 'CHANGE_SELECTED_MONTH'; changeMonthBy: any }
   | { type: 'AUTH_LOADING'; isAuthLoading: boolean }
@@ -54,7 +54,6 @@ export type ACTION =
 export const appReducer = (prevState: AppState, action: ACTION): AppState => {
   switch (action.type) {
     case 'RESTORE_TOKEN':
-      console.log('store toekn:');
       return {
         ...prevState,
         userId: action.token,
@@ -73,7 +72,7 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
       return {
         ...prevState,
         isSignout: true,
-        userId: null
+        userId: undefined
       };
     case 'UPDATE_USERDATA':
       return {
@@ -110,7 +109,6 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
         authLoading: action.isAuthLoading
       };
     case 'FINISH_LOADING':
-      console.log('Finish loading');
       return {
         ...prevState,
         isLoading: false
@@ -122,9 +120,3 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
       };
   }
 };
-
-// export function getMainAppReducer() {
-//   const [state, dispatch] = React.useReducer();
-
-//   return [state, dispatch];
-// }
