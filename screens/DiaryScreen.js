@@ -7,7 +7,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import DiaryEntriesScreen from './DiaryEntriesScreen';
 import { DiaryStatsScreen } from './DiaryStatsScreen';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 
 // Create tab nav for switching between entries and stats
 const Tab = createMaterialTopTabNavigator();

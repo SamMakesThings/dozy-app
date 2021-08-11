@@ -8,7 +8,7 @@ import { LinkCard } from '../components/LinkCard';
 import { dozy_theme } from '../config/Themes';
 import { CardContainer } from '../components/CardContainer';
 import treatments from '../constants/Treatments';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import GLOBAL from '../utilities/global';
 
 const theme = dozy_theme;

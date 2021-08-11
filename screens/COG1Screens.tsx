@@ -2,7 +2,6 @@ import React from 'react';
 import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import { AuthContext } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -14,6 +13,7 @@ import BarChart from '../assets/images/BarChart.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
+import { AuthContext } from '../context/AuthContext';
 
 // TODO: Update percentage values
 
@@ -628,6 +628,7 @@ export const COG1End: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
+        if (!state.userId) throw new Error();
         submitCheckinData({
           userId: state.userId,
           checkinPostponed: false,

@@ -22,11 +22,11 @@ import { BaselineProgressCard } from '../components/BaselineProgressCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { dozy_theme } from '../config/Themes';
 import fetchSleepLogs from '../utilities/fetchSleepLogs';
-import { AuthContext } from '../utilities/authContext';
 import { Navigation, SleepLog } from '../types/custom';
 import fetchTasks from '../utilities/fetchTasks';
 import { Analytics } from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
+import { AuthContext } from '../context/AuthContext';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -189,6 +189,7 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
   // Function to fetch sleep logs from Firebase and put them in global state
   async function setSleepLogs() {
     async function fetchData() {
+      if (!state.userId) return false;
       fetchSleepLogs(db, state.userId)
         .then((sleepLogs: Array<SleepLog>) => {
           // Check that theres >1 entry. If no, set state accordingly
@@ -221,6 +222,7 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
 
     // Setup a listener to get new tasks from Firebase
     tasksColRef.onSnapshot(async function () {
+      if (!state.userId) return false;
       const tasks = await fetchTasks(db, state.userId);
       dispatch({ type: 'SET_TASKS', tasks: tasks });
     });

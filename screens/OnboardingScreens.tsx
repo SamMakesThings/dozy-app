@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';

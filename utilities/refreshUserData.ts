@@ -1,11 +1,12 @@
-import * as SecureStore from 'expo-secure-store';
+import React from 'react';
 import firestore from '@react-native-firebase/firestore';
+import * as SecureStore from 'expo-secure-store';
+import { ACTION } from './mainAppReducer';
 
-export default async function refreshUserData(dispatch) {
+export default async function refreshUserData(
+  dispatch: React.Dispatch<ACTION>
+) {
   let userId;
-  // let idToken;
-  // let providerId;
-  let profileData;
 
   try {
     userId = await SecureStore.getItemAsync('userId');
@@ -14,16 +15,13 @@ export default async function refreshUserData(dispatch) {
     }
     // idToken = await SecureStore.getItemAsync('idToken');
     // providerId = await SecureStore.getItemAsync('providerId');
-    profileData = await JSON.parse(
-      await SecureStore.getItemAsync('profileData')
-    );
+    const profileJson = await SecureStore.getItemAsync('profileData');
 
     // TODO: Add token validation
-    dispatch({
-      type: 'RESTORE_TOKEN',
-      token: userId,
-      profileData: profileData
-    });
+    if (profileJson) {
+      const profileData = await JSON.parse(profileJson);
+      dispatch({ type: 'RESTORE_TOKEN', token: userId, profileData });
+    }
 
     // Update user's data from Firestore db
     firestore()
@@ -33,9 +31,9 @@ export default async function refreshUserData(dispatch) {
       .then((userData) => {
         dispatch({
           type: 'UPDATE_USERDATA',
-          userData: userData.data(),
+          userData: userData.data() ?? {},
           onboardingComplete:
-            userData.exists && userData.data().onboardingComplete === true
+            userData.exists && userData.data()?.onboardingComplete === true
         });
       });
 
@@ -47,9 +45,9 @@ export default async function refreshUserData(dispatch) {
         if (userData) {
           dispatch({
             type: 'UPDATE_USERDATA',
-            userData: userData.data(),
+            userData: userData.data() ?? {},
             onboardingComplete:
-              userData.exists && userData.data().onboardingComplete === true
+              userData.exists && userData.data()?.onboardingComplete === true
           });
         } else {
           console.log("docSnapshot isn't defined at this point");

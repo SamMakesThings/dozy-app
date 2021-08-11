@@ -2,7 +2,7 @@ import React from 'react';
 import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -519,6 +519,7 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
+        if (!state.userId) throw new Error();
         submitCheckinData({
           userId: state.userId,
           checkinPostponed: false,

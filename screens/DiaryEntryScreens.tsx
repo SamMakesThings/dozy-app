@@ -14,7 +14,7 @@ import submitSleepDiaryData, {
   normalizeSleepLog
 } from '../utilities/submitSleepDiaryData';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import { Navigation, SleepLog } from '../types/custom';
 import { Analytics } from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
