@@ -31,6 +31,8 @@ export default async function submitOnboardingData(
 ) {
   // Initialize relevant Firebase values
   let userId = await SecureStore.getItemAsync('userId');
+
+  console.log('user id:', userId);
   let userDocRef =
     typeof userId === 'string'
       ? firestore().collection('users').doc(userId)
@@ -68,6 +70,7 @@ export default async function submitOnboardingData(
   });
 
   // Also store reminder info & next check-in datetime
+
   userDocRef
     .update({
       healthHistory: healthHistory,
@@ -114,6 +117,7 @@ export default async function submitOnboardingData(
       console.error('Error adding health history data: ', error);
     });
 
+  console.log('happeded error:');
   // Store ISI results
   const ISIResultsRef = userDocRef.collection('isiResults');
   ISIResultsRef.add({
@@ -147,7 +151,7 @@ export default async function submitOnboardingData(
   // First chat message
   console.log('username:', username);
   chatColRef.add({
-    sender: username,
+    sender: username ?? 'You',
     message: onboardingState.firstChatMessageContent,
     time: sub(new Date(), { minutes: 2 }),
     sentByUser: true

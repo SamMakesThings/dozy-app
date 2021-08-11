@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext, useAuth } from '../utilities/authContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -118,7 +118,6 @@ export const Asks = ({ navigation }: Props) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingAsks);
   }, []);
-
   return (
     <IconExplainScreen
       theme={theme}
@@ -1071,6 +1070,7 @@ export const OnboardingEnd = ({ navigation }: Props) => {
     Analytics.logEvent(AnalyticsEvents.onboardingOnboardingEnd);
   }, []);
 
+  console.log('username on screen:', state.userData.userInfo.displayName);
   return (
     <IconExplainScreen
       theme={theme}
@@ -1080,7 +1080,7 @@ export const OnboardingEnd = ({ navigation }: Props) => {
         submitOnboardingData(
           onboardingState,
           dispatch,
-          state.userData.displayName
+          state.userData.userInfo.displayName
         );
         // finishOnboarding(); TODO: Remove this if everything is working fine
       }}

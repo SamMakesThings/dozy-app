@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { Container, Button } from '@draftbit/ui';
 import { Theme } from '../types/theme';
+import { useRoute } from '@react-navigation/native';
 
 interface Props {
   theme: Theme;
@@ -25,6 +26,13 @@ interface Props {
 // TODO: Replace bottomGreyButton calls with buttonValues
 const BottomNavButtons: React.FC<Props> = (props) => {
   const { theme, bottomBackButton, bbbDisabled } = props;
+  const keyRoute = ['ISIResults', ''];
+  const route = useRoute();
+
+  const handleSubmit = () => {
+    console.log('route:', route.name);
+    props.onPress();
+  };
 
   return (
     <Container
@@ -47,7 +55,7 @@ const BottomNavButtons: React.FC<Props> = (props) => {
               loading={false}
               disabled={false}
               onPress={() => {
-                props.onPress(value);
+                handleSubmit();
               }}
             >
               {label}
@@ -62,7 +70,7 @@ const BottomNavButtons: React.FC<Props> = (props) => {
         }}
         type="solid"
         onPress={() => {
-          props.onPress();
+          handleSubmit();
         }}
         color={theme.colors.primary}
         disabled={props.disabled}
