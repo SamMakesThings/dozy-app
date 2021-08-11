@@ -1,7 +1,6 @@
-import * as SecureStore from 'expo-secure-store';
 import firestore from '@react-native-firebase/firestore';
+import * as SecureStore from 'expo-secure-store';
 import { ACTION } from './mainAppReducer';
-import { UserType } from '../types/custom';
 
 export default async function refreshUserData(
   dispatch: React.Dispatch<ACTION>

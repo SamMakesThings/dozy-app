@@ -1,6 +1,5 @@
-import React from 'react';
+import { Chat, SleepLog, Task } from '../types/custom';
 import alterMonthSelection from './alterMonthSelection';
-import { Chat, SleepLog, Task, UserType } from '../types/custom';
 
 export type AppState = {
   isLoading: boolean;

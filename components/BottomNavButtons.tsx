@@ -31,7 +31,6 @@ const BottomNavButtons: React.FC<Props> = (props) => {
 
   const handleSubmit = () => {
     console.log('route:', route.name);
-    props.onPress();
   };
 
   return (
@@ -56,12 +55,14 @@ const BottomNavButtons: React.FC<Props> = (props) => {
               disabled={false}
               onPress={() => {
                 handleSubmit();
+                props.onPress(value);
               }}
             >
               {label}
             </Button>
           );
         })}
+
       <Button
         style={{
           ...theme.buttonLayout,
@@ -71,6 +72,7 @@ const BottomNavButtons: React.FC<Props> = (props) => {
         type="solid"
         onPress={() => {
           handleSubmit();
+          props.onPress();
         }}
         color={theme.colors.primary}
         disabled={props.disabled}
@@ -87,6 +89,7 @@ const BottomNavButtons: React.FC<Props> = (props) => {
           type="solid"
           onPress={() => {
             props.onPress(props.bottomGreyButtonLabel);
+            handleSubmit();
           }}
           color={theme.colors.medium}
           disabled={props.disabled}

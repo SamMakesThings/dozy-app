@@ -858,6 +858,7 @@ export const DiaryHabit = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: string) => {
         onboardingState.diaryHabitTrigger = value;
+        console.log('diary habbit trigger value:', value);
         navigation.navigate('DiaryReminder', { progressBarPercent: 0.4 });
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionDiaryHabit, {
           answer: value

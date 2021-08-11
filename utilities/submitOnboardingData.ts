@@ -32,7 +32,6 @@ export default async function submitOnboardingData(
   // Initialize relevant Firebase values
   let userId = await SecureStore.getItemAsync('userId');
 
-  console.log('user id:', userId);
   let userDocRef =
     typeof userId === 'string'
       ? firestore().collection('users').doc(userId)
@@ -50,6 +49,7 @@ export default async function submitOnboardingData(
   // Store the sleep diary notification settings, store generated ID in userData
   // Also set a reminder for the next checkin
   const notifDocRef = userDocRef.collection('notifications').doc();
+  console.log('notificatid:', notifDocRef.id);
   notifDocRef.set({
     expoPushToken: onboardingState.expoPushToken || 'No push token provided',
     title: 'How did you sleep?',
