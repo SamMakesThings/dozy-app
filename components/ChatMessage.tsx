@@ -4,14 +4,9 @@ import { scale } from 'react-native-size-matters';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { dozy_theme } from '../config/Themes';
 import { Chat } from '../types/custom';
-// import { useAuth } from '../context/AuthContext';
 
 export function ChatMessage(item: Chat, index: number) {
   const theme = dozy_theme;
-
-  // const { state } = useAuth();
-
-  // const username = state.userData.userInfo.displayName;
 
   // Shorten type check to be able to handle fb timestamps or JS dates
   const firebaseTime = item.time as FirebaseFirestoreTypes.Timestamp;

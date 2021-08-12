@@ -4,6 +4,8 @@ import { scale } from 'react-native-size-matters';
 import { Container, Button } from '@draftbit/ui';
 import { Theme } from '../types/theme';
 import { useRoute } from '@react-navigation/native';
+import { firebase } from '@react-native-firebase/firestore';
+import { AuthContext } from '../context/AuthContext';
 
 interface Props {
   theme: Theme;
@@ -27,9 +29,18 @@ interface Props {
 const BottomNavButtons: React.FC<Props> = (props) => {
   const { theme, bottomBackButton, bbbDisabled } = props;
   const route = useRoute();
+  const { state } = React.useContext(AuthContext);
+  const userId = state.userId;
+  const db = firebase.firestore().collection('users').doc(userId);
 
   const submitUserProgress = () => {
     console.log('route =>', route.name);
+    db.update({
+      currentPage: {
+        name: route.name,
+        visitedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }
+    });
   };
 
   return (
