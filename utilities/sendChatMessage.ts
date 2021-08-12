@@ -13,7 +13,7 @@ export default async function sendChatMessage(
   } else if (
     userId === undefined ||
     !('message' in msg) ||
-    ('message' in msg && msg.message === '')
+    ('message' in msg && msg.message.trim().length === 0)
   ) {
     console.log('ERROR IN SENDCHATMESSAGE: Invalid chat message');
     return;

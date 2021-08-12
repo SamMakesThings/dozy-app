@@ -455,6 +455,8 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
           });
           navigation.navigate('App');
           refreshUserData(dispatch);
+        } else {
+          console.log('ERROR IN SCTSRTend: Invalid user id');
         }
       }}
       textLabel="Weekly check-in completed!"

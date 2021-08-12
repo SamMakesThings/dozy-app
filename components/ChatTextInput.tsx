@@ -34,7 +34,7 @@ export const ChatTextInput = (props: { onSend: Function; viewStyle?: {} }) => {
       />
       <TouchableOpacity
         onPress={() => {
-          if (typedMsg.trim().length !== 0) props.onSend(typedMsg);
+          props.onSend(typedMsg);
           setTypedMsg('');
         }}
       >

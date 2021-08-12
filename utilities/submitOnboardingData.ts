@@ -28,7 +28,7 @@ interface OnboardingState {
 export default async function submitOnboardingData(
   onboardingState: OnboardingState,
   dispatch: React.Dispatch<ACTION>,
-  username?: string
+  displayName?: string
 ) {
   // Initialize relevant Firebase values
   let userId = await SecureStore.getItemAsync('userId');
@@ -146,7 +146,7 @@ export default async function submitOnboardingData(
     sentByUser: false
   });
   chatColRef.add({
-    sender: username ?? 'You',
+    sender: displayName ?? 'You',
     message: onboardingState.firstChatMessageContent,
     time: sub(new Date(), { minutes: 2 }),
     sentByUser: true
