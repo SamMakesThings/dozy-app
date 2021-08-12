@@ -6,19 +6,21 @@ export default async function sendChatMessage(
   userId: string,
   msg: Chat
 ) {
-  // Check for errors
+  // Check for user id validation errors
   let userDocRef;
   if (typeof userId === 'string') {
     userDocRef = db.collection('users').doc(userId);
-  } else if (
+  } else {
+    console.error('ERROR IN SENDCHATMESSAGE: Invalid UserID');
+    return;
+  }
+  // Check message validation.
+  if (
     userId === undefined ||
     !('message' in msg) ||
     ('message' in msg && msg.message.trim().length === 0)
   ) {
     console.log('ERROR IN SENDCHATMESSAGE: Invalid chat message');
-    return;
-  } else {
-    console.error('ERROR IN SENDCHATMESSAGE: Invalid UserID');
     return;
   }
 
