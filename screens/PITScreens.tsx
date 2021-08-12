@@ -513,6 +513,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
+        if (!state.userId) throw new Error();
         submitCheckinData({
           userId: state.userId,
           checkinPostponed: false,
