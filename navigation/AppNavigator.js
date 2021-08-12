@@ -17,6 +17,7 @@ import COG1Navigator from './COG1Navigator';
 import ENDNavigator from './ENDNavigator';
 import HeaderProgressBar from '../components/HeaderProgressBar';
 import { Analytics } from '../utilities/analytics.service';
+import { Crashlytics } from '../utilities/crashlytics.service';
 import { AuthContext } from '../utilities/authContext';
 
 // Create the main app auth navigation flow
@@ -111,6 +112,7 @@ InitialAuthNavigator.propTypes = {
 export default function AppNavigator() {
   const { state } = useContext(AuthContext);
   const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
+  Crashlytics.useCrashlytics(state.userId);
 
   return (
     <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
