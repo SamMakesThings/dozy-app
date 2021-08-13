@@ -1,15 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
+import {
+  withTheme,
+  ScreenContainer,
+  Container,
+  DefaultTheme
+} from '@draftbit/ui';
 import { ProgressBar } from '../ProgressBar';
 import BottomNavButtons from '../BottomNavButtons';
 import { Theme } from '../../types/theme';
 
 interface Props {
   theme: Theme;
-  progressBarPercent: number;
-  image: React.Component;
-  textLabel: string;
+  progressBarPercent?: number;
+  image: React.ReactNode;
+  textLabel: string | React.ReactNode;
   longText?: boolean;
   onQuestionSubmit: Function;
   buttonLabel?: string;
@@ -26,11 +31,17 @@ const IconExplainScreen: React.FC<Props> = (props) => {
   return (
     <ScreenContainer hasSafeArea={true} scrollable={false}>
       <Container
+        backgroundColor="transparent"
+        borderColor="transparent"
+        borderWidth={0}
         style={styles.View_HeaderContainer}
         elevation={0}
         useThemeGutterPadding={true}
       >
         <Container
+          backgroundColor="transparent"
+          borderColor="transparent"
+          borderWidth={0}
           style={styles.View_BarContainer}
           elevation={0}
           useThemeGutterPadding={true}
@@ -48,6 +59,9 @@ const IconExplainScreen: React.FC<Props> = (props) => {
         </Container>
       </Container>
       <Container
+        backgroundColor="transparent"
+        borderColor="transparent"
+        borderWidth={0}
         style={styles.View_ContentContainer}
         elevation={0}
         useThemeGutterPadding={true}

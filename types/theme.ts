@@ -1,3 +1,4 @@
+import { DefaultTheme } from '@draftbit/ui';
 export interface Theme {
   disabledOpacity: number;
   spacing: {

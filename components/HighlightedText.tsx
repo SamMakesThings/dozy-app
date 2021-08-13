@@ -16,6 +16,8 @@ const HighlightedText: React.FC<Props> = (props) => {
   const theme = dozy_theme;
   return (
     <Container
+      borderWidth={0}
+      borderColor="transparent"
       style={{
         ...styles.View_Container,
         borderRadius: theme.borderRadius.button,

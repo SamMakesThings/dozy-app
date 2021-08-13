@@ -1,6 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
+import {
+  withTheme,
+  ScreenContainer,
+  Container,
+  DefaultTheme
+} from '@draftbit/ui';
 import BottomNavButtons from '../BottomNavButtons';
 import { Theme } from '../../types/theme';
 
@@ -8,7 +13,11 @@ interface Props {
   questionLabel: string;
   questionSubtitle?: string;
   bottomBackButton: Function;
-  buttonValues: Array<{ label: string; value: string; solidColor: boolean }>;
+  buttonValues: Array<{
+    label: string;
+    value: number | string | boolean;
+    solidColor: boolean;
+  }>;
   onQuestionSubmit: Function;
   theme: Theme;
 }
@@ -23,11 +32,17 @@ const MultiButtonScreen: React.FC<Props> = (props) => {
       style={styles.Root_ne0}
     >
       <Container
+        backgroundColor="transparent"
+        borderColor="transparent"
+        borderWidth={0}
         style={styles.View_HeaderContainer}
         elevation={0}
         useThemeGutterPadding={true}
       ></Container>
       <Container
+        backgroundColor="transparent"
+        borderColor="transparent"
+        borderWidth={0}
         style={styles.View_ContentContainer}
         elevation={0}
         useThemeGutterPadding={true}

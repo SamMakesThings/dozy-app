@@ -8,7 +8,7 @@ import { Theme } from '../../types/theme';
 interface Props {
   theme: Theme;
   flexibleLayout?: boolean;
-  textLabel: string | JSX.Element;
+  textLabel?: string | JSX.Element;
   titleLabel?: string;
   onQuestionSubmit: Function;
   buttonLabel?: string;
@@ -28,6 +28,9 @@ const WizardContentScreen: React.FC<Props> = (props) => {
   return (
     <ScreenContainer hasSafeArea={true} scrollable={false}>
       <Container
+        backgroundColor="transparent"
+        borderColor="transparent"
+        borderWidth={0}
         style={{
           ...styles.View_ContentContainer,
           justifyContent: props.flexibleLayout ? 'space-around' : 'center'

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import { Container, Button } from '@draftbit/ui';
+import { Container, Button, DefaultTheme } from '@draftbit/ui';
 import { Theme } from '../types/theme';
 import { useRoute } from '@react-navigation/native';
 import { firebase } from '@react-native-firebase/firestore';

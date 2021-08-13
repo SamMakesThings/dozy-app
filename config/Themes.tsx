@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { scale } from 'react-native-size-matters';
+import { Theme } from '../types/theme';
 
 export const dozy_theme = {
   disabledOpacity: 0.5,

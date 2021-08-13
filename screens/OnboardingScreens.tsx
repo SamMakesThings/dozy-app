@@ -78,7 +78,6 @@ export const Welcome = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       bbbDisabled
       image={<WaveHello width={imgSize} height={imgSize} />}
@@ -100,7 +99,6 @@ export const Overview = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<LabCoat width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
@@ -121,7 +119,6 @@ export const Asks = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<Clipboard width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
@@ -142,7 +139,6 @@ export const ISIIntro = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<TiredFace width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
@@ -163,7 +159,6 @@ export const ISI1 = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI1 = value;
@@ -192,7 +187,6 @@ export const ISI2 = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI2 = value;
@@ -221,7 +215,6 @@ export const ISI3 = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI3 = value;
@@ -253,7 +246,6 @@ export const ISI4 = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI4 = value;
@@ -286,7 +278,6 @@ export const ISI5 = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI5 = value;
@@ -315,7 +306,6 @@ export const ISI6 = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         onboardingState.ISI6 = value;
@@ -344,7 +334,6 @@ export const ISI7 = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         // Sum ISI scores, store value & navigate accordingly
@@ -388,7 +377,6 @@ export const ISIResults = ({ navigation }: Props) => {
   };
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<BarChart width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
@@ -418,7 +406,6 @@ export const ISISignificant = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<TiredFace width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
@@ -454,7 +441,6 @@ export const ISINoSignificant = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<Expressionless width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
@@ -490,7 +476,6 @@ export const SafetyIntro = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<MonocleEmoji width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
@@ -511,7 +496,6 @@ export const SafetyPills = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: string) => {
         onboardingState.pills = value;
@@ -549,7 +533,6 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<Stop width={imgSize} height={imgSize} />}
       onQuestionSubmit={(result: string) => {
@@ -591,7 +574,6 @@ export const SafetyPillsBye = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<WaveHello width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
@@ -612,7 +594,6 @@ export const SafetySnoring = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: boolean) => {
         onboardingState.snoring = value;
@@ -640,7 +621,6 @@ export const SafetyLegs = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: boolean) => {
         onboardingState.rls = value;
@@ -669,7 +649,6 @@ export const SafetyParas = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: boolean) => {
         onboardingState.parasomnias = value;
@@ -697,7 +676,6 @@ export const SafetyCatchall = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: boolean) => {
         onboardingState.otherCondition = value;
@@ -725,7 +703,6 @@ export const SafetyIllnessWarning = ({ navigation, route }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<TiredFace width={imgSize} height={imgSize} />}
       onQuestionSubmit={(result: string) => {
@@ -768,7 +745,6 @@ export const BaselineIntro = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<WarningTriangle width={imgSize} height={imgSize} />}
       onQuestionSubmit={(result: string) => {
@@ -813,7 +789,6 @@ export const BaselineBye = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<WaveHello width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
@@ -834,7 +809,6 @@ export const DiaryIntro = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<TanBook width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
@@ -855,7 +829,6 @@ export const DiaryHabit = ({ navigation }: Props) => {
 
   return (
     <MultiButtonScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: string) => {
         onboardingState.diaryHabitTrigger = value;
@@ -890,7 +863,6 @@ export const DiaryReminder = ({ navigation }: Props) => {
 
   return (
     <DateTimePickerScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().hour(9).minute(0).toDate()}
       onQuestionSubmit={(value: Date | boolean) => {
@@ -927,7 +899,6 @@ export const CheckinScheduling = ({ navigation }: Props) => {
 
   return (
     <DateTimePickerScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
       onQuestionSubmit={(value: Date) => {
@@ -967,7 +938,6 @@ export const SendFirstChat = ({ navigation }: Props) => {
 
   return (
     <WizardContentScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       textLabel="Your sleep coach will provide support and answer questions for you during the process. Let's send them a message now!"
       onQuestionSubmit={(value: string) => {
@@ -1010,7 +980,6 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
 
   return (
     <WizardContentScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: string) => {
         navigation.navigate('OnboardingEnd');
@@ -1077,7 +1046,6 @@ export const OnboardingEnd = ({ navigation }: Props) => {
 
   return (
     <IconExplainScreen
-      theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {

@@ -52,12 +52,8 @@ const NumInputScreen: React.FC<Props> = (props) => {
       severity: string;
       errorMsg: string;
     }
-    const validationResult:
-      | ErrorObj
-      | boolean
-      | undefined = props.validInputChecker
-      ? props.validInputChecker(val)
-      : undefined;
+    const validationResult: ErrorObj | boolean | undefined =
+      props.validInputChecker ? props.validInputChecker(val) : undefined;
 
     if (isNaN(val) && !props.optional) {
       setScreenState(States.Empty);
@@ -86,13 +82,25 @@ const NumInputScreen: React.FC<Props> = (props) => {
   return (
     <ScreenContainer hasSafeArea={true} scrollable={false}>
       <Container
+        backgroundColor="transparent"
+        borderWidth={0}
+        borderColor="transparent"
+        useThemeGutterPadding
         style={styles.View_HeaderContainer}
         elevation={0}
-        useThemeGutterPadding={true}
       >
-        <Container elevation={0} useThemeGutterPadding={true}></Container>
+        <Container
+          backgroundColor="transparent"
+          borderWidth={0}
+          borderColor="transparent"
+          elevation={0}
+          useThemeGutterPadding={true}
+        ></Container>
       </Container>
       <Container
+        backgroundColor="transparent"
+        borderWidth={0}
+        borderColor="transparent"
         style={styles.View_ContentContainer}
         elevation={0}
         useThemeGutterPadding={true}
@@ -125,6 +133,10 @@ const NumInputScreen: React.FC<Props> = (props) => {
           </Text>
         )}
         <Container
+          backgroundColor="transparent"
+          borderWidth={0}
+          borderColor="transparent"
+          useThemeGutterPadding
           style={{
             ...styles.View_InputContainer,
             borderColor: theme.colors.medium
