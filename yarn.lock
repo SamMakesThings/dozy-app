@@ -9191,6 +9191,11 @@ expo-in-app-purchases@~10.1.1:
   resolved "https://registry.yarnpkg.com/expo-in-app-purchases/-/expo-in-app-purchases-10.1.1.tgz#c02783ff898d7dfa92bce4fabae557ab10adde04"
   integrity sha512-nm2pO3+GZoGxuvGFx1pHIQvcsaAWMFgwbRPPELWMlfxvDKb66mMG0CFvMoNvv9QdgfFXPFzhXMmyPOrF+Jcw6g==
 
+expo-intent-launcher@~8.4.0:
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/expo-intent-launcher/-/expo-intent-launcher-8.4.0.tgz#c413a3aca06db2a02f3f7b0e40f5ffebc9ff63ed"
+  integrity sha512-nlsNEf7XpqWWXvGy6Bv8llGP348yvgg3dpCBIMveCosC49IjwDeXVJPT0VZWr6Q8leM/n+e+BWBDRiU6mfuwQA==
+
 expo-keep-awake@~9.1.2:
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-9.1.2.tgz#b3e52c7bef0ade975ae88637a2bf980f6b573368"
