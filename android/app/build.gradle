@@ -209,6 +209,7 @@ dependencies {
         exclude group:'com.facebook.flipper'
     }
     addUnimodulesDependencies()
+    implementation 'com.google.firebase:firebase-iid:17.0.2'
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";

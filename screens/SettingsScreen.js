@@ -14,6 +14,10 @@ import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../context/AuthContext';
 import planTreatmentModules from '../utilities/planTreatmentModules';
 import { Analytics } from '../utilities/analytics.service';
+import {
+  isNotificationEnabled,
+  askNotificationPermission
+} from '../utilities/pushNotifications';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 function Root() {
@@ -195,7 +199,7 @@ function Root() {
             color={theme.colors.primary}
             disabled={false}
             value={settings.logNotifsEnabled}
-            onValueChange={(value) => {
+            onValueChange={async (value) => {
               dispatch({
                 type: 'TOGGLE_LOG_NOTIFS',
                 enabledStatus: value
@@ -203,6 +207,9 @@ function Root() {
               Analytics.logEvent(AnalyticsEvents.switchSleepLogReminders, {
                 enabled: value
               });
+              if (value && !(await isNotificationEnabled())) {
+                await askNotificationPermission(true);
+              }
             }}
           />
         </Container>

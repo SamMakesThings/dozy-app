@@ -898,7 +898,10 @@ export const DiaryReminder = ({ navigation }: Props) => {
         async function setPushToken() {
           // let pushToken = await registerForPushNotificationsAsync(); // lol wtf why did I do this twice, will fix later
           // TODO: Make less dumb
-          onboardingState.expoPushToken = await registerForPushNotificationsAsync();
+          const pushToken = await registerForPushNotificationsAsync();
+          if (pushToken) {
+            onboardingState.expoPushToken = pushToken;
+          }
         }
         if (typeof value != 'boolean') {
           onboardingState.diaryReminderTime = value;

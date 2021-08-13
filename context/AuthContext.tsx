@@ -20,6 +20,9 @@ import {
   AppState
 } from '../utilities/mainAppReducer';
 import refreshUserData from '../utilities/refreshUserData';
+import registerForPushNotificationsAsync, {
+  updateExpoPushToken
+} from '../utilities/pushNotifications';
 
 export type AuthType = {
   state: AppState;
@@ -204,6 +207,13 @@ export const AuthProvider: React.FC = ({ children }) => {
             return onboardingMarkedComplete ?? false;
           }
         });
+
+      if (onboardingComplete) {
+        const expoPushToken = await registerForPushNotificationsAsync();
+        if (expoPushToken) {
+          updateExpoPushToken(expoPushToken, result.user.uid);
+        }
+      }
 
       // Update app state accordingly thru context hook function
       dispatch({
