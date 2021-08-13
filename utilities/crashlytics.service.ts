@@ -4,7 +4,9 @@ import crashlytics from '@react-native-firebase/crashlytics';
 export class Crashlytics {
   static useCrashlytics(userId?: string): void {
     useEffect((): void => {
-      Crashlytics.setUserId(userId);
+      if (userId) {
+        Crashlytics.setUserId(userId);
+      }
     }, [userId]);
   }
 

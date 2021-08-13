@@ -39,7 +39,8 @@
           "apiKey": "AIzaSyC0GREVi9E3rPHvX35XHmk7y3lsccH2zPA"
         }
       },
-      "permissions": []
+      "permissions": [],
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "packagerOpts": {
       "config": "metro.config.js",
@@ -67,6 +68,14 @@
         "messagingSenderId": "713165282203",
         "appId": "1:713165282203:web:634561b97436c2905bdf3e"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "mode": "production"
+        }
+      ]
+    ]
   }
 }
