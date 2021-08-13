@@ -2597,9 +2597,9 @@
     hoist-non-react-statics "^3.3.0"
 
 "@draftbit/ui@npm:@fancydevpro/draftbit-ui":
-  version "39.7.1-patch-date-picker"
-  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-date-picker.tgz#59747aa3dd38d2f873723e84d41b61a7a4667e6f"
-  integrity sha512-k7bsbAiIzxkZJBrudQbGdme2szGhf/VJi3VQJ+rTxoHEgikITmzEJ4jUf6k4+3T6oImP4CQ/VzAOZ7dc9Sb2OQ==
+  version "39.7.1-patch-date-picker-2"
+  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-date-picker-2.tgz#ac8cd489d2b595391dbf08cc2ec873cc67f3ff59"
+  integrity sha512-rq5BiBZupu6MYwVWiDiTEOYt1QgVh7W7PFWhyRbnGCrPIjeY32Z/X/xQapcOOsLuSdg0moqGcS1h2sDlYV8qyA==
   dependencies:
     "@date-io/date-fns" "^1.3.13"
     "@draftbit/react-theme-provider" "^2.1.1"
