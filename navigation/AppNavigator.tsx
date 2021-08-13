@@ -21,6 +21,7 @@ import { AuthContext } from '../context/AuthContext';
 import refreshUserData from '../utilities/refreshUserData';
 import { firebase } from '@react-native-firebase/auth';
 import { Crashlytics } from '../utilities/crashlytics.service';
+import { Text } from 'react-native';
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import LoadingOverlay from '../components/LoadingOverlay';
@@ -143,7 +144,9 @@ export default function AppNavigator() {
     return subscriber;
   }, []);
 
+  if (state.authLoading) return <LoadingOverlay />;
   return (
+    // <NavigationContainer>
     <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
       <View style={styles.container}>
         <InitialAuthNavigator

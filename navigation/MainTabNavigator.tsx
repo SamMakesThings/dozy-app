@@ -47,7 +47,6 @@ export default function BottomTabs() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               focused={focused}
-              color={color}
               name={Platform.OS === 'ios' ? 'ios-journal' : 'md-journal'}
             />
           )
@@ -64,7 +63,6 @@ export default function BottomTabs() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               focused={focused}
-              color={color}
               name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'}
               badge={nextCheckinDate < new Date() && nextCheckinReady}
             />
@@ -82,7 +80,6 @@ export default function BottomTabs() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               focused={focused}
-              color={color}
               name={
                 Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatbubbles'
               }
@@ -100,7 +97,6 @@ export default function BottomTabs() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               focused={focused}
-              color={color}
               name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
             />
           )

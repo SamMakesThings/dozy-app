@@ -24,19 +24,6 @@ export default async function refreshUserData(
     }
 
     // Update user's data from Firestore db
-    firestore()
-      .collection('users')
-      .doc(userId)
-      .get()
-      .then((userData) => {
-        dispatch({
-          type: 'UPDATE_USERDATA',
-          userData: userData.data() ?? {},
-          onboardingComplete:
-            userData.exists && userData.data()?.onboardingComplete === true
-        });
-      });
-
     // Add a listener so user doc state updates live
     firestore()
       .collection('users')
@@ -49,8 +36,10 @@ export default async function refreshUserData(
             onboardingComplete:
               userData.exists && userData.data()?.onboardingComplete === true
           });
+          dispatch({ type: 'AUTH_LOADING', isAuthLoading: false });
         } else {
           console.log("docSnapshot isn't defined at this point");
+          dispatch({ type: 'AUTH_LOADING', isAuthLoading: false });
         }
       });
   } catch (e) {

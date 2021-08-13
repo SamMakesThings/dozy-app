@@ -5,6 +5,7 @@ import alterMonthSelection from './alterMonthSelection';
 export type AppState = {
   isLoading: boolean;
   isSignout: boolean;
+  isInitialized: boolean;
   userId: string | undefined;
   userData: Record<string, any>;
   onboardingComplete: boolean;
@@ -17,13 +18,14 @@ export type AppState = {
 };
 export const initialState: AppState = {
   isLoading: true,
+  isInitialized: false,
   isSignout: false,
   userId: undefined,
   userData: {},
   onboardingComplete: false,
   profileData: {},
   sleepLogs: [],
-  authLoading: false,
+  authLoading: true,
   chats: [
     {
       chatId: '',

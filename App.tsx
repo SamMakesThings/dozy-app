@@ -73,7 +73,6 @@ export default function App() {
         onFinish={_handleFinishLoading}
       />
     );
-  console.log('Auth status:', state.authLoading);
   return (
     <AuthProvider>
       <ThemeProvider theme={dozy_theme}>
@@ -84,9 +83,6 @@ export default function App() {
             title={isCheckingUpdate ? 'Downloading updates...' : ''}
           />
         )}
-        {/* <LoadingOverlay
-          title={isCheckingUpdate ? 'Downloading updates...' : ''}
-        /> */}
       </ThemeProvider>
     </AuthProvider>
   );

@@ -10,7 +10,7 @@ const theme = dozy_theme;
 interface Props {
   name: string;
   focused: boolean;
-  badge: boolean;
+  badge?: boolean;
 }
 
 export default class TabBarIcon extends React.Component<Props> {
