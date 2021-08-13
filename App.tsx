@@ -24,6 +24,9 @@ import { getMainAppReducer } from './utilities/mainAppReducer';
 import { Updates } from './utilities/updates.service';
 import LoadingOverlay from './components/LoadingOverlay';
 import { Analytics } from './utilities/analytics.service';
+import registerForPushNotificationsAsync, {
+  updateExpoPushToken
+} from './utilities/pushNotifications';
 import AnalyticsEvents from './constants/AnalyticsEvents';
 
 // Mute "setting a timer" firebase warnings in console
@@ -153,6 +156,29 @@ export default function App() {
     const subscriber = auth().onAuthStateChanged(async (user) => {
       if (user) {
         refreshUserData(dispatch);
+
+        const userDocRef = firestore().collection('users').doc(user.uid);
+
+        // Check if that user's document exists, in order to direct them to or past onboarding
+        const isOnboardingCompleted = await userDocRef
+          .get()
+          .then((docSnapshot) => {
+            // Check if the user document exists and if onboarding is marked complete.
+            // If user doc doesn't exist, create it
+            if (!docSnapshot.exists) {
+              return false; // Report onboarding as incomplete
+            } else {
+              const onboardingMarkedComplete = docSnapshot.data()
+                ?.onboardingComplete; // might be undefined
+              return onboardingMarkedComplete || false;
+            }
+          });
+        if (isOnboardingCompleted) {
+          const expoPushToken = await registerForPushNotificationsAsync();
+          if (expoPushToken) {
+            updateExpoPushToken(expoPushToken, user.uid);
+          }
+        }
       } else {
         dispatch({ type: 'SIGN_OUT' });
         await auth().signOut();
