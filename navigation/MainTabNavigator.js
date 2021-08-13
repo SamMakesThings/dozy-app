@@ -19,7 +19,7 @@ export default function BottomTabs() {
   // If userData isn't defined yet, set an old date so things don't break
   // TODO: Rig state so it's never undefined. Maybe store a version in async?
   let nextCheckinDate = state.userData
-    ? state.userData.currentTreatments.nextCheckinDatetime.toDate()
+    ? state.userData?.currentTreatments.nextCheckinDatetime.toDate()
     : new Date(0);
   nextCheckinDate.setHours(0);
   let nextCheckinReady = state.userData

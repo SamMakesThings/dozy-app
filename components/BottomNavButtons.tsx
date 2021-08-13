@@ -45,6 +45,9 @@ const BottomNavButtons: React.FC<Props> = (props) => {
 
   return (
     <Container
+      backgroundColor="transparent"
+      borderColor="transparent"
+      borderWidth={0}
       style={{
         ...styles.View_ButtonContainer,
         justifyContent: bottomBackButton ? 'flex-end' : 'center'

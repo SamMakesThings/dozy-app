@@ -8,7 +8,7 @@ import { dozy_theme } from '../config/Themes';
 interface Props {
   backButtonDisabled: boolean;
   navigation: { goBack: Function };
-  progressBarPercent: number;
+  progressBarPercent?: number;
 }
 
 const HeaderProgressBar: React.FC<Props> = (props) => {
@@ -16,6 +16,9 @@ const HeaderProgressBar: React.FC<Props> = (props) => {
 
   return (
     <Container
+      backgroundColor="transparent"
+      borderWidth={0}
+      borderColor="transparent"
       style={styles.View_HeaderContainer}
       elevation={0}
       useThemeGutterPadding={true}
@@ -33,6 +36,9 @@ const HeaderProgressBar: React.FC<Props> = (props) => {
         }}
       />
       <Container
+        backgroundColor="transparent"
+        borderWidth={0}
+        borderColor="transparent"
         style={styles.View_ProgressBarContainer}
         elevation={0}
         useThemeGutterPadding={true}

@@ -7,7 +7,7 @@ import React, { useRef } from 'react';
 import { LogBox, Platform, StatusBar, Text } from 'react-native';
 import LoadingOverlay from './components/LoadingOverlay';
 import { dozy_theme } from './config/Themes';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import AppNavigator from './navigation/AppNavigator';
 import { Updates } from './utilities/updates.service';
 
@@ -35,6 +35,7 @@ export default function App() {
 
   const isCheckingUpdate: boolean = Updates.useUpdating();
   const [isLoading, setIsLoading] = React.useState(true);
+  const { state } = useAuth();
 
   // Create authContext so relevant functions are available through the app
 
@@ -64,7 +65,7 @@ export default function App() {
   }
 
   // Render a loading screen if loading, otherwise load the main app
-  if (isLoading) {
+  if (isLoading)
     return (
       <AppLoading
         startAsync={_loadResourcesAsync}
@@ -72,19 +73,21 @@ export default function App() {
         onFinish={_handleFinishLoading}
       />
     );
-  } else {
-    return (
-      <AuthProvider>
-        <ThemeProvider theme={dozy_theme}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="light-content" />}
-          <AppNavigator />
-          {isCheckingUpdate && (
-            <LoadingOverlay
-              title={isCheckingUpdate ? 'Downloading updates...' : ''}
-            />
-          )}
-        </ThemeProvider>
-      </AuthProvider>
-    );
-  }
+  console.log('Auth status:', state.authLoading);
+  return (
+    <AuthProvider>
+      <ThemeProvider theme={dozy_theme}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="light-content" />}
+        <AppNavigator />
+        {isCheckingUpdate && (
+          <LoadingOverlay
+            title={isCheckingUpdate ? 'Downloading updates...' : ''}
+          />
+        )}
+        {/* <LoadingOverlay
+          title={isCheckingUpdate ? 'Downloading updates...' : ''}
+        /> */}
+      </ThemeProvider>
+    </AuthProvider>
+  );
 }
