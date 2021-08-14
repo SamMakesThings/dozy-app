@@ -1,5 +1,10 @@
 import React from 'react';
-import { Text, TouchableOpacity, GestureResponderEvent } from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  GestureResponderEvent,
+  View
+} from 'react-native';
 import { Container } from '@draftbit/ui';
 import '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
@@ -25,9 +30,10 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
       useThemeGutterPadding={false}
     >
       <Container
+        borderColor="#F00"
+        borderWidth={3}
         style={{
-          paddingLeft: 0,
-          marginLeft: scale(24),
+          paddingLeft: scale(24),
           marginBottom: scale(2),
           flexDirection: 'row',
           alignItems: 'center'
@@ -50,16 +56,17 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
             day: 'numeric'
           })}
         </Text>
-        {!!onEdit && (
-          <TouchableOpacity onPress={onEdit}>
-            <Entypo
-              name="pencil"
-              size={scale(18)}
-              color={theme.colors.light}
-              style={{ opacity: 0.3 }}
-            />
+        <View style={{ flex: 1, flexDirection: 'row', opacity: 0.3 }}>
+          <TouchableOpacity
+            onPress={onEdit}
+            style={{ display: !!onEdit ? 'flex' : 'none', marginRight: 12 }}
+          >
+            <Entypo name="pencil" size={scale(18)} color={theme.colors.light} />
           </TouchableOpacity>
-        )}
+          <TouchableOpacity>
+            <Entypo name="trash" size={scale(18)} color={theme.colors.light} />
+          </TouchableOpacity>
+        </View>
       </Container>
       <Container
         style={{
