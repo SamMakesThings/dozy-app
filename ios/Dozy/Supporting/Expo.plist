@@ -11,7 +11,7 @@
     <key>EXUpdatesEnabled</key>
     <true/>
     <key>EXUpdatesReleaseChannel</key>
-    <string>default2</string>
+    <string>default4</string>
     <key>EXUpdatesLaunchWaitMs</key>
     <integer>0</integer>
   </dict>
