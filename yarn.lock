@@ -2596,10 +2596,10 @@
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@draftbit/ui@npm:@fancydevpro/draftbit-ui":
-  version "39.7.1-patch-date-picker-2"
-  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-date-picker-2.tgz#ac8cd489d2b595391dbf08cc2ec873cc67f3ff59"
-  integrity sha512-rq5BiBZupu6MYwVWiDiTEOYt1QgVh7W7PFWhyRbnGCrPIjeY32Z/X/xQapcOOsLuSdg0moqGcS1h2sDlYV8qyA==
+"@draftbit/ui@npm:@samstowers/draftbit-ui":
+  version "39.7.1-patch-date-picker-3"
+  resolved "https://registry.yarnpkg.com/@samstowers/draftbit-ui/-/draftbit-ui-39.7.1-patch-date-picker-3.tgz#80d96fc8d5d52b72d0f01f10e398a8c2728acf3f"
+  integrity sha512-kByNlUb/dR4UZjMVE0TkkgUrp1BiWaRp2NCqalUxp6mUVBSb5U8Tr7swFKfxiwf74vaHJGKYyXTpalnjfr8Tmw==
   dependencies:
     "@date-io/date-fns" "^1.3.13"
     "@draftbit/react-theme-provider" "^2.1.1"
@@ -13509,7 +13509,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
