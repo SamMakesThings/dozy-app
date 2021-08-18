@@ -598,7 +598,7 @@ PODS:
   - React-jsinspector (0.63.4)
   - react-native-safe-area-context (3.2.0):
     - React-Core
-  - react-native-webview (11.6.6):
+  - react-native-webview (11.0.0):
     - React-Core
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
@@ -666,7 +666,7 @@ PODS:
     - React
   - RNDateTimePicker (3.2.0):
     - React-Core
-  - RNFBAnalytics (12.3.0):
+  - RNFBAnalytics (12.1.0):
     - Firebase/AnalyticsWithoutAdIdSupport (= 8.1.1)
     - React-Core
     - RNFBApp
@@ -677,7 +677,7 @@ PODS:
     - Firebase/Auth (= 8.1.1)
     - React-Core
     - RNFBApp
-  - RNFBCrashlytics (12.4.0):
+  - RNFBCrashlytics (12.1.0):
     - Firebase/Crashlytics (= 8.1.1)
     - React-Core
     - RNFBApp
@@ -1063,7 +1063,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
-  react-native-webview: e6eddf2722f5e7220eae7229b516efabb1ed0acd
+  react-native-webview: 6b7950628616679d81bdd75747e50cf6de9b5a5f
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
@@ -1077,10 +1077,10 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: bab63e6fed69ac6122fcd9993209b6854de46d0b
   RNDateTimePicker: 17593e41b6b1585aeb8ecbe1c1cbc30cba3d0b4b
-  RNFBAnalytics: fa26dd91f4561a886ed268c4d0bb410ce36adfa8
+  RNFBAnalytics: d8f885de70f3133ca1be101cb5f115e763dbd037
   RNFBApp: 406bc9586c70ccf20504b4d3b54ac4341c98993f
   RNFBAuth: 638d012551135969cfd12d122def3ee40c05974d
-  RNFBCrashlytics: a8eebe8739ad67e74cfea41fe5f2895f8a27c5e8
+  RNFBCrashlytics: 963a2757f6a52e37ae50adab5832162a7d81f98f
   RNFBFirestore: b96f258a3f5d6a901ff96cd64306e3a2d221ad08
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: e64616a4080cf7d83f4b292fad82d174587444e2

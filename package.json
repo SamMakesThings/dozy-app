@@ -20,16 +20,16 @@
     "react-native-safe-area-context": "3.2.0"
   },
   "dependencies": {
-    "@draftbit/ui": "npm:@fancydevpro/draftbit-ui",
+    "@draftbit/ui": "npm:@samstowers/draftbit-ui",
     "@expo-google-fonts/rubik": "^0.1.0",
     "@expo/vector-icons": "^12.0.0",
     "@react-native-community/datetimepicker": "3.2.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/picker": "1.6.0",
-    "@react-native-firebase/analytics": "^12.3.0",
+    "@react-native-firebase/analytics": "12.1.0",
     "@react-native-firebase/app": "^12.1.0",
     "@react-native-firebase/auth": "^12.1.0",
-    "@react-native-firebase/crashlytics": "^12.4.0",
+    "@react-native-firebase/crashlytics": "12.1.0",
     "@react-native-firebase/firestore": "^12.1.0",
     "@react-native-google-signin/google-signin": "^6.0.1",
     "@react-navigation/bottom-tabs": "^5.5.2",
@@ -76,7 +76,7 @@
     "react-native-unimodules": "~0.13.3",
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
-    "react-native-webview": "^11.6.6",
+    "react-native-webview": "11.0.0",
     "victory-native": "^35.0.1"
   },
   "devDependencies": {
