@@ -10,7 +10,8 @@
         "buildType": "app-bundle"
       },
       "ios": {
-        "buildConfiguration": "Release"
+        "buildConfiguration": "Release",
+        "image": "macos-big-sur-11.4-xcode-12.5"
       }
     },
     "development": {
