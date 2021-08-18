@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PropTypes from 'prop-types';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
@@ -19,7 +20,7 @@ import HeaderProgressBar from '../components/HeaderProgressBar';
 import { Analytics } from '../utilities/analytics.service';
 import { AuthContext } from '../context/AuthContext';
 import refreshUserData from '../utilities/refreshUserData';
-import { firebase } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import { Crashlytics } from '../utilities/crashlytics.service';
 
 // Create the main app auth navigation flow
@@ -118,8 +119,9 @@ export default function AppNavigator() {
 
   React.useEffect(() => {
     // Update user data from storage and Firebase, update state w/dispatch
-    const subscriber = firebase.auth().onAuthStateChanged(async (user) => {
+    const subscriber = auth().onAuthStateChanged(async (user) => {
       if (user) {
+        console.log('user id: ', user.uid);
         refreshUserData(dispatch);
       } else {
         dispatch({ type: 'SIGN_OUT' });
