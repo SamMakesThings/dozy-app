@@ -33,6 +33,8 @@ import { ChatTextInput } from '../components/ChatTextInput';
 import submitOnboardingData, {
   submitISIResults,
   submitHealthHistoryData,
+  submitDiaryReminderAndCheckinData,
+  submitFirstChatMessage,
   OnboardingState
 } from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
@@ -945,6 +947,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
       onQuestionSubmit={(value: Date) => {
         onboardingState.firstCheckinTime = value;
         navigation.navigate('SendFirstChat', { progressBarPercent: 0.8 });
+        submitDiaryReminderAndCheckinData(onboardingState);
       }}
       validInputChecker={(val: Date) => {
         // Make sure the selected date is 7+ days from today
@@ -1071,6 +1074,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
             onboardingState.firstChatMessageContent = typedMsg;
             setMessage(typedMsg);
             Keyboard.dismiss();
+            submitFirstChatMessage(typedMsg);
           }}
           viewStyle={{ display: !messageSent ? 'flex' : 'none' }}
         />
