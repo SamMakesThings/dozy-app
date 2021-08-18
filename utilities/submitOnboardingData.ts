@@ -35,118 +35,16 @@ export default async function submitOnboardingData(
       ? firestore().collection('users').doc(userId)
       : firestore().collection('users').doc('ERRORDELETEME');
 
-  // Collect the relevant onboarding values into a map for Firebase & store it
-  const healthHistory = {
-    pills: onboardingState.pills,
-    snoring: onboardingState.snoring,
-    rls: onboardingState.rls,
-    parasomnias: onboardingState.parasomnias,
-    otherCondition: onboardingState.otherCondition
-  };
-
-  // Store the sleep diary notification settings, store generated ID in userData
-  // Also set a reminder for the next checkin
-  const notifDocRef = userDocRef.collection('notifications').doc();
-  if (onboardingState.diaryReminderTime) {
-    notifDocRef.set({
-      expoPushToken: onboardingState.expoPushToken || 'No push token provided',
-      title: 'How did you sleep?',
-      body: "Add last night's entry now",
-      type: 'DAILY_LOG',
-      time: onboardingState.diaryReminderTime
-        ? onboardingState.diaryReminderTime
-        : new Date(),
-      enabled: onboardingState.diaryReminderTime ? true : false
-    });
-  }
-  if (onboardingState.firstCheckinTime) {
-    userDocRef.collection('notifications').add({
-      expoPushToken: onboardingState.expoPushToken || 'No push token provided',
-      title: 'Next checkin is ready',
-      body: 'Open the app now to get started',
-      type: 'CHECKIN_REMINDER',
-      time: onboardingState.firstCheckinTime,
-      enabled: true
-    });
-  }
-
   // Also store reminder info & next check-in datetime
   userDocRef
     .update({
-      healthHistory: healthHistory,
-      baselineInfo: {
-        baselineStartDate: new Date(),
-        isiTotal: onboardingState.ISITotal
-      },
-      reminders: onboardingState.diaryReminderTime
-        ? {
-            sleepDiaryReminder: {
-              diaryHabitTrigger: onboardingState.diaryHabitTrigger,
-              diaryReminderTime: onboardingState.diaryReminderTime
-            },
-            expoPushToken:
-              onboardingState.expoPushToken || 'No push token provided'
-          }
-        : {},
-      nextCheckin: {
-        nextCheckinDatetime: onboardingState.firstCheckinTime,
-        treatmentModule: 'SCTSRT'
-      },
-      currentTreatments: {
-        BSL: new Date(),
-        currentModule: 'BSL',
-        lastCheckinDatetime: new Date(),
-        nextCheckinDatetime: onboardingState.firstCheckinTime,
-        nextTreatmentModule: 'SCTSRT'
-      },
-      logReminderId: notifDocRef.id,
       testingGroup: 'beta3',
       userStatus: 'onboarded',
-      onboardingComplete: true,
-      lastChat: {
-        message:
-          "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
-        sender: 'Sam Stowers',
-        time: new Date(),
-        sentByUser: false
-      },
-      lastSupportNotifSent: new Date(),
-      livechatUnreadMsg: false
+      onboardingComplete: true
     })
     .catch(function (error) {
       console.error('Error adding health history data: ', error);
     });
-
-  // Store ISI results
-  submitISIResults(onboardingState);
-
-  // Add initial support chat messages to chat collection
-  const chatColRef = userDocRef.collection('supportMessages');
-  chatColRef.add({
-    sender: 'Sam Stowers',
-    message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
-    time: sub(new Date(), { minutes: 4 }),
-    sentByUser: false
-  });
-  chatColRef.add({
-    sender: 'Sam Stowers',
-    message: 'Why do you want to improve your sleep?',
-    time: sub(new Date(), { minutes: 3 }),
-    sentByUser: false
-  });
-  chatColRef.add({
-    sender: 'You',
-    message: onboardingState.firstChatMessageContent,
-    time: sub(new Date(), { minutes: 2 }),
-    sentByUser: true
-  });
-  chatColRef.add({
-    sender: 'Sam Stowers',
-    message:
-      "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
-    time: sub(new Date(), { minutes: 1 }),
-    sentByUser: false
-  });
 
   // Manually refresh user data in state once all the above has completed
   refreshUserData(dispatch);
@@ -245,16 +143,130 @@ export async function submitDiaryReminderAndCheckinData(
 
   // Store the sleep diary notification settings, store generated ID in userData
   // Also set a reminder for the next checkin
-  const notifDocRef = userDocRef.collection('notifications').doc();
-  notifDocRef.set({
-    expoPushToken:
-      diaryAndCheckinData.expoPushToken || 'No push token provided',
-    title: 'How did you sleep?',
-    body: "Add last night's entry now",
-    type: 'DAILY_LOG',
-    time: diaryAndCheckinData.diaryReminderTime
-      ? diaryAndCheckinData.diaryReminderTime
-      : new Date(),
-    enabled: diaryAndCheckinData.diaryReminderTime ? true : false
+  const notificationsCollection = userDocRef.collection('notifications');
+  notificationsCollection
+    .where('type', '==', 'DAILY_LOG')
+    .get()
+    .then((querySnapshot) => {
+      const newDailyLog = {
+        expoPushToken:
+          diaryAndCheckinData.expoPushToken || 'No push token provided',
+        title: 'How did you sleep?',
+        body: "Add last night's entry now",
+        type: 'DAILY_LOG',
+        time: diaryAndCheckinData.diaryReminderTime
+          ? diaryAndCheckinData.diaryReminderTime
+          : new Date(),
+        enabled: diaryAndCheckinData.diaryReminderTime ? true : false
+      };
+      if (querySnapshot.docs.length) {
+        notificationsCollection
+          .doc(querySnapshot.docs[0].id)
+          .update(newDailyLog);
+      } else {
+        notificationsCollection.doc().set(newDailyLog);
+      }
+    });
+  notificationsCollection
+    .where('type', '==', 'CHECKIN_REMINDER')
+    .get()
+    .then((querySnapshot) => {
+      const newCheckinReminder = {
+        expoPushToken:
+          diaryAndCheckinData.expoPushToken || 'No push token provided',
+        title: 'Next checkin is ready',
+        body: 'Open the app now to get started',
+        type: 'CHECKIN_REMINDER',
+        time: diaryAndCheckinData.firstCheckinTime,
+        enabled: true
+      };
+      if (querySnapshot.docs.length) {
+        notificationsCollection
+          .doc(querySnapshot.docs[0].id)
+          .update(newCheckinReminder);
+      } else {
+        notificationsCollection.add(newCheckinReminder);
+      }
+    });
+
+  // Also store reminder info & next check-in datetime
+  userDocRef
+    .update({
+      reminders: diaryAndCheckinData.diaryReminderTime
+        ? {
+            sleepDiaryReminder: {
+              diaryHabitTrigger: diaryAndCheckinData.diaryHabitTrigger,
+              diaryReminderTime: diaryAndCheckinData.diaryReminderTime
+            },
+            expoPushToken:
+              diaryAndCheckinData.expoPushToken || 'No push token provided'
+          }
+        : {},
+      nextCheckin: {
+        nextCheckinDatetime: diaryAndCheckinData.firstCheckinTime,
+        treatmentModule: 'SCTSRT'
+      },
+      currentTreatments: {
+        BSL: new Date(),
+        currentModule: 'BSL',
+        lastCheckinDatetime: new Date(),
+        nextCheckinDatetime: diaryAndCheckinData.firstCheckinTime,
+        nextTreatmentModule: 'SCTSRT'
+      },
+      logReminderId: notificationsCollection.doc().id
+    })
+    .catch(function (error) {
+      console.error('Error adding health history data: ', error);
+    });
+}
+
+export async function submitFirstChatMessage(
+  firstChatMessageContent: string
+): Promise<void> {
+  // Initialize relevant Firebase values
+  let userId = await SecureStore.getItemAsync('userId');
+  let userDocRef =
+    typeof userId === 'string'
+      ? firestore().collection('users').doc(userId)
+      : firestore().collection('users').doc('ERRORDELETEME');
+
+  // Add initial support chat messages to chat collection
+  const chatColRef = userDocRef.collection('supportMessages');
+  chatColRef.add({
+    sender: 'Sam Stowers',
+    message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
+    time: sub(new Date(), { minutes: 4 }),
+    sentByUser: false
   });
+  chatColRef.add({
+    sender: 'Sam Stowers',
+    message: 'Why do you want to improve your sleep?',
+    time: sub(new Date(), { minutes: 3 }),
+    sentByUser: false
+  });
+  chatColRef.add({
+    sender: 'You',
+    message: firstChatMessageContent,
+    time: sub(new Date(), { minutes: 2 }),
+    sentByUser: true
+  });
+  const lastChat = {
+    sender: 'Sam Stowers',
+    message:
+      "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
+    time: new Date(),
+    sentByUser: false
+  };
+  chatColRef.add(lastChat);
+
+  // Also store reminder info & next check-in datetime
+  userDocRef
+    .update({
+      lastChat,
+      lastSupportNotifSent: lastChat.time,
+      livechatUnreadMsg: false
+    })
+    .catch(function (error) {
+      console.error('Error adding health history data: ', error);
+    });
 }
