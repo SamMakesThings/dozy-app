@@ -1009,6 +1009,9 @@ export const SendFirstChat = ({ navigation }: Props) => {
 };
 
 export const SendFirstChatContd = ({ navigation }: Props) => {
+  const { state } = React.useContext(AuthContext);
+  const displayName = state.userData.userInfo.displayName;
+
   const [message, setMessage] = React.useState('');
   const [replyVisible, makeReplyVisible] = React.useState(false);
 
@@ -1074,7 +1077,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
             onboardingState.firstChatMessageContent = typedMsg;
             setMessage(typedMsg);
             Keyboard.dismiss();
-            submitFirstChatMessage(typedMsg);
+            submitFirstChatMessage(typedMsg, displayName);
           }}
           viewStyle={{ display: !messageSent ? 'flex' : 'none' }}
         />
@@ -1084,8 +1087,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
 };
 
 export const OnboardingEnd = ({ navigation }: Props) => {
-  const { state, dispatch, finishOnboarding } = React.useContext(AuthContext);
-  const displayName = state.userData.userInfo.displayName;
+  const { dispatch, finishOnboarding } = React.useContext(AuthContext);
 
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingOnboardingEnd);
@@ -1097,7 +1099,7 @@ export const OnboardingEnd = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        submitOnboardingData(onboardingState, dispatch, displayName);
+        submitOnboardingData(onboardingState, dispatch);
         // finishOnboarding(); TODO: Remove this if everything is working fine
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."

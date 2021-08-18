@@ -133,7 +133,7 @@ function Root() {
             }
           ]}
         >
-          {state.profileData.name}
+          {state.profileData.name || state.userData.userInfo?.displayName}
         </Text>
         <Text
           style={[
