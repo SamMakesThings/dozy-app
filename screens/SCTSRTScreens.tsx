@@ -10,7 +10,7 @@ import {
   VictoryScatter
 } from 'victory-native';
 import moment from 'moment';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -971,6 +971,7 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
+        if (!state.userId) throw new Error();
         submitCheckinData({
           userId: state.userId,
           checkinPostponed: SCTSRTState.checkinPostponed,

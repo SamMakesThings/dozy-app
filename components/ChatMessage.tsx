@@ -20,7 +20,7 @@ export function ChatMessage(item: Chat, index: number) {
       key={index}
     >
       <Text style={styles.Text_MetaMsg}>
-        {item.sender}{' '}
+        {!item.sentByUser && item.sender}{' '}
         {(firebaseTime.toDate != undefined
           ? firebaseTime.toDate()
           : (item.time as Date)

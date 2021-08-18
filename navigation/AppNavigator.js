@@ -17,8 +17,10 @@ import COG1Navigator from './COG1Navigator';
 import ENDNavigator from './ENDNavigator';
 import HeaderProgressBar from '../components/HeaderProgressBar';
 import { Analytics } from '../utilities/analytics.service';
+import { AuthContext } from '../context/AuthContext';
+import refreshUserData from '../utilities/refreshUserData';
+import { firebase } from '@react-native-firebase/auth';
 import { Crashlytics } from '../utilities/crashlytics.service';
-import { AuthContext } from '../utilities/authContext';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -110,9 +112,24 @@ InitialAuthNavigator.propTypes = {
 };
 
 export default function AppNavigator() {
-  const { state } = useContext(AuthContext);
+  const { state, dispatch } = useContext(AuthContext);
   const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
   Crashlytics.useCrashlytics(state.userId);
+
+  React.useEffect(() => {
+    // Update user data from storage and Firebase, update state w/dispatch
+    const subscriber = firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        refreshUserData(dispatch);
+      } else {
+        dispatch({ type: 'SIGN_OUT' });
+        await auth().signOut();
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      }
+    });
+    return subscriber;
+  }, []);
 
   return (
     <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>

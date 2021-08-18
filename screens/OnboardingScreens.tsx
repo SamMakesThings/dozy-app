@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -1084,7 +1084,8 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
 };
 
 export const OnboardingEnd = ({ navigation }: Props) => {
-  const { dispatch, finishOnboarding } = React.useContext(AuthContext);
+  const { state, dispatch, finishOnboarding } = React.useContext(AuthContext);
+  const displayName = state.userData.userInfo.displayName;
 
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingOnboardingEnd);
@@ -1096,7 +1097,7 @@ export const OnboardingEnd = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        submitOnboardingData(onboardingState, dispatch);
+        submitOnboardingData(onboardingState, dispatch, displayName);
         // finishOnboarding(); TODO: Remove this if everything is working fine
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."

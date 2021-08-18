@@ -2,6 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 import firestore from '@react-native-firebase/firestore';
 import refreshUserData from './refreshUserData';
 import { sub } from 'date-fns';
+import { ACTION } from './mainAppReducer';
 
 export interface OnboardingState {
   pills: string;
@@ -26,7 +27,7 @@ export interface OnboardingState {
 
 export default async function submitOnboardingData(
   onboardingState: OnboardingState,
-  dispatch: Function
+  dispatch: React.Dispatch<ACTION>
 ) {
   // Initialize relevant Firebase values
   let userId = await SecureStore.getItemAsync('userId');
@@ -221,7 +222,8 @@ export async function submitDiaryReminderAndCheckinData(
 }
 
 export async function submitFirstChatMessage(
-  firstChatMessageContent: string
+  firstChatMessageContent: string,
+  displayName?: string
 ): Promise<void> {
   // Initialize relevant Firebase values
   let userId = await SecureStore.getItemAsync('userId');
@@ -245,7 +247,7 @@ export async function submitFirstChatMessage(
     sentByUser: false
   });
   chatColRef.add({
-    sender: 'You',
+    sender: displayName ?? 'You',
     message: firstChatMessageContent,
     time: sub(new Date(), { minutes: 2 }),
     sentByUser: true
