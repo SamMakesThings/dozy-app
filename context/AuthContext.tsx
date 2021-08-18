@@ -1,4 +1,4 @@
-import auth, { firebase, FirebaseAuthTypes } from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {
   GoogleSignin,
@@ -107,13 +107,43 @@ export const AuthProvider: React.FC = ({ children }) => {
         rawNonce
       );
 
-      const credential = await AppleAuthentication.signInAsync({
+      let credential = await AppleAuthentication.signInAsync({
         requestedScopes: [
           AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
           AppleAuthentication.AppleAuthenticationScope.EMAIL
         ],
         nonce: hashedNonce
       });
+      if (credential.fullName?.givenName) {
+        SecureStore.setItemAsync(
+          'appleId.givenName',
+          credential.fullName.givenName
+        );
+      } else {
+        const givenName = await SecureStore.getItemAsync('appleId.givenName');
+        credential = {
+          ...credential,
+          fullName: {
+            ...credential.fullName,
+            givenName
+          } as AppleAuthentication.AppleAuthenticationFullName
+        };
+      }
+      if (credential.fullName?.familyName) {
+        SecureStore.setItemAsync(
+          'appleId.familyName',
+          credential.fullName.familyName
+        );
+      } else {
+        const familyName = await SecureStore.getItemAsync('appleId.familyName');
+        credential = {
+          ...credential,
+          fullName: {
+            ...credential.fullName,
+            familyName
+          } as AppleAuthentication.AppleAuthenticationFullName
+        };
+      }
 
       return firebaseAuthApple(credential, rawNonce);
     } catch (error) {
@@ -133,14 +163,17 @@ export const AuthProvider: React.FC = ({ children }) => {
   ): Promise<void> {
     dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
     // Pipe the result of Sign in with Apple into Firebase auth
-    const { identityToken } = appleAuthResponse;
-    const credential = firebase.auth.AppleAuthProvider.credential(
+    const { identityToken, fullName } = appleAuthResponse;
+    const credential = auth.AppleAuthProvider.credential(
       identityToken!,
       rawNonce
     );
     const fbSigninResult = await auth().signInWithCredential(credential);
 
-    return processFbLogin(fbSigninResult);
+    return processFbLogin(
+      fbSigninResult,
+      `${fullName?.givenName} ${fullName?.familyName}`
+    );
   }
 
   async function firebaseAuthGoogle(googleAuthResponse: GoogleUserInfo) {
@@ -154,7 +187,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   }
 
   async function processFbLogin(
-    result: FirebaseAuthTypes.UserCredential
+    result: FirebaseAuthTypes.UserCredential,
+    displayName?: string
   ): Promise<void> {
     // Store credentials in SecureStore
     if ('user' in result) {
@@ -184,7 +218,7 @@ export const AuthProvider: React.FC = ({ children }) => {
               .doc(result.user.uid)
               .set({
                 userInfo: {
-                  displayName: result.user.displayName,
+                  displayName: result.user.displayName || displayName,
                   email: result.user.email,
                   uid: result.user.uid,
                   photoURL: result.user.photoURL ?? ''
@@ -194,7 +228,7 @@ export const AuthProvider: React.FC = ({ children }) => {
                   message: '',
                   sender: '',
                   sentByUser: true,
-                  time: firebase.firestore.Timestamp.now()
+                  time: firestore.Timestamp.now()
                 }
               })
               .catch((error) => {
