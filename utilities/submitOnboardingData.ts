@@ -145,29 +145,35 @@ export async function submitDiaryReminderAndCheckinData(
   // Store the sleep diary notification settings, store generated ID in userData
   // Also set a reminder for the next checkin
   const notificationsCollection = userDocRef.collection('notifications');
-  notificationsCollection
-    .where('type', '==', 'DAILY_LOG')
-    .get()
-    .then((querySnapshot) => {
-      const newDailyLog = {
-        expoPushToken:
-          diaryAndCheckinData.expoPushToken || 'No push token provided',
-        title: 'How did you sleep?',
-        body: "Add last night's entry now",
-        type: 'DAILY_LOG',
-        time: diaryAndCheckinData.diaryReminderTime
-          ? diaryAndCheckinData.diaryReminderTime
-          : new Date(),
-        enabled: diaryAndCheckinData.diaryReminderTime ? true : false
-      };
-      if (querySnapshot.docs.length) {
-        notificationsCollection
-          .doc(querySnapshot.docs[0].id)
-          .update(newDailyLog);
-      } else {
-        notificationsCollection.doc().set(newDailyLog);
-      }
-    });
+  let logReminderDocId: string | undefined = undefined;
+
+  try {
+    const querySnapshot = await notificationsCollection
+      .where('type', '==', 'DAILY_LOG')
+      .get();
+
+    const newDailyLog = {
+      expoPushToken:
+        diaryAndCheckinData.expoPushToken || 'No push token provided',
+      title: 'How did you sleep?',
+      body: "Add last night's entry now",
+      type: 'DAILY_LOG',
+      time: diaryAndCheckinData.diaryReminderTime
+        ? diaryAndCheckinData.diaryReminderTime
+        : new Date(),
+      enabled: diaryAndCheckinData.diaryReminderTime ? true : false
+    };
+    if (querySnapshot.docs.length) {
+      logReminderDocId = querySnapshot.docs[0].id;
+      notificationsCollection.doc(logReminderDocId).update(newDailyLog);
+    } else {
+      const logReminderDoc = await notificationsCollection.add(newDailyLog);
+      logReminderDocId = logReminderDoc.id;
+    }
+  } catch (error) {
+    console.log('Error when saving daily log reminder data: ', error);
+  }
+
   notificationsCollection
     .where('type', '==', 'CHECKIN_REMINDER')
     .get()
@@ -214,7 +220,7 @@ export async function submitDiaryReminderAndCheckinData(
         nextCheckinDatetime: diaryAndCheckinData.firstCheckinTime,
         nextTreatmentModule: 'SCTSRT'
       },
-      logReminderId: notificationsCollection.doc().id
+      logReminderId: logReminderDocId
     })
     .catch(function (error) {
       console.error('Error adding health history data: ', error);
