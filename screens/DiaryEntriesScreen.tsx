@@ -5,12 +5,10 @@ import {
   Platform,
   ActivityIndicator,
   View,
-  Alert,
-  FlatList
+  Alert
 } from 'react-native'; // @ts-ignore draftbit TS error below
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
-import '@react-native-firebase/firestore';
 import firestore, {
   FirebaseFirestoreTypes
 } from '@react-native-firebase/firestore';

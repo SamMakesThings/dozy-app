@@ -1,6 +1,5 @@
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import * as Icon from '@expo/vector-icons';
-import '@react-native-firebase/firestore';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import React, { useRef } from 'react';

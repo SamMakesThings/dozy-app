@@ -1,4 +1,4 @@
-import { firebase } from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import { Chat, SleepLog, Task } from '../types/custom';
 import alterMonthSelection from './alterMonthSelection';
 
@@ -27,7 +27,7 @@ export const initialState: AppState = {
   chats: [
     {
       chatId: '',
-      time: firebase.firestore.Timestamp.now(),
+      time: firestore.Timestamp.now(),
       message: '',
       sender: '',
       sentByUser: true

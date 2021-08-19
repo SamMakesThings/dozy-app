@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
 import { withTheme } from '@draftbit/ui';
-import '@react-native-firebase/firestore';
 import { Entypo } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { Theme } from '../types/theme';

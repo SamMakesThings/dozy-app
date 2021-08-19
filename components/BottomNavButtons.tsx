@@ -31,10 +31,10 @@ const BottomNavButtons: React.FC<Props> = (props) => {
   const route = useRoute();
   const { state } = React.useContext(AuthContext);
   const userId = state.userId;
-  const db = firebase.firestore().collection('users').doc(userId);
 
   const submitUserProgress = () => {
     console.log('route =>', route.name);
+    const db = firebase.firestore().collection('users').doc(userId);
     db.update({
       currentPage: {
         name: route.name,
