@@ -943,7 +943,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
+      defaultValue={moment().add(1, 'weeks').toDate()}
       onQuestionSubmit={(value: Date) => {
         onboardingState.firstCheckinTime = value;
         navigation.navigate('SendFirstChat', { progressBarPercent: 0.8 });
