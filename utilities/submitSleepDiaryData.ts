@@ -5,6 +5,7 @@ import { cloneDeep, pick } from 'lodash';
 
 import SleepConstants from '../constants/Sleep';
 import { SleepLog } from '../types/custom';
+import { convertLocalDateToUTCWithSameValues } from './common';
 
 interface LogState {
   logId?: string;
@@ -39,7 +40,7 @@ export default async function submitSleepDiaryData(logState: LogState) {
           .collection('sleepLogs');
 
   // Prepare object for pushing to Firebase
-  const logDataForDoc = normalizeSleepLog(logState);
+  const logDataForDoc = normalizeSleepLog(logState, true);
 
   // If entry is an edit, update existing log document in Firebase
   // Otherwise, create a new document
@@ -66,7 +67,10 @@ export default async function submitSleepDiaryData(logState: LogState) {
     .catch((error) => console.error('Error marking user as active:', error));
 }
 
-export function normalizeSleepLog(logState: any): SleepLog {
+export function normalizeSleepLog(
+  logState: any,
+  isChangeTimezone = false
+): SleepLog {
   const newLogState = cloneDeep(logState);
 
   // If bedtime/sleeptime are in the evening, change them to be the day before
@@ -129,6 +133,20 @@ export function normalizeSleepLog(logState: any): SleepLog {
     });
   }
 
+  // Convert to UTC but has the same YYYY-MM-DD HH:mm as the local time's
+  const bedTime = isChangeTimezone
+    ? convertLocalDateToUTCWithSameValues(newLogState.bedTime)
+    : newLogState.bedTime;
+  const fallAsleepTime = moment(bedTime)
+    .add(logState.minsToFallAsleep, 'minutes')
+    .toDate();
+  const wakeTime = isChangeTimezone
+    ? convertLocalDateToUTCWithSameValues(newLogState.wakeTime)
+    : newLogState.wakeTime;
+  const upTime = isChangeTimezone
+    ? convertLocalDateToUTCWithSameValues(newLogState.upTime)
+    : newLogState.upTime;
+
   // Prepare object for pushing to Firebase
   return {
     ...pick(newLogState, [
@@ -140,12 +158,10 @@ export function normalizeSleepLog(logState: any): SleepLog {
       'notes',
       'tags'
     ]),
-    bedTime: firestore.Timestamp.fromDate(newLogState.bedTime),
-    fallAsleepTime: firestore.Timestamp.fromDate(
-      new Date(logState.bedTime.getTime() + logState.minsToFallAsleep * 60000)
-    ),
-    wakeTime: firestore.Timestamp.fromDate(newLogState.wakeTime),
-    upTime: firestore.Timestamp.fromDate(newLogState.upTime),
+    bedTime: firestore.Timestamp.fromDate(bedTime),
+    fallAsleepTime: firestore.Timestamp.fromDate(fallAsleepTime),
+    wakeTime: firestore.Timestamp.fromDate(wakeTime),
+    upTime: firestore.Timestamp.fromDate(upTime),
     sleepEfficiency,
     sleepDuration,
     minsInBedTotal,
