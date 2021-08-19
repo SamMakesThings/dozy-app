@@ -12,7 +12,7 @@ export function convertAnalyticsEventName(originalName: string): string {
   ).substr(0, 40);
 }
 
-export function convertDateToUTCWithSameValues(date: Date): Date {
+export function convertLocalDateToUTCWithSameValues(date: Date): Date {
   return moment.utc(moment(date).format('YYYY-MM-DD HH:mm')).toDate();
 }
 
