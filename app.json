@@ -3,7 +3,7 @@
     "name": "Dozy",
     "slug": "dozy_app",
     "privacy": "public",
-    "sdkVersion": "41.0.1",
+    "sdkVersion": "41.0.0",
     "platforms": ["ios", "android"],
     "primaryColor": "#00818A",
     "version": "0.7.11",
