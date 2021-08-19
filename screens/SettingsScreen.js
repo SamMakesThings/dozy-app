@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import {
   withTheme,
   ScreenContainer,
@@ -10,6 +10,7 @@ import {
   DatePicker
 } from '@draftbit/ui';
 import firestore from '@react-native-firebase/firestore';
+import * as SecureStore from 'expo-secure-store';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../context/AuthContext';
 import planTreatmentModules from '../utilities/planTreatmentModules';
@@ -113,40 +114,52 @@ function Root() {
       scrollable={false}
       style={styles.Root_nd}
     >
-      <Container
-        style={styles.Container_nz}
-        elevation={0}
-        useThemeGutterPadding={true}
+      <TouchableOpacity onPress={() => {
+        if (!state.profileData.name) {
+          let newProfileData = state.profileData;
+          newProfileData.name = state.userData.userInfo?.displayName || "Temp Name"
+          SecureStore.setItemAsync(
+            'profileData',
+            JSON.stringify(newProfileData));
+        }
+      }}
+      disabled={state.profileData.name || Platform.OS === 'android'}
       >
-        <Icon
-          style={styles.Icon_ny}
-          name="Ionicons/ios-person"
-          size={200}
-          color={theme.colors.primary}
-        />
-        <Text
-          style={[
-            styles.Text_n1,
-            theme.typography.headline3,
-            {
-              color: theme.colors.strong
-            }
-          ]}
+        <Container
+          style={styles.Container_nz}
+          elevation={0}
+          useThemeGutterPadding={true}
         >
-          {state.profileData.name || state.userData.userInfo?.displayName}
-        </Text>
-        <Text
-          style={[
-            styles.Text_nc,
-            theme.typography.subtitle2,
-            {
-              color: theme.colors.light
-            }
-          ]}
-        >
-          @dozyapp
-        </Text>
-      </Container>
+          <Icon
+            style={styles.Icon_ny}
+            name="Ionicons/ios-person"
+            size={200}
+            color={theme.colors.primary}
+          />
+          <Text
+            style={[
+              styles.Text_n1,
+              theme.typography.headline3,
+              {
+                color: theme.colors.strong
+              }
+            ]}
+          >
+            {state.profileData.name || "Tap here to fix chat"}
+          </Text>
+          <Text
+            style={[
+              styles.Text_nc,
+              theme.typography.subtitle2,
+              {
+                color: theme.colors.light
+              }
+            ]}
+          >
+            @dozyapp
+          </Text>
+        </Container>
+      </TouchableOpacity>
       <Container
         style={styles.Container_ns}
         elevation={0}
