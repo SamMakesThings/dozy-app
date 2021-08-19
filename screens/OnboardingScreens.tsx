@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -30,7 +30,13 @@ import TanBook from '../assets/images/TanBook.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import { ChatMessage } from '../components/ChatMessage';
 import { ChatTextInput } from '../components/ChatTextInput';
-import submitOnboardingData from '../utilities/submitOnboardingData';
+import submitOnboardingData, {
+  submitISIResults,
+  submitHealthHistoryData,
+  submitDiaryReminderAndCheckinData,
+  submitFirstChatMessage,
+  OnboardingState
+} from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
 import { Analytics } from '../utilities/analytics.service';
@@ -48,7 +54,7 @@ interface Props {
   route: { params: { nextScreen: string; warnAbout: string } };
 }
 
-let onboardingState = {
+let onboardingState: OnboardingState = {
   ISI1: 0,
   ISI2: 0,
   ISI3: 0,
@@ -64,8 +70,8 @@ let onboardingState = {
   otherCondition: false,
   diaryHabitTrigger: 'ERROR',
   expoPushToken: 'No push token provided',
-  diaryReminderTime: new Date(),
-  firstCheckinTime: new Date(),
+  diaryReminderTime: null,
+  firstCheckinTime: null,
   firstChatMessageContent: 'Hi'
 };
 
@@ -357,6 +363,9 @@ export const ISI7 = ({ navigation }: Props) => {
           AnalyticsEvents.onboardingQuestionSleepProblemInterference,
           { answer: value }
         );
+
+        // Submit ISI results
+        submitISIResults(onboardingState);
       }}
       buttonValues={[
         { label: 'Not at all interfering', value: 0, solidColor: true },
@@ -522,6 +531,7 @@ export const SafetyPills = ({ navigation }: Props) => {
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyPills, {
           answer: value
         });
+        submitHealthHistoryData({ pills: value });
       }}
       buttonValues={[
         { label: 'Nope', value: 'none', solidColor: true },
@@ -623,6 +633,7 @@ export const SafetySnoring = ({ navigation }: Props) => {
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetySnoring, {
           answer: value
         });
+        submitHealthHistoryData({ snoring: value });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
@@ -651,6 +662,7 @@ export const SafetyLegs = ({ navigation }: Props) => {
         Analytics.logEvent(AnalyticsEvents.onboardingSafetyLegs, {
           answer: value
         });
+        submitHealthHistoryData({ rls: value });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
@@ -680,6 +692,7 @@ export const SafetyParas = ({ navigation }: Props) => {
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyParas, {
           answer: value
         });
+        submitHealthHistoryData({ parasomnias: value });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
@@ -708,6 +721,7 @@ export const SafetyCatchall = ({ navigation }: Props) => {
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyCatchall, {
           answer: value
         });
+        submitHealthHistoryData({ otherCondition: value });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
@@ -933,6 +947,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
       onQuestionSubmit={(value: Date) => {
         onboardingState.firstCheckinTime = value;
         navigation.navigate('SendFirstChat', { progressBarPercent: 0.8 });
+        submitDiaryReminderAndCheckinData(onboardingState);
       }}
       validInputChecker={(val: Date) => {
         // Make sure the selected date is 7+ days from today
@@ -994,6 +1009,9 @@ export const SendFirstChat = ({ navigation }: Props) => {
 };
 
 export const SendFirstChatContd = ({ navigation }: Props) => {
+  const { state } = React.useContext(AuthContext);
+  const displayName = state.userData.userInfo.displayName;
+
   const [message, setMessage] = React.useState('');
   const [replyVisible, makeReplyVisible] = React.useState(false);
 
@@ -1059,6 +1077,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
             onboardingState.firstChatMessageContent = typedMsg;
             setMessage(typedMsg);
             Keyboard.dismiss();
+            submitFirstChatMessage(typedMsg, displayName);
           }}
           viewStyle={{ display: !messageSent ? 'flex' : 'none' }}
         />

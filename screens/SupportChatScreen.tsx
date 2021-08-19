@@ -17,7 +17,7 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 import { AntDesign } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import { dozy_theme } from '../config/Themes';
 import Images from '../config/Images';
 import fetchChats from '../utilities/fetchChats';
@@ -57,6 +57,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   // Function to fetch chats from Firebase and put them in global state
   async function setChats() {
     async function fetchData() {
+      if (!state.userId) throw new Error();
       fetchChats(firestore(), state.userId)
         .then((chats: Array<Chat>) => {
           // Check that theres >1 entry. If no, set state accordingly
@@ -138,6 +139,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
             />
             <ChatTextInput
               onSend={(typedMsg: string) => {
+                if (!state.userId) throw new Error();
                 sendChatMessage(firestore(), state.userId, {
                   sender: state.profileData.name,
                   message: typedMsg,

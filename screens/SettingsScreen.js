@@ -11,7 +11,7 @@ import {
 } from '@draftbit/ui';
 import firestore from '@react-native-firebase/firestore';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import planTreatmentModules from '../utilities/planTreatmentModules';
 import { Analytics } from '../utilities/analytics.service';
 import {
@@ -133,7 +133,7 @@ function Root() {
             }
           ]}
         >
-          {state.profileData.name}
+          {state.profileData.name || state.userData.userInfo?.displayName}
         </Text>
         <Text
           style={[

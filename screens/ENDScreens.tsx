@@ -2,7 +2,7 @@
 import React from 'react';
 import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -634,6 +634,7 @@ export const ENDEnd: React.FC<{ navigation: Navigation }> = ({
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
+        if (!state.userId) throw new Error();
         submitCheckinData({
           userId: state.userId,
           checkinPostponed: false,

@@ -7,8 +7,8 @@ import DiaryScreen from '../screens/DiaryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import { TreatmentScreen } from '../screens/TreatmentScreen';
 import { SupportChatScreen } from '../screens/SupportChatScreen';
-import { AuthContext } from '../utilities/authContext';
 import treatments from '../constants/Treatments';
+import { AuthContext } from '../context/AuthContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,13 +18,13 @@ export default function BottomTabs() {
   // Strip time from next checkin datetime to determine whether to show checkin badge
   // If userData isn't defined yet, set an old date so things don't break
   // TODO: Rig state so it's never undefined. Maybe store a version in async?
-  let nextCheckinDate = state.userData
-    ? state.userData.currentTreatments.nextCheckinDatetime.toDate()
-    : new Date(0);
+  const nextCheckinDate =
+    state.userData?.currentTreatments?.nextCheckinDatetime?.toDate() ||
+    new Date(0);
   nextCheckinDate.setHours(0);
-  let nextCheckinReady = state.userData
-    ? treatments[state.userData.nextCheckin.treatmentModule].ready
-    : false;
+  const nextCheckinReady = !!treatments[
+    state.userData?.nextCheckin?.treatmentModule
+  ]?.ready;
 
   return (
     <Tab.Navigator

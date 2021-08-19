@@ -9,7 +9,7 @@ import {
   VictoryAxis,
   VictoryScatter
 } from 'victory-native';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';

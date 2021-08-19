@@ -4,7 +4,7 @@ import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
 import { WebView } from 'react-native-webview';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -434,26 +434,30 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
-        submitCheckinData({
-          userId: state.userId,
-          checkinPostponed: false,
-          nextCheckinDatetime: RLXState.nextCheckinTime,
-          lastCheckinDatetime: new Date(),
-          nextCheckinModule: GLOBAL.treatmentPlan.filter(
-            (v) => v.started === false && v.module !== 'RLX'
-          )[0].module,
-          lastCheckinModule: 'RLX',
-          targetBedTime: GLOBAL.targetBedTime,
-          targetWakeTime: GLOBAL.targetWakeTime,
-          targetTimeInBed: GLOBAL.targetTimeInBed,
-          additionalCheckinData: {
-            PMRIntentionAction: RLXState.PMRIntentionAction,
-            PMRIntentionTime: RLXState.PMRIntentionTime
-          },
-          reminderObject: reminderArray
-        });
-        navigation.navigate('App');
-        refreshUserData(dispatch);
+        if (state.userId) {
+          submitCheckinData({
+            userId: state.userId,
+            checkinPostponed: false,
+            nextCheckinDatetime: RLXState.nextCheckinTime,
+            lastCheckinDatetime: new Date(),
+            nextCheckinModule: GLOBAL.treatmentPlan.filter(
+              (v) => v.started === false && v.module !== 'RLX'
+            )[0].module,
+            lastCheckinModule: 'RLX',
+            targetBedTime: GLOBAL.targetBedTime,
+            targetWakeTime: GLOBAL.targetWakeTime,
+            targetTimeInBed: GLOBAL.targetTimeInBed,
+            additionalCheckinData: {
+              PMRIntentionAction: RLXState.PMRIntentionAction,
+              PMRIntentionTime: RLXState.PMRIntentionTime
+            },
+            reminderObject: reminderArray
+          });
+          navigation.navigate('App');
+          refreshUserData(dispatch);
+        } else {
+          console.log('ERROR IN SCTSRTend: Invalid user id');
+        }
       }}
       textLabel="Weekly check-in completed!"
       buttonLabel="Finish"

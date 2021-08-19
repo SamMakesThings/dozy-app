@@ -5,7 +5,7 @@ import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { CardContainer } from '../components/CardContainer';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../utilities/authContext';
+import { AuthContext } from '../context/AuthContext';
 import { SleepLog } from '../types/custom';
 import { getLogStreakLength } from '../utilities/getLogStreakLength';
 import { LogStatsLineGraph } from '../components/LogStatsLineGraphComponent';
