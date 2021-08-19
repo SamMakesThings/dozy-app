@@ -76,29 +76,24 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
   }
 
   let initialDateVal = new Date(); // Declare variable for the initial selectedState value
+  const baseSleepLog: SleepLog | undefined = globalState.sleepLogs.find(
+    (sleepLog) => sleepLog.logId === route.params.logId
+  );
 
   // If editing existing sleep log, set defaults from that. Otherwise, use normal defaults
   if (route.params?.logId) {
-    let baseSleepLog: SleepLog | undefined = globalState.sleepLogs.find(
-      (sleepLog) => sleepLog.logId === route.params.logId
-    );
-
     if (baseSleepLog) {
       initialDateVal = baseSleepLog.upTime.toDate(); // If editing, use upTime as initial logDate value
 
-      logState = {
-        ...logState,
-        logId: route.params.logId,
-        bedTime: baseSleepLog.bedTime.toDate(),
-        minsToFallAsleep: baseSleepLog.minsToFallAsleep,
-        wakeCount: baseSleepLog.wakeCount,
-        nightMinsAwake: baseSleepLog.nightMinsAwake,
-        SCTNonSleepActivities: baseSleepLog.SCTNonSleepActivities,
-        wakeTime: baseSleepLog.wakeTime.toDate(),
-        upTime: baseSleepLog.upTime.toDate(),
-        notes: baseSleepLog.notes,
-        tags: baseSleepLog.tags
-      };
+      logState.logId = route.params.logId;
+      logState.minsToFallAsleep = baseSleepLog.minsToFallAsleep;
+      logState.wakeCount = baseSleepLog.wakeCount;
+      logState.nightMinsAwake = baseSleepLog.nightMinsAwake;
+      logState.SCTNonSleepActivities = baseSleepLog.SCTNonSleepActivities;
+      logState.wakeTime = baseSleepLog.wakeTime.toDate();
+      logState.upTime = baseSleepLog.upTime.toDate();
+      logState.notes = baseSleepLog.notes;
+      logState.tags = baseSleepLog.tags;
     } else {
       console.error("Attempted to edit sleep log that doesn't exist!");
     }
@@ -111,7 +106,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
     <>
       <DateTimePickerScreen
         theme={theme}
-        defaultValue={logState.logId ? logState.bedTime : defaultDate}
+        defaultValue={baseSleepLog?.bedTime?.toDate() || defaultDate}
         onQuestionSubmit={(value: Date) => {
           logState.bedTime = value;
           logState.logDate = selectedDate; // Make sure this is set even if user doesn't change it
