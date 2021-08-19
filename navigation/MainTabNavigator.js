@@ -1,7 +1,8 @@
 import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import TabBarIcon from '../components/TabBarIcon';
 import DiaryScreen from '../screens/DiaryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -18,10 +19,13 @@ export default function BottomTabs() {
   // Strip time from next checkin datetime to determine whether to show checkin badge
   // If userData isn't defined yet, set an old date so things don't break
   // TODO: Rig state so it's never undefined. Maybe store a version in async?
-  const nextCheckinDate =
-    state.userData?.currentTreatments?.nextCheckinDatetime?.toDate() ||
-    new Date(0);
-  nextCheckinDate.setHours(0);
+  const nextCheckinDate = useMemo(() => {
+    const nextCheckinAsDate =
+      state.userData?.currentTreatments?.nextCheckinDatetime?.toDate() ||
+      new Date(0);
+    return moment(nextCheckinAsDate).startOf('date');
+  }, [state.userData?.currentTreatments?.nextCheckinDatetime]);
+
   const nextCheckinReady = !!treatments[
     state.userData?.nextCheckin?.treatmentModule
   ]?.ready;
@@ -66,7 +70,7 @@ export default function BottomTabs() {
               focused={focused}
               color={color}
               name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'}
-              badge={nextCheckinDate < new Date() && nextCheckinReady}
+              badge={nextCheckinDate.isBefore(moment()) && nextCheckinReady}
             />
           )
         }}
