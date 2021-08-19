@@ -156,7 +156,7 @@ function Root() {
               }
             ]}
           >
-            @dozyapp
+            @dozyapp 0.7.11
           </Text>
         </Container>
       </TouchableOpacity>
