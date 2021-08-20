@@ -12,12 +12,15 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../context/AuthContext';
-import planTreatmentModules from '../utilities/planTreatmentModules';
 import { Analytics } from '../utilities/analytics.service';
 import {
   isNotificationEnabled,
   askNotificationPermission
 } from '../utilities/pushNotifications';
+import {
+  convertUTCDateToLocalWithSameValues,
+  convertLocalDateToUTCWithSameValues
+} from '../utilities/common';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 function Root() {
@@ -54,7 +57,7 @@ function Root() {
           const notifData = notif.data();
           dispatch({
             type: 'SET_LOG_REMINDER_TIME',
-            time: notifData.time.toDate()
+            time: convertUTCDateToLocalWithSameValues(notifData.time.toDate())
           });
           dispatch({
             type: 'TOGGLE_LOG_NOTIFS',
@@ -88,7 +91,7 @@ function Root() {
           };
         case 'SET_LOG_REMINDER_TIME':
           updateFbLogNotification({
-            time: action.time
+            time: convertLocalDateToUTCWithSameValues(action.time)
           });
           return {
             ...prevState,
