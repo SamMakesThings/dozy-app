@@ -611,7 +611,7 @@ export const AccessAndFAQ: React.FC<{ navigation: Navigation }> = ({
         }
       }}
       textLabel={
-        "We'll keep all of this information on your treatment page for easy access later. Have any questions in the meantime?"
+        "We'll keep all of this information on your home page for easy access later. Have any questions in the meantime?"
       }
       buttonLabel="Nope, I'm good"
       bottomGreyButtonLabel="I have questions"

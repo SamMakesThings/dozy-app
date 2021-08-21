@@ -82,7 +82,7 @@ const SleepLogsView = (props: {
             !loggedToday ? theme.colors.primary : theme.colors.medium
           }
           titleLabel="How did you sleep last night?"
-          subtitleLabel="A consistent log improves treatment"
+          subtitleLabel="A consistent log improves care"
         />
         <ActivityIndicator
           size="large"
@@ -107,7 +107,7 @@ const SleepLogsView = (props: {
               !loggedToday ? theme.colors.primary : theme.colors.medium
             }
             titleLabel="How did you sleep last night?"
-            subtitleLabel="A consistent log improves treatment"
+            subtitleLabel="A consistent log improves care"
           />
         </View>
         <View
@@ -149,7 +149,7 @@ const SleepLogsView = (props: {
             !loggedToday ? theme.colors.primary : theme.colors.medium
           }
           titleLabel="How did you sleep last night?"
-          subtitleLabel="A consistent log improves treatment"
+          subtitleLabel="A consistent log improves care"
         />
         {props.sleepLogs.length < 7 && (
           <BaselineProgressCard nightsLogged={props.sleepLogs.length} />
@@ -199,7 +199,7 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
             dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
             Alert.alert(
               'Done for now',
-              "Once you've collected 7 nights of data, we'll get started on treatment.",
+              "Once you've collected 7 nights of data, we'll get started on improvement.",
               [{ text: 'Ok' }]
             );
           } else {

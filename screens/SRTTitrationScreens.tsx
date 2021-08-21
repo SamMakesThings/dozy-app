@@ -412,11 +412,11 @@ export const SleepDuration = ({ navigation }: Props) => {
 
   function getLabel(sleepDurationAvg: number) {
     if (sleepDurationAvg < baselineSleepDurationAvg - 8) {
-      return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is a bit worse than your previous baseline of ${baselineSleepDurationAvgLabel} hours. This should improve as treatment progresses.`;
+      return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is a bit worse than your previous baseline of ${baselineSleepDurationAvgLabel} hours. This should improve as your sleep progresses.`;
     } else if (sleepDurationAvg < baselineSleepDurationAvg + 5) {
-      return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is about the same as your previous baseline of ${baselineSleepDurationAvgLabel} hours. This should improve as treatment progresses.`;
+      return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is about the same as your previous baseline of ${baselineSleepDurationAvgLabel} hours. This should improve as your sleep progresses.`;
     } else {
-      return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is improved over your ${baselineSleepDurationAvgLabel} hours before treatment. You're making progress!`;
+      return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is improved over your ${baselineSleepDurationAvgLabel} hours before starting with Dozy. You're making progress!`;
     }
   }
 
@@ -437,7 +437,7 @@ export const SleepDuration = ({ navigation }: Props) => {
         });
       }}
       textLabel={getLabel(sleepDurationAvg)}
-      buttonLabel="This week's treatment plan"
+      buttonLabel="This week's care plan"
     >
       <VictoryChart
         width={chartStyles.chart.width}
