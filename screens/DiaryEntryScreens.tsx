@@ -24,7 +24,7 @@ const theme = dozy_theme;
 interface Props {
   navigation: Navigation;
   route: {
-    params: {
+    params?: {
       logId?: string;
     };
   };
@@ -77,7 +77,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
 
   let initialDateVal = new Date(); // Declare variable for the initial selectedState value
   const baseSleepLog: SleepLog | undefined = globalState.sleepLogs.find(
-    (sleepLog) => sleepLog.logId === route.params.logId
+    (sleepLog) => sleepLog.logId === route.params?.logId
   );
 
   // If editing existing sleep log, set defaults from that. Otherwise, use normal defaults
