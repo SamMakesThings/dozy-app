@@ -6,13 +6,14 @@ import {
   View
 } from 'react-native';
 import { Container } from '@draftbit/ui';
-import '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
 import HighlightedText from './HighlightedText';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import { SleepLog } from '../types/custom';
+import { useAuth } from '../context/AuthContext';
 
 interface Props {
   sleepLog: SleepLog;
@@ -21,6 +22,24 @@ interface Props {
 
 const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
   const theme = dozy_theme;
+  const { state } = useAuth();
+  const userId = state.userId;
+  const handleDeleteSleepLog = () => {
+    console.log('delete', sleepLog, sleepLog.logId);
+    const sleepLogId = sleepLog.logId;
+
+    if (!sleepLogId)
+      console.error(
+        'There is no sleeplogid in handleDeleteSleeping of SleepingLogEntryCard'
+      );
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('sleepLogs')
+      .doc(sleepLogId)
+      .delete();
+  };
   return (
     <Container
       style={{
@@ -63,7 +82,7 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
           >
             <Entypo name="pencil" size={scale(18)} color={theme.colors.light} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleDeleteSleepLog}>
             <Entypo name="trash" size={scale(18)} color={theme.colors.light} />
           </TouchableOpacity>
         </View>

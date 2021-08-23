@@ -46,6 +46,7 @@ export const AuthContext = React.createContext<AuthType>(initialAuth);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [state, dispatch] = React.useReducer(appReducer, initialState);
+  console.log('Auth context', state);
   const signIn = async () => {
     let googleUserInfo: GoogleUserInfo | undefined;
 
@@ -240,20 +241,19 @@ export const AuthProvider: React.FC = ({ children }) => {
     // Update user's data from Firestore db
     refreshUserData(dispatch);
   }
-  return (
-    <AuthContext.Provider
-      value={{
-        state,
-        dispatch,
-        signIn,
-        signOut,
-        signInWithApple,
-        finishOnboarding
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+
+  const value = React.useMemo(
+    () => ({
+      state,
+      dispatch,
+      signIn,
+      signOut,
+      signInWithApple,
+      finishOnboarding
+    }),
+    [state]
   );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);
