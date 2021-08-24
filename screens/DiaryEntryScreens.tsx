@@ -106,7 +106,15 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
     <>
       <DateTimePickerScreen
         theme={theme}
-        defaultValue={baseSleepLog?.bedTime?.toDate() || defaultDate}
+        defaultValue={
+          baseSleepLog?.bedTime
+            ? moment(
+                `${moment(logState.wakeTime).format('YYYY-MM-DD')}T${moment(
+                  baseSleepLog.bedTime.toDate()
+                ).format('HH:mm')}`
+              ).toDate()
+            : defaultDate
+        }
         onQuestionSubmit={(value: Date) => {
           logState.bedTime = value;
           logState.logDate = selectedDate; // Make sure this is set even if user doesn't change it
