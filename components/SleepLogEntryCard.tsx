@@ -63,8 +63,6 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
       useThemeGutterPadding={false}
     >
       <Container
-        borderColor="#F00"
-        borderWidth={3}
         style={{
           paddingLeft: scale(24),
           marginBottom: scale(2),
