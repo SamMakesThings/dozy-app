@@ -3,7 +3,8 @@ import {
   Text,
   TouchableOpacity,
   GestureResponderEvent,
-  View
+  View,
+  Alert
 } from 'react-native';
 import { Container } from '@draftbit/ui';
 import { firebase } from '@react-native-firebase/firestore';
@@ -24,6 +25,19 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
   const theme = dozy_theme;
   const { state } = useAuth();
   const userId = state.userId;
+  const createTwoButtonAlert = () =>
+    Alert.alert(
+      'Delete Sleep log',
+      'Are you sure you want to permanently delete sleep log?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel'
+        },
+        { text: 'OK', onPress: () => handleDeleteSleepLog() }
+      ]
+    );
   const handleDeleteSleepLog = () => {
     console.log('delete', sleepLog, sleepLog.logId);
     const sleepLogId = sleepLog.logId;
@@ -82,7 +96,7 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
           >
             <Entypo name="pencil" size={scale(18)} color={theme.colors.light} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleDeleteSleepLog}>
+          <TouchableOpacity onPress={createTwoButtonAlert}>
             <Entypo name="trash" size={scale(18)} color={theme.colors.light} />
           </TouchableOpacity>
         </View>
