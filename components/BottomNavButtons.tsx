@@ -34,12 +34,14 @@ const BottomNavButtons: React.FC<Props> = (props) => {
   const db = firebase.firestore().collection('users').doc(userId);
 
   const submitUserProgress = () => {
+    /* This Firebase write created crazy performance problems.
+    // TODO: Find a performant way to do this.
     db.update({
       currentPage: {
         name: route.name,
         visitedAt: firebase.firestore.FieldValue.serverTimestamp()
       }
-    });
+    }); */
   };
 
   return (
