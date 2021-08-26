@@ -28,8 +28,8 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
   const userId = state.userId;
   const openDeleteSleepLogAlert = () =>
     Alert.alert(
-      'Delete Sleep log',
-      'Are you sure you want to permanently delete sleep log?',
+      'Delete sleep diary entry?',
+      'Are you sure you want to permanently delete this night\'s record?',
       [
         {
           text: 'Cancel',
@@ -89,12 +89,12 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={onEdit}
-            style={{ display: !!onEdit ? 'flex' : 'none', marginRight: 12 }}
+            style={{ display: !!onEdit ? 'flex' : 'none', marginRight: 8 }}
           >
             <Entypo name="pencil" size={scale(18)} color={theme.colors.light} />
           </TouchableOpacity>
           <TouchableOpacity onPress={openDeleteSleepLogAlert}>
-            <Entypo name="trash" size={scale(18)} color={theme.colors.light} />
+            <Entypo name="trash" size={scale(16)} color={theme.colors.light} />
           </TouchableOpacity>
         </View>
       </Container>
