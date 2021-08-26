@@ -8,6 +8,8 @@ import DiaryEntriesScreen from './DiaryEntriesScreen';
 import { DiaryStatsScreen } from './DiaryStatsScreen';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../context/AuthContext';
+import { useRoute } from '@react-navigation/native';
+import { getLogStreakLength } from '../utilities/getLogStreakLength';
 
 // Create tab nav for switching between entries and stats
 const Tab = createMaterialTopTabNavigator();
@@ -15,6 +17,12 @@ const Tab = createMaterialTopTabNavigator();
 function DiaryScreen() {
   const theme = dozy_theme;
   const { dispatch, state } = React.useContext(AuthContext);
+  const allSleepLogs = state.sleepLogs;
+  const [streakLength, setStreakLength] = React.useState(0);
+
+  const route = useRoute();
+
+  // console.log('current route index:', route.state.index)
 
   // Set date value from selected month
   const selectedDate = new Date();
@@ -26,6 +34,10 @@ function DiaryScreen() {
     year: 'numeric'
   });
 
+  React.useEffect(() => {
+    const streakLengthValue = getLogStreakLength(allSleepLogs);
+    setStreakLength(streakLengthValue);
+  }, [route]);
   return (
     <ScreenContainer
       hasSafeArea={true}
@@ -82,7 +94,9 @@ function DiaryScreen() {
         style={{ backgroundColor: theme.colors.primary }}
       >
         <Tab.Screen name="Entries" component={DiaryEntriesScreen} />
-        <Tab.Screen name="Stats" component={DiaryStatsScreen} />
+        <Tab.Screen name="Stats">
+          {() => <DiaryStatsScreen streakLength={streakLength} />}
+        </Tab.Screen>
       </Tab.Navigator>
     </ScreenContainer>
   );

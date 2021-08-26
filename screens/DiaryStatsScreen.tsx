@@ -10,12 +10,15 @@ import { SleepLog } from '../types/custom';
 import { getLogStreakLength } from '../utilities/getLogStreakLength';
 import { LogStatsLineGraph } from '../components/LogStatsLineGraphComponent';
 
-export const DiaryStatsScreen = () => {
+interface DiaryStatsScreenProps {
+  streakLength: number;
+}
+
+export const DiaryStatsScreen = ({ streakLength }: DiaryStatsScreenProps) => {
   const { state } = React.useContext(AuthContext);
   let allSleepLogs: Array<SleepLog> = state.sleepLogs;
 
   // Calculate the current diary streak length
-  let streakLength = getLogStreakLength(allSleepLogs);
 
   // Filter sleepLogs to only show selected month
   let selectedSleepLogs = allSleepLogs.filter(
