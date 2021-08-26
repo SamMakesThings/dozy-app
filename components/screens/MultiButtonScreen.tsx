@@ -8,7 +8,7 @@ interface Props {
   questionLabel: string;
   questionSubtitle?: string;
   bottomBackButton: Function;
-  buttonValues: Array<{ label: string; value: string; solidColor: boolean }>;
+  buttonValues: Array<{ label: string; value: string | number | boolean; solidColor: boolean }>;
   onQuestionSubmit: Function;
   theme: Theme;
 }
