@@ -274,20 +274,19 @@ export const AuthProvider: React.FC = ({ children }) => {
     // Update user's data from Firestore db
     refreshUserData(dispatch);
   }
-  return (
-    <AuthContext.Provider
-      value={{
-        state,
-        dispatch,
-        signIn,
-        signOut,
-        signInWithApple,
-        finishOnboarding
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+
+  const value = React.useMemo(
+    () => ({
+      state,
+      dispatch,
+      signIn,
+      signOut,
+      signInWithApple,
+      finishOnboarding
+    }),
+    [state]
   );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);
