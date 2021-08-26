@@ -5,7 +5,7 @@ import { cloneDeep, pick } from 'lodash';
 
 import SleepConstants from '../constants/Sleep';
 import { SleepLog } from '../types/custom';
-import { convertLocalDateToUTCWithSameValues } from './common';
+import { encodeLocalTime } from './time';
 
 interface LogState {
   logId?: string;
@@ -134,18 +134,13 @@ export function normalizeSleepLog(
   }
 
   // Convert to UTC but has the same YYYY-MM-DD HH:mm as the local time's
-  const bedTime = isChangeTimezone
-    ? convertLocalDateToUTCWithSameValues(newLogState.bedTime)
-    : newLogState.bedTime;
-  const fallAsleepTime = moment(bedTime)
+  const bedTimeUTCData = encodeLocalTime(newLogState.bedTime);
+  const fallAsleepTime = moment(newLogState.bedTime)
     .add(logState.minsToFallAsleep, 'minutes')
     .toDate();
-  const wakeTime = isChangeTimezone
-    ? convertLocalDateToUTCWithSameValues(newLogState.wakeTime)
-    : newLogState.wakeTime;
-  const upTime = isChangeTimezone
-    ? convertLocalDateToUTCWithSameValues(newLogState.upTime)
-    : newLogState.upTime;
+  const fallAsleepTimeUTCData = encodeLocalTime(fallAsleepTime);
+  const wakeTimeUTCData = encodeLocalTime(newLogState.wakeTime);
+  const upTimeUTCData = encodeLocalTime(newLogState.upTime);
 
   // Prepare object for pushing to Firebase
   return {
@@ -158,10 +153,19 @@ export function normalizeSleepLog(
       'notes',
       'tags'
     ]),
-    bedTime: firestore.Timestamp.fromDate(bedTime),
-    fallAsleepTime: firestore.Timestamp.fromDate(fallAsleepTime),
-    wakeTime: firestore.Timestamp.fromDate(wakeTime),
-    upTime: firestore.Timestamp.fromDate(upTime),
+    bedTime: firestore.Timestamp.fromDate(
+      isChangeTimezone ? bedTimeUTCData.value : newLogState.bedTime
+    ),
+    fallAsleepTime: firestore.Timestamp.fromDate(
+      isChangeTimezone ? fallAsleepTimeUTCData.value : fallAsleepTime
+    ),
+    wakeTime: firestore.Timestamp.fromDate(
+      isChangeTimezone ? wakeTimeUTCData.value : newLogState.wakeTime
+    ),
+    upTime: firestore.Timestamp.fromDate(
+      isChangeTimezone ? upTimeUTCData.value : newLogState.upTime
+    ),
+    version: bedTimeUTCData.version,
     sleepEfficiency,
     sleepDuration,
     minsInBedTotal,
