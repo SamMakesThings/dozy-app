@@ -18,10 +18,7 @@ import {
   isNotificationEnabled,
   askNotificationPermission
 } from '../utilities/pushNotifications';
-import {
-  convertUTCDateToLocalWithSameValues,
-  convertLocalDateToUTCWithSameValues
-} from '../utilities/common';
+import { encodeLocalTime, decodeUTCTime } from '../utilities/time';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 function Root() {
@@ -58,7 +55,7 @@ function Root() {
           const notifData = notif.data();
           dispatch({
             type: 'SET_LOG_REMINDER_TIME',
-            time: convertUTCDateToLocalWithSameValues(notifData.time.toDate())
+            time: decodeUTCTime(notifData.time, notifData.version)
           });
           dispatch({
             type: 'TOGGLE_LOG_NOTIFS',
@@ -81,6 +78,8 @@ function Root() {
   // TODO: Have enabling notifs recheck permissions / Expo token
   const [settings, dispatch] = React.useReducer(
     (prevState, action) => {
+      let encodedTimeData;
+
       switch (action.type) {
         case 'TOGGLE_LOG_NOTIFS':
           updateFbLogNotification({
@@ -91,8 +90,10 @@ function Root() {
             logNotifsEnabled: action.enabledStatus
           };
         case 'SET_LOG_REMINDER_TIME':
+          encodedTimeData = encodeLocalTime(action.time);
           updateFbLogNotification({
-            time: convertLocalDateToUTCWithSameValues(action.time)
+            time: encodedTimeData.value,
+            version: encodedTimeData.version
           });
           return {
             ...prevState,
