@@ -7,7 +7,7 @@ import {
   Alert
 } from 'react-native';
 import { Container } from '@draftbit/ui';
-import { firebase } from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
@@ -15,6 +15,7 @@ import HighlightedText from './HighlightedText';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import { SleepLog } from '../types/custom';
 import { useAuth } from '../context/AuthContext';
+import { StyleSheet } from 'react-native';
 
 interface Props {
   sleepLog: SleepLog;
@@ -25,7 +26,7 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
   const theme = dozy_theme;
   const { state } = useAuth();
   const userId = state.userId;
-  const createTwoButtonAlert = () =>
+  const openDeleteSleepLogAlert = () =>
     Alert.alert(
       'Delete Sleep log',
       'Are you sure you want to permanently delete sleep log?',
@@ -35,19 +36,17 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel'
         },
-        { text: 'OK', onPress: () => handleDeleteSleepLog() }
+        { text: 'OK', onPress: handleDeleteSleepLog }
       ]
     );
   const handleDeleteSleepLog = () => {
-    console.log('delete', sleepLog, sleepLog.logId);
     const sleepLogId = sleepLog.logId;
 
     if (!sleepLogId)
       console.error(
         'There is no sleeplogid in handleDeleteSleeping of SleepingLogEntryCard'
       );
-    firebase
-      .firestore()
+    firestore()
       .collection('users')
       .doc(userId)
       .collection('sleepLogs')
@@ -87,14 +86,14 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
             day: 'numeric'
           })}
         </Text>
-        <View style={{ flex: 1, flexDirection: 'row', opacity: 0.3 }}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={onEdit}
             style={{ display: !!onEdit ? 'flex' : 'none', marginRight: 12 }}
           >
             <Entypo name="pencil" size={scale(18)} color={theme.colors.light} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={createTwoButtonAlert}>
+          <TouchableOpacity onPress={openDeleteSleepLogAlert}>
             <Entypo name="trash" size={scale(18)} color={theme.colors.light} />
           </TouchableOpacity>
         </View>
@@ -301,3 +300,11 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
 };
 
 export default SleepLogEntryCard;
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    opacity: 0.3
+  }
+});

@@ -46,7 +46,6 @@ export const AuthContext = React.createContext<AuthType>(initialAuth);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [state, dispatch] = React.useReducer(appReducer, initialState);
-  console.log('Auth context', state);
   const signIn = async () => {
     let googleUserInfo: GoogleUserInfo | undefined;
 
