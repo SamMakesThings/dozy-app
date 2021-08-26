@@ -22,6 +22,7 @@ import { AuthContext } from '../context/AuthContext';
 import refreshUserData from '../utilities/refreshUserData';
 import auth from '@react-native-firebase/auth';
 import { Crashlytics } from '../utilities/crashlytics.service';
+import BasicContainer from './layout/BasicContainer';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -135,12 +136,12 @@ export default function AppNavigator() {
 
   return (
     <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
-      <View style={styles.container}>
+      <BasicContainer>
         <InitialAuthNavigator
           userId={state.userId}
           onboardingComplete={state.onboardingComplete}
         />
-      </View>
+      </BasicContainer>
     </NavigationContainer>
   );
 }

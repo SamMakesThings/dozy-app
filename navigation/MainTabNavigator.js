@@ -9,6 +9,7 @@ import { TreatmentScreen } from '../screens/TreatmentScreen';
 import { SupportChatScreen } from '../screens/SupportChatScreen';
 import treatments from '../constants/Treatments';
 import { AuthContext } from '../context/AuthContext';
+import BasicContainer from './layout/BasicContainer';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,86 +28,88 @@ export default function BottomTabs() {
   ]?.ready;
 
   return (
-    <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: '#ffffff',
-        inactiveTintColor: '#7FC0C4',
-        style: {
-          backgroundColor: '#00818A',
-          borderTopWidth: 0
-        }
-      }}
-    >
-      {/* Sleep diary entries screen */}
-      <Tab.Screen
-        name="Sleep"
-        component={DiaryScreen}
-        options={{
-          tabBarLabel: 'Sleep',
-          // eslint-disable-next-line react/display-name
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              focused={focused}
-              color={color}
-              name={Platform.OS === 'ios' ? 'ios-journal' : 'md-journal'}
-            />
-          )
+    <BasicContainer>
+      <Tab.Navigator
+        tabBarOptions={{
+          activeTintColor: '#ffffff',
+          inactiveTintColor: '#7FC0C4',
+          style: {
+            backgroundColor: '#00818A',
+            borderTopWidth: 0
+          }
         }}
-      />
+      >
+        {/* Sleep diary entries screen */}
+        <Tab.Screen
+          name="Sleep"
+          component={DiaryScreen}
+          options={{
+            tabBarLabel: 'Sleep',
+            // eslint-disable-next-line react/display-name
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon
+                focused={focused}
+                color={color}
+                name={Platform.OS === 'ios' ? 'ios-journal' : 'md-journal'}
+              />
+            )
+          }}
+        />
 
-      {/* Main treatment info & check-in screen */}
-      <Tab.Screen
-        name="Home"
-        component={TreatmentScreen}
-        options={{
-          tabBarLabel: 'Home',
-          // eslint-disable-next-line react/display-name
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              focused={focused}
-              color={color}
-              name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'}
-              badge={nextCheckinDate < new Date() && nextCheckinReady}
-            />
-          )
-        }}
-      />
+        {/* Main treatment info & check-in screen */}
+        <Tab.Screen
+          name="Home"
+          component={TreatmentScreen}
+          options={{
+            tabBarLabel: 'Home',
+            // eslint-disable-next-line react/display-name
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon
+                focused={focused}
+                color={color}
+                name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'}
+                badge={nextCheckinDate < new Date() && nextCheckinReady}
+              />
+            )
+          }}
+        />
 
-      {/* Support & FAQ screen */}
-      <Tab.Screen
-        name="Support"
-        component={SupportChatScreen}
-        options={{
-          tabBarLabel: 'Support',
-          // eslint-disable-next-line react/display-name
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              focused={focused}
-              color={color}
-              name={
-                Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatbubbles'
-              }
-              badge={state.userData?.livechatUnreadMsg}
-            />
-          )
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          tabBarLabel: 'Settings',
-          // eslint-disable-next-line react/display-name
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              focused={focused}
-              color={color}
-              name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
-            />
-          )
-        }}
-      />
-    </Tab.Navigator>
+        {/* Support & FAQ screen */}
+        <Tab.Screen
+          name="Support"
+          component={SupportChatScreen}
+          options={{
+            tabBarLabel: 'Support',
+            // eslint-disable-next-line react/display-name
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon
+                focused={focused}
+                color={color}
+                name={
+                  Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatbubbles'
+                }
+                badge={state.userData?.livechatUnreadMsg}
+              />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            tabBarLabel: 'Settings',
+            // eslint-disable-next-line react/display-name
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon
+                focused={focused}
+                color={color}
+                name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
+              />
+            )
+          }}
+        />
+      </Tab.Navigator>
+    </BasicContainer>
   );
 }
 

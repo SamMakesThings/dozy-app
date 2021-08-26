@@ -5,6 +5,7 @@ import * as TreatmentScreens from '../screens/RLXScreens';
 import * as SRTTitrationScreens from '../screens/SRTTitrationScreens';
 import HeaderProgressBar from '../components/HeaderProgressBar';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
+import BasicContainer from './layout/BasicContainer';
 
 // Init and define the authentication flow for diary entry
 const RLXStack = createStackNavigator();
@@ -26,65 +27,67 @@ const Screens = { ...TreatmentScreens, ...SRTTitrationScreens };
 // Create a stack screen for each component defined in DiaryEntryScreens
 export default function RLXNavigator() {
   return (
-    <RLXStack.Navigator
-      initialRouteName="Welcome"
-      screenOptions={{
-        headerShown: true,
-        animationEnabled: true
-      }}
-    >
-      {Object.keys(Screens).map((screen) => {
-        return (
-          <RLXStack.Screen
-            key={screen}
-            name={screen}
-            component={Screens[screen]}
-            options={() => ({
-              title: screen,
-              // Use a custom header component with a progressbar
-              // eslint-disable-next-line react/display-name
-              header: ({ scene, navigation }) => {
-                return (
-                  <HeaderProgressBar
-                    progressBarPercent={
-                      scene.route.params !== undefined
-                        ? scene.route.params.progressBarPercent
-                        : null
-                    }
-                    navigation={navigation}
-                    backButtonDisabled
-                  />
-                );
-              },
-              headerStyle: {
-                height: 300
-              },
-              animationEnabled: true,
-              headerTransparent: true,
-              transitionSpec: {
-                open: animConfig,
-                close: animConfig
-              }
-            })}
-          />
-        );
-      })}
-      <RLXStack.Screen
-        name="TreatmentReview"
-        component={TreatmentReviewScreen}
-        options={() => ({
+    <BasicContainer>
+      <RLXStack.Navigator
+        initialRouteName="Welcome"
+        screenOptions={{
           headerShown: true,
-          // eslint-disable-next-line react/display-name
-          header: ({ navigation }) => {
-            return <HeaderProgressBar navigation={navigation} />;
-          },
-          headerStyle: {
-            height: 300
-          },
-          animationEnabled: true,
-          headerTransparent: true
+          animationEnabled: true
+        }}
+      >
+        {Object.keys(Screens).map((screen) => {
+          return (
+            <RLXStack.Screen
+              key={screen}
+              name={screen}
+              component={Screens[screen]}
+              options={() => ({
+                title: screen,
+                // Use a custom header component with a progressbar
+                // eslint-disable-next-line react/display-name
+                header: ({ scene, navigation }) => {
+                  return (
+                    <HeaderProgressBar
+                      progressBarPercent={
+                        scene.route.params !== undefined
+                          ? scene.route.params.progressBarPercent
+                          : null
+                      }
+                      navigation={navigation}
+                      backButtonDisabled
+                    />
+                  );
+                },
+                headerStyle: {
+                  height: 300
+                },
+                animationEnabled: true,
+                headerTransparent: true,
+                transitionSpec: {
+                  open: animConfig,
+                  close: animConfig
+                }
+              })}
+            />
+          );
         })}
-      />
-    </RLXStack.Navigator>
+        <RLXStack.Screen
+          name="TreatmentReview"
+          component={TreatmentReviewScreen}
+          options={() => ({
+            headerShown: true,
+            // eslint-disable-next-line react/display-name
+            header: ({ navigation }) => {
+              return <HeaderProgressBar navigation={navigation} />;
+            },
+            headerStyle: {
+              height: 300
+            },
+            animationEnabled: true,
+            headerTransparent: true
+          })}
+        />
+      </RLXStack.Navigator>
+    </BasicContainer>
   );
 }
