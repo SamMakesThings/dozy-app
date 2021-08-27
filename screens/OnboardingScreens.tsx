@@ -580,11 +580,11 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
         <>
           <Text style={styles.BoldLabelText}>Hold on there{'\n'}</Text>
           <Text style={{ lineHeight: scale(18) }}>
-            For Dozy to work best, it&apos;s recommended to stop taking
-            sleeping pills before started. DON&apos;T DO THIS ON YOUR OWN, as
-            stopping use can have withdrawal effects. Talk with your physician
-            to plan tapering it off. Once you&apos;ve done that, we can get
-            started with fixing your insomnia permanently.
+            For Dozy to work best, it&apos;s recommended to stop taking sleeping
+            pills before started. DON&apos;T DO THIS ON YOUR OWN, as stopping
+            use can have withdrawal effects. Talk with your physician to plan
+            tapering it off. Once you&apos;ve done that, we can get started with
+            fixing your insomnia permanently.
           </Text>
         </>
       }
@@ -639,7 +639,7 @@ export const SafetySnoring = ({ navigation }: Props) => {
         { label: 'Yes', value: true, solidColor: true },
         { label: 'No', value: false, solidColor: true }
       ]}
-      questionLabel="Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apnoeas)?"
+      questionLabel="Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apneas)?"
     />
   );
 };
