@@ -18,11 +18,8 @@ function DiaryScreen() {
   const theme = dozy_theme;
   const { dispatch, state } = React.useContext(AuthContext);
   const allSleepLogs = state.sleepLogs;
-  const [streakLength, setStreakLength] = React.useState(0);
 
   const route = useRoute();
-
-  // console.log('current route index:', route.state.index)
 
   // Set date value from selected month
   const selectedDate = new Date();
@@ -34,10 +31,10 @@ function DiaryScreen() {
     year: 'numeric'
   });
 
-  React.useEffect(() => {
-    const streakLengthValue = getLogStreakLength(allSleepLogs);
-    setStreakLength(streakLengthValue);
-  }, [route]);
+  const streakLength = React.useMemo(() => getLogStreakLength(allSleepLogs), [
+    allSleepLogs,
+    route
+  ]);
   return (
     <ScreenContainer
       hasSafeArea={true}

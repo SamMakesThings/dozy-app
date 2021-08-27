@@ -1,19 +1,13 @@
+import moment from 'moment';
 import { SleepLog } from '../types/custom';
-import { subDays } from 'date-fns';
 
 // Helper function. Return true if date2 is the day before date1 (or same day)
 export function isPreviousDay(date: Date, previousDay: Date) {
-  // --------------old code------------------
-  // Earliest candidate is midnight of 1 day ago
-  // const midnight = subDays(date, 1);
-  // midnight.setHours(0, 0, 0, 0);
-  // return midnight <= date2 && date2 <= date1;
-  // return date.getDate()
-  // --------------------------------------------------------------------------------
-  return date.getDate() - 1 === previousDay.getDate();
+  return moment(date).subtract(1, 'days').isSame(previousDay, 'date');
 }
 const isMoreYesterday = (date: Date) => {
-  return date.getDate() < new Date().getDate() - 1;
+  const yesterday = moment(new Date()).subtract(2, 'days');
+  return moment(date).isBefore(yesterday);
 };
 
 export function getLogStreakLength(sleepLogs: SleepLog[]) {
