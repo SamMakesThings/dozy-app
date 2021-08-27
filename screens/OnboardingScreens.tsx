@@ -581,10 +581,10 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
           <Text style={styles.BoldLabelText}>Hold on there{'\n'}</Text>
           <Text style={{ lineHeight: scale(18) }}>
             For Dozy to work best, it&apos;s recommended to stop taking sleeping
-            pills before started. DON&apos;T DO THIS ON YOUR OWN, as stopping
+            pills before starting the program. DON&apos;T DO THIS ON YOUR OWN, as stopping
             use can have withdrawal effects. Talk with your physician to plan
             tapering it off. Once you&apos;ve done that, we can get started with
-            fixing your insomnia permanently.
+            getting you to sleep without pills.
           </Text>
         </>
       }
