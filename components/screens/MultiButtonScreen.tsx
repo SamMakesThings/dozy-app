@@ -11,7 +11,7 @@ interface Props {
   buttonValues: Array<{
     label: string;
     value: string | number | boolean;
-    solidColor: boolean;
+    solidColor?: boolean;
   }>;
   onQuestionSubmit: Function;
   theme: Theme;
