@@ -133,8 +133,23 @@ export default function AppNavigator() {
     return subscriber;
   }, []);
 
+  const DozyNavTheme = {
+    dark: true,
+    colors: {
+      primary: 'rgb(10, 132, 255)',
+      background: 'rgba(35, 43, 63, 1)',
+      card: 'rgb(18, 18, 18)',
+      text: 'rgb(229, 229, 231)',
+      border: 'rgb(39, 39, 41)'
+    }
+  };
+
   return (
-    <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
+    <NavigationContainer
+      ref={navigationRef}
+      onStateChange={onStateChange}
+      theme={DozyNavTheme}
+    >
       <View style={styles.container}>
         <InitialAuthNavigator
           userId={state.userId}

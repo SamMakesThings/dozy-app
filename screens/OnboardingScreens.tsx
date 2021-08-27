@@ -114,7 +114,7 @@ export const Overview = ({ navigation }: Props) => {
           progressBarPercent: null
         });
       }}
-      textLabel="We use a proven therapy treatment to get you sleeping again. It's drug-free, takes from 4-8 weeks, and the benefits are long-lasting."
+      textLabel="We use proven therapeutic techniques to get you sleeping again. It's drug-free, takes from 4-8 weeks, and the benefits are long-lasting."
       buttonLabel="Next"
     />
   );
@@ -580,11 +580,11 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
         <>
           <Text style={styles.BoldLabelText}>Hold on there{'\n'}</Text>
           <Text style={{ lineHeight: scale(18) }}>
-            For Dozy to work best, it&apos; strongly recommended to stop taking
-            sleeping pills before treatment. DON&apos;T DO THIS ON YOUR OWN, as
-            stopping use can have withdrawal effects. Talk with your physician
-            to plan tapering it off. Once you&apos;ve done that, we can get
-            started with fixing your insomnia permanently.
+            For Dozy to work best, it&apos;s recommended to stop taking sleeping
+            pills before started. DON&apos;T DO THIS ON YOUR OWN, as stopping
+            use can have withdrawal effects. Talk with your physician to plan
+            tapering it off. Once you&apos;ve done that, we can get started with
+            fixing your insomnia permanently.
           </Text>
         </>
       }
@@ -856,7 +856,7 @@ export const DiaryIntro = ({ navigation }: Props) => {
           progressBarPercent: 0.2
         });
       }}
-      textLabel="Almost there! During treatment, we’ll be tracking your sleep with a sleep diary. It’s critical that you fill this out each morning."
+      textLabel="Almost there! During the program, we’ll be tracking your sleep with a sleep diary. It’s critical that you fill this out each morning."
       buttonLabel="Got it - let’s make it easy to remember"
     />
   );
@@ -968,7 +968,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
         }
       }}
       questionLabel="When would you like to schedule your first weekly check-in?"
-      questionSubtitle="Check-ins take 5-10 minutes and introduce you to new treatment techniques based on your sleep patterns."
+      questionSubtitle="Check-ins take 5-10 minutes and introduce you to new sleep improvement techniques based on your sleep patterns."
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"
     />

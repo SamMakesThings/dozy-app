@@ -71,7 +71,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.07
         });
       }}
-      textLabel="Welcome back! This week we'll help address some anxieties and beliefs that make sleep harder. But first, let's review your sleep and how treatment's been going for you so far."
+      textLabel="Welcome back! This week we'll help address some anxieties and beliefs that make sleep harder. But first, let's review your sleep and how Dozy has been going for you so far."
     />
   );
 };
@@ -92,7 +92,7 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.32
         });
       }}
-      titleLabel="This week's treatment: Addressing Dysfunctional Beliefs & Attitudes about Sleep (DBAS)"
+      titleLabel="This week: Addressing Dysfunctional Beliefs & Attitudes about Sleep (DBAS)"
       textLabel="We're going to get an idea of how you currently think about sleep. To get started, we'll ask you 16 questions. Rate how much you personally agree or disagree with each statement."
       buttonLabel="Next"
       flexibleLayout
@@ -559,7 +559,7 @@ export const COG1Review: React.FC<Props> = ({ navigation }) => {
         }
       }}
       titleLabel="So, here's the plan this week:"
-      textLabel={`Message us (in the Support tab) and we'll talk 1:1 re: ${COG1State.highestAvgCategoryLabel}. Stick to your target sleep schedule, and continue any other techniques you've learned. Can you recommit to following the treatment plan this week?`}
+      textLabel={`Message us (in the Support tab) and we'll talk 1:1 re: ${COG1State.highestAvgCategoryLabel}. Stick to your target sleep schedule, and continue any other techniques you've learned. Can you recommit to following the improvement plan this week?`}
       buttonLabel="Ok, I can do it this week"
       bottomGreyButtonLabel="Wait, I have questions"
       flexibleLayout
@@ -602,7 +602,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         }
       }}
       questionLabel="Last step: When would you like your next weekly check-in?"
-      questionSubtitle="Check-ins take 5-10 minutes and adjust treatments based on your sleep patterns. A new technique is usually introduced weekly."
+      questionSubtitle="Check-ins take 5-10 minutes and adjust care based on your sleep patterns. A new technique is usually introduced weekly."
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"
     />

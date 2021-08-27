@@ -56,7 +56,7 @@ function TreatmentPlanScreen({
                   ...styles.Text_CardTitle
                 }}
               >
-                Your treatment plan
+                Your care plan
               </Text>
             </View>
           </View>

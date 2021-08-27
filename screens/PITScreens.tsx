@@ -67,7 +67,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.09
         });
       }}
-      textLabel="Welcome back! This week, we’ll review your sleep data, update your treatment plan, and get started with a technique to make falling asleep easier - Paradoxical Intention Therapy (PIT)."
+      textLabel="Welcome back! This week, we’ll review your sleep data, update your care plan, and get started with a technique to make falling asleep easier - Paradoxical Intention Therapy (PIT)."
     />
   );
 };
@@ -86,7 +86,7 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.39
         });
       }}
-      titleLabel="This week's treatment: Paradoxical Intention Therapy"
+      titleLabel="This week: Paradoxical Intention Therapy"
       textLabel={
         "Based on your sleep data, the next step is to reduce the time it takes to fall asleep. To get started, we'll ask you seven related questions. Rate how true each statement has been for you in the past week."
       }
@@ -397,7 +397,7 @@ export const PITReview: React.FC<Props> = ({ navigation }) => {
         }
       }}
       titleLabel="So, to review:"
-      textLabel="In addition to your target sleep schedule and bedtime rules, start using PIT by not trying to fall asleep and instead passively trying to keep your eyes open. You can always review this information on your Treatments page."
+      textLabel="In addition to your target sleep schedule and bedtime rules, start using PIT by not trying to fall asleep and instead passively trying to keep your eyes open. You can always review this information on your home page."
       buttonLabel="Ok, I can do it this week"
       bottomGreyButtonLabel="Wait, I have questions"
       flexibleLayout
@@ -487,7 +487,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         }
       }}
       questionLabel="Last step: When would you like your next weekly check-in?"
-      questionSubtitle="Check-ins take 5-10 minutes and adjust treatments based on your sleep patterns. A new technique is usually introduced weekly."
+      questionSubtitle="Check-ins take 5-10 minutes and adjust care based on your sleep patterns. A new technique is usually introduced weekly."
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"
     />
