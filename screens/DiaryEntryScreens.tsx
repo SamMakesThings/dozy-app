@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import { Platform } from 'react-native';
 import { DatePicker } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import moment from 'moment';
 import NumInputScreen from '../components/screens/NumInputScreen';
 import TextInputScreen from '../components/screens/TextInputScreen';
@@ -66,6 +67,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
   // If there is a sleep log recorded, use the most recent
   // bedtime value as a default.
   // Also use hook to set globalState value for the file
+  const safeInsets = useSafeAreaInsets();
   globalState = React.useContext(AuthContext).state || globalState;
   let defaultDate = moment().hour(22).minute(0).toDate();
   if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
@@ -137,7 +139,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
       <DatePicker
         style={{
           position: 'absolute',
-          marginTop: scale(Platform.OS === 'ios' ? 50 : 29),
+          marginTop: (Platform.OS === 'ios' ? safeInsets.top : 0 ) + scale(29),
           alignSelf: 'center',
           opacity: 0.35
         }}
