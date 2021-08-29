@@ -53,9 +53,6 @@ export default function SCTSRTNavigator() {
                   />
                 );
               },
-              headerStyle: {
-                height: 300
-              },
               animationEnabled: true,
               headerTransparent: true,
               transitionSpec: {
@@ -74,9 +71,6 @@ export default function SCTSRTNavigator() {
           // eslint-disable-next-line react/display-name
           header: ({ navigation }) => {
             return <HeaderProgressBar navigation={navigation} />;
-          },
-          headerStyle: {
-            height: 300
           },
           animationEnabled: true,
           headerTransparent: true

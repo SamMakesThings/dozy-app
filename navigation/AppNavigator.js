@@ -59,9 +59,6 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
               header: ({ navigation }) => {
                 return <HeaderProgressBar navigation={navigation} />;
               },
-              headerStyle: {
-                height: 300
-              },
               animationEnabled: true,
               headerTransparent: true
             })}
@@ -74,9 +71,6 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
               // eslint-disable-next-line react/display-name
               header: ({ navigation }) => {
                 return <HeaderProgressBar navigation={navigation} />;
-              },
-              headerStyle: {
-                height: 300
               },
               animationEnabled: true,
               headerTransparent: true
@@ -140,12 +134,16 @@ export default function AppNavigator() {
       background: 'rgba(35, 43, 63, 1)',
       card: 'rgb(18, 18, 18)',
       text: 'rgb(229, 229, 231)',
-      border: 'rgb(39, 39, 41)',
-    },
+      border: 'rgb(39, 39, 41)'
+    }
   };
 
   return (
-    <NavigationContainer ref={navigationRef} onStateChange={onStateChange} theme={DozyNavTheme}>
+    <NavigationContainer
+      ref={navigationRef}
+      onStateChange={onStateChange}
+      theme={DozyNavTheme}
+    >
       <View style={styles.container}>
         <InitialAuthNavigator
           userId={state.userId}
