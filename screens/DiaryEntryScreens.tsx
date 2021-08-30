@@ -98,6 +98,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
       console.error("Attempted to edit sleep log that doesn't exist!");
     }
   }
+  const prevBedtime = baseSleepLog?.bedTime?.toDate();
 
   // Create state to display selected log date
   let [selectedDate, setSelectedDate] = React.useState(initialDateVal);
@@ -107,12 +108,13 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
       <DateTimePickerScreen
         theme={theme}
         defaultValue={
-          baseSleepLog?.bedTime
-            ? moment(
-                `${moment(logState.wakeTime).format('YYYY-MM-DD')}T${moment(
-                  baseSleepLog.bedTime.toDate()
-                ).format('HH:mm')}`
-              ).toDate()
+          // Sets the bedtime's date as the wake time's date
+          prevBedtime
+            ? moment(logState.wakeTime)
+                .hours(prevBedtime.getHours())
+                .minutes(prevBedtime.getMinutes())
+                .startOf('minute')
+                .toDate()
             : defaultDate
         }
         onQuestionSubmit={(value: Date) => {
