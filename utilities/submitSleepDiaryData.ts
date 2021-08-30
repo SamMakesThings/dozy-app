@@ -67,6 +67,12 @@ export default async function submitSleepDiaryData(logState: LogState) {
     .catch((error) => console.error('Error marking user as active:', error));
 }
 
+/**
+ * Normalize log state by adjusting existing fields and adding new fields.
+ * @param {Object} logState - The log state inputted on the diary entry screens
+ * @param {boolean} isChangeTimezone - When true, change the time to UTC time but the coverted time will have the same hours and minutes as the local time
+ * @returns {Object} - SleepLog
+ */
 export function normalizeSleepLog(
   logState: any,
   isChangeTimezone = false
