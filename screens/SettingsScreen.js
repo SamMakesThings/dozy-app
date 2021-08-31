@@ -11,9 +11,9 @@ import {
 } from '@draftbit/ui';
 import firestore from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
+import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../context/AuthContext';
-import planTreatmentModules from '../utilities/planTreatmentModules';
 import { Analytics } from '../utilities/analytics.service';
 import {
   isNotificationEnabled,
@@ -114,16 +114,19 @@ function Root() {
       scrollable={false}
       style={styles.Root_nd}
     >
-      <TouchableOpacity onPress={() => {
-        if (!state.profileData.name) {
-          let newProfileData = state.profileData;
-          newProfileData.name = state.userData.userInfo?.displayName || "Temp Name"
-          SecureStore.setItemAsync(
-            'profileData',
-            JSON.stringify(newProfileData));
-        }
-      }}
-      disabled={state.profileData.name || Platform.OS === 'android'}
+      <TouchableOpacity
+        onPress={() => {
+          if (!state.profileData.name) {
+            let newProfileData = state.profileData;
+            newProfileData.name =
+              state.userData.userInfo?.displayName || 'Temp Name';
+            SecureStore.setItemAsync(
+              'profileData',
+              JSON.stringify(newProfileData)
+            );
+          }
+        }}
+        disabled={state.profileData.name || Platform.OS === 'android'}
       >
         <Container
           style={styles.Container_nz}
@@ -145,7 +148,7 @@ function Root() {
               }
             ]}
           >
-            {state.profileData.name || "Tap here to fix chat"}
+            {state.profileData.name || 'Tap here to fix chat'}
           </Text>
           <Text
             style={[
@@ -288,7 +291,12 @@ const styles = StyleSheet.create({
   },
   Container_nz: {
     alignItems: 'center',
-    marginTop: 20
+    marginTop: scale(
+      Platform.select({
+        ios: dozy_theme.spacing.small,
+        android: dozy_theme.spacing.medium
+      })
+    )
   },
   DatePicker_nl: {
     minWidth: 100,
