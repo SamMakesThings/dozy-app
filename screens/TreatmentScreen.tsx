@@ -61,7 +61,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
       parseFloat((modulesCompleted / treatmentPlan.length).toFixed(2)) * 1; // Parsefloat added to make TS happy
 
     // Strip time from next checkin datetime to determine whether to show checkin button
-    let nextCheckinDate = state.userData.currentTreatments.nextCheckinDatetime.toDate();
+    let nextCheckinDate = state.userData?.currentTreatments.nextCheckinDatetime.toDate();
     nextCheckinDate.setHours(0);
 
     return (

@@ -62,7 +62,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.08
         });
       }}
-      textLabel="Welcome back! This week we'll address some of your sleep hygiene-related issues - things like light, temperature, and partners/pets. But first, let's review your sleep and how treatment's been going for you so far."
+      textLabel="Welcome back! This week we'll address some of your sleep hygiene-related issues - things like light, temperature, and partners/pets. But first, let's review your sleep and how Dozy has been going for you so far."
     />
   );
 };
@@ -114,7 +114,7 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.4
         });
       }}
-      titleLabel="This week's treatment: Sleep hygiene improvements"
+      titleLabel="This week: Sleep hygiene improvements"
       textLabel={`Today we'll be addressing your sleep problems caused by ${tagsString}.`}
       buttonLabel="Next"
       flexibleLayout
@@ -154,7 +154,7 @@ export const HYGBenefits: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.48
         });
       }}
-      textLabel="Fortunately, making strategic sleep hygiene improvements can improve sleep quality, help prevent relapse, and boost the efficacy of other treatments at the same time!"
+      textLabel="Fortunately, making strategic sleep hygiene improvements can improve sleep quality, help prevent relapse, and boost the efficacy of other techniques at the same time!"
       buttonLabel="Got it"
       flexibleLayout
     >
@@ -450,7 +450,7 @@ export const HYGReview: React.FC<Props> = ({ navigation }) => {
         }
       }}
       titleLabel="So, here's the plan this week:"
-      textLabel="Message us (in the Support tab) and we'll give you 1:1 advice on improving your sleep hygiene. Stick to your target sleep schedule, and continue any other techniques you've learned. Can you recommit to following the treatment plan this week?"
+      textLabel="Message us (in the Support tab) and we'll give you 1:1 advice on improving your sleep hygiene. Stick to your target sleep schedule, and continue any other techniques you've learned. Can you recommit to following the care plan this week?"
       buttonLabel="Ok, I can do it this week"
       bottomGreyButtonLabel="Wait, I have questions"
       flexibleLayout
@@ -493,7 +493,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         }
       }}
       questionLabel="Last step: When would you like your next weekly check-in?"
-      questionSubtitle="Check-ins take 5-10 minutes and adjust treatments based on your sleep patterns. A new technique is usually introduced weekly."
+      questionSubtitle="Check-ins take 5-10 minutes and adjust care based on your sleep patterns. A new technique is usually introduced weekly."
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"
     />

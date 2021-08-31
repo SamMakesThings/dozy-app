@@ -24,7 +24,7 @@ const theme = dozy_theme;
 interface Props {
   navigation: Navigation;
   route: {
-    params: {
+    params?: {
       logId?: string;
     };
   };
@@ -77,7 +77,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
 
   let initialDateVal = new Date(); // Declare variable for the initial selectedState value
   const baseSleepLog: SleepLog | undefined = globalState.sleepLogs.find(
-    (sleepLog) => sleepLog.logId === route.params.logId
+    (sleepLog) => sleepLog.logId === route.params?.logId
   );
 
   // If editing existing sleep log, set defaults from that. Otherwise, use normal defaults
@@ -98,6 +98,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
       console.error("Attempted to edit sleep log that doesn't exist!");
     }
   }
+  const prevBedtime = baseSleepLog?.bedTime?.toDate();
 
   // Create state to display selected log date
   let [selectedDate, setSelectedDate] = React.useState(initialDateVal);
@@ -106,7 +107,16 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
     <>
       <DateTimePickerScreen
         theme={theme}
-        defaultValue={baseSleepLog?.bedTime?.toDate() || defaultDate}
+        defaultValue={
+          // Sets the bedtime's date as the wake time's date
+          prevBedtime
+            ? moment(logState.wakeTime)
+                .hours(prevBedtime.getHours())
+                .minutes(prevBedtime.getMinutes())
+                .startOf('minute')
+                .toDate()
+            : defaultDate
+        }
         onQuestionSubmit={(value: Date) => {
           logState.bedTime = value;
           logState.logDate = selectedDate; // Make sure this is set even if user doesn't change it

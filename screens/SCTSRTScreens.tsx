@@ -99,7 +99,7 @@ export const Welcome = ({ navigation }: Props) => {
           progressBarPercent: 0.03
         });
       }}
-      textLabel="Welcome back! This’ll take 10-15 minutes. We’ll review your sleep over the last week, update your treatment plan, and get you started on your new treatment."
+      textLabel="Welcome back! This’ll take 10-15 minutes. We’ll review your sleep over the last week, update your care plan, and get you started on your new technique."
     />
   );
 };
@@ -276,7 +276,7 @@ export const SleepMaintenance = ({ navigation }: Props) => {
         nightMinsAwakeAvg +
         " minutes on average. This number will also improve with the techniques we're introducing today."
       }
-      buttonLabel="This week's treatment"
+      buttonLabel="This week's plan"
     >
       <VictoryChart
         width={chartStyles.chart.width}
@@ -416,7 +416,7 @@ export const FragmentedSleep = ({ navigation }: Props) => {
         });
       }}
       titleLabel="Right now, your sleep is pretty fragmented."
-      textLabel="That is to say, most of the time you spend in bed isn't spent sleeping - the actual sleep time is scattered in chunks in the night. Our first step in treatment is to fix that."
+      textLabel="That is to say, most of the time you spend in bed isn't spent sleeping - the actual sleep time is scattered in chunks in the night. Our first step in improvement is to fix that."
       flexibleLayout
       buttonLabel="How do I fix it?"
     >
@@ -645,8 +645,8 @@ export const SRTCalibrationIntro = ({ navigation }: Props) => {
           progressBarPercent: 0.7
         });
       }}
-      titleLabel="Treatment calibration"
-      textLabel="Ok - now we'll customize the treatment for you. Let’s set your bedtime and out-of-bed time targets."
+      titleLabel="Plan calibration"
+      textLabel="Ok - now we'll customize the care plan for you. Let’s set your bedtime and out-of-bed time targets."
       buttonLabel="Makes sense"
     >
       <YellowRuler width={imgSize} height={imgSize} />
@@ -677,7 +677,7 @@ export const WakeTimeSetting = ({ navigation }: Props) => {
             };
       }}
       questionLabel="What time do you want to get up every morning this week?"
-      questionSubtitle="Pick a consistent time and try to stick to it - our treatments won't be as effective if you change your hours on the weekend."
+      questionSubtitle="Pick a consistent time and try to stick to it - our app won't be as effective if you change your hours on the weekend."
       mode="time"
     />
   );
@@ -843,7 +843,7 @@ export const DeprivationWarning = ({ navigation }: Props) => {
           navigation.navigate('AddressingConcerns');
         }
       }}
-      textLabel="Note that this treatment will cause a temporary reduction in sleep before it starts kicking in. You’ll get less sleep than you normally would for 1-3 weeks, in exchange for permanent improvement. Are you ready to commit to following these rules this week?"
+      textLabel="Note that this technique will cause a temporary reduction in sleep before it starts kicking in. You’ll get less sleep than you normally would for 1-3 weeks, in exchange for permanent improvement. Are you ready to commit to following these rules this week?"
       buttonLabel="Yes! I will do it this week"
       bottomGreyButtonLabel="Wait, I have some concerns"
       flexibleLayout
@@ -871,7 +871,7 @@ export const AddressingConcerns = ({ navigation }: Props) => {
         }
       }}
       titleLabel="What's up?"
-      textLabel="We can answer any questions you may have, or if this week isn’t ideal (e.g. important test, presentation, etc), then we can postpone starting treatment to next week."
+      textLabel="We can answer any questions you may have, or if this week isn’t ideal (e.g. important test, presentation, etc), then we can postpone starting to next week."
       buttonLabel="I have questions"
       bottomGreyButtonLabel="Postpone, not a good time"
       bottomBackButtonLabel="I'm good, let's get started"
@@ -911,7 +911,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
         }
       }}
       questionLabel="Last step: When would you like your next weekly check-in?"
-      questionSubtitle="Check-ins take 5-10 minutes and adjust treatments based on your sleep patterns. A new technique is usually introduced weekly."
+      questionSubtitle="Check-ins take 5-10 minutes and adjust care based on your sleep patterns. A new technique is usually introduced weekly."
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"
     />
