@@ -1,6 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { withTheme, ScreenContainer } from '@draftbit/ui';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Platform
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { withTheme } from '@draftbit/ui';
 import { Entypo } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -8,6 +15,7 @@ import DiaryEntriesScreen from './DiaryEntriesScreen';
 import { DiaryStatsScreen } from './DiaryStatsScreen';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../context/AuthContext';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 // Create tab nav for switching between entries and stats
 const Tab = createMaterialTopTabNavigator();
@@ -23,15 +31,12 @@ function DiaryScreen() {
 
   const currentMonthString = selectedDate.toLocaleDateString('en-US', {
     month: 'long',
-    year: 'numeric',
+    year: 'numeric'
   });
 
   return (
-    <ScreenContainer
-      hasSafeArea={true}
-      scrollable={false}
-      style={styles.ScreenContainer}
-    >
+    <SafeAreaView style={styles.ScreenContainer} edges={['top']}>
+      <FocusAwareStatusBar backgroundColor={dozy_theme.colors.medium} />
       <View style={styles.View_MonthSelectContainer}>
         <TouchableOpacity
           onPress={() =>
@@ -66,25 +71,25 @@ function DiaryScreen() {
         tabBarOptions={{
           activeTintColor: theme.colors.secondary,
           style: {
-            backgroundColor: theme.colors.medium,
+            backgroundColor: theme.colors.medium
           },
           indicatorStyle: {
-            backgroundColor: theme.colors.secondary,
+            backgroundColor: theme.colors.secondary
           },
           labelStyle: {
-            fontSize: scale(13),
+            fontSize: scale(13)
           },
           tabStyle: {
             paddingBottom: scale(12),
-            paddingTop: scale(10),
-          },
+            paddingTop: scale(10)
+          }
         }}
         style={{ backgroundColor: theme.colors.primary }}
       >
         <Tab.Screen name="Entries" component={DiaryEntriesScreen} />
         <Tab.Screen name="Stats" component={DiaryStatsScreen} />
       </Tab.Navigator>
-    </ScreenContainer>
+    </SafeAreaView>
   );
 }
 
@@ -93,19 +98,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    padding: scale(17),
-    paddingTop: scale(24),
-    paddingBottom: scale(5),
+    paddingHorizontal: scale(17),
+    paddingTop: scale(
+      Platform.select({
+        ios: dozy_theme.spacing.small,
+        android: dozy_theme.spacing.medium
+      })
+    ),
+    paddingBottom: scale(5)
   },
   ScreenContainer: {
-    backgroundColor: dozy_theme.colors.medium,
+    flex: 1,
+    backgroundColor: dozy_theme.colors.medium
   },
   Text_MonthSelect: {
-    color: dozy_theme.colors.secondary,
+    color: dozy_theme.colors.secondary
   },
   Touchable_Chevron: {
-    padding: scale(5),
-  },
+    padding: scale(5)
+  }
 });
 
 export default withTheme(DiaryScreen);
