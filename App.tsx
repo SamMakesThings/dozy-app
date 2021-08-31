@@ -76,7 +76,10 @@ export default function App() {
     return (
       <AuthProvider>
         <ThemeProvider theme={dozy_theme}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="light-content" />}
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor={dozy_theme.colors.background}
+          />
           <AppNavigator />
           {isCheckingUpdate && (
             <LoadingOverlay
