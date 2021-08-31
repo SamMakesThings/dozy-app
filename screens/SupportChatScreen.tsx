@@ -4,13 +4,13 @@ import {
   Text,
   View,
   ActivityIndicator,
-  SafeAreaView,
   FlatList,
   Image,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import firestore, {
   FirebaseFirestoreTypes
@@ -27,6 +27,7 @@ import { ChatTextInput } from '../components/ChatTextInput';
 import { Chat, Navigation } from '../types/custom';
 import { Analytics } from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   navigation
@@ -90,7 +91,8 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   // If state is available, show screen. Otherwise, show loading indicator.
   if (state.chats && state.userData?.currentTreatments) {
     return (
-      <SafeAreaView style={styles.SafeAreaView}>
+      <SafeAreaView style={styles.SafeAreaView} edges={['top']}>
+        <FocusAwareStatusBar backgroundColor={dozy_theme.colors.medium} />
         <View style={styles.Root}>
           <View style={styles.View_HeaderContainer}>
             <Image source={Images.SamProfile} style={styles.Img_Profile} />
@@ -141,7 +143,9 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
               onSend={(typedMsg: string) => {
                 if (!state.userId) throw new Error();
                 sendChatMessage(firestore(), state.userId, {
-                  sender: state.profileData.name || state.userData.userInfo?.displayName,
+                  sender:
+                    state.profileData.name ||
+                    state.userData.userInfo?.displayName,
                   message: typedMsg,
                   time: new Date(),
                   sentByUser: true
@@ -174,7 +178,12 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
 
 const styles = StyleSheet.create({
   Root: {
-    marginTop: scale(20),
+    marginTop: scale(
+      Platform.select({
+        ios: dozy_theme.spacing.medium,
+        android: dozy_theme.spacing.large
+      }) as number
+    ),
     flex: 1,
     backgroundColor: dozy_theme.colors.background
   },
