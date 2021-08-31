@@ -1,5 +1,9 @@
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import firestore, {
+  FirebaseFirestoreTypes
+} from '@react-native-firebase/firestore';
+import { omit } from 'lodash';
 import { SleepLog } from '../types/custom';
+import { decodeUTCTime } from '../utilities/time';
 
 async function fetchSleepLogs(
   db: FirebaseFirestoreTypes.Module,
@@ -29,8 +33,23 @@ async function fetchSleepLogs(
         res.forEach(function (
           doc: FirebaseFirestoreTypes.QueryDocumentSnapshot
         ) {
-          let docData = doc.data();
-          sleepLogs.push({ logId: doc.id, ...doc.data() });
+          const log: SleepLog = {
+            logId: doc.id,
+            ...(omit(doc.data(), 'id') as Omit<SleepLog, 'logId'>)
+          };
+          log.bedTime = firestore.Timestamp.fromDate(
+            decodeUTCTime(log.bedTime.toDate(), log.version)
+          );
+          log.fallAsleepTime = firestore.Timestamp.fromDate(
+            decodeUTCTime(log.fallAsleepTime.toDate(), log.version)
+          );
+          log.wakeTime = firestore.Timestamp.fromDate(
+            decodeUTCTime(log.wakeTime.toDate(), log.version)
+          );
+          log.upTime = firestore.Timestamp.fromDate(
+            decodeUTCTime(log.upTime.toDate(), log.version)
+          );
+          sleepLogs.push(log);
         });
         resolve(sleepLogs);
       })

@@ -3,6 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import refreshUserData from './refreshUserData';
 import { sub } from 'date-fns';
 import { ACTION } from './mainAppReducer';
+import { encodeLocalTime } from './time';
 
 export interface OnboardingState {
   pills: string;
@@ -146,6 +147,9 @@ export async function submitDiaryReminderAndCheckinData(
   // Also set a reminder for the next checkin
   const notificationsCollection = userDocRef.collection('notifications');
   let logReminderDocId: string | undefined = undefined;
+  const diaryReminderTimeDataAsUTC = encodeLocalTime(
+    diaryAndCheckinData.diaryReminderTime ?? new Date()
+  );
 
   try {
     const querySnapshot = await notificationsCollection
@@ -158,10 +162,9 @@ export async function submitDiaryReminderAndCheckinData(
       title: 'How did you sleep?',
       body: "Add last night's entry now",
       type: 'DAILY_LOG',
-      time: diaryAndCheckinData.diaryReminderTime
-        ? diaryAndCheckinData.diaryReminderTime
-        : new Date(),
-      enabled: diaryAndCheckinData.diaryReminderTime ? true : false
+      time: diaryReminderTimeDataAsUTC.value,
+      version: diaryReminderTimeDataAsUTC.version,
+      enabled: !!diaryAndCheckinData.diaryReminderTime
     };
     if (querySnapshot.docs.length) {
       logReminderDocId = querySnapshot.docs[0].id;
@@ -203,7 +206,8 @@ export async function submitDiaryReminderAndCheckinData(
         ? {
             sleepDiaryReminder: {
               diaryHabitTrigger: diaryAndCheckinData.diaryHabitTrigger,
-              diaryReminderTime: diaryAndCheckinData.diaryReminderTime
+              diaryReminderTime: diaryReminderTimeDataAsUTC.value,
+              version: diaryReminderTimeDataAsUTC.version
             },
             expoPushToken:
               diaryAndCheckinData.expoPushToken || 'No push token provided'

@@ -580,11 +580,11 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
         <>
           <Text style={styles.BoldLabelText}>Hold on there{'\n'}</Text>
           <Text style={{ lineHeight: scale(18) }}>
-            For Dozy to work best, it&apos;s recommended to stop taking
-            sleeping pills before started. DON&apos;T DO THIS ON YOUR OWN, as
-            stopping use can have withdrawal effects. Talk with your physician
-            to plan tapering it off. Once you&apos;ve done that, we can get
-            started with fixing your insomnia permanently.
+            For Dozy to work best, it&apos;s recommended to stop taking sleeping
+            pills before starting the program. DON&apos;T DO THIS ON YOUR OWN,
+            as stopping use can have withdrawal effects. Talk with your
+            physician to plan tapering it off. Once you&apos;ve done that, we
+            can get started with getting you to sleep without pills.
           </Text>
         </>
       }
@@ -943,7 +943,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
+      defaultValue={moment().add(1, 'weeks').toDate()}
       onQuestionSubmit={(value: Date) => {
         onboardingState.firstCheckinTime = value;
         navigation.navigate('SendFirstChat', { progressBarPercent: 0.8 });

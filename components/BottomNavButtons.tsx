@@ -31,11 +31,11 @@ const BottomNavButtons: React.FC<Props> = (props) => {
   const route = useRoute();
   const { state } = React.useContext(AuthContext);
   const userId = state.userId;
-  const db = firebase.firestore().collection('users').doc(userId);
 
   const submitUserProgress = () => {
     /* This Firebase write created crazy performance problems.
     // TODO: Find a performant way to do this.
+    const db = firebase.firestore().collection('users').doc(userId);
     db.update({
       currentPage: {
         name: route.name,

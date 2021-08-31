@@ -10,7 +10,6 @@ import {
   InteractionManager
 } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
-import '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ToggleTag from '../ToggleTag';

@@ -5,6 +5,7 @@ import { cloneDeep, pick } from 'lodash';
 
 import SleepConstants from '../constants/Sleep';
 import { SleepLog } from '../types/custom';
+import { encodeLocalTime } from './time';
 
 interface LogState {
   logId?: string;
@@ -39,7 +40,7 @@ export default async function submitSleepDiaryData(logState: LogState) {
           .collection('sleepLogs');
 
   // Prepare object for pushing to Firebase
-  const logDataForDoc = normalizeSleepLog(logState);
+  const logDataForDoc = normalizeSleepLog(logState, true);
 
   // If entry is an edit, update existing log document in Firebase
   // Otherwise, create a new document
@@ -66,7 +67,16 @@ export default async function submitSleepDiaryData(logState: LogState) {
     .catch((error) => console.error('Error marking user as active:', error));
 }
 
-export function normalizeSleepLog(logState: any): SleepLog {
+/**
+ * Normalize log state by adjusting existing fields and adding new fields.
+ * @param {Object} logState - The log state inputted on the diary entry screens
+ * @param {boolean} isChangeTimezone - When true, change the time to UTC time but the coverted time will have the same hours and minutes as the local time
+ * @returns {Object} - SleepLog
+ */
+export function normalizeSleepLog(
+  logState: any,
+  isChangeTimezone = false
+): SleepLog {
   const newLogState = cloneDeep(logState);
 
   // If bedtime/sleeptime are in the evening, change them to be the day before
@@ -129,6 +139,15 @@ export function normalizeSleepLog(logState: any): SleepLog {
     });
   }
 
+  // Convert to UTC but has the same YYYY-MM-DD HH:mm as the local time's
+  const bedTimeUTCData = encodeLocalTime(newLogState.bedTime);
+  const fallAsleepTime = moment(newLogState.bedTime)
+    .add(logState.minsToFallAsleep, 'minutes')
+    .toDate();
+  const fallAsleepTimeUTCData = encodeLocalTime(fallAsleepTime);
+  const wakeTimeUTCData = encodeLocalTime(newLogState.wakeTime);
+  const upTimeUTCData = encodeLocalTime(newLogState.upTime);
+
   // Prepare object for pushing to Firebase
   return {
     ...pick(newLogState, [
@@ -140,12 +159,19 @@ export function normalizeSleepLog(logState: any): SleepLog {
       'notes',
       'tags'
     ]),
-    bedTime: firestore.Timestamp.fromDate(newLogState.bedTime),
-    fallAsleepTime: firestore.Timestamp.fromDate(
-      new Date(logState.bedTime.getTime() + logState.minsToFallAsleep * 60000)
+    bedTime: firestore.Timestamp.fromDate(
+      isChangeTimezone ? bedTimeUTCData.value : newLogState.bedTime
     ),
-    wakeTime: firestore.Timestamp.fromDate(newLogState.wakeTime),
-    upTime: firestore.Timestamp.fromDate(newLogState.upTime),
+    fallAsleepTime: firestore.Timestamp.fromDate(
+      isChangeTimezone ? fallAsleepTimeUTCData.value : fallAsleepTime
+    ),
+    wakeTime: firestore.Timestamp.fromDate(
+      isChangeTimezone ? wakeTimeUTCData.value : newLogState.wakeTime
+    ),
+    upTime: firestore.Timestamp.fromDate(
+      isChangeTimezone ? upTimeUTCData.value : newLogState.upTime
+    ),
+    version: bedTimeUTCData.version,
     sleepEfficiency,
     sleepDuration,
     minsInBedTotal,

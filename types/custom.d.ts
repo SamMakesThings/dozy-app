@@ -30,6 +30,7 @@ export interface SleepLog {
   SCTNonSleepActivities?: string;
   notes: string;
   tags: string[];
+  version?: string;
 }
 
 export type Chat = {

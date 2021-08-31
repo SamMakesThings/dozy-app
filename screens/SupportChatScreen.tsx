@@ -141,7 +141,9 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
               onSend={(typedMsg: string) => {
                 if (!state.userId) throw new Error();
                 sendChatMessage(firestore(), state.userId, {
-                  sender: state.profileData.name || state.userData.userInfo?.displayName,
+                  sender:
+                    state.profileData.name ||
+                    state.userData.userInfo?.displayName,
                   message: typedMsg,
                   time: new Date(),
                   sentByUser: true

@@ -29,7 +29,7 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
   const openDeleteSleepLogAlert = () =>
     Alert.alert(
       'Delete sleep diary entry?',
-      'Are you sure you want to permanently delete this night\'s record?',
+      "Are you sure you want to permanently delete this night's record?",
       [
         {
           text: 'Cancel',
