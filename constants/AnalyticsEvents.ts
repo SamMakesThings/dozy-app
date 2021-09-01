@@ -48,7 +48,7 @@ export default {
   onboardingSafetyPills: 'onboarding safety pills', // Visits the safety pills page in the onboarding
   onboardingQuestionSafetyPills: 'onboarding q safety pills', // Selects an answer to "Are you currently taking any sleeping pills?" in the onboarding
   onboardingSafetySnoring: 'onboarding safety snoring', // Visits the safety snoring page in the onboarding
-  onboardingQuestionSafetySnoring: 'onboarding q safety snoring', // Selects an answer to "Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apnoeas)?" in the onboarding
+  onboardingQuestionSafetySnoring: 'onboarding q safety snoring', // Selects an answer to "Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apneas)?" in the onboarding
   onboardingSafetyIllnessWarning: 'onboarding safety illness warning', // Visits the safety illness warning page in the onboarding
   onboardingSafetyIllnessWarningFindHumanProvider:
     'onboarding safety illness warning find', // Presses the "Help me find a human provider" button in the onboarding

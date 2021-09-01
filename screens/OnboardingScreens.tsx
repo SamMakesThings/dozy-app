@@ -639,7 +639,7 @@ export const SafetySnoring = ({ navigation }: Props) => {
         { label: 'Yes', value: true, solidColor: true },
         { label: 'No', value: false, solidColor: true }
       ]}
-      questionLabel="Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apnoeas)?"
+      questionLabel="Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apneas)?"
     />
   );
 };
