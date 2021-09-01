@@ -10,6 +10,8 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.facebook.react.bridge.JSIModulePackage;
+import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 import com.facebook.soloader.SoLoader;
 import com.dozyhealth.dozy.generated.BasePackageList;
 
@@ -49,6 +51,11 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected String getJSMainModuleName() {
       return "index";
+    }
+
+    @Override
+    protected JSIModulePackage getJSIModulePackage() {
+      return new ReanimatedJSIModulePackage();
     }
 
     @Override
