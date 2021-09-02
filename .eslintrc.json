@@ -4,13 +4,12 @@
     "es6": true
   },
   "extends": [
+    "plugin:react/recommended",
+    "plugin:react-native/all",
+    "plugin:@typescript-eslint/recommended",
     "airbnb-base",
     "eslint:recommended",
-    "plugin:react/recommended",
-    "prettier",
-    "prettier/react",
-    "prettier/@typescript-eslint",
-    "plugin:@typescript-eslint/recommended"
+    "prettier"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -32,7 +31,7 @@
     "no-console": "off",
     "react/prop-types": 0
   },
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "plugins": [
     "react",
     "react-native",
