@@ -44,7 +44,7 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
   const [errorMsg, setErrorMsg] = React.useState('Error');
 
   // Function to update screen state when data changes
-  function checkDataValidity(val: Date) {
+  const checkDataValidity = (val: Date) => {
     // Use a passed-in function to validate input value.
     // If no function passed, all is valid
     // If valid, passed function should return true.
@@ -75,7 +75,11 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
     } else {
       console.error('Validation function did something unexpected');
     }
-  }
+  };
+
+  React.useEffect(() => {
+    checkDataValidity(selectedTime);
+  }, []);
 
   const { theme } = props;
   const displayErrorMsg =
