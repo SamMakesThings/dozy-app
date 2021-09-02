@@ -27,11 +27,13 @@ interface LogState {
   PITPractice: undefined | boolean;
 }
 
-export default async function submitSleepDiaryData(logState: LogState) {
+export default async function submitSleepDiaryData(
+  logState: LogState
+): Promise<void> {
   // Initialize relevant Firebase values
-  let userId = await SecureStore.getItemAsync('userId');
+  const userId = await SecureStore.getItemAsync('userId');
   // If userId is a string, set Firebase ref. If not, mark an error
-  let sleepLogsRef =
+  const sleepLogsRef =
     typeof userId === 'string'
       ? firestore().collection('users').doc(userId).collection('sleepLogs')
       : firestore()
@@ -58,7 +60,7 @@ export default async function submitSleepDiaryData(logState: LogState) {
   }
 
   // Make sure userStatus is "active" in Firebase
-  let userDocRef =
+  const userDocRef =
     typeof userId === 'string'
       ? firestore().collection('users').doc(userId)
       : firestore().collection('users').doc('ERRORDELETEME');
@@ -102,20 +104,20 @@ export function normalizeSleepLog(
   }
 
   // calculate total time in bed, time between waking & getting up, and time awake in bed
-  var minsInBedTotalMs =
+  const minsInBedTotalMs =
     newLogState.upTime.getTime() - newLogState.bedTime.getTime();
-  var minsInBedTotal = Math.floor(minsInBedTotalMs / 1000 / 60);
-  var minsInBedAfterWakingMs =
+  const minsInBedTotal = Math.floor(minsInBedTotalMs / 1000 / 60);
+  const minsInBedAfterWakingMs =
     newLogState.upTime.getTime() - newLogState.wakeTime.getTime();
-  var minsInBedAfterWaking = Math.floor(minsInBedAfterWakingMs / 1000 / 60);
-  var minsAwakeInBedTotal =
+  const minsInBedAfterWaking = Math.floor(minsInBedAfterWakingMs / 1000 / 60);
+  const minsAwakeInBedTotal =
     newLogState.nightMinsAwake +
     newLogState.minsToFallAsleep +
     minsInBedAfterWaking;
 
   // calculate sleep duration & sleep efficiency
-  var sleepDuration = minsInBedTotal - minsAwakeInBedTotal;
-  var sleepEfficiency = +(sleepDuration / minsInBedTotal).toFixed(2);
+  const sleepDuration = minsInBedTotal - minsAwakeInBedTotal;
+  const sleepEfficiency = +(sleepDuration / minsInBedTotal).toFixed(2);
 
   // Create an object, add any additional treatment module data
   // Currently added: SCT, RLX (PMR), PIT

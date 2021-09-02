@@ -30,7 +30,8 @@
     "no-console": "off",
     "react/prop-types": 0,
     "import/extensions": "off",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "@typescript-eslint/no-use-before-define": "off"
   },
   "parser": "@typescript-eslint/parser",
   "plugins": [
