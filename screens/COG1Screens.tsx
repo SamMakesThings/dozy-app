@@ -21,7 +21,7 @@ const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
 
 // Define an interface for HYG flow state (SHI score & next checkin info)
-let COG1State = {
+const COG1State = {
   nextCheckinTime: new Date(),
   DBAS1: 0,
   DBAS2: 0,
@@ -613,7 +613,7 @@ export const COG1End: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder object for next checkin
-  let reminderObject = {
+  const reminderObject = {
     expoPushToken: state.userData.reminders.expoPushToken,
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',

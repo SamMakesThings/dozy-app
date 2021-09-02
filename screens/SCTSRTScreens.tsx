@@ -39,7 +39,7 @@ interface Props {
 }
 
 // Create a global state object for the file
-let SCTSRTState = {
+const SCTSRTState = {
   SCTSRTWakeTime: new Date(),
   SCTSRTTimeInBedTarget: 480,
   SCTSRTBedTime: new Date(),
@@ -955,7 +955,7 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
   );
 
   // Create reminder object for next checkin
-  let reminderObject = {
+  const reminderObject = {
     expoPushToken: state.userData.reminders.expoPushToken,
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',

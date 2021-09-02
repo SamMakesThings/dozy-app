@@ -43,7 +43,7 @@ let globalState = {
 
 // Architecture: pass an optional prop logId, which if defined, signals it's an edit.
 // TODO: Update screens to use these values as defaults
-let logState = {
+const logState = {
   logId: undefined as undefined | string,
   logDate: new Date(),
   bedTime: new Date(),
@@ -103,7 +103,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
   const prevBedtime = baseSleepLog?.bedTime?.toDate();
 
   // Create state to display selected log date
-  let [selectedDate, setSelectedDate] = React.useState(initialDateVal);
+  const [selectedDate, setSelectedDate] = React.useState(initialDateVal);
 
   return (
     <>
@@ -144,7 +144,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
       <DatePicker
         style={{
           position: 'absolute',
-          marginTop: (Platform.OS === 'ios' ? safeInsets.top : 0 ) + scale(29),
+          marginTop: (Platform.OS === 'ios' ? safeInsets.top : 0) + scale(29),
           alignSelf: 'center',
           opacity: 0.35
         }}
@@ -459,7 +459,8 @@ export const WakeTimeInput = ({ navigation }: Props) => {
         } else if (moment(val).isAfter(new Date(), 'minute')) {
           return {
             severity: 'WARNING',
-            errorMsg: "Did you set AM/PM correctly? This wake time is in the future, which doesn't make sense."
+            errorMsg:
+              "Did you set AM/PM correctly? This wake time is in the future, which doesn't make sense."
           };
         } else {
           return true;

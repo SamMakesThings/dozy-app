@@ -11,7 +11,7 @@ interface Args {
 }
 
 function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
-  let treatmentPlan: Array<{
+  const treatmentPlan: Array<{
     module: string;
     estDate: Date;
     started: boolean;
@@ -63,7 +63,7 @@ function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
       : null;
   });
 
-  let defaultTreatmentOrder = Object.keys(treatments);
+  const defaultTreatmentOrder = Object.keys(treatments);
 
   // Define a priority order based on the above tags
   // Duplicates are filtered out so shouldn't matter

@@ -61,7 +61,7 @@ const chartStyles = {
 
 export const SRTTitrationStart = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+  const imgSize = imgSizePercent * useWindowDimensions().width;
   // Trim sleepLogs to only show most recent 7
   recentSleepLogs = state.sleepLogs.slice(0, 7);
 
@@ -181,7 +181,7 @@ export const SleepEfficiency = ({ navigation }: Props) => {
 export const SRTTitration = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
 
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+  const imgSize = imgSizePercent * useWindowDimensions().width;
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -193,8 +193,9 @@ export const SRTTitration = ({ navigation }: Props) => {
   );
 
   // Use old target bedtime to calculate new (if needed)
-  const oldTargetBedTime = state.userData.currentTreatments.targetBedTime.toDate();
-  let newTargetBedTime = oldTargetBedTime;
+  const oldTargetBedTime =
+    state.userData.currentTreatments.targetBedTime.toDate();
+  const newTargetBedTime = oldTargetBedTime;
   GLOBAL.targetTimeInBed = state.userData.currentTreatments.targetTimeInBed;
   if (sleepEfficiencyAvg >= 90) {
     newTargetBedTime.setMinutes(oldTargetBedTime.getMinutes() - 15);
@@ -223,7 +224,8 @@ export const SRTTitration = ({ navigation }: Props) => {
       onQuestionSubmit={() => {
         // Set target bedtime and wake time in Global for use in treatment module submit function
         GLOBAL.targetBedTime = newTargetBedTime;
-        GLOBAL.targetWakeTime = state.userData.currentTreatments.targetWakeTime.toDate();
+        GLOBAL.targetWakeTime =
+          state.userData.currentTreatments.targetWakeTime.toDate();
         navigation.navigate('SleepOnset', { progressBarPercent: 0.15 });
       }}
       textLabel={getSRTTitrationLabel(sleepEfficiencyAvg)}

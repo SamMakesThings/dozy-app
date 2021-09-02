@@ -31,8 +31,8 @@ export default async function submitOnboardingData(
   dispatch: React.Dispatch<ACTION>
 ) {
   // Initialize relevant Firebase values
-  let userId = await SecureStore.getItemAsync('userId');
-  let userDocRef =
+  const userId = await SecureStore.getItemAsync('userId');
+  const userDocRef =
     typeof userId === 'string'
       ? firestore().collection('users').doc(userId)
       : firestore().collection('users').doc('ERRORDELETEME');
@@ -59,8 +59,8 @@ export async function submitISIResults(
   >
 ): Promise<void> {
   // Initialize relevant Firebase values
-  let userId = await SecureStore.getItemAsync('userId');
-  let userDocRef =
+  const userId = await SecureStore.getItemAsync('userId');
+  const userDocRef =
     typeof userId === 'string'
       ? firestore().collection('users').doc(userId)
       : firestore().collection('users').doc('ERRORDELETEME');
@@ -112,8 +112,8 @@ export async function submitHealthHistoryData(
   >
 ): Promise<void> {
   // Initialize relevant Firebase values
-  let userId = await SecureStore.getItemAsync('userId');
-  let userDocRef =
+  const userId = await SecureStore.getItemAsync('userId');
+  const userDocRef =
     typeof userId === 'string'
       ? firestore().collection('users').doc(userId)
       : firestore().collection('users').doc('ERRORDELETEME');
@@ -137,8 +137,8 @@ export async function submitDiaryReminderAndCheckinData(
   >
 ): Promise<void> {
   // Initialize relevant Firebase values
-  let userId = await SecureStore.getItemAsync('userId');
-  let userDocRef =
+  const userId = await SecureStore.getItemAsync('userId');
+  const userDocRef =
     typeof userId === 'string'
       ? firestore().collection('users').doc(userId)
       : firestore().collection('users').doc('ERRORDELETEME');
@@ -236,8 +236,8 @@ export async function submitFirstChatMessage(
   displayName?: string
 ): Promise<void> {
   // Initialize relevant Firebase values
-  let userId = await SecureStore.getItemAsync('userId');
-  let userDocRef =
+  const userId = await SecureStore.getItemAsync('userId');
+  const userDocRef =
     typeof userId === 'string'
       ? firestore().collection('users').doc(userId)
       : firestore().collection('users').doc('ERRORDELETEME');

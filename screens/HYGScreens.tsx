@@ -22,7 +22,7 @@ const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
 
 // Define an interface for HYG flow state (SHI score & next checkin info)
-let HYGState = {
+const HYGState = {
   nextCheckinTime: new Date(),
   treatmentPlan: [{ started: false, module: 'deleteme' }],
   SHI1: 0,
@@ -85,7 +85,7 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
       tagsObject: { [key: string]: number },
       sleepLog: { tags: Array<string> }
     ) => {
-      let newTagsObject = tagsObject;
+      const newTagsObject = tagsObject;
       sleepLog.tags.map((tag) => {
         newTagsObject[tag] = newTagsObject[tag] ? newTagsObject[tag] + 1 : 1; // if exists, increment. Otherwise, start with 1
       });
@@ -504,7 +504,7 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder object for next checkin
-  let reminderObject = {
+  const reminderObject = {
     expoPushToken: state.userData.reminders.expoPushToken,
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',

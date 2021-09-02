@@ -12,13 +12,13 @@ async function fetchTasks(
     }
 
     // Pull the tasks collection from Firestore, array it
-    let colRef = db.collection('users').doc(userId).collection('tasks');
+    const colRef = db.collection('users').doc(userId).collection('tasks');
 
     colRef
       .where('completedTimestamp', '==', null)
       .get()
       .then((res: FirebaseFirestoreTypes.QuerySnapshot) => {
-        let tasks: Array<Task> = [];
+        const tasks: Array<Task> = [];
 
         // Check that theres >1 entry. If no, set state accordingly
         if (res.size === 0) {
@@ -29,7 +29,7 @@ async function fetchTasks(
         res.forEach(function (
           doc: FirebaseFirestoreTypes.QueryDocumentSnapshot
         ) {
-          let docData = doc.data();
+          const docData = doc.data();
           const currentTask = {
             label: docData.label,
             completedTimestamp: docData.completedTimestamp,

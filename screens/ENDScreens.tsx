@@ -30,7 +30,7 @@ const imgSizePercent = 0.4;
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 // Set up state for this check-in
-let ENDState = {
+const ENDState = {
   PMRIntentionAction: 'None',
   PMRIntentionTime: new Date(),
   nextCheckinTime: new Date(),

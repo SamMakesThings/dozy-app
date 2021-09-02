@@ -16,13 +16,13 @@ async function fetchSleepLogs(
     }
 
     // Pull the sleep diary collection from Firestore, array it
-    let colRef = db.collection('users').doc(userId).collection('sleepLogs');
+    const colRef = db.collection('users').doc(userId).collection('sleepLogs');
 
     colRef
       .orderBy('upTime', 'desc')
       .get()
       .then((res: FirebaseFirestoreTypes.QuerySnapshot) => {
-        let sleepLogs: Array<SleepLog> = [];
+        const sleepLogs: Array<SleepLog> = [];
 
         // Check that theres >1 entry. If no, set state accordingly
         if (res.size === 0) {

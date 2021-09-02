@@ -16,6 +16,7 @@ export interface ABTestingContextValue {
 
 export class ABTesting {
   static Context: React.Context<ABTestingContextValue> = createContext(null);
+
   static onboardingSteps: OnboardingMeta = Onboarding.defaultSteps;
 
   static useABTestingService(): ABTestingContextValue {

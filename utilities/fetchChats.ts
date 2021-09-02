@@ -12,7 +12,7 @@ async function fetchChats(
     }
 
     // Pull the chats collection from Firestore, array it
-    let colRef = db
+    const colRef = db
       .collection('users')
       .doc(userId)
       .collection('supportMessages');
@@ -21,7 +21,7 @@ async function fetchChats(
       .orderBy('time', 'desc')
       .get()
       .then((res: FirebaseFirestoreTypes.QuerySnapshot) => {
-        let chats: Array<Chat> = [];
+        const chats: Array<Chat> = [];
 
         // Check that theres >1 entry. If no, set state accordingly
         if (res.size === 0) {
@@ -32,7 +32,7 @@ async function fetchChats(
         res.forEach(function (
           doc: FirebaseFirestoreTypes.QueryDocumentSnapshot
         ) {
-          let docData = doc.data();
+          const docData = doc.data();
           const currentChat = {
             sender: docData.sender,
             message: docData.message,

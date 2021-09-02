@@ -54,7 +54,7 @@ interface Props {
   route: { params: { nextScreen: string; warnAbout: string } };
 }
 
-let onboardingState: OnboardingState = {
+const onboardingState: OnboardingState = {
   ISI1: 0,
   ISI2: 0,
   ISI3: 0,

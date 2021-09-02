@@ -29,7 +29,7 @@ const imgSizePercent = 0.4;
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 // Set up state for this check-in
-let RLXState = {
+const RLXState = {
   PMRIntentionAction: 'None',
   PMRIntentionTime: new Date(),
   nextCheckinTime: new Date()
@@ -405,7 +405,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder objects, put them in an array
-  let reminderArray = [
+  const reminderArray = [
     {
       expoPushToken: state.userData.reminders.expoPushToken,
       title: 'Next checkin is ready',

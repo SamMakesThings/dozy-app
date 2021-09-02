@@ -38,7 +38,7 @@ interface Global {
   targetWakeTime: Date;
   targetTimeInBed: number;
 }
-let GLOBAL: Global = GLOBALRAW; // Create a local copy of global app state, typed with above
+const GLOBAL: Global = GLOBALRAW; // Create a local copy of global app state, typed with above
 
 // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
@@ -498,7 +498,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder object for next checkin
-  let reminderObject = {
+  const reminderObject = {
     expoPushToken: state.userData.reminders.expoPushToken,
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',

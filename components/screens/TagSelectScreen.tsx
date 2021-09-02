@@ -166,7 +166,7 @@ const TagSelectScreen: React.FC<Props> = ({
                     entypoIcon={icon}
                     label={label}
                     onPress={() => {
-                      let tempArray = selectedTags;
+                      const tempArray = selectedTags;
                       const index = selectedTags.findIndex(
                         (tag: string) => tag === label
                       );

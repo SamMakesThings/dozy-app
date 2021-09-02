@@ -12,13 +12,13 @@ import { LogStatsLineGraph } from '../components/LogStatsLineGraphComponent';
 
 export const DiaryStatsScreen = () => {
   const { state } = React.useContext(AuthContext);
-  let allSleepLogs: Array<SleepLog> = state.sleepLogs;
+  const allSleepLogs: Array<SleepLog> = state.sleepLogs;
 
   // Calculate the current diary streak length
-  let streakLength = getLogStreakLength(allSleepLogs);
+  const streakLength = getLogStreakLength(allSleepLogs);
 
   // Filter sleepLogs to only show selected month
-  let selectedSleepLogs = allSleepLogs.filter(
+  const selectedSleepLogs = allSleepLogs.filter(
     (s) =>
       s.upTime.toDate().getMonth() === state.selectedDate.month &&
       s.upTime.toDate().getFullYear() === state.selectedDate.year
