@@ -456,6 +456,11 @@ export const WakeTimeInput = ({ navigation }: Props) => {
             errorMsg:
               'Did you set AM/PM correctly? Selected wake time is before your entered bed time.'
           };
+        } else if (moment(val).isAfter(new Date(), 'minute')) {
+          return {
+            severity: 'WARNING',
+            errorMsg: "Did you set AM/PM correctly? This wake time is in the future, which doesn't make sense."
+          };
         } else {
           return true;
         }
@@ -479,6 +484,7 @@ export const UpTimeInput = ({ navigation }: Props) => {
       validInputChecker={(val: Date) => {
         // Make sure the selected time is before 18:00, otherwise it's a likely sign of AM/PM mixup
         // Also make sure up time is after or equal to wake time
+        // Also make sure up time cannot be future time.
         if (moment(val).hour() > 18) {
           return {
             severity: 'WARNING',
@@ -490,6 +496,12 @@ export const UpTimeInput = ({ navigation }: Props) => {
             severity: 'ERROR',
             errorMsg:
               'Selected up time is earlier than selected wake time. Did you set AM/PM correctly?'
+          };
+        } else if (moment(val).isAfter(new Date(), 'minute')) {
+          return {
+            severity: 'WARNING',
+            errorMsg:
+              "Did you set AM/PM correctly? This time is in the future, which doesn't make sense."
           };
         } else {
           return true;
