@@ -1,14 +1,14 @@
 {
   "env": {
-    "browser": true,
-    "es6": true
+    "es6": true,
+    "node": true,
+    "jest": true,
+    "react-native/react-native": true
   },
   "extends": [
-    "plugin:react/recommended",
     "plugin:react-native/all",
     "plugin:@typescript-eslint/recommended",
-    "airbnb-base",
-    "eslint:recommended",
+    "airbnb-typescript",
     "prettier"
   ],
   "globals": {
@@ -19,17 +19,18 @@
     "ecmaVersion": 2018,
     "sourceType": "module",
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": true,
+      "impliedStrict": true
     },
-    "babelOptions": {
-      "configFile": "./babel.config.js"
-    }
+    "project": "./tsconfig.json"
   },
   "rules": {
     "react/display-name": 1,
     "no-unused-vars": "warn",
     "no-console": "off",
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off"
   },
   "parser": "@typescript-eslint/parser",
   "plugins": [
@@ -42,6 +43,11 @@
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     }
   }
 }
