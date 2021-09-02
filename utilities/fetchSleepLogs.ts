@@ -3,7 +3,7 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 import { omit } from 'lodash';
 import { SleepLog } from '../types/custom';
-import { convertUTCDateToLocalWithSameValues } from '../utilities/common';
+import { decodeUTCTime } from '../utilities/time';
 
 async function fetchSleepLogs(
   db: FirebaseFirestoreTypes.Module,
@@ -38,16 +38,16 @@ async function fetchSleepLogs(
             ...(omit(doc.data(), 'id') as Omit<SleepLog, 'logId'>)
           };
           log.bedTime = firestore.Timestamp.fromDate(
-            convertUTCDateToLocalWithSameValues(log.bedTime.toDate())
+            decodeUTCTime(log.bedTime.toDate(), log.version)
           );
           log.fallAsleepTime = firestore.Timestamp.fromDate(
-            convertUTCDateToLocalWithSameValues(log.fallAsleepTime.toDate())
+            decodeUTCTime(log.fallAsleepTime.toDate(), log.version)
           );
           log.wakeTime = firestore.Timestamp.fromDate(
-            convertUTCDateToLocalWithSameValues(log.wakeTime.toDate())
+            decodeUTCTime(log.wakeTime.toDate(), log.version)
           );
           log.upTime = firestore.Timestamp.fromDate(
-            convertUTCDateToLocalWithSameValues(log.upTime.toDate())
+            decodeUTCTime(log.upTime.toDate(), log.version)
           );
           sleepLogs.push(log);
         });

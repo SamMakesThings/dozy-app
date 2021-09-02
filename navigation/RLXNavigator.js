@@ -56,9 +56,6 @@ export default function RLXNavigator() {
                   />
                 );
               },
-              headerStyle: {
-                height: 300
-              },
               animationEnabled: true,
               headerTransparent: true,
               transitionSpec: {
@@ -77,9 +74,6 @@ export default function RLXNavigator() {
           // eslint-disable-next-line react/display-name
           header: ({ navigation }) => {
             return <HeaderProgressBar navigation={navigation} />;
-          },
-          headerStyle: {
-            height: 300
           },
           animationEnabled: true,
           headerTransparent: true

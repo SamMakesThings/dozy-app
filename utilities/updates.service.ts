@@ -11,7 +11,10 @@ export class Updates {
     );
 
     React.useEffect(() => {
-      Updates.checkForUpdate(setCheckingUpdate);
+      // Wait firebase to be initialized for some seconds and reload if there is an update
+      setTimeout(() => {
+        Updates.checkForUpdate(setCheckingUpdate);
+      }, 4000);
 
       const handleAppStateChange = async (
         newState: AppStateStatus

@@ -4,7 +4,7 @@ import {
   withTheme,
   ScreenContainer,
   Container,
-  DatePicker
+  DatePicker,
 } from '@draftbit/ui';
 import BottomNavButtons from '../BottomNavButtons';
 import { Theme } from '../../types/theme';
@@ -29,14 +29,14 @@ enum States {
   Empty = 0,
   Invalid = 1,
   Warning = 2,
-  Valid = 3
+  Valid = 3,
 }
 
 // A unified date, time, and datetime picker screen. Has a label and input.
 const DateTimePickerScreen: React.FC<Props> = (props) => {
   // Create state to manage input value(s)
   const [selectedTime, setSelectedTime] = React.useState(
-    props.defaultValue || new Date()
+    props.defaultValue || new Date(),
   );
 
   // Create state to manage possible screen states
@@ -83,7 +83,7 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
   return (
     <ScreenContainer
       style={{ backgroundColor: theme.colors.background }}
-      hasSafeArea={true}
+      hasSafeArea
       scrollable={false}
     >
       <Container
@@ -102,8 +102,8 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
               styles.Text_QuestionLabel,
               theme.typography.headline5,
               {
-                color: theme.colors.secondary
-              }
+                color: theme.colors.secondary,
+              },
             ]}
           >
             {props.questionLabel}
@@ -117,8 +117,8 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
                 {
                   color: displayErrorMsg
                     ? theme.colors.error
-                    : theme.colors.secondary
-                }
+                    : theme.colors.secondary,
+                },
               ]}
             >
               {displayErrorMsg ? errorMsg : props.questionSubtitle}
@@ -200,42 +200,41 @@ const styles = StyleSheet.create({
   DatePicker: {
     flex: 2,
     alignItems: 'center',
-    marginTop: -60
+    marginTop: -60,
   },
   DatePickerHalf: {
-    margin: 15
+    margin: 15,
   },
   View_DateTimeAndroidContainer: {
     flex: 3,
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   View_ContentContainer: {
     flex: 1,
     justifyContent: 'space-around',
-    marginTop: 20
   },
   View_ProgressBarContainer: {
     width: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   View_HeaderContainer: {
     width: '100%',
     height: '10%',
-    marginTop: 20
+    marginTop: 0,
   },
   Text_QuestionLabel: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   Text_QuestionSubtitle: {
     fontWeight: 'normal',
-    opacity: 0.7
-  }
+    opacity: 0.7,
+  },
 });
 
 export default withTheme(DateTimePickerScreen);

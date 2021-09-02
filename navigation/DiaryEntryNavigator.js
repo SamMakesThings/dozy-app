@@ -14,8 +14,8 @@ const animConfig = {
     mass: 3,
     overshootClamping: true,
     restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01
-  }
+    restSpeedThreshold: 0.01,
+  },
 };
 
 // Create a stack screen for each component defined in DiaryEntryScreens
@@ -28,7 +28,7 @@ export default function DiaryEntryNavigator() {
         headerMode: 'screen',
         // eslint-disable-next-line react/display-name
         leftButton: () => <></>,
-        animationEnabled: true
+        animationEnabled: true,
       }}
     >
       {Object.keys(Screens).map((screen) => {
@@ -53,15 +53,12 @@ export default function DiaryEntryNavigator() {
                   />
                 );
               },
-              headerStyle: {
-                height: 300
-              },
               animationEnabled: true,
               headerTransparent: true,
               transitionSpec: {
                 open: animConfig,
-                close: animConfig
-              }
+                close: animConfig,
+              },
             })}
           />
         );

@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  Platform
+} from 'react-native';
 import { ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { WebView } from 'react-native-webview';
@@ -61,7 +67,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
       parseFloat((modulesCompleted / treatmentPlan.length).toFixed(2)) * 1; // Parsefloat added to make TS happy
 
     // Strip time from next checkin datetime to determine whether to show checkin button
-    let nextCheckinDate = state.userData.currentTreatments.nextCheckinDatetime.toDate();
+    let nextCheckinDate = state.userData?.currentTreatments.nextCheckinDatetime.toDate();
     nextCheckinDate.setHours(0);
 
     return (
@@ -222,7 +228,12 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
 
 const styles = StyleSheet.create({
   Root: {
-    marginTop: scale(20),
+    marginTop: scale(
+      Platform.select({
+        ios: dozy_theme.spacing.small,
+        android: dozy_theme.spacing.medium
+      }) as number
+    ),
     paddingBottom: scale(25)
   },
   ItemMargin: {

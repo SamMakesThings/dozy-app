@@ -7,7 +7,7 @@ import { ImageSourcePropType } from 'react-native';
 export default {
   BSL: {
     title: 'Baseline collection',
-    subTitle: 'Gathering data for custom treatment',
+    subTitle: 'Gathering data for customized care',
     image: Images.WomanInBed,
     todos: ['Record 7 nights of sleep in your sleep diary'],
     url: 'https://dozy.customerly.help/collecting-a-baseline-of-sleep-data/',

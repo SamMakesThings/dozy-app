@@ -47,7 +47,7 @@ export const TreatmentPlanCard: React.FC<Props> = (props) => {
                 opacity: props.titleOpacity || undefined
               }}
             >
-              {props.title || 'My treatment plan'}
+              {props.title || 'My care plan'}
             </Text>
             <Text
               style={{

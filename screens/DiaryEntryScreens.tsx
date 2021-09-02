@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import { Platform } from 'react-native';
 import { DatePicker } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import moment from 'moment';
 import NumInputScreen from '../components/screens/NumInputScreen';
 import TextInputScreen from '../components/screens/TextInputScreen';
@@ -24,7 +25,7 @@ const theme = dozy_theme;
 interface Props {
   navigation: Navigation;
   route: {
-    params: {
+    params?: {
       logId?: string;
     };
   };
@@ -66,6 +67,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
   // If there is a sleep log recorded, use the most recent
   // bedtime value as a default.
   // Also use hook to set globalState value for the file
+  const safeInsets = useSafeAreaInsets();
   globalState = React.useContext(AuthContext).state || globalState;
   let defaultDate = moment().hour(22).minute(0).toDate();
   if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
@@ -77,7 +79,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
 
   let initialDateVal = new Date(); // Declare variable for the initial selectedState value
   const baseSleepLog: SleepLog | undefined = globalState.sleepLogs.find(
-    (sleepLog) => sleepLog.logId === route.params.logId
+    (sleepLog) => sleepLog.logId === route.params?.logId
   );
 
   // If editing existing sleep log, set defaults from that. Otherwise, use normal defaults
@@ -98,6 +100,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
       console.error("Attempted to edit sleep log that doesn't exist!");
     }
   }
+  const prevBedtime = baseSleepLog?.bedTime?.toDate();
 
   // Create state to display selected log date
   let [selectedDate, setSelectedDate] = React.useState(initialDateVal);
@@ -106,7 +109,16 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
     <>
       <DateTimePickerScreen
         theme={theme}
-        defaultValue={baseSleepLog?.bedTime?.toDate() || defaultDate}
+        defaultValue={
+          // Sets the bedtime's date as the wake time's date
+          prevBedtime
+            ? moment(logState.wakeTime)
+                .hours(prevBedtime.getHours())
+                .minutes(prevBedtime.getMinutes())
+                .startOf('minute')
+                .toDate()
+            : defaultDate
+        }
         onQuestionSubmit={(value: Date) => {
           logState.bedTime = value;
           logState.logDate = selectedDate; // Make sure this is set even if user doesn't change it
@@ -132,7 +144,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
       <DatePicker
         style={{
           position: 'absolute',
-          marginTop: scale(Platform.OS === 'ios' ? 50 : 29),
+          marginTop: (Platform.OS === 'ios' ? safeInsets.top : 0 ) + scale(29),
           alignSelf: 'center',
           opacity: 0.35
         }}

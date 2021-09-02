@@ -49,7 +49,7 @@ export const Welcome: React.FC<{ navigation: Navigation }> = ({
           progressBarPercent: 0.06
         });
       }}
-      textLabel="Welcome back! This week, we’ll review your sleep data, update your treatment plan, and get started with some relaxation techniques to help you sleep."
+      textLabel="Welcome back! This week, we’ll review your sleep data, update your care plan, and get started with some relaxation techniques to help you sleep."
     />
   );
 };
@@ -70,7 +70,7 @@ export const TreatmentPlan: React.FC<{ navigation: Navigation }> = ({
           progressBarPercent: 0.28
         });
       }}
-      titleLabel="This week's treatment: Progressive Muscle Relaxation"
+      titleLabel="This week: Progressive Muscle Relaxation"
       textLabel={
         "Based on your sleep data, the next step is to give you some new tools to address stress & tension. We'll do this by learning a technique called Progressive Muscle Relaxation (PMR)."
       }
@@ -276,7 +276,7 @@ export const TreatmentRecommit: React.FC<{ navigation: Navigation }> = ({
           progressBarPercent: 0.78
         });
       }}
-      titleLabel="Can you re-commit to following the treatment plan this week?"
+      titleLabel="Can you re-commit to following the care plan this week?"
       textLabel={
         "That means following the target sleep schedule, following the 3 rules (nothing in bed besides sleeping, etc), practicing PMR during the day and before sleeping, and any others you've started."
       }
@@ -392,7 +392,7 @@ export const CheckinScheduling: React.FC<{ navigation: Navigation }> = ({
         }
       }}
       questionLabel="Last step: When would you like your next weekly check-in?"
-      questionSubtitle="Check-ins take 5-10 minutes and adjust treatments based on your sleep patterns. A new technique is usually introduced weekly."
+      questionSubtitle="Check-ins take 5-10 minutes and adjust care based on your sleep patterns. A new technique is usually introduced weekly."
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"
     />
@@ -420,7 +420,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
     reminderArray.push({
       expoPushToken: state.userData.reminders.expoPushToken,
       title: 'Remember to practice PMR',
-      body: 'Go to the Treatments screen to practice',
+      body: 'Go to the home screen to practice',
       type: 'PMR_REMINDER',
       time: RLXState.PMRIntentionTime,
       enabled: true
