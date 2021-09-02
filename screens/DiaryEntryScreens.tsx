@@ -452,7 +452,7 @@ export const WakeTimeInput = ({ navigation }: Props) => {
         } else if (moment(val).isAfter(new Date(), 'minute')) {
           return {
             severity: 'WARNING',
-            errorMsg: 'You cannot enter actual waking up time with future time.'
+            errorMsg: "Did you set AM/PM correctly? This wake time is in the future, which doesn't make sense."
           };
         } else {
           return true;
@@ -494,7 +494,7 @@ export const UpTimeInput = ({ navigation }: Props) => {
           return {
             severity: 'WARNING',
             errorMsg:
-              'You cannot enter actual getting up time with future time.'
+              "Did you set AM/PM correctly? This time is in the future, which doesn't make sense."
           };
         } else {
           return true;
