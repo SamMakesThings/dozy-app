@@ -59,9 +59,6 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
               header: ({ navigation }) => {
                 return <HeaderProgressBar navigation={navigation} />;
               },
-              headerStyle: {
-                height: 300
-              },
               animationEnabled: true,
               headerTransparent: true
             })}
@@ -74,9 +71,6 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
               // eslint-disable-next-line react/display-name
               header: ({ navigation }) => {
                 return <HeaderProgressBar navigation={navigation} />;
-              },
-              headerStyle: {
-                height: 300
               },
               animationEnabled: true,
               headerTransparent: true

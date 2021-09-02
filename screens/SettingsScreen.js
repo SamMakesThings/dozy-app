@@ -11,6 +11,7 @@ import {
 } from '@draftbit/ui';
 import firestore from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
+import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../context/AuthContext';
 import { Analytics } from '../utilities/analytics.service';
@@ -295,7 +296,12 @@ const styles = StyleSheet.create({
   },
   Container_nz: {
     alignItems: 'center',
-    marginTop: 20
+    marginTop: scale(
+      Platform.select({
+        ios: dozy_theme.spacing.small,
+        android: dozy_theme.spacing.medium
+      })
+    )
   },
   DatePicker_nl: {
     minWidth: 100,
