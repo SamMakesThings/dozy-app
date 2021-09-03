@@ -8,4 +8,4 @@
 
 ### QA checklist
 
-- [] Tested by QA
+- [ ] Tested by QA
