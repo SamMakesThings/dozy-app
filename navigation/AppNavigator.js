@@ -22,6 +22,7 @@ import { AuthContext } from '../context/AuthContext';
 import refreshUserData from '../utilities/refreshUserData';
 import auth from '@react-native-firebase/auth';
 import { Crashlytics } from '../utilities/crashlytics.service';
+import { ABTesting } from '../utilities/abTesting.service';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -110,6 +111,7 @@ export default function AppNavigator() {
   const { state, dispatch } = useContext(AuthContext);
   const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
   Crashlytics.useCrashlytics(state.userId);
+  const { initABTesting } = ABTesting.useABTestingService();
 
   React.useEffect(() => {
     // Update user data from storage and Firebase, update state w/dispatch
@@ -117,6 +119,7 @@ export default function AppNavigator() {
       if (user) {
         console.log('user id: ', user.uid);
         refreshUserData(dispatch);
+        initABTesting();
       } else {
         dispatch({ type: 'SIGN_OUT' });
         await auth().signOut();
