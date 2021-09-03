@@ -8,4 +8,4 @@
 
 ### QA checklist
 
-<!-- Please make a checklist of what should be QA'd in this PR -->
+- [] Tested by QA
