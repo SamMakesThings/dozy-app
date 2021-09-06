@@ -31,7 +31,12 @@
     "react/prop-types": 0,
     "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",
-    "@typescript-eslint/no-use-before-define": "off"
+    "@typescript-eslint/no-use-before-define": "off",
+    "react-native/sort-styles": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/jsx-filename-extension": "off",
+    "react-native/no-raw-text": "off"
   },
   "parser": "@typescript-eslint/parser",
   "plugins": [
