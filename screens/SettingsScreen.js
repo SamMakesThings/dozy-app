@@ -56,7 +56,7 @@ function Root() {
           const notifData = notif.data();
           dispatch({
             type: 'SET_LOG_REMINDER_TIME',
-            time: decodeUTCTime(notifData.time, notifData.version),
+            time: decodeUTCTime(notifData.time.toDate(), notifData.version),
           });
           dispatch({
             type: 'TOGGLE_LOG_NOTIFS',
@@ -184,6 +184,7 @@ function Root() {
                 styles.Text_nl,
                 theme.typography.smallLabel,
                 styles.logOutButtonText,
+                { color: theme.colors.strong },
               ]}
             >
               Log out
@@ -326,7 +327,6 @@ const styles = StyleSheet.create({
   },
   Icon_nf: {},
   logOutButtonText: {
-    color: theme.colors.strong,
     textAlign: 'left',
   },
 });
