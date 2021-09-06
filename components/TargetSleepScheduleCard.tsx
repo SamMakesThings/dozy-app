@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { CardContainer } from './CardContainer';
 import { dozy_theme } from '../config/Themes';
@@ -8,7 +8,7 @@ import TransRightArrow from '../assets/images/TransRightArrow.svg';
 import YellowSun from '../assets/images/YellowSun.svg';
 
 interface Props {
-  styles?: object;
+  styles?: ViewStyle;
   remainingDays: number;
   bedTime: string;
   wakeTime: string;
@@ -19,17 +19,11 @@ export const TargetSleepScheduleCard: React.FC<Props> = (props) => {
 
   return (
     <CardContainer style={{ ...props.styles }}>
-      <View
-        style={{
-          ...styles.View_CardHeaderContainer,
-          flexDirection: 'column',
-          alignItems: 'flex-start'
-        }}
-      >
+      <View style={styles.View_CardHeaderContainer}>
         <Text
           style={{
             ...theme.typography.cardTitle,
-            ...styles.Text_CardTitle
+            ...styles.Text_CardTitle,
           }}
         >
           Target sleep schedule
@@ -53,7 +47,7 @@ export const TargetSleepScheduleCard: React.FC<Props> = (props) => {
             <Text
               style={{
                 ...theme.typography.body1,
-                ...styles.Text_TimeLabel
+                ...styles.Text_TimeLabel,
               }}
             >
               bedtime
@@ -67,7 +61,7 @@ export const TargetSleepScheduleCard: React.FC<Props> = (props) => {
             <Text
               style={{
                 ...theme.typography.body1,
-                ...styles.Text_TimeLabel
+                ...styles.Text_TimeLabel,
               }}
             >
               wake time
@@ -82,40 +76,39 @@ export const TargetSleepScheduleCard: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   View_CardHeaderContainer: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'flex-start',
   },
   View_CardContentContainer: {},
   View_CenteredRowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: scale(5)
+    paddingTop: scale(5),
   },
   View_TimeContainer: {
-    marginTop: scale(8)
+    marginTop: scale(8),
   },
   Text_CardTitle: {
-    color: dozy_theme.colors.secondary
+    color: dozy_theme.colors.secondary,
   },
   Text_CardSubtitle: {
     color: dozy_theme.colors.secondary,
     opacity: 0.5,
-    marginTop: scale(-5)
+    marginTop: scale(-5),
   },
   Text_Time: {
     textAlign: 'center',
     fontSize: scale(20),
-    color: dozy_theme.colors.secondary
+    color: dozy_theme.colors.secondary,
   },
   Text_TimeLabel: {
     textAlign: 'center',
     fontSize: scale(12),
     color: dozy_theme.colors.secondary,
     opacity: 0.5,
-    marginTop: scale(-6)
-  }
+    marginTop: scale(-6),
+  },
 });
 
 export default TargetSleepScheduleCard;

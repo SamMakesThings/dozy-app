@@ -1,16 +1,12 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import 'firebase/firestore';
+import { NavigationProp } from '@react-navigation/native';
 
 declare module '*.svg?inline' {
   const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
   export default content;
 }
 
-export interface Navigation {
-  navigate: Function;
-  goBack: Function;
-  setParams: Function;
-}
+export type Navigation = NavigationProp<any>;
 
 export interface SleepLog {
   logId?: string;

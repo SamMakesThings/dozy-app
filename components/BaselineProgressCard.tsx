@@ -4,7 +4,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  GestureResponderEvent
+  GestureResponderEvent,
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
@@ -24,33 +24,21 @@ export const BaselineProgressCard: React.FC<Props> = (props) => {
   const baselineLogsRequired = 7;
 
   return (
-    <CardContainer style={{ marginBottom: 0 }}>
+    <CardContainer style={styles.container}>
       <TouchableOpacity
-        style={{ flex: 1 }}
+        style={styles.content}
         onPress={props.onPress}
         disabled={!props.onPress}
       >
         <View style={styles.View_CardHeaderContainer}>
-          <View
-            style={{
-              ...styles.View_CardHeaderContainer,
-              flexDirection: 'column',
-              alignItems: 'flex-start'
-            }}
-          >
-            <Text
-              style={{
-                ...theme.typography.cardTitle,
-                ...styles.Text_CardTitle,
-                opacity: 0.8
-              }}
-            >
+          <View style={styles.cardHeaderContent}>
+            <Text style={[theme.typography.cardTitle, styles.Text_CardTitle]}>
               Baseline data collection
             </Text>
             <Text
               style={{
                 ...theme.typography.body2,
-                ...styles.Text_CardSubtitle
+                ...styles.Text_CardSubtitle,
               }}
             >
               {baselineLogsRequired - props.nightsLogged} sleep logs remaining
@@ -60,14 +48,14 @@ export const BaselineProgressCard: React.FC<Props> = (props) => {
             name={'chevron-right'}
             size={scale(28)}
             color={theme.colors.secondary}
-            style={{ display: props.onPress ? 'flex' : 'none' }}
+            style={props.onPress ? undefined : styles.hidden}
           />
         </View>
-        <View style={styles.View_CardContentContainer}>
+        <View>
           <View
             style={{
               ...styles.View_CenteredRowContainer,
-              marginTop: scale(12)
+              marginTop: scale(12),
             }}
           >
             <View>
@@ -83,7 +71,7 @@ export const BaselineProgressCard: React.FC<Props> = (props) => {
               label={props.nightsLogged + '/' + baselineLogsRequired}
               textColor={theme.colors.primary}
               bgColor={theme.colors.secondary}
-              style={{ maxWidth: '22%' }}
+              style={styles.highlightedText}
             />
           </View>
         </View>
@@ -93,36 +81,34 @@ export const BaselineProgressCard: React.FC<Props> = (props) => {
 };
 
 const styles = StyleSheet.create({
-  View_ContentContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'center'
-  },
-  View_CardContentContainer: {},
   View_CardHeaderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   View_CenteredRowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: scale(5)
+    paddingTop: scale(5),
   },
   Text_CardTitle: {
-    color: dozy_theme.colors.secondary
+    color: dozy_theme.colors.secondary,
+    opacity: 0.8,
   },
   Text_CardSubtitle: {
     color: dozy_theme.colors.secondary,
     opacity: 0.5,
-    marginTop: scale(-5)
+    marginTop: scale(-5),
   },
   ProgressBar: {
-    width: scale(200)
+    width: scale(200),
   },
-  Icon_Clipboard: {
-    margin: scale(20)
-  }
+  container: { marginBottom: 0 },
+  content: { flex: 1 },
+  cardHeaderContent: { justifyContent: 'space-between' },
+  hidden: { display: 'none' },
+  highlightedText: { maxWidth: '22%' },
 });
 
 export default BaselineProgressCard;

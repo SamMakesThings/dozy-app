@@ -5,7 +5,7 @@ import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { dozy_theme } from '../config/Themes';
 import { Chat } from '../types/custom';
 
-export function ChatMessage(item: Chat, index: number) {
+export function ChatMessage(item: Chat, index: number): React.ReactElement {
   const theme = dozy_theme;
 
   // Shorten type check to be able to handle fb timestamps or JS dates
@@ -13,10 +13,10 @@ export function ChatMessage(item: Chat, index: number) {
 
   return (
     <View
-      style={{
-        ...styles.View_MsgContainer,
-        alignItems: item.sentByUser ? 'flex-end' : 'flex-start'
-      }}
+      style={[
+        styles.View_MsgContainer,
+        item.sentByUser && styles.sentContainer,
+      ]}
       key={index}
     >
       <Text style={styles.Text_MetaMsg}>
@@ -28,13 +28,13 @@ export function ChatMessage(item: Chat, index: number) {
           month: 'short',
           day: 'numeric',
           hour: 'numeric',
-          minute: 'numeric'
+          minute: 'numeric',
         })}
       </Text>
       <View
         style={Object.assign(
           { ...styles.View_MsgBubble },
-          item.sentByUser ? styles.SentMsg : styles.ReceivedMsg
+          item.sentByUser ? styles.SentMsg : styles.ReceivedMsg,
         )}
       >
         <Text style={{ ...theme.typography.body2, ...styles.Text_Msg }}>
@@ -48,28 +48,32 @@ export function ChatMessage(item: Chat, index: number) {
 const styles = StyleSheet.create({
   View_MsgContainer: {
     marginTop: scale(15),
-    alignSelf: 'stretch'
+    alignSelf: 'stretch',
+    alignItems: 'flex-start',
   },
   View_MsgBubble: {
     padding: scale(12),
-    borderRadius: scale(6)
+    borderRadius: scale(6),
   },
   SentMsg: {
     backgroundColor: dozy_theme.colors.primary,
-    marginLeft: scale(10)
+    marginLeft: scale(10),
   },
   ReceivedMsg: {
     backgroundColor: dozy_theme.colors.medium,
-    marginRight: scale(10)
+    marginRight: scale(10),
   },
   Text_Msg: {
-    color: dozy_theme.colors.secondary
+    color: dozy_theme.colors.secondary,
   },
   Text_MetaMsg: {
     color: dozy_theme.colors.secondary,
     opacity: 0.8,
-    marginBottom: scale(2)
-  }
+    marginBottom: scale(2),
+  },
+  sentContainer: {
+    alignItems: 'flex-end',
+  },
 });
 
 export default ChatMessage;

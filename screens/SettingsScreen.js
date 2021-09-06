@@ -7,7 +7,7 @@ import {
   Icon,
   Switch,
   Touchable,
-  DatePicker
+  DatePicker,
 } from '@draftbit/ui';
 import firestore from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
@@ -17,7 +17,7 @@ import { AuthContext } from '../context/AuthContext';
 import { Analytics } from '../utilities/analytics.service';
 import {
   isNotificationEnabled,
-  askNotificationPermission
+  askNotificationPermission,
 } from '../utilities/pushNotifications';
 import { encodeLocalTime, decodeUTCTime } from '../utilities/time';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
@@ -56,11 +56,11 @@ function Root() {
           const notifData = notif.data();
           dispatch({
             type: 'SET_LOG_REMINDER_TIME',
-            time: decodeUTCTime(notifData.time, notifData.version)
+            time: decodeUTCTime(notifData.time, notifData.version),
           });
           dispatch({
             type: 'TOGGLE_LOG_NOTIFS',
-            enabledStatus: notifData.enabled
+            enabledStatus: notifData.enabled,
           });
           // setNotifsEnabled(notifData.enabled);
         });
@@ -84,28 +84,28 @@ function Root() {
       switch (action.type) {
         case 'TOGGLE_LOG_NOTIFS':
           updateFbLogNotification({
-            enabled: action.enabledStatus
+            enabled: action.enabledStatus,
           });
           return {
             ...prevState,
-            logNotifsEnabled: action.enabledStatus
+            logNotifsEnabled: action.enabledStatus,
           };
         case 'SET_LOG_REMINDER_TIME':
           encodedTimeData = encodeLocalTime(action.time);
           updateFbLogNotification({
             time: encodedTimeData.value,
-            version: encodedTimeData.version
+            version: encodedTimeData.version,
           });
           return {
             ...prevState,
-            logReminderTime: action.time
+            logReminderTime: action.time,
           };
       }
     },
     {
       logReminderTime: new Date(),
-      logNotifsEnabled: false
-    }
+      logNotifsEnabled: false,
+    },
   );
 
   // Make sure the screen uses updated state once it loads for the first time.
@@ -127,7 +127,7 @@ function Root() {
               state.userData.userInfo?.displayName || 'Temp Name';
             SecureStore.setItemAsync(
               'profileData',
-              JSON.stringify(newProfileData)
+              JSON.stringify(newProfileData),
             );
           }
         }}
@@ -149,8 +149,8 @@ function Root() {
               styles.Text_n1,
               theme.typography.headline3,
               {
-                color: theme.colors.strong
-              }
+                color: theme.colors.strong,
+              },
             ]}
           >
             {state.profileData.name || 'Tap here to fix chat'}
@@ -160,8 +160,8 @@ function Root() {
               styles.Text_nc,
               theme.typography.subtitle2,
               {
-                color: theme.colors.light
-              }
+                color: theme.colors.light,
+              },
             ]}
           >
             @dozyapp 0.7.12
@@ -183,10 +183,7 @@ function Root() {
               style={[
                 styles.Text_nl,
                 theme.typography.smallLabel,
-                {
-                  color: theme.colors.strong,
-                  textAlign: 'left'
-                }
+                styles.logOutButtonText,
               ]}
             >
               Log out
@@ -209,8 +206,8 @@ function Root() {
               styles.Text_nv,
               theme.typography.smallLabel,
               {
-                color: theme.colors.strong
-              }
+                color: theme.colors.strong,
+              },
             ]}
           >
             Sleep log reminders
@@ -223,10 +220,10 @@ function Root() {
             onValueChange={async (value) => {
               dispatch({
                 type: 'TOGGLE_LOG_NOTIFS',
-                enabledStatus: value
+                enabledStatus: value,
               });
               Analytics.logEvent(AnalyticsEvents.switchSleepLogReminders, {
-                enabled: value
+                enabled: value,
               });
               if (value && !(await isNotificationEnabled())) {
                 await askNotificationPermission(true);
@@ -244,8 +241,8 @@ function Root() {
               styles.Text_nb,
               theme.typography.smallLabel,
               {
-                color: theme.colors.strong
-              }
+                color: theme.colors.strong,
+              },
             ]}
           >
             Reminder time
@@ -277,57 +274,61 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingBottom: 15
+    paddingBottom: 15,
   },
   Container_ni: {
     minWidth: 0,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingBottom: 15
+    paddingBottom: 15,
   },
   Container_ns: {
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   Container_nw: {
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   Container_nz: {
     alignItems: 'center',
     marginTop: scale(
       Platform.select({
         ios: dozy_theme.spacing.small,
-        android: dozy_theme.spacing.medium
-      })
-    )
+        android: dozy_theme.spacing.medium,
+      }),
+    ),
   },
   DatePicker_nl: {
     minWidth: 100,
     paddingLeft: 0,
-    marginLeft: 0
+    marginLeft: 0,
   },
   Root_nd: {
     justifyContent: 'space-around',
-    backgroundColor: dozy_theme.colors.background
+    backgroundColor: dozy_theme.colors.background,
   },
   Text_n1: {
     textAlign: 'center',
-    width: '100%'
+    width: '100%',
   },
   Text_nl: {
     textAlign: 'center',
-    width: '100%'
+    width: '100%',
   },
   Text_nc: {
     textAlign: 'center',
-    width: '100%'
+    width: '100%',
   },
   Touchable_n0: {
-    paddingBottom: 15
+    paddingBottom: 15,
   },
-  Icon_nf: {}
+  Icon_nf: {},
+  logOutButtonText: {
+    color: theme.colors.strong,
+    textAlign: 'left',
+  },
 });
 
 export default withTheme(Root);

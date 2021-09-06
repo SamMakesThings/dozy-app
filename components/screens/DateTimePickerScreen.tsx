@@ -15,13 +15,13 @@ interface Props {
   questionLabel: string;
   questionSubtitle?: string;
   inputLabel?: string;
-  onQuestionSubmit: Function;
+  onQuestionSubmit: (value: Date | boolean) => void;
   buttonLabel?: string;
-  bottomBackButton: Function;
+  bottomBackButton: () => void;
   bottomGreyButtonLabel?: string;
   mode: string;
   theme: Theme;
-  validInputChecker?: Function;
+  validInputChecker?: (value: Date) => boolean;
 }
 
 // Define possible states w/a TypeScript enum
@@ -55,22 +55,18 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
       severity: string;
       errorMsg: string;
     }
-    const validationResult:
-      | ErrorObj
-      | boolean
-      | undefined = props.validInputChecker
-      ? props.validInputChecker(val)
-      : undefined;
+    const validationResult: ErrorObj | boolean | undefined =
+      props.validInputChecker ? props.validInputChecker(val) : undefined;
 
     if (validationResult === undefined || validationResult === true) {
       setScreenState(States.Valid);
     } else if (validationResult === false) {
       console.error('Validation function should never return false');
-    } else if (validationResult.severity === 'WARNING') {
-      setErrorMsg(validationResult.errorMsg);
+    } else if ((validationResult as ErrorObj)?.severity === 'WARNING') {
+      setErrorMsg((validationResult as ErrorObj)?.errorMsg);
       setScreenState(States.Warning);
-    } else if (validationResult.severity === 'ERROR') {
-      setErrorMsg(validationResult.errorMsg);
+    } else if ((validationResult as ErrorObj)?.severity === 'ERROR') {
+      setErrorMsg((validationResult as ErrorObj)?.errorMsg);
       setScreenState(States.Invalid);
     } else {
       console.error('Validation function did something unexpected');
@@ -100,7 +96,7 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <View style={{ flex: 4, justifyContent: 'center' }}>
+        <View style={styles.questionLabel}>
           <Text
             style={[
               styles.Text_QuestionLabel,
@@ -141,9 +137,9 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
               leftIconMode="inset"
               format="dddd, mmmm dS"
               date={selectedTime}
-              onDateChange={(selectedTime: Date) => {
-                setSelectedTime(selectedTime);
-                checkDataValidity(selectedTime);
+              onDateChange={(time: Date) => {
+                setSelectedTime(time);
+                checkDataValidity(time);
               }}
             />
             <DatePicker
@@ -156,16 +152,16 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
               leftIconMode="inset"
               format="h:MM TT"
               date={selectedTime}
-              onDateChange={(selectedTime: Date) => {
-                setSelectedTime(selectedTime);
-                checkDataValidity(selectedTime);
+              onDateChange={(time: Date) => {
+                setSelectedTime(time);
+                checkDataValidity(time);
               }}
             />
           </View>
         ) : (
           <DatePicker
             style={styles.DatePicker}
-            mode={props.mode}
+            mode={props.mode as 'time' | 'datetime' | 'date' | undefined}
             type="underline"
             error={displayErrorMsg}
             label={props.inputLabel}
@@ -175,9 +171,9 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
               props.mode === 'datetime' ? 'dddd, mmmm dS, h:MM TT' : 'h:MM TT'
             }
             date={selectedTime}
-            onDateChange={(selectedTime: Date) => {
-              setSelectedTime(selectedTime);
-              checkDataValidity(selectedTime);
+            onDateChange={(time: Date) => {
+              setSelectedTime(time);
+              checkDataValidity(time);
             }}
           />
         )}
@@ -219,11 +215,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
   },
-  View_ProgressBarContainer: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   View_HeaderContainer: {
     width: '100%',
     height: '10%',
@@ -239,6 +230,7 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     opacity: 0.7,
   },
+  questionLabel: { flex: 4, justifyContent: 'center' },
 });
 
 export default withTheme(DateTimePickerScreen);

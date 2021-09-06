@@ -3,7 +3,7 @@ import { Chat } from '../types/custom';
 
 async function fetchChats(
   db: FirebaseFirestoreTypes.Module,
-  userId: string
+  userId: string,
 ): Promise<Chat[]> {
   // Retrieving chats from Firestore
   return new Promise((resolve) => {
@@ -30,20 +30,20 @@ async function fetchChats(
 
         // Otherwise, arrange data and update state
         res.forEach(function (
-          doc: FirebaseFirestoreTypes.QueryDocumentSnapshot
+          doc: FirebaseFirestoreTypes.QueryDocumentSnapshot,
         ) {
           const docData = doc.data();
           const currentChat = {
             sender: docData.sender,
             message: docData.message,
             sentByUser: docData.sentByUser,
-            time: docData.time
+            time: docData.time,
           };
           chats.push({ chatId: doc.id, ...currentChat });
         });
         resolve(chats);
       })
-      .catch(function (error: object) {
+      .catch(function (error) {
         console.log('Error getting chats:', error);
       });
   });

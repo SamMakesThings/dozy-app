@@ -7,7 +7,7 @@ import {
   TextInput,
   useWindowDimensions,
   ScrollView,
-  InteractionManager
+  InteractionManager,
 } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
@@ -39,7 +39,7 @@ interface Props {
   inputLabel: string;
   preFormSubmit: () => boolean;
   onInvalidForm: () => void;
-  onFormSubmit: Function;
+  onFormSubmit: (value: { notes: string; tags: string[] }) => void;
   sleepLog: SleepLog;
 }
 
@@ -53,7 +53,7 @@ const TagSelectScreen: React.FC<Props> = ({
   sleepLog,
   preFormSubmit,
   onInvalidForm,
-  onFormSubmit
+  onFormSubmit,
 }) => {
   // Set up component state for tags and note field
   const [selectedTags, updateTags] = React.useState(defaultTags || []) as any;
@@ -106,14 +106,14 @@ const TagSelectScreen: React.FC<Props> = ({
           styles.overlay,
           {
             backgroundColor: theme.colors.background,
-            height: top + height * 0.1
-          }
+            height: top + height * 0.1,
+          },
         ]}
       />
       <Container
         style={[
           styles.Container_nof,
-          { backgroundColor: theme.colors.background }
+          { backgroundColor: theme.colors.background },
         ]}
         elevation={0}
         useThemeGutterPadding={true}
@@ -134,22 +134,19 @@ const TagSelectScreen: React.FC<Props> = ({
                 styles.Text_nqt,
                 theme.typography.headline5,
                 {
-                  color: theme.colors.secondary
-                }
+                  color: theme.colors.secondary,
+                },
               ]}
             >
               {questionLabel}
             </Text>
             <View
-              style={{
-                flex: 4,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                flexWrap: 'wrap',
-                alignContent: 'center',
-                alignItems: 'flex-start',
-                backgroundColor: theme.colors.background
-              }}
+              style={[
+                styles.tagsContainer,
+                {
+                  backgroundColor: theme.colors.background,
+                },
+              ]}
             >
               {touchableTags.map((tag) => {
                 // Create ToggleTag elements based on props
@@ -168,7 +165,7 @@ const TagSelectScreen: React.FC<Props> = ({
                     onPress={() => {
                       const tempArray = selectedTags;
                       const index = selectedTags.findIndex(
-                        (tag: string) => tag === label
+                        (it: string) => it === label,
                       );
                       if (index > -1) {
                         tempArray.splice(index, 1);
@@ -187,17 +184,12 @@ const TagSelectScreen: React.FC<Props> = ({
                 styles.View_TextInputContainer,
                 {
                   borderColor: theme.colors.medium,
-                  backgroundColor: theme.colors.background
-                }
+                  backgroundColor: theme.colors.background,
+                },
               ]}
             >
               <TextInput
-                style={{
-                  height: scale(35),
-                  color: '#ffffff',
-                  fontSize: scale(17),
-                  paddingBottom: scale(10)
-                }}
+                style={styles.notesInput}
                 placeholder={inputLabel}
                 placeholderTextColor={theme.colors.light}
                 defaultValue={defaultNotes}
@@ -222,23 +214,16 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    zIndex: 1
+    zIndex: 1,
   },
   container: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   View_TextInputContainer: {
     alignSelf: 'stretch',
     marginTop: 0,
     marginBottom: '7%',
-    borderBottomWidth: 1.5
-  },
-  Button_n5c: {
-    paddingTop: 0,
-    marginTop: scale(7)
-  },
-  Container_nmw: {
-    height: '15%'
+    borderBottomWidth: 1.5,
   },
   Container_nof: {
     width: '100%',
@@ -246,25 +231,34 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: scale(17),
-    zIndex: 1
+    zIndex: 1,
   },
   Container_nuv: {
     flexGrow: 1,
     justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  IconButton_n9u: {
-    paddingRight: 0
-  },
-  TextField_no0: {
-    flex: 1
+    alignItems: 'center',
   },
   Text_nqt: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'flex-start',
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
+  tagsContainer: {
+    flex: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+    alignContent: 'center',
+    alignItems: 'flex-start',
+  },
+  // eslint-disable-next-line react-native/no-color-literals
+  notesInput: {
+    height: scale(35),
+    color: '#ffffff',
+    fontSize: scale(17),
+    paddingBottom: scale(10),
+  },
 });
 
 export default withTheme(TagSelectScreen);

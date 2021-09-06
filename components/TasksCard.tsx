@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  GestureResponderEvent,
-  ImageSourcePropType
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import { LinkCard } from './LinkCard';
 import { TodoItem } from './TodoItem';
 import { CardContainer } from './CardContainer';
 import { dozy_theme } from '../config/Themes';
@@ -25,7 +18,7 @@ const TasksCard: React.FC<Props> = (props) => {
         <Text
           style={{
             ...theme.typography.cardTitle,
-            ...styles.Text_CardTitle
+            ...styles.Text_CardTitle,
           }}
         >
           To do:
@@ -47,24 +40,18 @@ const TasksCard: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   ItemMargin: {
-    marginTop: scale(10)
+    marginTop: scale(10),
   },
   View_CardHeaderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   View_CardContentContainer: {},
   View_TodoContainer: {},
   Text_CardTitle: {
-    color: dozy_theme.colors.secondary
-  },
-  Text_RightSubHeader: {
-    fontFamily: 'RubikRegular',
-    fontSize: scale(17),
     color: dozy_theme.colors.secondary,
-    opacity: 0.5
-  }
+  },
 });
 
 export default TasksCard;

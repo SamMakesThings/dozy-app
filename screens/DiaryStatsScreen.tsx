@@ -10,7 +10,7 @@ import { SleepLog } from '../types/custom';
 import { getLogStreakLength } from '../utilities/getLogStreakLength';
 import { LogStatsLineGraph } from '../components/LogStatsLineGraphComponent';
 
-export const DiaryStatsScreen = () => {
+export const DiaryStatsScreen: React.FC = () => {
   const { state } = React.useContext(AuthContext);
   const allSleepLogs: Array<SleepLog> = state.sleepLogs;
 
@@ -21,12 +21,12 @@ export const DiaryStatsScreen = () => {
   const selectedSleepLogs = allSleepLogs.filter(
     (s) =>
       s.upTime.toDate().getMonth() === state.selectedDate.month &&
-      s.upTime.toDate().getFullYear() === state.selectedDate.year
+      s.upTime.toDate().getFullYear() === state.selectedDate.year,
   );
 
   return (
     <ScreenContainer
-      style={{ backgroundColor: '#232B3F' }}
+      style={styles.container}
       hasSafeArea={true}
       scrollable={true}
     >
@@ -41,7 +41,7 @@ export const DiaryStatsScreen = () => {
               name={'arrow-with-circle-up'}
               size={scale(51)}
               color={dozy_theme.colors.medium}
-              style={{ alignSelf: 'flex-start', marginLeft: scale(50) }}
+              style={styles.arrowIcon}
             />
             <Text
               style={[dozy_theme.typography.smallLabel, styles.Text_Warning]}
@@ -55,16 +55,16 @@ export const DiaryStatsScreen = () => {
       <Container
         elevation={0}
         useThemeGutterPadding={true}
-        style={{
-          ...styles.Container_Screen,
-          opacity: selectedSleepLogs.length < 2 ? 0.3 : 1
-        }}
+        style={[
+          styles.Container_Screen,
+          selectedSleepLogs.length < 2 && styles.contentInactive,
+        ]}
       >
         <CardContainer style={styles.CardContainer}>
           <Text
             style={{
               ...dozy_theme.typography.headline5,
-              ...styles.Text_CardTitle
+              ...styles.Text_CardTitle,
             }}
           >
             Sleep log streak: {streakLength}{' '}
@@ -77,18 +77,12 @@ export const DiaryStatsScreen = () => {
           <Text
             style={{
               ...dozy_theme.typography.headline5,
-              ...styles.Text_CardTitle
+              ...styles.Text_CardTitle,
             }}
           >
             Sleep efficiency (%)
           </Text>
-          <View
-            style={{
-              alignItems: 'center',
-              marginTop: scale(-25),
-              marginLeft: scale(17)
-            }}
-          >
+          <View style={styles.logStatsLineGraph}>
             <LogStatsLineGraph
               sleepLogs={selectedSleepLogs}
               yAxis="sleepEfficiency"
@@ -102,18 +96,12 @@ export const DiaryStatsScreen = () => {
           <Text
             style={{
               ...dozy_theme.typography.headline5,
-              ...styles.Text_CardTitle
+              ...styles.Text_CardTitle,
             }}
           >
             Sleep duration (hours)
           </Text>
-          <View
-            style={{
-              alignItems: 'center',
-              marginTop: scale(-25),
-              marginLeft: scale(17)
-            }}
-          >
+          <View style={styles.logStatsLineGraph}>
             <LogStatsLineGraph
               sleepLogs={selectedSleepLogs}
               yAxis="sleepDuration"
@@ -127,9 +115,9 @@ export const DiaryStatsScreen = () => {
                         Math,
                         selectedSleepLogs.map(function (o) {
                           return o.sleepDuration;
-                        })
-                      )
-                ]
+                        }),
+                      ),
+                ],
               }}
             />
           </View>
@@ -140,18 +128,12 @@ export const DiaryStatsScreen = () => {
           <Text
             style={{
               ...dozy_theme.typography.headline5,
-              ...styles.Text_CardTitle
+              ...styles.Text_CardTitle,
             }}
           >
             Sleep onset (minutes)
           </Text>
-          <View
-            style={{
-              alignItems: 'center',
-              marginTop: scale(-25),
-              marginLeft: scale(17)
-            }}
-          >
+          <View style={styles.logStatsLineGraph}>
             <LogStatsLineGraph
               sleepLogs={selectedSleepLogs}
               yAxis="minsToFallAsleep"
@@ -165,9 +147,9 @@ export const DiaryStatsScreen = () => {
                         Math,
                         selectedSleepLogs.map(function (o) {
                           return o.minsToFallAsleep;
-                        })
-                      )
-                ]
+                        }),
+                      ),
+                ],
               }}
             />
           </View>
@@ -178,18 +160,12 @@ export const DiaryStatsScreen = () => {
           <Text
             style={{
               ...dozy_theme.typography.headline5,
-              ...styles.Text_CardTitle
+              ...styles.Text_CardTitle,
             }}
           >
             Mins awake after 1st sleep
           </Text>
-          <View
-            style={{
-              alignItems: 'center',
-              marginTop: scale(-25),
-              marginLeft: scale(17)
-            }}
-          >
+          <View style={styles.logStatsLineGraph}>
             <LogStatsLineGraph
               sleepLogs={selectedSleepLogs}
               yAxis="nightMinsAwake"
@@ -203,9 +179,9 @@ export const DiaryStatsScreen = () => {
                         Math,
                         selectedSleepLogs.map(function (o) {
                           return o.nightMinsAwake;
-                        })
-                      )
-                ]
+                        }),
+                      ),
+                ],
               }}
             />
           </View>
@@ -217,25 +193,36 @@ export const DiaryStatsScreen = () => {
 
 const styles = StyleSheet.create({
   CardContainer: {
-    padding: scale(20)
+    padding: scale(20),
   },
   Container_Screen: {
-    marginTop: scale(25)
+    marginTop: scale(25),
   },
   Text_CardTitle: {
-    color: dozy_theme.colors.secondary
+    color: dozy_theme.colors.secondary,
   },
   View_WarningContainer: {
     height: scale(150),
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 1
+    flex: 1,
   },
   Text_Warning: {
     color: dozy_theme.colors.medium,
     textAlign: 'center',
     width: '100%',
     fontSize: scale(16),
-    marginTop: scale(17)
-  }
+    marginTop: scale(17),
+  },
+  // eslint-disable-next-line react-native/no-color-literals
+  container: { backgroundColor: '#232B3F' },
+  arrowIcon: { alignSelf: 'flex-start', marginLeft: scale(50) },
+  contentInactive: {
+    opacity: 0.3,
+  },
+  logStatsLineGraph: {
+    alignItems: 'center',
+    marginTop: scale(-25),
+    marginLeft: scale(17),
+  },
 });

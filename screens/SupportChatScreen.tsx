@@ -8,12 +8,12 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import firestore, {
-  FirebaseFirestoreTypes
+  FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 import { AntDesign } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
@@ -30,7 +30,7 @@ import AnalyticsEvents from '../constants/AnalyticsEvents';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   // Get global state & dispatch
   const { state, dispatch } = React.useContext(AuthContext);
@@ -49,10 +49,10 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
       // If LiveChat has a msg marked as unread, mark it as read in Firebase
       if (state.userData?.livechatUnreadMsg) {
         firestore().collection('users').doc(state.userId).update({
-          livechatUnreadMsg: false
+          livechatUnreadMsg: false,
         });
       }
-    }, [])
+    }, []),
   );
 
   // Function to fetch chats from Firebase and put them in global state
@@ -100,7 +100,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
               <Text
                 style={{
                   ...theme.typography.headline5,
-                  ...styles.Text_CoachName
+                  ...styles.Text_CoachName,
                 }}
               >
                 Sam Stowers
@@ -113,7 +113,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('TreatmentReview')}
-              style={{ flex: 1, alignItems: 'flex-end' }}
+              style={styles.faqButton}
             >
               <AntDesign
                 name="questioncircle"
@@ -148,7 +148,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
                     state.userData.userInfo?.displayName,
                   message: typedMsg,
                   time: new Date(),
-                  sentByUser: true
+                  sentByUser: true,
                 });
                 Analytics.logEvent(AnalyticsEvents.sendMessage);
               }}
@@ -160,16 +160,16 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   } else {
     // If chats haven't loaded, show indicator
     return (
-      <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
+      <View
+        style={[
+          { backgroundColor: theme.colors.background },
+          styles.loaderContainer,
+        ]}
+      >
         <ActivityIndicator
           size="large"
           color={theme.colors.primary}
-          style={{
-            width: scale(45),
-            height: scale(45),
-            marginTop: '45%',
-            alignSelf: 'center'
-          }}
+          style={styles.loader}
         />
       </View>
     );
@@ -181,71 +181,60 @@ const styles = StyleSheet.create({
     marginTop: scale(
       Platform.select({
         ios: dozy_theme.spacing.medium,
-        android: dozy_theme.spacing.large
-      }) as number
+        android: dozy_theme.spacing.large,
+      }) as number,
     ),
     flex: 1,
-    backgroundColor: dozy_theme.colors.background
+    backgroundColor: dozy_theme.colors.background,
   },
   SafeAreaView: {
     backgroundColor: dozy_theme.colors.medium,
-    flex: 1
+    flex: 1,
   },
   View_HeaderContainer: {
     backgroundColor: dozy_theme.colors.medium,
     flexDirection: 'row',
     padding: scale(14),
-    paddingTop: 0
+    paddingTop: 0,
   },
   View_ChatNameContainer: {
     flexDirection: 'column',
     marginLeft: scale(10),
     marginTop: scale(-2),
-    justifyContent: 'flex-start'
-  },
-  ItemMargin: {
-    marginTop: scale(10)
+    justifyContent: 'flex-start',
   },
   KbAvoidingView: {
-    flex: 1
+    flex: 1,
   },
   View_ContentContainer: {
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     paddingHorizontal: scale(10),
-    paddingTop: scale(10)
+    paddingTop: scale(10),
   },
   Img_Profile: {
     width: scale(40),
     height: scale(40),
-    borderRadius: 500
+    borderRadius: 500,
   },
   Text_CoachName: {
     color: dozy_theme.colors.secondary,
-    fontSize: scale(15)
+    fontSize: scale(15),
   },
   Text_CoachTitle: {
     color: dozy_theme.colors.secondary,
-    marginTop: scale(-5)
+    marginTop: scale(-5),
   },
   Text_FAQ: {
     color: dozy_theme.colors.secondary,
-    marginBottom: -7
+    marginBottom: -7,
   },
-  View_ChatInput: {
-    backgroundColor: dozy_theme.colors.secondary,
-    marginBottom: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+  faqButton: { flex: 1, alignItems: 'flex-end' },
+  loaderContainer: { flex: 1 },
+  loader: {
+    width: scale(45),
+    height: scale(45),
+    marginTop: '45%',
+    alignSelf: 'center',
   },
-  TextInput: {
-    paddingLeft: scale(15),
-    paddingVertical: scale(15),
-    paddingBottom: Platform.OS == 'ios' ? scale(18) : scale(15),
-    flex: 1
-  },
-  SendIcon: {
-    padding: scale(10)
-  }
 });

@@ -7,13 +7,13 @@ import { Theme } from '../../types/theme';
 interface Props {
   questionLabel: string;
   questionSubtitle?: string;
-  bottomBackButton: Function;
+  bottomBackButton: () => void;
   buttonValues: Array<{
     label: string;
     value: string | number | boolean;
     solidColor?: boolean;
   }>;
-  onQuestionSubmit: Function;
+  onQuestionSubmit: (value: string | number | boolean) => void;
   theme: Theme;
 }
 
@@ -41,8 +41,8 @@ const MultiButtonScreen: React.FC<Props> = (props) => {
             styles.Text_npp,
             theme.typography.headline5,
             {
-              color: theme.colors.secondary
-            }
+              color: theme.colors.secondary,
+            },
           ]}
         >
           {props.questionLabel}
@@ -53,7 +53,7 @@ const MultiButtonScreen: React.FC<Props> = (props) => {
               styles.Text_QuestionLabel,
               theme.typography.body1,
               styles.Text_QuestionSubtitle,
-              { color: theme.colors.secondary }
+              { color: theme.colors.secondary },
             ]}
           >
             {props.questionSubtitle}
@@ -72,46 +72,37 @@ const MultiButtonScreen: React.FC<Props> = (props) => {
 };
 
 const styles = StyleSheet.create({
-  Container_n8l: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   View_HeaderContainer: {
     width: '100%',
     height: '10%',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: 20
-  },
-  View_ButtonsContainer: {
-    flex: 5,
-    justifyContent: 'space-around'
+    marginTop: 20,
   },
   View_ContentContainer: {
     flex: 3,
     justifyContent: 'center',
-    marginTop: 20
+    marginTop: 20,
   },
   Root_ne0: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   Text_npp: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'flex-start',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   Text_QuestionLabel: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   Text_QuestionSubtitle: {
     fontWeight: 'normal',
-    opacity: 0.7
-  }
+    opacity: 0.7,
+  },
 });
 
 export default withTheme(MultiButtonScreen);

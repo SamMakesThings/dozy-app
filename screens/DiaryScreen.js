@@ -4,7 +4,7 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Platform
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { withTheme } from '@draftbit/ui';
@@ -31,7 +31,7 @@ function DiaryScreen() {
 
   const currentMonthString = selectedDate.toLocaleDateString('en-US', {
     month: 'long',
-    year: 'numeric'
+    year: 'numeric',
   });
 
   return (
@@ -71,18 +71,18 @@ function DiaryScreen() {
         tabBarOptions={{
           activeTintColor: theme.colors.secondary,
           style: {
-            backgroundColor: theme.colors.medium
+            backgroundColor: theme.colors.medium,
           },
           indicatorStyle: {
-            backgroundColor: theme.colors.secondary
+            backgroundColor: theme.colors.secondary,
           },
           labelStyle: {
-            fontSize: scale(13)
+            fontSize: scale(13),
           },
           tabStyle: {
             paddingBottom: scale(12),
-            paddingTop: scale(10)
-          }
+            paddingTop: scale(10),
+          },
         }}
         style={{ backgroundColor: theme.colors.primary }}
       >
@@ -102,21 +102,18 @@ const styles = StyleSheet.create({
     paddingTop: scale(
       Platform.select({
         ios: dozy_theme.spacing.small,
-        android: dozy_theme.spacing.medium
-      })
+        android: dozy_theme.spacing.medium,
+      }),
     ),
-    paddingBottom: scale(5)
+    paddingBottom: scale(5),
   },
   ScreenContainer: {
     flex: 1,
-    backgroundColor: dozy_theme.colors.medium
+    backgroundColor: dozy_theme.colors.medium,
   },
   Text_MonthSelect: {
-    color: dozy_theme.colors.secondary
+    color: dozy_theme.colors.secondary,
   },
-  Touchable_Chevron: {
-    padding: scale(5)
-  }
 });
 
 export default withTheme(DiaryScreen);

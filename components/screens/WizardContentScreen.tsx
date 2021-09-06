@@ -10,11 +10,11 @@ interface Props {
   flexibleLayout?: boolean;
   textLabel: string | JSX.Element;
   titleLabel?: string;
-  onQuestionSubmit: Function;
+  onQuestionSubmit: (value: string) => void;
   buttonLabel?: string;
   bottomBackButtonLabel?: string;
   bottomGreyButtonLabel?: string;
-  bottomBackButton?: Function;
+  bottomBackButton?: () => void;
   bbbDisabled?: boolean;
   onlyBackButton?: boolean;
 }
@@ -28,32 +28,31 @@ const WizardContentScreen: React.FC<Props> = (props) => {
   return (
     <ScreenContainer hasSafeArea={true} scrollable={false}>
       <Container
-        style={{
-          ...styles.View_ContentContainer,
-          justifyContent: props.flexibleLayout ? 'space-around' : 'center'
-        }}
+        style={[
+          styles.View_ContentContainer,
+          props.flexibleLayout
+            ? styles.flexibleLayoutContainer
+            : styles.container,
+        ]}
         elevation={0}
         useThemeGutterPadding={true}
       >
         <View
-          style={{
-            flex: props.flexibleLayout ? undefined : 1,
-            height: props.flexibleLayout ? scale(20) : undefined
-          }}
+          style={props.flexibleLayout ? styles.flexibleContent : styles.content}
         />
         <View
-          style={{
-            ...styles.View_HeroContainer,
-            flex: props.flexibleLayout ? undefined : 5
-          }}
+          style={[
+            styles.View_HeroContainer,
+            !props.flexibleLayout && styles.heroContainer,
+          ]}
         >
           {props.children}
         </View>
         <View
-          style={{
-            ...styles.View_TextContainer,
-            flex: props.flexibleLayout ? undefined : 3
-          }}
+          style={[
+            styles.View_TextContainer,
+            !props.flexibleLayout && styles.textContainer,
+          ]}
         >
           {props.titleLabel && (
             <Text
@@ -62,8 +61,8 @@ const WizardContentScreen: React.FC<Props> = (props) => {
                 theme.typography.headline5,
                 {
                   color: theme.colors.secondary,
-                  marginBottom: scale(10)
-                }
+                  marginBottom: scale(10),
+                },
               ]}
             >
               {props.titleLabel}
@@ -72,11 +71,11 @@ const WizardContentScreen: React.FC<Props> = (props) => {
           <Text
             style={[
               styles.Text_Explainer,
+              styles.textLabel,
               theme.typography.body1,
               {
                 color: theme.colors.secondary,
-                marginBottom: 10
-              }
+              },
             ]}
           >
             {props.textLabel}
@@ -99,19 +98,40 @@ const WizardContentScreen: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   View_HeroContainer: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   View_ContentContainer: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   View_TextContainer: {
-    width: '90%'
+    width: '90%',
   },
   Text_Explainer: {
     textAlign: 'left',
-    alignItems: 'flex-start'
-  }
+    alignItems: 'flex-start',
+  },
+  container: {
+    justifyContent: 'center',
+  },
+  flexibleLayoutContainer: {
+    justifyContent: 'space-around',
+  },
+  content: {
+    flex: 1,
+  },
+  flexibleContent: {
+    height: scale(20),
+  },
+  heroContainer: {
+    flex: 5,
+  },
+  textContainer: {
+    flex: 3,
+  },
+  textLabel: {
+    marginBottom: 10,
+  },
 });
 
 export default withTheme(WizardContentScreen);

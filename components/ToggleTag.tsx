@@ -8,8 +8,8 @@ import { Theme } from '../types/theme';
 interface Props {
   label: string;
   theme: Theme;
-  onPress: Function;
-  entypoIcon: string;
+  onPress: (value: string) => void;
+  entypoIcon: React.ComponentProps<typeof Entypo>['name'];
   initialSelected: boolean;
 }
 
@@ -32,11 +32,11 @@ const ToggleTag: React.FC<Props> = (props) => {
             selected
               ? {
                   backgroundColor: theme.colors.primary,
-                  borderColor: theme.colors.primary
+                  borderColor: theme.colors.primary,
                 }
               : {
-                  borderColor: theme.colors.lightInverse
-                }
+                  borderColor: theme.colors.lightInverse,
+                },
           ]}
         >
           <Entypo
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: scale(4)
+    margin: scale(4),
   },
   View_IconContainer: {
     borderWidth: scale(1),
@@ -70,12 +70,12 @@ const styles = StyleSheet.create({
     width: scale(52),
     height: scale(52),
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   Text_ToggleLabel: {
     textAlign: 'center',
-    paddingTop: scale(2)
-  }
+    paddingTop: scale(2),
+  },
 });
 
 export default withTheme(ToggleTag);

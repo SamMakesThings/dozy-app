@@ -3,7 +3,7 @@ import { Task } from '../types/custom';
 
 async function fetchTasks(
   db: FirebaseFirestoreTypes.Module,
-  userId: string
+  userId: string,
 ): Promise<Task[]> {
   // Retrieving tasks from Firestore
   return new Promise((resolve) => {
@@ -27,7 +27,7 @@ async function fetchTasks(
 
         // Otherwise, arrange data and update state
         res.forEach(function (
-          doc: FirebaseFirestoreTypes.QueryDocumentSnapshot
+          doc: FirebaseFirestoreTypes.QueryDocumentSnapshot,
         ) {
           const docData = doc.data();
           const currentTask = {
@@ -36,13 +36,13 @@ async function fetchTasks(
             dailyRecurring: docData.dailyRecurring,
             visibleAfterDate: docData.visibleAfterDate,
             source: docData.source,
-            notification: docData.notification
+            notification: docData.notification,
           };
           tasks.push({ taskId: doc.id, ...currentTask });
         });
         resolve(tasks);
       })
-      .catch(function (error: object) {
+      .catch(function (error) {
         console.log('Error getting tasks:', error);
       });
   });

@@ -1,6 +1,6 @@
-/* eslint-disable import/prefer-default-export */
 import { scale } from 'react-native-size-matters';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const dozy_theme = {
   disabledOpacity: 0.5,
   spacing: {
@@ -8,94 +8,94 @@ export const dozy_theme = {
     text: 4,
     small: 8,
     medium: 12,
-    large: 16
+    large: 16,
   },
   borderRadius: {
     global: 6,
-    button: 36
+    button: 36,
   },
   buttonLayout: {
     height: scale(47),
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   typography: {
     smallLabel: {
       fontSize: scale(16),
       lineHeight: scale(26),
-      fontFamily: 'RubikRegular'
+      fontFamily: 'RubikRegular',
     },
     body1: {
       fontSize: scale(18),
       lineHeight: scale(22),
       fontFamily: 'RubikRegular',
-      letterSpacing: -0.25
+      letterSpacing: -0.25,
     },
     body2: {
       fontSize: scale(14),
       lineHeight: scale(22),
-      fontFamily: 'RubikRegular'
+      fontFamily: 'RubikRegular',
     },
     button: {
       fontSize: scale(16),
       lineHeight: scale(16),
-      fontFamily: 'RubikRegular'
+      fontFamily: 'RubikRegular',
     },
     caption: {
       fontSize: scale(12),
       lineHeight: scale(16),
-      fontFamily: 'RubikRegular'
+      fontFamily: 'RubikRegular',
     },
     headline1: {
       fontSize: scale(60),
       lineHeight: scale(71),
-      fontFamily: 'RubikBold'
+      fontFamily: 'RubikBold',
     },
     headline2: {
       fontSize: scale(48),
       lineHeight: scale(58),
-      fontFamily: 'RubikMedium'
+      fontFamily: 'RubikMedium',
     },
     headline3: {
       fontSize: scale(28),
       lineHeight: scale(35),
-      fontFamily: 'RubikMedium'
+      fontFamily: 'RubikMedium',
     },
     headline4: {
       fontSize: scale(24),
       lineHeight: scale(32),
-      fontFamily: 'RubikBold'
+      fontFamily: 'RubikBold',
     },
     headline5: {
       fontSize: scale(22),
       lineHeight: scale(26),
-      fontFamily: 'RubikMedium'
+      fontFamily: 'RubikMedium',
     },
     headline6: {
       fontSize: scale(16),
       lineHeight: scale(24),
-      fontFamily: 'RubikMedium'
+      fontFamily: 'RubikMedium',
     },
     cardTitle: {
       fontSize: scale(20),
       lineHeight: scale(26),
-      fontFamily: 'RubikMedium'
+      fontFamily: 'RubikMedium',
     },
     overline: {
       fontSize: scale(12),
       lineHeight: scale(16),
       letterSpacing: 2,
-      fontFamily: 'RubikRegular'
+      fontFamily: 'RubikRegular',
     },
     subtitle1: {
       fontSize: scale(16),
       lineHeight: scale(26),
-      fontFamily: 'RubikRegular'
+      fontFamily: 'RubikRegular',
     },
     subtitle2: {
       fontSize: scale(14),
       lineHeight: scale(22),
-      fontFamily: 'RubikRegular'
-    }
+      fontFamily: 'RubikRegular',
+    },
   },
   colors: {
     background: 'rgba(35, 43, 63, 1)',
@@ -109,56 +109,56 @@ export const dozy_theme = {
     secondary: 'rgba(219, 237, 243, 1)',
     strong: 'rgba(255, 255, 255, 1)',
     strongInverse: 'rgba(255, 255, 255, 1)',
-    surface: 'rgba(255, 255, 255, 1)'
+    surface: 'rgba(255, 255, 255, 1)',
   },
   elevation: {
-    '0': {
+    0: {
       shadowColor: 'rgba(18, 20, 44, 1)',
       shadowOffset: {
         width: 0,
-        height: 0
+        height: 0,
       },
       shadowRadius: 0,
       shadowOpacity: 0,
       borderWidth: 0,
       borderColor: 'rgba(18, 20, 44, 1)',
-      borderOpacity: 0
+      borderOpacity: 0,
     },
-    '1': {
+    1: {
       shadowColor: 'rgba(18, 20, 44, 1)',
       shadowOffset: {
         width: 0,
-        height: 2
+        height: 2,
       },
       shadowRadius: 4,
       shadowOpacity: 0.06,
       borderWidth: 1,
       borderColor: 'rgba(18, 20, 44, 1)',
-      borderOpacity: 0.06
+      borderOpacity: 0.06,
     },
-    '2': {
+    2: {
       shadowColor: 'rgba(18, 20, 44, 1)',
       shadowOffset: {
         width: 0,
-        height: 2
+        height: 2,
       },
       shadowRadius: 4,
       shadowOpacity: 0.2,
       borderWidth: 0,
       borderColor: 'rgba(18, 20, 44, 1)',
-      borderOpacity: 0
+      borderOpacity: 0,
     },
-    '3': {
+    3: {
       shadowColor: 'rgba(18, 20, 44, 1)',
       shadowOffset: {
         width: 0,
-        height: 6
+        height: 6,
       },
       shadowRadius: 6,
       shadowOpacity: 0.12,
       borderWidth: 0,
       borderColor: 'rgba(18, 20, 44, 1)',
-      borderOpacity: 0
-    }
-  }
+      borderOpacity: 0,
+    },
+  },
 };

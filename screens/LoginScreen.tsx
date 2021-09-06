@@ -1,12 +1,12 @@
 import React from 'react';
-import * as AppleAuthentication from 'expo-apple-authentication'; // @ts-ignore
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { Button, ScreenContainer, Container, Touchable } from '@draftbit/ui';
 import {
   StyleSheet,
   Text,
   ImageBackground,
   Platform,
-  ViewStyle
+  ViewStyle,
 } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { AuthContext } from '../context/AuthContext';
@@ -30,7 +30,7 @@ function LoginScreen() {
       <ImageBackground
         source={require('../assets/images/DreamBgExtended.png')}
         style={styles.View_ContentContainer}
-        imageStyle={{ resizeMode: 'contain' }}
+        imageStyle={styles.background}
       >
         <Container
           elevation={0}
@@ -58,7 +58,7 @@ function LoginScreen() {
             style={StyleSheet.flatten([
               styles.Text_Hero1,
               theme.typography.headline3,
-              { color: theme.colors.strongInverse }
+              { color: theme.colors.strongInverse },
             ])}
           >
             Sleep through
@@ -70,7 +70,7 @@ function LoginScreen() {
             style={StyleSheet.flatten([
               styles.Text_Hero2,
               theme.typography.headline3,
-              { color: theme.colors.strongInverse }
+              { color: theme.colors.strongInverse },
             ])}
           >
             the night again
@@ -92,7 +92,7 @@ function LoginScreen() {
               cornerRadius={theme.borderRadius.button}
               style={StyleSheet.flatten([
                 theme.buttonLayout as ViewStyle,
-                { borderRadius: theme.borderRadius.button }
+                { borderRadius: theme.borderRadius.button },
               ])}
               onPress={signInWithApple}
             />
@@ -105,8 +105,8 @@ function LoginScreen() {
               theme.buttonLayout,
               {
                 borderRadius: theme.borderRadius.button,
-                marginTop: Platform.OS === 'ios' ? scale(5) : 0
-              }
+                marginTop: Platform.OS === 'ios' ? scale(5) : 0,
+              },
             ])}
             onPress={signIn}
           >
@@ -117,7 +117,7 @@ function LoginScreen() {
               style={StyleSheet.flatten([
                 styles.Text_SignIn,
                 theme.typography.smallLabel,
-                { color: theme.colors.surface }
+                { color: theme.colors.surface },
               ])}
             >
               {Platform.OS === 'ios' ? 'Returning users' : 'Sign in'}
@@ -136,43 +136,44 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '60%',
     justifyContent: 'space-between',
-    paddingBottom: Platform.OS === 'ios' ? scale(20) : 0
+    paddingBottom: Platform.OS === 'ios' ? scale(20) : 0,
   },
   View_LogoContainer: {
-    height: '15%'
+    height: '15%',
   },
   Text_SignIn: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   Image_FeaturedBed: {
     width: '60%',
     alignSelf: 'center',
-    height: verticalScale(200)
+    height: verticalScale(200),
   },
   Image_Wordmark: {
     alignSelf: 'flex-start',
     marginLeft: scale(12),
     width: '50%',
-    height: '120%'
+    height: '120%',
   },
   View_HeroLogoText: {
     height: '65%',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   Touchable_BackButton: {
     paddingTop: scale(25),
-    paddingBottom: scale(25)
+    paddingBottom: scale(25),
   },
   Text_Hero1: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   Text_Hero2: {
     textAlign: 'center',
-    marginBottom: verticalScale(40)
+    marginBottom: verticalScale(40),
   },
   View_ButtonsContainer: {
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
+  background: { resizeMode: 'contain' },
 });
 
 export default LoginScreen;

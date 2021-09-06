@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -7,7 +6,7 @@ import {
   VictoryTheme,
   VictoryLine,
   VictoryAxis,
-  VictoryScatter
+  VictoryScatter,
 } from 'victory-native';
 import moment from 'moment';
 import { AuthContext } from '../context/AuthContext';
@@ -46,7 +45,7 @@ const SCTSRTState = {
   targetBedTimeDisplayString: 'ERROR',
   targetWakeTimeDisplayString: 'ERROR',
   checkinPostponed: false,
-  nextCheckinTime: new Date()
+  nextCheckinTime: new Date(),
 };
 
 // Define the theme for the file globally, along with sleepLogs array
@@ -62,29 +61,29 @@ const chartStyles = {
   chart: {
     width: scale(300),
     height: scale(300),
-    domainPadding: { x: 3, y: 35 }
+    domainPadding: { x: 3, y: 35 },
   },
   axis: {
     tickLabels: {
       angle: -45,
-      fontSize: scale(11)
+      fontSize: scale(11),
     },
     grid: {
-      stroke: theme.colors.medium
-    }
+      stroke: theme.colors.medium,
+    },
   },
   line: {
     data: {
       stroke: theme.colors.primary,
       strokeWidth: scale(4),
-      strokeLinejoin: 'round'
-    }
+      strokeLinejoin: 'round',
+    },
   },
   scatter: {
     data: {
-      fill: theme.colors.primary
-    }
-  }
+      fill: theme.colors.primary,
+    },
+  },
 };
 
 export const Welcome = ({ navigation }: Props) => {
@@ -96,7 +95,7 @@ export const Welcome = ({ navigation }: Props) => {
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
         navigation.navigate('SleepEfficiency', {
-          progressBarPercent: 0.03
+          progressBarPercent: 0.03,
         });
       }}
       textLabel="Welcome back! This’ll take 10-15 minutes. We’ll review your sleep over the last week, update your care plan, and get you started on your new technique."
@@ -116,7 +115,7 @@ export const SleepEfficiency = ({ navigation }: Props) => {
       (recentSleepLogs.reduce((a, b) => a + b.sleepEfficiency, 0) /
         recentSleepLogs.length) *
       100
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   return (
@@ -125,7 +124,7 @@ export const SleepEfficiency = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SleepOnset', {
-          progressBarPercent: 0.07
+          progressBarPercent: 0.07,
         });
       }}
       textLabel={
@@ -160,7 +159,7 @@ export const SleepEfficiency = ({ navigation }: Props) => {
           tickFormat={(tick) => {
             return tick.toLocaleString('en-US', {
               month: 'short',
-              day: 'numeric'
+              day: 'numeric',
             });
           }}
           tickCount={7}
@@ -185,14 +184,12 @@ export const SleepEfficiency = ({ navigation }: Props) => {
 };
 
 export const SleepOnset = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
-
   // Calculate recent sleep efficiency average
   const sleepOnsetAvg = Number(
     (
       recentSleepLogs.reduce((a, b) => a + b.minsToFallAsleep, 0) /
       recentSleepLogs.length
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   return (
@@ -201,7 +198,7 @@ export const SleepOnset = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SleepMaintenance', {
-          progressBarPercent: 0.11
+          progressBarPercent: 0.11,
         });
       }}
       textLabel={
@@ -225,7 +222,7 @@ export const SleepOnset = ({ navigation }: Props) => {
           tickFormat={(tick) => {
             return tick.toLocaleString('en-US', {
               month: 'short',
-              day: 'numeric'
+              day: 'numeric',
             });
           }}
           tickCount={7}
@@ -250,14 +247,12 @@ export const SleepOnset = ({ navigation }: Props) => {
 };
 
 export const SleepMaintenance = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
-
   // Calculate recent sleep efficiency average
   const nightMinsAwakeAvg = Number(
     (
       recentSleepLogs.reduce((a, b) => a + b.nightMinsAwake, 0) /
       recentSleepLogs.length
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   return (
@@ -266,7 +261,7 @@ export const SleepMaintenance = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('TreatmentPlan', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.14,
         });
       }}
       textLabel={
@@ -291,7 +286,7 @@ export const SleepMaintenance = ({ navigation }: Props) => {
           tickFormat={(tick) => {
             return tick.toLocaleString('en-US', {
               month: 'short',
-              day: 'numeric'
+              day: 'numeric',
             });
           }}
           tickCount={7}
@@ -322,7 +317,7 @@ export const TreatmentPlan = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('TreatmentPlanContinued', {
-          progressBarPercent: 0.18
+          progressBarPercent: 0.18,
         });
       }}
       textLabel={
@@ -343,7 +338,7 @@ export const TreatmentPlanContinued = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('DriversOfSleep', {
-          progressBarPercent: 0.22
+          progressBarPercent: 0.22,
         });
       }}
       textLabel={
@@ -363,7 +358,7 @@ export const DriversOfSleep = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('WhySleepDrives', {
-          progressBarPercent: 0.25
+          progressBarPercent: 0.25,
         });
       }}
       titleLabel="The two main drivers of human sleep"
@@ -391,7 +386,7 @@ export const WhySleepDrives = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('FragmentedSleep', {
-          progressBarPercent: 0.29
+          progressBarPercent: 0.29,
         });
       }}
       textLabel={
@@ -412,7 +407,7 @@ export const FragmentedSleep = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('ConsolidatingSleep', {
-          progressBarPercent: 0.33
+          progressBarPercent: 0.33,
         });
       }}
       titleLabel="Right now, your sleep is pretty fragmented."
@@ -432,7 +427,7 @@ export const ConsolidatingSleep = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('ReduceTimeInBed', {
-          progressBarPercent: 0.37
+          progressBarPercent: 0.37,
         });
       }}
       titleLabel="We fix it by consolidating your sleep into one chunk."
@@ -452,7 +447,7 @@ export const ReduceTimeInBed = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SCTSRTIntro', {
-          progressBarPercent: 0.4
+          progressBarPercent: 0.4,
         });
       }}
       titleLabel="Consolidate sleep by reducing time spent in bed."
@@ -472,7 +467,7 @@ export const SCTSRTIntro = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('Rule1', {
-          progressBarPercent: 0.44
+          progressBarPercent: 0.44,
         });
       }}
       titleLabel="This is where SCT and SRT come in."
@@ -491,7 +486,7 @@ export const Rule1 = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('Rule2', {
-          progressBarPercent: 0.48
+          progressBarPercent: 0.48,
         });
       }}
       titleLabel="1st, maintain the sleep restricted schedule."
@@ -510,7 +505,7 @@ export const Rule2 = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('Rule3', {
-          progressBarPercent: 0.51
+          progressBarPercent: 0.51,
         });
       }}
       titleLabel="2nd, if you're unable to sleep for 15+ minutes, get out of bed..."
@@ -529,7 +524,7 @@ export const Rule3 = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('RulesRecap', {
-          progressBarPercent: 0.55
+          progressBarPercent: 0.55,
         });
       }}
       titleLabel="3rd, don't do anything in bed besides sleeping."
@@ -547,7 +542,7 @@ export const RulesRecap = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('WhatToExpect', {
-          progressBarPercent: 0.59
+          progressBarPercent: 0.59,
         });
       }}
       titleLabel="A quick recap:"
@@ -571,14 +566,7 @@ export const RulesRecap = ({ navigation }: Props) => {
       }
       flexibleLayout
     >
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around',
-          alignItems: 'center'
-        }}
-      >
+      <View style={styles.rulesRecapContent}>
         <AlarmClock width={imgSize * 0.5} height={imgSize * 0.5} />
         <Rule2Illustration width={imgSize * 1.2} height={imgSize} />
         <Rule3Illustration width={imgSize * 0.7} height={imgSize * 0.7} />
@@ -594,7 +582,7 @@ export const WhatToExpect = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('UnderstandingAsk', {
-          progressBarPercent: 0.62
+          progressBarPercent: 0.62,
         });
       }}
       titleLabel="What to expect"
@@ -615,11 +603,11 @@ export const UnderstandingAsk = ({ navigation }: Props) => {
       onQuestionSubmit={(res: string) => {
         if (res === 'I have some questions or concerns') {
           navigation.navigate('TreatmentReview', {
-            module: 'SCTSRT'
+            module: 'SCTSRT',
           });
         } else {
           navigation.navigate('SRTCalibrationIntro', {
-            progressBarPercent: 0.66
+            progressBarPercent: 0.66,
           });
         }
       }}
@@ -642,7 +630,7 @@ export const SRTCalibrationIntro = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('WakeTimeSetting', {
-          progressBarPercent: 0.7
+          progressBarPercent: 0.7,
         });
       }}
       titleLabel="Plan calibration"
@@ -663,7 +651,7 @@ export const WakeTimeSetting = ({ navigation }: Props) => {
       onQuestionSubmit={(value: Date) => {
         SCTSRTState.SCTSRTWakeTime = value;
         navigation.navigate('SleepDurationCalculation', {
-          progressBarPercent: 0.74
+          progressBarPercent: 0.74,
         });
       }}
       validInputChecker={(val: Date) => {
@@ -673,7 +661,7 @@ export const WakeTimeSetting = ({ navigation }: Props) => {
           : {
               severity: 'WARNING',
               errorMsg:
-                'Did you set AM/PM correctly? Selected time is late for a wake time.'
+                'Did you set AM/PM correctly? Selected time is late for a wake time.',
             };
       }}
       questionLabel="What time do you want to get up every morning this week?"
@@ -684,14 +672,12 @@ export const WakeTimeSetting = ({ navigation }: Props) => {
 };
 
 export const SleepDurationCalculation = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
-
   // Calculate recent sleep efficiency average
   const sleepDurationAvg = Number(
     (
       recentSleepLogs.reduce((a, b) => a + b.sleepDuration, 0) /
       recentSleepLogs.length
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   // Calculate Time in Bed (TIB) target
@@ -710,7 +696,7 @@ export const SleepDurationCalculation = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('TargetBedtime', {
-          progressBarPercent: 0.78
+          progressBarPercent: 0.78,
         });
       }}
       titleLabel={
@@ -737,7 +723,7 @@ export const SleepDurationCalculation = ({ navigation }: Props) => {
           tickFormat={(tick) => {
             return tick.toLocaleString('en-US', {
               month: 'short',
-              day: 'numeric'
+              day: 'numeric',
             });
           }}
           tickCount={7}
@@ -770,7 +756,7 @@ export const TargetBedtime = ({ navigation }: Props) => {
   const targetBedTimeDisplayString = formatDateAsTime(targetBedTime);
   SCTSRTState.targetBedTimeDisplayString = targetBedTimeDisplayString;
   const targetWakeTimeDisplayString = formatDateAsTime(
-    SCTSRTState.SCTSRTWakeTime
+    SCTSRTState.SCTSRTWakeTime,
   );
   SCTSRTState.targetWakeTimeDisplayString = targetWakeTimeDisplayString;
 
@@ -780,7 +766,7 @@ export const TargetBedtime = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PrescriptionSummary', {
-          progressBarPercent: 0.81
+          progressBarPercent: 0.81,
         });
       }}
       titleLabel={'Your target bedtime is ' + targetBedTimeDisplayString}
@@ -803,7 +789,7 @@ export const PrescriptionSummary = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('DeprivationWarning', {
-          progressBarPercent: 0.85
+          progressBarPercent: 0.85,
         });
       }}
       titleLabel={'Your target sleep schedule'}
@@ -837,7 +823,7 @@ export const DeprivationWarning = ({ navigation }: Props) => {
       onQuestionSubmit={(val: string) => {
         if (val !== 'Wait, I have some concerns') {
           navigation.navigate('CheckinScheduling', {
-            progressBarPercent: 0.88
+            progressBarPercent: 0.88,
           });
         } else {
           navigation.navigate('AddressingConcerns');
@@ -863,7 +849,7 @@ export const AddressingConcerns = ({ navigation }: Props) => {
           SCTSRTState.checkinPostponed = false;
           navigation.navigate('TreatmentReview', {
             module: 'SCTSRT',
-            progressBarPercent: 0.95
+            progressBarPercent: 0.95,
           });
         } else {
           SCTSRTState.checkinPostponed = true;
@@ -899,12 +885,12 @@ export const CheckinScheduling = ({ navigation }: Props) => {
         if (moment().add(7, 'days').hour(0).toDate() > val) {
           return {
             severity: 'ERROR',
-            errorMsg: 'Please select a day 7 or more days from today'
+            errorMsg: 'Please select a day 7 or more days from today',
           };
         } else if (moment().add(14, 'days').hour(0).toDate() < val) {
           return {
             severity: 'WARNING',
-            errorMsg: 'Please select a day within 14 days of today'
+            errorMsg: 'Please select a day within 14 days of today',
           };
         } else {
           return true;
@@ -930,28 +916,28 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
       (sleepLogs.reduce((a, b) => a + b.sleepEfficiency, 0) /
         sleepLogs.length) *
       100
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   // Calculate baseline sleep onset average
   const sleepOnsetAvg = Number(
     (
       sleepLogs.reduce((a, b) => a + b.minsToFallAsleep, 0) / sleepLogs.length
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   // Calculate baseline night mins awake average
   const nightMinsAwakeAvg = Number(
     (
       sleepLogs.reduce((a, b) => a + b.nightMinsAwake, 0) / sleepLogs.length
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   // Calculate baseline sleep duration average
   const sleepDurationAvg = Number(
     (
       sleepLogs.reduce((a, b) => a + b.sleepDuration, 0) / sleepLogs.length
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   // Create reminder object for next checkin
@@ -961,7 +947,7 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
     time: SCTSRTState.nextCheckinTime,
-    enabled: true
+    enabled: true,
   };
 
   return (
@@ -978,7 +964,7 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
           nextCheckinDatetime: SCTSRTState.nextCheckinTime,
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
-            (v) => v.started === false && v.module !== 'SCTSRT'
+            (v) => v.started === false && v.module !== 'SCTSRT',
           )[0].module,
           lastCheckinModule: 'SCTSRT',
           targetBedTime: SCTSRTState.SCTSRTBedTime,
@@ -988,7 +974,7 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
           sleepOnsetAvgBaseline: sleepOnsetAvg,
           nightMinsAwakeAvgBaseline: nightMinsAwakeAvg,
           sleepDurationAvgBaseline: sleepDurationAvg,
-          reminderObject: reminderObject
+          reminderObject: reminderObject,
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
@@ -1004,6 +990,12 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   BoldLabelText: {
     fontFamily: 'RubikMedium',
-    fontSize: scale(20)
-  }
+    fontSize: scale(20),
+  },
+  rulesRecapContent: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
 });

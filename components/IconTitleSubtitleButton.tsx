@@ -4,7 +4,7 @@ import {
   View,
   TouchableOpacity,
   GestureResponderEvent,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
@@ -14,7 +14,7 @@ interface Props {
   titleLabel: string;
   subtitleLabel: string;
   backgroundColor?: string;
-  icon?: object;
+  icon?: React.ReactElement;
   badge?: boolean;
   onPress?: ((event: GestureResponderEvent) => void) | undefined;
 }
@@ -25,7 +25,7 @@ const IconTitleSubtitleButton: React.FC<Props> = (props) => {
     <TouchableOpacity
       style={{
         ...styles.Touchable_ButtonContainer,
-        backgroundColor: props.backgroundColor || theme.colors.medium
+        backgroundColor: props.backgroundColor || theme.colors.medium,
       }}
       onPress={props.onPress}
     >
@@ -42,7 +42,7 @@ const IconTitleSubtitleButton: React.FC<Props> = (props) => {
             style={{
               color: theme.colors.secondary,
               fontSize: scale(12),
-              lineHeight: scale(14)
+              lineHeight: scale(14),
             }}
           >
             1
@@ -57,12 +57,11 @@ const IconTitleSubtitleButton: React.FC<Props> = (props) => {
           {props.titleLabel}
         </Text>
         <Text
-          style={{
-            ...theme.typography.body2,
-            color: theme.colors.secondary,
-            opacity: 0.5,
-            marginTop: scale(-5)
-          }}
+          style={[
+            theme.typography.body2,
+            styles.subTitleLabel,
+            { color: theme.colors.secondary },
+          ]}
         >
           {props.subtitleLabel}
         </Text>
@@ -79,8 +78,9 @@ const styles = StyleSheet.create({
     padding: scale(18),
     borderRadius: dozy_theme.borderRadius.global,
     marginTop: scale(15),
-    marginBottom: scale(15)
+    marginBottom: scale(15),
   },
+  // eslint-disable-next-line react-native/no-color-literals
   View_BadgeContainer: {
     backgroundColor: 'red',
     padding: scale(4),
@@ -91,8 +91,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'flex-start',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
+  subTitleLabel: {
+    opacity: 0.5,
+    marginTop: scale(-5),
+  },
 });
 
 export default IconTitleSubtitleButton;

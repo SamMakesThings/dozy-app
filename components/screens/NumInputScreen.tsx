@@ -1,11 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput } from 'react-native';
-import {
-  withTheme,
-  ScreenContainer,
-  Container,
-  ProgressBar
-} from '@draftbit/ui';
+import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
 import { Theme } from '../../types/theme';
@@ -16,10 +11,10 @@ interface Props {
   inputLabel: string;
   defaultValue?: string;
   progressBarPercent?: number;
-  onQuestionSubmit: Function;
+  onQuestionSubmit: (value: number | string) => void;
   optional?: boolean;
-  bottomBackButton?: Function;
-  validInputChecker?: Function;
+  bottomBackButton?: () => void;
+  validInputChecker?: (value: number) => boolean;
   theme: Theme;
 }
 
@@ -28,7 +23,7 @@ enum States {
   Empty = 0,
   Invalid = 1,
   Warning = 2,
-  Valid = 3
+  Valid = 3,
 }
 
 const NumInputScreen: React.FC<Props> = (props) => {
@@ -36,7 +31,7 @@ const NumInputScreen: React.FC<Props> = (props) => {
 
   // Create state to manage possible screen states
   const [screenState, setScreenState] = React.useState(
-    props.defaultValue ? States.Valid : States.Empty
+    props.defaultValue ? States.Valid : States.Empty,
   );
   const [errorMsg, setErrorMsg] = React.useState('Error');
 
@@ -52,12 +47,8 @@ const NumInputScreen: React.FC<Props> = (props) => {
       severity: string;
       errorMsg: string;
     }
-    const validationResult:
-      | ErrorObj
-      | boolean
-      | undefined = props.validInputChecker
-      ? props.validInputChecker(val)
-      : undefined;
+    const validationResult: ErrorObj | boolean | undefined =
+      props.validInputChecker ? props.validInputChecker(val) : undefined;
 
     if (isNaN(val) && !props.optional) {
       setScreenState(States.Empty);
@@ -69,11 +60,11 @@ const NumInputScreen: React.FC<Props> = (props) => {
       setScreenState(States.Valid);
     } else if (validationResult === false) {
       console.error('Validation function should never return false');
-    } else if (validationResult.severity === 'WARNING') {
-      setErrorMsg(validationResult.errorMsg);
+    } else if ((validationResult as ErrorObj)?.severity === 'WARNING') {
+      setErrorMsg((validationResult as ErrorObj)?.errorMsg);
       setScreenState(States.Warning);
-    } else if (validationResult.severity === 'ERROR') {
-      setErrorMsg(validationResult.errorMsg);
+    } else if ((validationResult as ErrorObj)?.severity === 'ERROR') {
+      setErrorMsg((validationResult as ErrorObj)?.errorMsg);
       setScreenState(States.Invalid);
     } else {
       console.error('Validation function did something unexpected');
@@ -102,8 +93,8 @@ const NumInputScreen: React.FC<Props> = (props) => {
             styles.Text_Question,
             theme.typography.headline5,
             {
-              color: theme.colors.secondary
-            }
+              color: theme.colors.secondary,
+            },
           ]}
         >
           {props.questionLabel}
@@ -117,8 +108,8 @@ const NumInputScreen: React.FC<Props> = (props) => {
               {
                 color: displayErrorMsg
                   ? theme.colors.error
-                  : theme.colors.secondary
-              }
+                  : theme.colors.secondary,
+              },
             ]}
           >
             {displayErrorMsg ? errorMsg : props.questionSubtitle}
@@ -127,7 +118,7 @@ const NumInputScreen: React.FC<Props> = (props) => {
         <Container
           style={{
             ...styles.View_InputContainer,
-            borderColor: theme.colors.medium
+            borderColor: theme.colors.medium,
           }}
         >
           <TextInput
@@ -171,42 +162,43 @@ const NumInputScreen: React.FC<Props> = (props) => {
 const styles = StyleSheet.create({
   View_ContentContainer: {
     flex: 6,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   View_HeaderContainer: {
     flex: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: scale(16)
+    marginTop: scale(16),
   },
   View_InputContainer: {
     marginTop: scale(60),
     marginBottom: scale(27),
     width: '50%',
     alignSelf: 'center',
-    borderBottomWidth: 1.5
+    borderBottomWidth: 1.5,
   },
+  // eslint-disable-next-line react-native/no-color-literals
   TextInput: {
     color: '#ffffff',
     fontSize: scale(17),
-    paddingBottom: scale(9)
+    paddingBottom: scale(9),
   },
   Text_Question: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'flex-start',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   Text_QuestionLabel: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   Text_QuestionSubtitle: {
     fontWeight: 'normal',
-    opacity: 0.7
-  }
+    opacity: 0.7,
+  },
 });
 
 export default withTheme(NumInputScreen);

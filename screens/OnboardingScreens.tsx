@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import React, { useEffect } from 'react';
 import {
   useWindowDimensions,
@@ -7,7 +6,7 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
-  Keyboard
+  Keyboard,
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
@@ -35,7 +34,7 @@ import submitOnboardingData, {
   submitHealthHistoryData,
   submitDiaryReminderAndCheckinData,
   submitFirstChatMessage,
-  OnboardingState
+  OnboardingState,
 } from '../utilities/submitOnboardingData';
 import registerForPushNotificationsAsync from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
@@ -72,7 +71,7 @@ const onboardingState: OnboardingState = {
   expoPushToken: 'No push token provided',
   diaryReminderTime: null,
   firstCheckinTime: null,
-  firstChatMessageContent: 'Hi'
+  firstChatMessageContent: 'Hi',
 };
 
 export const Welcome = ({ navigation }: Props) => {
@@ -90,7 +89,7 @@ export const Welcome = ({ navigation }: Props) => {
       image={<WaveHello width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('Overview', {
-          progressBarPercent: null
+          progressBarPercent: null,
         });
       }}
       textLabel="Welcome to Dozy! We'll get you sleeping better in no time."
@@ -111,7 +110,7 @@ export const Overview = ({ navigation }: Props) => {
       image={<LabCoat width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('Asks', {
-          progressBarPercent: null
+          progressBarPercent: null,
         });
       }}
       textLabel="We use proven therapeutic techniques to get you sleeping again. It's drug-free, takes from 4-8 weeks, and the benefits are long-lasting."
@@ -132,7 +131,7 @@ export const Asks = ({ navigation }: Props) => {
       image={<Clipboard width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('ISIIntro', {
-          progressBarPercent: null
+          progressBarPercent: null,
         });
       }}
       textLabel="For this to work, we'll help you maintain a once-daily sleep log and a checkup once per week."
@@ -153,7 +152,7 @@ export const ISIIntro = ({ navigation }: Props) => {
       image={<TiredFace width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('ISI1', {
-          progressBarPercent: 0.14
+          progressBarPercent: 0.14,
         });
       }}
       textLabel="To get started, we'll ask you 7 questions to determine the size of your insomnia problem."
@@ -176,7 +175,7 @@ export const ISI1 = ({ navigation }: Props) => {
         navigation.navigate('ISI2', { progressBarPercent: 0.28 });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionFallingAsleepDifficulty,
-          { answer: value }
+          { answer: value },
         );
       }}
       buttonValues={[
@@ -184,7 +183,7 @@ export const ISI1 = ({ navigation }: Props) => {
         { label: 'Mild difficulty', value: 1, solidColor: true },
         { label: 'Moderate difficulty', value: 2, solidColor: true },
         { label: 'Severe difficulty', value: 3, solidColor: true },
-        { label: 'Extreme difficulty', value: 4, solidColor: true }
+        { label: 'Extreme difficulty', value: 4, solidColor: true },
       ]}
       questionLabel="How much difficulty do you have falling asleep?"
     />
@@ -205,7 +204,7 @@ export const ISI2 = ({ navigation }: Props) => {
         navigation.navigate('ISI3', { progressBarPercent: 0.42 });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionStayingAsleepDifficulty,
-          { answer: value }
+          { answer: value },
         );
       }}
       buttonValues={[
@@ -213,7 +212,7 @@ export const ISI2 = ({ navigation }: Props) => {
         { label: 'Mild difficulty', value: 1, solidColor: true },
         { label: 'Moderate difficulty', value: 2, solidColor: true },
         { label: 'Severe difficulty', value: 3, solidColor: true },
-        { label: 'Extreme difficulty', value: 4, solidColor: true }
+        { label: 'Extreme difficulty', value: 4, solidColor: true },
       ]}
       questionLabel="How much difficulty do you have *staying* asleep?"
     />
@@ -233,7 +232,7 @@ export const ISI3 = ({ navigation }: Props) => {
         onboardingState.ISI3 = value;
         navigation.navigate('ISI4', { progressBarPercent: 0.56 });
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionWakingUpProblem, {
-          answer: value
+          answer: value,
         });
       }}
       buttonValues={[
@@ -243,9 +242,9 @@ export const ISI3 = ({ navigation }: Props) => {
         {
           label: 'I often wake up too early',
           value: 3,
-          solidColor: true
+          solidColor: true,
         },
-        { label: 'I always wake up too early', value: 4, solidColor: true }
+        { label: 'I always wake up too early', value: 4, solidColor: true },
       ]}
       questionLabel="How much of a problem do you have with waking up too early?"
     />
@@ -266,7 +265,7 @@ export const ISI4 = ({ navigation }: Props) => {
         navigation.navigate('ISI5', { progressBarPercent: 0.7 });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionSleepPatternSatisfaction,
-          { answer: value }
+          { answer: value },
         );
       }}
       buttonValues={[
@@ -275,10 +274,10 @@ export const ISI4 = ({ navigation }: Props) => {
         {
           label: 'Could be better, could be worse',
           value: 2,
-          solidColor: true
+          solidColor: true,
         },
         { label: 'Dissatisfied', value: 3, solidColor: true },
-        { label: 'Very dissatisfied', value: 4, solidColor: true }
+        { label: 'Very dissatisfied', value: 4, solidColor: true },
       ]}
       questionLabel="How satisfied/dissatisfied are you with your current sleep pattern?"
     />
@@ -299,7 +298,7 @@ export const ISI5 = ({ navigation }: Props) => {
         navigation.navigate('ISI6', { progressBarPercent: 0.84 });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionSleepProblemImpairness,
-          { answer: value }
+          { answer: value },
         );
       }}
       buttonValues={[
@@ -307,7 +306,7 @@ export const ISI5 = ({ navigation }: Props) => {
         { label: 'A little', value: 1, solidColor: true },
         { label: 'Somewhat', value: 2, solidColor: true },
         { label: 'Much', value: 3, solidColor: true },
-        { label: 'Very much noticeable', value: 4, solidColor: true }
+        { label: 'Very much noticeable', value: 4, solidColor: true },
       ]}
       questionLabel="How noticeable to others do you think your sleep problem is? (in terms of impairing the quality of your life)"
     />
@@ -328,7 +327,7 @@ export const ISI6 = ({ navigation }: Props) => {
         navigation.navigate('ISI7', { progressBarPercent: 0.95 });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionSleepPatternWorries,
-          { answer: value }
+          { answer: value },
         );
       }}
       buttonValues={[
@@ -336,7 +335,7 @@ export const ISI6 = ({ navigation }: Props) => {
         { label: 'A little', value: 1, solidColor: true },
         { label: 'Somewhat', value: 2, solidColor: true },
         { label: 'Much', value: 3, solidColor: true },
-        { label: 'Very much worried', value: 4, solidColor: true }
+        { label: 'Very much worried', value: 4, solidColor: true },
       ]}
       questionLabel="How worried are you about your current sleep pattern?"
     />
@@ -354,14 +353,19 @@ export const ISI7 = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value: number) => {
         // Sum ISI scores, store value & navigate accordingly
-        const { ISI1, ISI2, ISI3, ISI4, ISI5, ISI6 } = onboardingState;
         onboardingState.ISI7 = value;
         onboardingState.ISITotal =
-          ISI1 + ISI2 + ISI3 + ISI4 + ISI5 + ISI6 + value;
+          onboardingState.ISI1 +
+          onboardingState.ISI2 +
+          onboardingState.ISI3 +
+          onboardingState.ISI4 +
+          onboardingState.ISI5 +
+          onboardingState.ISI6 +
+          value;
         navigation.navigate('ISIResults', { progressBarPercent: null });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionSleepProblemInterference,
-          { answer: value }
+          { answer: value },
         );
 
         // Submit ISI results
@@ -372,7 +376,7 @@ export const ISI7 = ({ navigation }: Props) => {
         { label: 'A little', value: 1, solidColor: true },
         { label: 'Somewhat', value: 2, solidColor: true },
         { label: 'Much', value: 3, solidColor: true },
-        { label: 'Very much interfering', value: 4, solidColor: true }
+        { label: 'Very much interfering', value: 4, solidColor: true },
       ]}
       questionLabel="How much does your sleep problem interfere with your daily life? (e.g. tiredness, mood, ability to function at work, concentration, etc.)?"
     />
@@ -404,8 +408,8 @@ export const ISIResults = ({ navigation }: Props) => {
         navigation.navigate(
           onboardingState.ISITotal > 7 ? 'ISISignificant' : 'ISINoSignificant',
           {
-            progressBarPercent: null
-          }
+            progressBarPercent: null,
+          },
         );
       }}
       textLabel={
@@ -432,7 +436,7 @@ export const ISISignificant = ({ navigation }: Props) => {
       image={<TiredFace width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('SafetyIntro', {
-          progressBarPercent: null
+          progressBarPercent: null,
         });
       }}
       longText
@@ -468,7 +472,7 @@ export const ISINoSignificant = ({ navigation }: Props) => {
       image={<Expressionless width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('SafetyIntro', {
-          progressBarPercent: null
+          progressBarPercent: null,
         });
       }}
       longText
@@ -504,7 +508,7 @@ export const SafetyIntro = ({ navigation }: Props) => {
       image={<MonocleEmoji width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('SafetyPills', {
-          progressBarPercent: null
+          progressBarPercent: null,
         });
       }}
       textLabel="Now let’s check whether it’s safe for you to use this therapy."
@@ -526,10 +530,10 @@ export const SafetyPills = ({ navigation }: Props) => {
         onboardingState.pills = value;
         navigation.navigate(
           value == 'none' ? 'SafetySnoring' : 'SafetyPillsStop',
-          { progressBarPercent: null }
+          { progressBarPercent: null },
         );
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyPills, {
-          answer: value
+          answer: value,
         });
         submitHealthHistoryData({ pills: value });
       }}
@@ -538,14 +542,14 @@ export const SafetyPills = ({ navigation }: Props) => {
         {
           label: 'Yes, Benzodiazepines (e.g. Xanax)',
           value: 'benzo',
-          solidColor: true
+          solidColor: true,
         },
         {
           label: 'Yes, non-Benzodiazepines (e.g. Ambien, Lunesta)',
           value: 'nonBenzo',
-          solidColor: true
+          solidColor: true,
         },
-        { label: 'Yes, other or not sure', value: 'other', solidColor: true }
+        { label: 'Yes, other or not sure', value: 'other', solidColor: true },
       ]}
       questionLabel="Are you currently taking any sleeping pills?"
     />
@@ -566,13 +570,13 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
         navigation.navigate(
           result === 'Continue anyway' ? 'SafetySnoring' : 'SafetyPillsBye',
           {
-            progressBarPercent: null
-          }
+            progressBarPercent: null,
+          },
         );
         Analytics.logEvent(
           result === 'Continue anyway'
             ? AnalyticsEvents.onboardingSafetyPillsStopContinue
-            : AnalyticsEvents.onboardingSafetyPillsStopContactDoctor
+            : AnalyticsEvents.onboardingSafetyPillsStopContactDoctor,
         );
       }}
       longText
@@ -606,7 +610,7 @@ export const SafetyPillsBye = ({ navigation }: Props) => {
       image={<WaveHello width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('SafetySnoring', {
-          progressBarPercent: null
+          progressBarPercent: null,
         });
       }}
       textLabel="Great! We’ll email & ping you again in four weeks. If you’re off sleeping pills before that, come back anytime and we’ll pick up where we left off."
@@ -628,16 +632,16 @@ export const SafetySnoring = ({ navigation }: Props) => {
         onboardingState.snoring = value;
         navigation.navigate(!value ? 'SafetyLegs' : 'SafetyIllnessWarning', {
           warnAbout: 'sleep apneas',
-          nextScreen: 'SafetyLegs'
+          nextScreen: 'SafetyLegs',
         });
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetySnoring, {
-          answer: value
+          answer: value,
         });
         submitHealthHistoryData({ snoring: value });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
-        { label: 'No', value: false, solidColor: true }
+        { label: 'No', value: false, solidColor: true },
       ]}
       questionLabel="Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apneas)?"
     />
@@ -657,16 +661,16 @@ export const SafetyLegs = ({ navigation }: Props) => {
         onboardingState.rls = value;
         navigation.navigate(!value ? 'SafetyParas' : 'SafetyIllnessWarning', {
           warnAbout: 'Restless Leg Syndrome',
-          nextScreen: 'SafetyParas'
+          nextScreen: 'SafetyParas',
         });
         Analytics.logEvent(AnalyticsEvents.onboardingSafetyLegs, {
-          answer: value
+          answer: value,
         });
         submitHealthHistoryData({ rls: value });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
-        { label: 'No', value: false, solidColor: true }
+        { label: 'No', value: false, solidColor: true },
       ]}
       questionLabel="Do you have unpleasant tingling or discomfort in the legs, which makes you need to kick or to move?"
       questionSubtitle="(restless body rather than a racing mind)"
@@ -687,16 +691,16 @@ export const SafetyParas = ({ navigation }: Props) => {
         onboardingState.parasomnias = value;
         navigation.navigate(
           !value ? 'SafetyCatchall' : 'SafetyIllnessWarning',
-          { warnAbout: 'parasomnias', nextScreen: 'SafetyCatchall' }
+          { warnAbout: 'parasomnias', nextScreen: 'SafetyCatchall' },
         );
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyParas, {
-          answer: value
+          answer: value,
         });
         submitHealthHistoryData({ parasomnias: value });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
-        { label: 'No', value: false, solidColor: true }
+        { label: 'No', value: false, solidColor: true },
       ]}
       questionLabel="Do you have any history of nightmares, acting out of dreams, sleepwalking out of the bedroom?"
     />
@@ -716,16 +720,16 @@ export const SafetyCatchall = ({ navigation }: Props) => {
         onboardingState.otherCondition = value;
         navigation.navigate(!value ? 'BaselineIntro' : 'SafetyIllnessWarning', {
           warnAbout: 'such conditions',
-          nextScreen: 'BaselineIntro'
+          nextScreen: 'BaselineIntro',
         });
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyCatchall, {
-          answer: value
+          answer: value,
         });
         submitHealthHistoryData({ otherCondition: value });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
-        { label: 'No', value: false, solidColor: true }
+        { label: 'No', value: false, solidColor: true },
       ]}
       questionLabel="Do you have epilepsy, bipolar disorder, parasomnias, obstructive sleep apnea, or other illnesses that cause excessive daytime sleepiness on their own?"
     />
@@ -748,13 +752,13 @@ export const SafetyIllnessWarning = ({ navigation, route }: Props) => {
             ? route.params.nextScreen
             : 'SafetyPillsBye',
           {
-            progressBarPercent: null
-          }
+            progressBarPercent: null,
+          },
         );
         Analytics.logEvent(
           result === 'I understand the risks, continue anyway'
             ? AnalyticsEvents.onboardingSafetyIllnessWarningSkipFinding
-            : AnalyticsEvents.onboardingSafetyIllnessWarningFindHumanProvider
+            : AnalyticsEvents.onboardingSafetyIllnessWarningFindHumanProvider,
         );
       }}
       longText
@@ -776,6 +780,7 @@ export const SafetyIllnessWarning = ({ navigation, route }: Props) => {
 };
 
 export const BaselineIntro = ({ navigation }: Props) => {
+  const windowDimensions = useWindowDimensions();
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingBaselineIntro);
   }, []);
@@ -791,22 +796,22 @@ export const BaselineIntro = ({ navigation }: Props) => {
             ? 'BaselineBye'
             : 'DiaryIntro',
           {
-            progressBarPercent: null
-          }
+            progressBarPercent: null,
+          },
         );
         Analytics.logEvent(
           result === 'My sleep will be unusual, let’s postpone'
             ? AnalyticsEvents.onboardingBaselineIntroPostpone
-            : AnalyticsEvents.onboardingBaselineIntroStartThisWeek
+            : AnalyticsEvents.onboardingBaselineIntroStartThisWeek,
         );
       }}
       longText
       textLabel={
         <Text
-          style={{
-            fontSize: 0.05 * useWindowDimensions().width,
-            lineHeight: 20
-          }}
+          style={[
+            { fontSize: 0.05 * windowDimensions.width },
+            styles.textLabel,
+          ]}
         >
           An important note: This first week of sleep tracking is critical for
           getting a baseline of your normal sleep patterns. If you&apos;re
@@ -832,7 +837,7 @@ export const BaselineBye = ({ navigation }: Props) => {
       image={<WaveHello width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('SafetySnoring', {
-          progressBarPercent: null
+          progressBarPercent: null,
         });
       }}
       textLabel="No worries! We’ll follow up with you in a week. If you’re ready to start before that, come back anytime and we’ll pick up where we left off."
@@ -853,7 +858,7 @@ export const DiaryIntro = ({ navigation }: Props) => {
       image={<TanBook width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         navigation.navigate('DiaryHabit', {
-          progressBarPercent: 0.2
+          progressBarPercent: 0.2,
         });
       }}
       textLabel="Almost there! During the program, we’ll be tracking your sleep with a sleep diary. It’s critical that you fill this out each morning."
@@ -875,7 +880,7 @@ export const DiaryHabit = ({ navigation }: Props) => {
         onboardingState.diaryHabitTrigger = value;
         navigation.navigate('DiaryReminder', { progressBarPercent: 0.4 });
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionDiaryHabit, {
-          answer: value
+          answer: value,
         });
       }}
       buttonValues={[
@@ -883,14 +888,14 @@ export const DiaryHabit = ({ navigation }: Props) => {
         {
           label: 'After brushing my teeth',
           value: 'onBrushTeeth',
-          solidColor: true
+          solidColor: true,
         },
         {
           label: 'After eating breakfast',
           value: 'onBreakfast',
-          solidColor: true
+          solidColor: true,
         },
-        { label: 'After taking a shower', value: 'onShower', solidColor: true }
+        { label: 'After taking a shower', value: 'onShower', solidColor: true },
       ]}
       questionLabel="When would you like to log your sleep in the morning?"
     />
@@ -956,12 +961,12 @@ export const CheckinScheduling = ({ navigation }: Props) => {
         if (moment().add(7, 'days').hour(0).toDate() > val) {
           return {
             severity: 'ERROR',
-            errorMsg: 'Please select a day 7 or more days from today'
+            errorMsg: 'Please select a day 7 or more days from today',
           };
         } else if (moment().add(14, 'days').hour(0).toDate() < val) {
           return {
             severity: 'WARNING',
-            errorMsg: 'Please select a day within 14 days of today'
+            errorMsg: 'Please select a day within 14 days of today',
           };
         } else {
           return true;
@@ -985,7 +990,7 @@ export const SendFirstChat = ({ navigation }: Props) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       textLabel="Your sleep coach will provide support and answer questions for you during the process. Let's send them a message now!"
-      onQuestionSubmit={(value: string) => {
+      onQuestionSubmit={() => {
         navigation.navigate('SendFirstChatContd');
       }}
       buttonLabel="Continue"
@@ -1030,7 +1035,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: string) => {
+      onQuestionSubmit={() => {
         navigation.navigate('OnboardingEnd');
       }}
       buttonLabel="Continue"
@@ -1040,9 +1045,9 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
       <KeyboardAvoidingView
         behavior={Platform.select({ ios: 'padding' })}
         keyboardVerticalOffset={Platform.select({ ios: scale(60) })}
-        style={{ justifyContent: 'space-around' }}
+        style={styles.keyboardAvoidingView}
       >
-        <View style={{ flex: 0.6 }} />
+        <View style={styles.spacer6} />
         <ChatMessage
           sender="Sam Stowers"
           message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
@@ -1055,7 +1060,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
           time={new Date()}
           sentByUser={false}
         />
-        <View style={{ display: messageSent ? 'flex' : 'none' }}>
+        <View style={!messageSent && styles.none}>
           <ChatMessage
             sender="You"
             message={message}
@@ -1063,7 +1068,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
             sentByUser={true}
           />
         </View>
-        <View style={{ display: replyVisible ? 'flex' : 'none' }}>
+        <View style={!replyVisible && styles.none}>
           <ChatMessage
             sender="Sam Stowers"
             message="Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)"
@@ -1071,7 +1076,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
             sentByUser={false}
           />
         </View>
-        <View style={{ flex: 1 }} />
+        <View style={styles.spacer} />
         <ChatTextInput
           onSend={(typedMsg: string) => {
             onboardingState.firstChatMessageContent = typedMsg;
@@ -1079,7 +1084,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
             Keyboard.dismiss();
             submitFirstChatMessage(typedMsg, displayName);
           }}
-          viewStyle={{ display: !messageSent ? 'flex' : 'none' }}
+          viewStyle={!!messageSent && styles.none}
         />
       </KeyboardAvoidingView>
     </WizardContentScreen>
@@ -1087,7 +1092,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
 };
 
 export const OnboardingEnd = ({ navigation }: Props) => {
-  const { dispatch, finishOnboarding } = React.useContext(AuthContext);
+  const { dispatch } = React.useContext(AuthContext);
 
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingOnboardingEnd);
@@ -1111,6 +1116,13 @@ export const OnboardingEnd = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   BoldLabelText: {
     fontFamily: 'RubikBold',
-    fontSize: scale(20)
-  }
+    fontSize: scale(20),
+  },
+  textLabel: {
+    lineHeight: 20,
+  },
+  keyboardAvoidingView: { justifyContent: 'space-around' },
+  spacer6: { flex: 0.6 },
+  spacer: { flex: 1 },
+  none: { display: 'none' },
 });

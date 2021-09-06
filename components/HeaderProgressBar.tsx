@@ -3,12 +3,13 @@ import { StyleSheet } from 'react-native';
 import { Container, IconButton } from '@draftbit/ui';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scale } from 'react-native-size-matters';
+import { NavigationProp } from '@react-navigation/native';
 import { ProgressBar } from './ProgressBar';
 import { dozy_theme } from '../config/Themes';
 
 interface Props {
   backButtonDisabled: boolean;
-  navigation: { goBack: Function };
+  navigation: NavigationProp<any>;
   progressBarPercent: number;
 }
 
@@ -23,10 +24,7 @@ const HeaderProgressBar: React.FC<Props> = (props) => {
         useThemeGutterPadding={true}
       >
         <IconButton
-          style={{
-            ...styles.Nav_BackButton,
-            display: !props.backButtonDisabled ? 'flex' : 'none',
-          }}
+          style={props.backButtonDisabled ? styles.hidden : undefined}
           icon="Ionicons/md-arrow-back"
           size={scale(26)}
           color={theme.colors.secondary}
@@ -68,11 +66,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: scale(10),
   },
-  Nav_BackButton: {},
   ProgressBar: {
     width: scale(225),
     height: scale(6),
   },
+  hidden: { display: 'none' },
 });
 
 export default HeaderProgressBar;

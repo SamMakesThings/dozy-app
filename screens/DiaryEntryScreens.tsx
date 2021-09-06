@@ -1,6 +1,5 @@
-/* eslint-disable import/prefer-default-export */
 import React, { useCallback } from 'react';
-import { Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { DatePicker } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -12,7 +11,7 @@ import TagSelectScreen from '../components/screens/TagSelectScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import submitSleepDiaryData, {
   validateSleepLog,
-  normalizeSleepLog
+  normalizeSleepLog,
 } from '../utilities/submitSleepDiaryData';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../context/AuthContext';
@@ -36,9 +35,9 @@ let globalState = {
     currentTreatments: {
       RLX: undefined as undefined | Date,
       PIT: undefined as undefined | Date,
-      SCTSRT: undefined as undefined | Date
-    }
-  }
+      SCTSRT: undefined as undefined | Date,
+    },
+  },
 };
 
 // Architecture: pass an optional prop logId, which if defined, signals it's an edit.
@@ -60,7 +59,7 @@ const logState = {
   upTime: new Date(),
   sleepRating: 0,
   notes: '',
-  tags: [] as string[]
+  tags: [] as string[],
 };
 
 export const BedTimeInput = ({ navigation, route }: Props) => {
@@ -79,7 +78,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
 
   let initialDateVal = new Date(); // Declare variable for the initial selectedState value
   const baseSleepLog: SleepLog | undefined = globalState.sleepLogs.find(
-    (sleepLog) => sleepLog.logId === route.params?.logId
+    (sleepLog) => sleepLog.logId === route.params?.logId,
   );
 
   // If editing existing sleep log, set defaults from that. Otherwise, use normal defaults
@@ -124,7 +123,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
           logState.logDate = selectedDate; // Make sure this is set even if user doesn't change it
           navigation.setParams({ progressBarPercent: 0.13 });
           navigation.navigate('MinsToFallAsleepInput', {
-            progressBarPercent: 0.26
+            progressBarPercent: 0.26,
           });
         }}
         validInputChecker={(val: Date) => {
@@ -134,7 +133,7 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
             : {
                 severity: 'WARNING',
                 errorMsg:
-                  'Did you set AM/PM correctly? Selected time is unusual for a bedtime'
+                  'Did you set AM/PM correctly? Selected time is unusual for a bedtime',
               };
         }}
         mode="time"
@@ -142,12 +141,12 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
         inputLabel="Bedtime"
       />
       <DatePicker
-        style={{
-          position: 'absolute',
-          marginTop: (Platform.OS === 'ios' ? safeInsets.top : 0) + scale(29),
-          alignSelf: 'center',
-          opacity: 0.35
-        }}
+        style={[
+          styles.datePicker,
+          {
+            marginTop: (Platform.OS === 'ios' ? safeInsets.top : 0) + scale(29),
+          },
+        ]}
         mode={'date'}
         type="underline"
         disabled={false}
@@ -191,12 +190,12 @@ export const MinsToFallAsleepInput = ({ navigation }: Props) => {
         if (val < 0) {
           return {
             severity: 'ERROR',
-            errorMsg: 'Please enter a non-negative number'
+            errorMsg: 'Please enter a non-negative number',
           };
         } else if (val > 1200) {
           return {
             severity: 'ERROR',
-            errorMsg: 'Entered number of minutes is too large. Is this a typo?'
+            errorMsg: 'Entered number of minutes is too large. Is this a typo?',
           };
         } else {
           return true;
@@ -224,11 +223,11 @@ export const PMRAsk = ({ navigation }: Props) => {
       buttonValues={[
         {
           label: 'Yes, daytime & before sleeping',
-          value: 'DuringDayAndBeforeSleep'
+          value: 'DuringDayAndBeforeSleep',
         },
         { label: 'Yes, during the day only', value: 'DuringDay' },
         { label: 'Yes, before falling asleep only', value: 'BeforeSleep' },
-        { label: 'No', value: 'NoPMR' }
+        { label: 'No', value: 'NoPMR' },
       ]}
       questionLabel="Did you practice Progressive Muscle Relaxation (PMR)?"
     />
@@ -245,7 +244,7 @@ export const PITAsk = ({ navigation }: Props) => {
       }}
       buttonValues={[
         { label: 'Yes', value: true },
-        { label: 'No', value: false }
+        { label: 'No', value: false },
       ]}
       questionLabel="Did you use Paradoxical Intention Therapy (PIT) to help you fall asleep?"
     />
@@ -270,7 +269,7 @@ export const WakeCountInput = ({ navigation }: Props) => {
           logState.SCTUpCount = 0;
           logState.SCTAnythingNonSleepInBed = false;
           navigation.navigate('SCTDaytimeNapsInput', {
-            progressBarPercent: 0.5
+            progressBarPercent: 0.5,
           });
         } else if (value === 0) {
           // If user didn't wake in the night, skip asking how long they were awake
@@ -279,7 +278,7 @@ export const WakeCountInput = ({ navigation }: Props) => {
         } else {
           // Otherwise, ask how long they were awake
           navigation.navigate('NightMinsAwakeInput', {
-            progressBarPercent: 0.5
+            progressBarPercent: 0.5,
           });
         }
       }}
@@ -289,7 +288,7 @@ export const WakeCountInput = ({ navigation }: Props) => {
         { label: '2', value: 2 },
         { label: '3', value: 3 },
         { label: '4', value: 4 },
-        { label: '5+', value: 5 }
+        { label: '5+', value: 5 },
       ]}
       questionLabel="After falling asleep, about how many times did you wake up in the night?"
     />
@@ -304,7 +303,7 @@ export const SCTUpCountInput = ({ navigation }: Props) => {
       onQuestionSubmit={(value: number) => {
         logState.SCTUpCount = value;
         navigation.navigate('SCTAnythingNonSleepInBedInput', {
-          progressBarPercent: 0.55
+          progressBarPercent: 0.55,
         });
       }}
       buttonValues={[
@@ -313,7 +312,7 @@ export const SCTUpCountInput = ({ navigation }: Props) => {
         { label: '2', value: 2 },
         { label: '3', value: 3 },
         { label: '4', value: 4 },
-        { label: '5+', value: 5 }
+        { label: '5+', value: 5 },
       ]}
       questionLabel="Following rule 2 of SCT, how many times did you get out of bed when unable to sleep for more than 15 minutes?"
     />
@@ -329,17 +328,17 @@ export const SCTAnythingNonSleepInBedInput = ({ navigation }: Props) => {
         // If user says they did something not sleep in bed, ask what (text input)
         if (value === 1) {
           navigation.navigate('SCTNonSleepActivitiesInput', {
-            progressBarPercent: 0.6
+            progressBarPercent: 0.6,
           });
         } else {
           navigation.navigate('SCTDaytimeNapsInput', {
-            progressBarPercent: 0.6
+            progressBarPercent: 0.6,
           });
         }
       }}
       buttonValues={[
         { label: 'Yes', value: 1 },
-        { label: 'No', value: 0 }
+        { label: 'No', value: 0 },
       ]}
       questionLabel="Did you do anything in bed besides sleeping? (e.g. use phone, watch tv, read a book. Sex excluded 🙈)"
     />
@@ -354,7 +353,7 @@ export const SCTNonSleepActivitiesInput = ({ navigation }: Props) => {
       onQuestionSubmit={(value: string) => {
         logState.SCTNonSleepActivities = value;
         navigation.navigate('SCTDaytimeNapsInput', {
-          progressBarPercent: 0.63
+          progressBarPercent: 0.63,
         });
       }}
       questionLabel="What were you doing besides sleeping?"
@@ -375,13 +374,13 @@ export const SCTDaytimeNapsInput = ({ navigation }: Props) => {
           logState.nightMinsAwake = 0;
         } else {
           navigation.navigate('NightMinsAwakeInput', {
-            progressBarPercent: 0.61
+            progressBarPercent: 0.61,
           });
         }
       }}
       buttonValues={[
         { label: 'Yes', value: 1 },
-        { label: 'No', value: 0 }
+        { label: 'No', value: 0 },
       ]}
       questionLabel="Did you take any daytime naps longer than 30 minutes yesterday?"
     />
@@ -401,12 +400,12 @@ export const NightMinsAwakeInput = ({ navigation }: Props) => {
         if (val < 0) {
           return {
             severity: 'ERROR',
-            errorMsg: 'Please enter a non-negative number'
+            errorMsg: 'Please enter a non-negative number',
           };
         } else if (val > 1000) {
           return {
             severity: 'ERROR',
-            errorMsg: 'Entered number of minutes is too large. Is this a typo?'
+            errorMsg: 'Entered number of minutes is too large. Is this a typo?',
           };
         } else {
           return true;
@@ -445,7 +444,7 @@ export const WakeTimeInput = ({ navigation }: Props) => {
           return {
             severity: 'WARNING',
             errorMsg:
-              'Did you set AM/PM correctly? Selected time is late for a wake time.'
+              'Did you set AM/PM correctly? Selected time is late for a wake time.',
           };
         } else if (
           val < logState.bedTime &&
@@ -454,13 +453,13 @@ export const WakeTimeInput = ({ navigation }: Props) => {
           return {
             severity: 'ERROR',
             errorMsg:
-              'Did you set AM/PM correctly? Selected wake time is before your entered bed time.'
+              'Did you set AM/PM correctly? Selected wake time is before your entered bed time.',
           };
         } else if (moment(val).isAfter(new Date(), 'minute')) {
           return {
             severity: 'WARNING',
             errorMsg:
-              "Did you set AM/PM correctly? This wake time is in the future, which doesn't make sense."
+              "Did you set AM/PM correctly? This wake time is in the future, which doesn't make sense.",
           };
         } else {
           return true;
@@ -490,19 +489,19 @@ export const UpTimeInput = ({ navigation }: Props) => {
           return {
             severity: 'WARNING',
             errorMsg:
-              'Did you set AM/PM correctly? Selected time is late for a wake time.'
+              'Did you set AM/PM correctly? Selected time is late for a wake time.',
           };
         } else if (moment(val).add(1, 'minutes').toDate() < logState.wakeTime) {
           return {
             severity: 'ERROR',
             errorMsg:
-              'Selected up time is earlier than selected wake time. Did you set AM/PM correctly?'
+              'Selected up time is earlier than selected wake time. Did you set AM/PM correctly?',
           };
         } else if (moment(val).isAfter(new Date(), 'minute')) {
           return {
             severity: 'WARNING',
             errorMsg:
-              "Did you set AM/PM correctly? This time is in the future, which doesn't make sense."
+              "Did you set AM/PM correctly? This time is in the future, which doesn't make sense.",
           };
         } else {
           return true;
@@ -529,7 +528,7 @@ export const SleepRatingInput = ({ navigation }: Props) => {
         { label: '2', value: 2 },
         { label: '3', value: 3 },
         { label: '4', value: 4 },
-        { label: '5', value: 5 }
+        { label: '5', value: 5 },
       ]}
       questionLabel="On a scale of 1-5, how would you rate the quality of your sleep last night?"
     />
@@ -571,7 +570,7 @@ export const TagsNotesInput = ({ navigation }: Props) => {
         { label: 'eating', icon: 'bowl' },
         { label: 'smoking', icon: 'cloud' },
         { label: 'late caffeine', icon: 'drop' },
-        { label: 'late alcohol', icon: 'cup' }
+        { label: 'late alcohol', icon: 'cup' },
       ]}
       preFormSubmit={preFormSubmit}
       onInvalidForm={onInvalidForm}
@@ -586,7 +585,7 @@ export const TagsNotesInput = ({ navigation }: Props) => {
         Analytics.logEvent(
           logState.logId
             ? AnalyticsEvents.updateSleepLog
-            : AnalyticsEvents.submitSleepLog
+            : AnalyticsEvents.submitSleepLog,
         );
 
         // Navigate back to the main app
@@ -597,3 +596,11 @@ export const TagsNotesInput = ({ navigation }: Props) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  datePicker: {
+    position: 'absolute',
+    alignSelf: 'center',
+    opacity: 0.35,
+  },
+});

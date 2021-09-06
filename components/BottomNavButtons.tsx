@@ -1,22 +1,19 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, ViewStyle } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { Container, Button } from '@draftbit/ui';
 import { Theme } from '../types/theme';
-import { useRoute } from '@react-navigation/native';
-import { firebase } from '@react-native-firebase/firestore';
-import { AuthContext } from '../context/AuthContext';
 
 interface Props {
   theme: Theme;
-  bottomBackButton?: Function;
+  bottomBackButton?: () => void;
   bbbDisabled?: boolean;
   buttonValues?: Array<{
     label: string;
     value: string | number | boolean;
     solidColor?: boolean;
   }>;
-  onPress: Function;
+  onPress: (value?: string | number | boolean) => void;
   onlyBackButton?: boolean;
   disabled?: boolean;
   buttonLabel?: string;
@@ -28,9 +25,6 @@ interface Props {
 // TODO: Replace bottomGreyButton calls with buttonValues
 const BottomNavButtons: React.FC<Props> = (props) => {
   const { theme, bottomBackButton, bbbDisabled } = props;
-  const route = useRoute();
-  const { state } = React.useContext(AuthContext);
-  const userId = state.userId;
 
   const submitUserProgress = () => {
     /* This Firebase write created crazy performance problems.
@@ -46,10 +40,10 @@ const BottomNavButtons: React.FC<Props> = (props) => {
 
   return (
     <Container
-      style={{
-        ...styles.View_ButtonContainer,
-        justifyContent: bottomBackButton ? 'flex-end' : 'center'
-      }}
+      style={[
+        styles.View_ButtonContainer,
+        !!bottomBackButton && styles.withBottomBackButtonContainer,
+      ]}
       elevation={0}
       useThemeGutterPadding={true}
     >
@@ -58,8 +52,8 @@ const BottomNavButtons: React.FC<Props> = (props) => {
           const { label, value, solidColor } = val;
           return (
             <Button
-              key={value}
-              style={{ ...theme.buttonLayout, ...styles.Button_Default }}
+              key={value.toString()}
+              style={[theme.buttonLayout as ViewStyle, styles.Button_Default]}
               type={solidColor ? 'solid' : 'outline'}
               color={solidColor ? theme.colors.primary : theme.colors.secondary}
               loading={false}
@@ -74,11 +68,11 @@ const BottomNavButtons: React.FC<Props> = (props) => {
           );
         })}
       <Button
-        style={{
-          ...theme.buttonLayout,
-          ...styles.Button_Continue,
-          display: props.onlyBackButton ? 'none' : 'flex'
-        }}
+        style={[
+          theme.buttonLayout as ViewStyle,
+          styles.Button_Continue,
+          props.onlyBackButton && styles.hidden,
+        ]}
         type="solid"
         onPress={() => {
           props.onPress();
@@ -91,11 +85,11 @@ const BottomNavButtons: React.FC<Props> = (props) => {
       </Button>
       {props.bottomGreyButtonLabel && (
         <Button
-          style={{
-            ...theme.buttonLayout,
-            ...styles.Button_Continue,
-            display: props.onlyBackButton ? 'none' : 'flex'
-          }}
+          style={[
+            theme.buttonLayout as ViewStyle,
+            styles.Button_Continue,
+            props.onlyBackButton && styles.hidden,
+          ]}
           type="solid"
           onPress={() => {
             props.onPress(props.bottomGreyButtonLabel);
@@ -119,8 +113,8 @@ const BottomNavButtons: React.FC<Props> = (props) => {
               props.theme.typography.smallLabel,
               {
                 color: theme.colors.light,
-                opacity: !props.bbbDisabled ? 1 : 0.3
-              }
+                opacity: !props.bbbDisabled ? 1 : 0.3,
+              },
             ])}
           >
             {props.bottomBackButtonLabel || 'Back'}
@@ -133,22 +127,27 @@ const BottomNavButtons: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   Button_Default: {
-    marginTop: scale(5)
+    marginTop: scale(5),
   },
   Button_Continue: {
     paddingTop: 0,
-    marginTop: scale(5)
+    marginTop: scale(5),
   },
   View_ButtonContainer: {
-    marginBottom: scale(15)
+    marginBottom: scale(15),
+    justifyContent: 'center',
   },
   Touchable_BackButton: {
     paddingTop: scale(18),
-    paddingBottom: scale(2)
+    paddingBottom: scale(2),
   },
   Text_BackButton: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
+  withBottomBackButtonContainer: {
+    justifyContent: 'flex-end',
+  },
+  hidden: { display: 'none' },
 });
 
 export default BottomNavButtons;

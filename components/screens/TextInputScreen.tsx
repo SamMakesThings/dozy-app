@@ -11,10 +11,10 @@ interface Props {
   inputLabel: string;
   defaultValue?: string;
   progressBarPercent?: number;
-  onQuestionSubmit: Function;
+  onQuestionSubmit: (value: string) => void;
   optional?: boolean;
-  bottomBackButton?: Function;
-  validInputChecker?: Function;
+  bottomBackButton?: () => void;
+  validInputChecker?: (value: string) => boolean;
   theme: Theme;
 }
 
@@ -23,7 +23,7 @@ enum States {
   Empty = 0,
   Invalid = 1,
   Warning = 2,
-  Valid = 3
+  Valid = 3,
 }
 
 const TextInputScreen: React.FC<Props> = (props) => {
@@ -45,12 +45,8 @@ const TextInputScreen: React.FC<Props> = (props) => {
       severity: string;
       errorMsg: string;
     }
-    const validationResult:
-      | ErrorObj
-      | boolean
-      | undefined = props.validInputChecker
-      ? props.validInputChecker(val)
-      : undefined;
+    const validationResult: ErrorObj | boolean | undefined =
+      props.validInputChecker ? props.validInputChecker(val) : undefined;
 
     if (!val && !props.optional) {
       setScreenState(States.Empty);
@@ -62,11 +58,11 @@ const TextInputScreen: React.FC<Props> = (props) => {
       setScreenState(States.Valid);
     } else if (validationResult === false) {
       console.error('Validation function should never return false');
-    } else if (validationResult.severity === 'WARNING') {
-      setErrorMsg(validationResult.errorMsg);
+    } else if ((validationResult as ErrorObj)?.severity === 'WARNING') {
+      setErrorMsg((validationResult as ErrorObj)?.errorMsg);
       setScreenState(States.Warning);
-    } else if (validationResult.severity === 'ERROR') {
-      setErrorMsg(validationResult.errorMsg);
+    } else if ((validationResult as ErrorObj)?.severity === 'ERROR') {
+      setErrorMsg((validationResult as ErrorObj)?.errorMsg);
       setScreenState(States.Invalid);
     } else {
       console.error('Validation function did something unexpected');
@@ -95,8 +91,8 @@ const TextInputScreen: React.FC<Props> = (props) => {
             styles.Text_Question,
             theme.typography.headline5,
             {
-              color: theme.colors.secondary
-            }
+              color: theme.colors.secondary,
+            },
           ]}
         >
           {props.questionLabel}
@@ -110,8 +106,8 @@ const TextInputScreen: React.FC<Props> = (props) => {
               {
                 color: displayErrorMsg
                   ? theme.colors.error
-                  : theme.colors.secondary
-              }
+                  : theme.colors.secondary,
+              },
             ]}
           >
             {displayErrorMsg ? errorMsg : props.questionSubtitle}
@@ -120,7 +116,7 @@ const TextInputScreen: React.FC<Props> = (props) => {
         <Container
           style={{
             ...styles.View_InputContainer,
-            borderColor: theme.colors.medium
+            borderColor: theme.colors.medium,
           }}
         >
           <TextInput
@@ -164,42 +160,43 @@ const TextInputScreen: React.FC<Props> = (props) => {
 const styles = StyleSheet.create({
   View_ContentContainer: {
     flex: 6,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   View_HeaderContainer: {
     flex: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: scale(16)
+    marginTop: scale(16),
   },
   View_InputContainer: {
     marginTop: scale(60),
     marginBottom: scale(27),
     width: '60%',
     alignSelf: 'center',
-    borderBottomWidth: 1.5
+    borderBottomWidth: 1.5,
   },
+  // eslint-disable-next-line react-native/no-color-literals
   TextInput: {
     color: '#ffffff',
     fontSize: scale(17),
-    paddingBottom: scale(9)
+    paddingBottom: scale(9),
   },
   Text_Question: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'flex-start',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   Text_QuestionLabel: {
     textAlign: 'center',
     width: '100%',
     alignItems: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   Text_QuestionSubtitle: {
     fontWeight: 'normal',
-    opacity: 0.7
-  }
+    opacity: 0.7,
+  },
 });
 
 export default withTheme(TextInputScreen);

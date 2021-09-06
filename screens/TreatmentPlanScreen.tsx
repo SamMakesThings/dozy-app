@@ -1,8 +1,8 @@
-/* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { ScreenContainer } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
+import { NavigationProp } from '@react-navigation/native';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
 import { LinkCard } from '../components/LinkCard';
 import { dozy_theme } from '../config/Themes';
@@ -13,19 +13,16 @@ import GLOBAL from '../utilities/global';
 
 const theme = dozy_theme;
 
-function TreatmentPlanScreen({
-  navigation,
-  route
-}: {
-  navigation: { navigate: Function };
+const TreatmentPlanScreen: React.FC<{
+  navigation: NavigationProp<any>;
   route: { params: { completionPercentProgress: number } };
-}) {
+}> = ({ navigation, route }) => {
   const { state } = React.useContext(AuthContext);
   const treatmentPlan = GLOBAL.treatmentPlan;
 
   // Calculate flex value for the vertical progress bar
   const vProgBarFillFlex = treatmentPlan.filter(
-    (module) => module.started === true
+    (module) => module.started === true,
   ).length;
 
   return (
@@ -44,16 +41,15 @@ function TreatmentPlanScreen({
         <CardContainer>
           <View style={styles.View_CardHeaderContainer}>
             <View
-              style={{
-                ...styles.View_CardHeaderContainer,
-                flexDirection: 'column',
-                alignItems: 'flex-start'
-              }}
+              style={[
+                styles.View_CardHeaderContainer,
+                styles.yourCarePlanContainer,
+              ]}
             >
               <Text
                 style={{
                   ...theme.typography.cardTitle,
-                  ...styles.Text_CardTitle
+                  ...styles.Text_CardTitle,
                 }}
               >
                 Your care plan
@@ -66,13 +62,13 @@ function TreatmentPlanScreen({
                 <View
                   style={{
                     ...styles.View_VerticalProgBarFill,
-                    flex: vProgBarFillFlex
+                    flex: vProgBarFillFlex,
                   }}
                 />
                 <View
                   style={{
                     ...styles.View_VerticalProgBarBlank,
-                    flex: treatmentPlan.length - vProgBarFillFlex
+                    flex: treatmentPlan.length - vProgBarFillFlex,
                   }}
                 />
               </View>
@@ -82,19 +78,12 @@ function TreatmentPlanScreen({
                 return (
                   <View key={module.module}>
                     <Text
-                      style={[
-                        theme.typography.headline6,
-                        {
-                          color: theme.colors.light,
-                          fontSize: scale(13),
-                          width: '100%'
-                        }
-                      ]}
+                      style={[theme.typography.headline6, styles.moduleESTDate]}
                     >
                       {module.estDate.toLocaleString('en-US', {
                         weekday: 'long',
                         month: 'long',
-                        day: 'numeric'
+                        day: 'numeric',
                       })}
                     </Text>
                     <LinkCard
@@ -104,7 +93,7 @@ function TreatmentPlanScreen({
                       subtitleLabel={treatments[module.module].subTitle}
                       onPress={() => {
                         navigation.navigate('TreatmentReview', {
-                          module: module.module
+                          module: module.module,
                         });
                       }}
                       overlayColor={
@@ -121,15 +110,15 @@ function TreatmentPlanScreen({
       </View>
     </ScreenContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   ScreenContainer_Root: {
-    paddingTop: scale(55)
+    paddingTop: scale(55),
   },
   ItemMargin: {
     marginTop: scale(1),
-    marginBottom: scale(17)
+    marginBottom: scale(17),
   },
   View_CardHeaderContainer: {},
   View_ContentContainer: {
@@ -137,46 +126,47 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     flex: 1,
     paddingLeft: scale(10),
-    paddingRight: scale(10)
-  },
-  View_NoCard: {
-    width: '92%',
-    marginTop: scale(15),
-    marginBottom: scale(15)
+    paddingRight: scale(10),
   },
   View_CardContentContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   View_VerticalProgBarContainer: {
     marginTop: scale(6),
     width: scale(10),
-    marginRight: scale(12)
+    marginRight: scale(12),
   },
   View_VerticalProgBarBg: {
     backgroundColor: theme.colors.background,
     flex: 1,
-    borderRadius: 100
+    borderRadius: 100,
   },
   View_VerticalProgBarFill: {
     flex: 1,
     backgroundColor: theme.colors.primary,
-    borderRadius: 100
+    borderRadius: 100,
   },
   View_VerticalProgBarBlank: {
-    flex: 1
+    flex: 1,
   },
   View_PlanModulesContainer: {
-    flex: 1
+    flex: 1,
   },
   Text_CardTitle: {
     color: dozy_theme.colors.secondary,
     fontSize: scale(25),
-    marginBottom: scale(12)
+    marginBottom: scale(12),
   },
-  Icon_Clipboard: {
-    margin: scale(20)
-  }
+  yourCarePlanContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  moduleESTDate: {
+    color: theme.colors.light,
+    fontSize: scale(13),
+    width: '100%',
+  },
 });
 
 export default TreatmentPlanScreen;

@@ -4,14 +4,14 @@ import * as SecureStore from 'expo-secure-store';
 import { ACTION } from './mainAppReducer';
 
 export default async function refreshUserData(
-  dispatch: React.Dispatch<ACTION>
-) {
+  dispatch: React.Dispatch<ACTION>,
+): Promise<void> {
   let userId;
 
   try {
     userId = await SecureStore.getItemAsync('userId');
     if (userId === null) {
-      throw "userId isn't stored in SecureStore, aborting";
+      throw new Error("userId isn't stored in SecureStore, aborting");
     }
     // idToken = await SecureStore.getItemAsync('idToken');
     // providerId = await SecureStore.getItemAsync('providerId');
@@ -33,7 +33,7 @@ export default async function refreshUserData(
           type: 'UPDATE_USERDATA',
           userData: userData.data() ?? {},
           onboardingComplete:
-            userData.exists && userData.data()?.onboardingComplete === true
+            userData.exists && userData.data()?.onboardingComplete === true,
         });
       });
 
@@ -47,7 +47,7 @@ export default async function refreshUserData(
             type: 'UPDATE_USERDATA',
             userData: userData.data() ?? {},
             onboardingComplete:
-              userData.exists && userData.data()?.onboardingComplete === true
+              userData.exists && userData.data()?.onboardingComplete === true,
           });
         } else {
           console.log("docSnapshot isn't defined at this point");
