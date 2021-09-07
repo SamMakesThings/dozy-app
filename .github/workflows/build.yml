@@ -37,4 +37,4 @@ jobs:
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
       - run: yarn install
-      - run: eas build --profile alpha --non-interactive
+      - run: eas build --platform ios --profile alpha --non-interactive
