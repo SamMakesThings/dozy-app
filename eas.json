@@ -1,17 +1,23 @@
 {
   "build": {
+    "base": {
+      "ios": {
+        "image": "macos-big-sur-11.4-xcode-12.5"
+      }
+    },
     "special:": {
+      "extends": "base",
       "android": {
         "gradleCommand": ":app:assembleRelease"
       }
     },
     "release": {
+      "extends": "base",
       "android": {
         "buildType": "app-bundle"
       },
       "ios": {
-        "buildConfiguration": "Release",
-        "image": "macos-big-sur-11.4-xcode-12.5"
+        "buildConfiguration": "Release"
       }
     },
     "development": {
@@ -22,6 +28,17 @@
         "buildConfiguration": "Debug"
       },
       "distribution": "internal"
+    },
+    "alpha": {
+      "extends": "base",
+      "releaseChannel": "alpha",
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "ios": {
+        "buildConfiguration": "Release"
+      }
     }
   }
 }
