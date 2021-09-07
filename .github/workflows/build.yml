@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - develop
+    paths-ignore:
+      - README.md
+      - .eslintrc.json
+      - .eslintignore
+      - .gitignore
+      - .prettierrc.json
+  pull_request:
+    branches:
+      - develop
+      - feature/CI
+    paths-ignore:
+      - README.md
+      - .eslintrc.json
+      - .eslintignore
+      - .gitignore
+      - .prettierrc.json
+
+jobs:
+  build:
+    name: Build the App using EAS build
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Setup Expo
+        uses: expo/expo-github-actions@v6
+        with:
+          eas-version: latest
+          expo-cache: true
+          token: ${{ secrets.EXPO_TOKEN }}
+      - run: yarn install
+      - run: eas build --profile alpha
