@@ -14,17 +14,18 @@ const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ title }) => (
 );
 
 const styles = StyleSheet.create({
+  // eslint-disable-next-line react-native/no-color-literals
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#232B3F'
+    backgroundColor: '#232B3F',
   },
   title: {
     marginTop: 12,
     color: dozy_theme.colors.secondary,
-    ...dozy_theme.typography.body2
-  }
+    ...dozy_theme.typography.body2,
+  },
 });
 
 export default LoadingOverlay;

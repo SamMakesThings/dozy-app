@@ -4,7 +4,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  GestureResponderEvent
+  GestureResponderEvent,
 } from 'react-native';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
@@ -28,23 +28,17 @@ export const TreatmentPlanCard: React.FC<Props> = (props) => {
   return (
     <CardContainer>
       <TouchableOpacity
-        style={{ flex: 1 }}
+        style={styles.container}
         onPress={props.onPress}
         disabled={!props.onPress}
       >
         <View style={styles.View_CardHeaderContainer}>
-          <View
-            style={{
-              ...styles.View_CardHeaderContainer,
-              flexDirection: 'column',
-              alignItems: 'flex-start'
-            }}
-          >
+          <View style={styles.headerContent}>
             <Text
               style={{
                 ...theme.typography.cardTitle,
                 ...styles.Text_CardTitle,
-                opacity: props.titleOpacity || undefined
+                opacity: props.titleOpacity || undefined,
               }}
             >
               {props.title || 'My care plan'}
@@ -52,13 +46,13 @@ export const TreatmentPlanCard: React.FC<Props> = (props) => {
             <Text
               style={{
                 ...theme.typography.body2,
-                ...styles.Text_CardSubtitle
+                ...styles.Text_CardSubtitle,
               }}
             >
               Next weekly checkin:{' '}
               {props.nextCheckinDate.toDate().toLocaleString('en-US', {
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
               })}
             </Text>
           </View>
@@ -66,14 +60,14 @@ export const TreatmentPlanCard: React.FC<Props> = (props) => {
             name={'chevron-right'}
             size={scale(28)}
             color={theme.colors.secondary}
-            style={{ display: props.onPress ? 'flex' : 'none' }}
+            style={props.onPress ? undefined : styles.hidden}
           />
         </View>
         <View style={styles.View_CardContentContainer}>
           <View
             style={{
               ...styles.View_CenteredRowContainer,
-              marginTop: scale(12)
+              marginTop: scale(12),
             }}
           >
             <View>
@@ -89,7 +83,7 @@ export const TreatmentPlanCard: React.FC<Props> = (props) => {
               label={props.completionPercentProgress * 100 + '% done'}
               textColor={theme.colors.primary}
               bgColor={theme.colors.secondary}
-              style={{ maxWidth: '32%' }}
+              style={styles.highlightedText}
             />
           </View>
         </View>
@@ -99,39 +93,37 @@ export const TreatmentPlanCard: React.FC<Props> = (props) => {
 };
 
 const styles = StyleSheet.create({
-  ItemMargin: {
-    marginTop: scale(10)
-  },
-  View_ContentContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'center'
-  },
+  container: { flex: 1 },
   View_CardHeaderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+  headerContent: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
   View_CardContentContainer: {},
   View_CenteredRowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: scale(5)
+    paddingTop: scale(5),
   },
   Text_CardTitle: {
-    color: dozy_theme.colors.secondary
+    color: dozy_theme.colors.secondary,
   },
   Text_CardSubtitle: {
     color: dozy_theme.colors.secondary,
     opacity: 0.5,
-    marginTop: scale(-5)
+    marginTop: scale(-5),
   },
   ProgressBar: {
-    width: scale(185)
+    width: scale(185),
   },
-  Icon_Clipboard: {
-    margin: scale(20)
-  }
+  hidden: { display: 'none' },
+  highlightedText: { maxWidth: '32%' },
 });
 
 export default TreatmentPlanCard;

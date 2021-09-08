@@ -4,8 +4,8 @@ import { Chat } from '../types/custom';
 export default async function sendChatMessage(
   db: FirebaseFirestoreTypes.Module,
   userId: string,
-  msg: Chat
-) {
+  msg: Chat,
+): Promise<void> {
   // Check for user id validation errors
   let userDocRef;
   if (typeof userId === 'string') {
@@ -28,12 +28,12 @@ export default async function sendChatMessage(
   userDocRef
     .collection('supportMessages')
     .add(msg)
-    .catch(function (error: object) {
+    .catch(function (error) {
       console.error('Error pushing chat message data:', error);
     });
   userDocRef
     .update({
-      lastChat: msg
+      lastChat: msg,
     })
     .catch((err) => {
       console.error('Error pushing chat message data to user doc:', err);

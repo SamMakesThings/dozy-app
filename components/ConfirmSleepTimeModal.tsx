@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ModalProps,
   TouchableOpacity,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes, { InferProps } from 'prop-types';
 import { withTheme } from '@draftbit/ui';
@@ -36,10 +36,10 @@ const ConfirmSleepTimeModalPropTypes = {
     SCTAnythingNonSleepInBed: PropTypes.bool,
     SCTNonSleepActivities: PropTypes.string,
     notes: PropTypes.string,
-    tags: PropTypes.arrayOf(PropTypes.string.isRequired)
+    tags: PropTypes.arrayOf(PropTypes.string.isRequired),
   }).isRequired,
   onFix: PropTypes.func,
-  onProceed: PropTypes.func
+  onProceed: PropTypes.func,
 };
 
 type ConfirmSleepTimeModalProps = Omit<
@@ -74,15 +74,15 @@ const ConfirmSleepTimeModal: React.FC<ConfirmSleepTimeModalProps> = ({
               styles.modalView,
               {
                 borderRadius: theme.borderRadius.global,
-                backgroundColor: theme.colors.medium
+                backgroundColor: theme.colors.medium,
               },
-              theme.elevation[3]
+              theme.elevation[3],
             ]}
           >
             <Text
               style={[
                 theme.typography.headline5,
-                { color: theme.colors.primary }
+                { color: theme.colors.primary },
               ]}
             >
               {title}
@@ -91,7 +91,7 @@ const ConfirmSleepTimeModal: React.FC<ConfirmSleepTimeModalProps> = ({
               style={[
                 styles.description,
                 theme.typography.body2,
-                { color: theme.colors.secondary }
+                { color: theme.colors.secondary },
               ]}
             >
               {description}
@@ -103,15 +103,15 @@ const ConfirmSleepTimeModal: React.FC<ConfirmSleepTimeModalProps> = ({
                   styles.button,
                   {
                     backgroundColor: theme.colors.primary,
-                    borderRadius: theme.borderRadius.button
-                  }
+                    borderRadius: theme.borderRadius.button,
+                  },
                 ]}
                 onPress={onFix as NonNullable<any>}
               >
                 <Text
                   style={[
                     theme.typography.button,
-                    { color: theme.colors.secondary }
+                    { color: theme.colors.secondary },
                   ]}
                 >
                   Fix It
@@ -123,15 +123,15 @@ const ConfirmSleepTimeModal: React.FC<ConfirmSleepTimeModalProps> = ({
                   styles.rightButton,
                   {
                     backgroundColor: theme.colors.primary,
-                    borderRadius: theme.borderRadius.button
-                  }
+                    borderRadius: theme.borderRadius.button,
+                  },
                 ]}
                 onPress={onProceed as NonNullable<any>}
               >
                 <Text
                   style={[
                     theme.typography.button,
-                    { color: theme.colors.secondary }
+                    { color: theme.colors.secondary },
                   ]}
                 >
                   Proceed As Is
@@ -151,8 +151,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
   },
+  // eslint-disable-next-line react-native/no-color-literals
   modalView: {
     alignItems: 'center',
     marginHorizontal: 16,
@@ -160,28 +161,28 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   description: {
-    marginTop: 8
+    marginTop: 8,
   },
   controls: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 32
+    marginTop: 32,
   },
   button: {
     flex: 1,
     alignItems: 'center',
-    padding: 10
+    padding: 10,
   },
   rightButton: {
-    marginLeft: 20
-  }
+    marginLeft: 20,
+  },
 });
 
 export default withTheme(ConfirmSleepTimeModal);

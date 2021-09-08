@@ -145,7 +145,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         };
       }
 
-      return firebaseAuthApple(credential, rawNonce);
+      return await firebaseAuthApple(credential, rawNonce);
     } catch (error) {
       if (error.code !== 'ERR_CANCELED') {
         Alert.alert('Signin failed', error.message);
@@ -236,8 +236,8 @@ export const AuthProvider: React.FC = ({ children }) => {
               });
             return false; // Report onboarding as incomplete
           } else {
-            const onboardingMarkedComplete = docSnapshot?.data()
-              ?.onboardingComplete; // might be undefined
+            const onboardingMarkedComplete =
+              docSnapshot?.data()?.onboardingComplete; // might be undefined
             return onboardingMarkedComplete ?? false;
           }
         });

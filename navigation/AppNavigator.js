@@ -35,7 +35,7 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
     <TopStack.Navigator
       initialRouteName="Onboarding"
       screenOptions={{
-        headerShown: false
+        headerShown: false,
       }}
     >
       {userId != undefined ? (
@@ -61,7 +61,7 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
                 return <HeaderProgressBar navigation={navigation} />;
               },
               animationEnabled: true,
-              headerTransparent: true
+              headerTransparent: true,
             })}
           />
           <TopStack.Screen
@@ -74,7 +74,7 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
                 return <HeaderProgressBar navigation={navigation} />;
               },
               animationEnabled: true,
-              headerTransparent: true
+              headerTransparent: true,
             })}
           />
           <TopStack.Screen
@@ -94,7 +94,7 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
           component={LoginScreen}
           options={{
             // If not logged in, jump to the login screen
-            header: null
+            header: null,
           }}
         />
       )}
@@ -104,7 +104,7 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
 
 InitialAuthNavigator.propTypes = {
   userId: PropTypes.string,
-  authLoading: PropTypes.bool
+  authLoading: PropTypes.bool,
 };
 
 export default function AppNavigator() {
@@ -137,8 +137,8 @@ export default function AppNavigator() {
       background: 'rgba(35, 43, 63, 1)',
       card: 'rgb(18, 18, 18)',
       text: 'rgb(229, 229, 231)',
-      border: 'rgb(39, 39, 41)'
-    }
+      border: 'rgb(39, 39, 41)',
+    },
   };
 
   return (
@@ -158,8 +158,9 @@ export default function AppNavigator() {
 }
 
 const styles = StyleSheet.create({
+  // eslint-disable-next-line react-native/no-color-literals
   container: {
     flex: 1,
-    backgroundColor: '#232B3F'
-  }
+    backgroundColor: '#232B3F',
+  },
 });

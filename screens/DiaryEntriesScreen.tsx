@@ -5,12 +5,13 @@ import {
   Platform,
   ActivityIndicator,
   View,
-  Alert
-} from 'react-native'; // @ts-ignore draftbit TS error below
+  Alert,
+  StyleSheet,
+} from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import PropTypes from 'prop-types';
 import firestore, {
-  FirebaseFirestoreTypes
+  FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 import { Entypo } from '@expo/vector-icons';
 import Intl from 'intl';
@@ -29,14 +30,14 @@ import { AuthContext } from '../context/AuthContext';
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/tr-TR');
-  require('date-time-format-timezone'); // @ts-ignore This code works, TS yells
+  require('date-time-format-timezone');
   Intl.__disableRegExpRestore(); /*For syntaxerror invalid regular expression unmatched parentheses*/
 }
 
 const SleepLogsView = (props: {
   isLoading: boolean;
   sleepLogs: Array<SleepLog>;
-  logEntryRedirect: Function;
+  logEntryRedirect: () => void;
   navigation: Navigation;
 }) => {
   const theme = dozy_theme;
@@ -63,11 +64,11 @@ const SleepLogsView = (props: {
     (log: SleepLog): void => {
       props.navigation.navigate('SleepDiaryEntry', {
         screen: 'BedTimeInput',
-        params: { logId: log.logId }
+        params: { logId: log.logId },
       });
       Analytics.logEvent(AnalyticsEvents.editSleepLog);
     },
-    [props.navigation]
+    [props.navigation],
   );
 
   if (props.isLoading) {
@@ -85,20 +86,15 @@ const SleepLogsView = (props: {
         <ActivityIndicator
           size="large"
           color={theme.colors.primary}
-          style={{
-            width: scale(45),
-            height: scale(45),
-            marginTop: '45%',
-            alignSelf: 'center'
-          }}
+          style={styles.loader}
         />
       </View>
     );
   } else if (props.sleepLogs.length === 0) {
     // If there aren't any sleep logs, prompt the first
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.container}>
           <IconTitleSubtitleButton
             onPress={() => props.logEntryRedirect()}
             backgroundColor={
@@ -108,13 +104,7 @@ const SleepLogsView = (props: {
             subtitleLabel="A consistent log improves care"
           />
         </View>
-        <View
-          style={{
-            height: scale(325),
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
+        <View style={styles.emptyLogContainer}>
           <Entypo
             name={'arrow-with-circle-up'}
             size={scale(51)}
@@ -123,13 +113,8 @@ const SleepLogsView = (props: {
           <Text
             style={[
               theme.typography.smallLabel,
-              {
-                color: theme.colors.medium,
-                textAlign: 'center',
-                width: '100%',
-                fontSize: scale(16),
-                marginTop: scale(17)
-              }
+              styles.emptyLogText,
+              { color: theme.colors.medium },
             ]}
           >
             Add your first sleep log above!
@@ -166,7 +151,7 @@ const SleepLogsView = (props: {
   }
 };
 
-const SleepLogsScreen = (props: { navigation: Navigation }) => {
+const SleepLogsScreen: React.FC<{ navigation: Navigation }> = (props) => {
   // Get global state & dispatch
   const { state, dispatch } = React.useContext(AuthContext);
 
@@ -198,7 +183,7 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
             Alert.alert(
               'Done for now',
               "Once you've collected 7 nights of data, we'll get started on improvement.",
-              [{ text: 'Ok' }]
+              [{ text: 'Ok' }],
             );
           } else {
             dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
@@ -238,7 +223,7 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
 
   return (
     <ScreenContainer
-      style={{ backgroundColor: '#232B3F' }}
+      style={styles.sleepLogsScreenContainer}
       hasSafeArea={true}
       scrollable={true}
     >
@@ -256,7 +241,30 @@ const SleepLogsScreen = (props: { navigation: Navigation }) => {
 
 SleepLogsView.propTypes = {
   sleepLogs: PropTypes.array,
-  logEntryRedirect: PropTypes.func
+  logEntryRedirect: PropTypes.func,
 };
+
+const styles = StyleSheet.create({
+  loader: {
+    width: scale(45),
+    height: scale(45),
+    marginTop: '45%',
+    alignSelf: 'center',
+  },
+  container: { flex: 1 },
+  emptyLogContainer: {
+    height: scale(325),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyLogText: {
+    textAlign: 'center',
+    width: '100%',
+    fontSize: scale(16),
+    marginTop: scale(17),
+  },
+  // eslint-disable-next-line react-native/no-color-literals
+  sleepLogsScreenContainer: { backgroundColor: '#232B3F' },
+});
 
 export default withTheme(SleepLogsScreen);

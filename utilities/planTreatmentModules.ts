@@ -10,8 +10,12 @@ interface Args {
   };
 }
 
-function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
-  let treatmentPlan: Array<{
+function planTreatmentModules({ sleepLogs, currentTreatments }: Args): {
+  module: string;
+  estDate: Date;
+  started: boolean;
+}[] {
+  const treatmentPlan: Array<{
     module: string;
     estDate: Date;
     started: boolean;
@@ -23,7 +27,7 @@ function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
       treatmentPlan.push({
         module: item,
         estDate: currentTreatments[item].toDate(),
-        started: true
+        started: true,
       });
     }
   });
@@ -49,21 +53,23 @@ function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
     'my partner',
     'heat',
     'cold',
-    'bad bed'
+    'bad bed',
   ];
   const stressStrings = ['worry', 'stress', 'pain'];
 
   // Count each day where tags are present
   sleepLogs.forEach((log) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     log.tags.some((r) => hygieneStrings.indexOf(r) >= 0)
       ? daysDisturbedByHygiene++
       : null;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     log.tags.some((r) => stressStrings.indexOf(r) >= 0)
       ? daysDisturbedByStress++
       : null;
   });
 
-  let defaultTreatmentOrder = Object.keys(treatments);
+  const defaultTreatmentOrder = Object.keys(treatments);
 
   // Define a priority order based on the above tags
   // Duplicates are filtered out so shouldn't matter
@@ -88,7 +94,7 @@ function planTreatmentModules({ sleepLogs, currentTreatments }: Args) {
         estDate: isNextCheckin
           ? nextCheckinDatetime
           : moment(nextCheckinDatetime).add(addDays, 'days').toDate(),
-        started: false
+        started: false,
       });
       addDays += 7;
       isNextCheckin = false;

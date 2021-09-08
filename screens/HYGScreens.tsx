@@ -1,7 +1,7 @@
 import React from 'react';
-import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
-import { scale } from 'react-native-size-matters';
+import { useWindowDimensions } from 'react-native';
 import moment from 'moment';
+import { NavigationProp } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
@@ -22,7 +22,7 @@ const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
 
 // Define an interface for HYG flow state (SHI score & next checkin info)
-let HYGState = {
+const HYGState = {
   nextCheckinTime: new Date(),
   treatmentPlan: [{ started: false, module: 'deleteme' }],
   SHI1: 0,
@@ -35,7 +35,7 @@ let HYGState = {
   SHI7: 0,
   SHI8: 0,
   SHI9: 0,
-  SHIScore: 0
+  SHIScore: 0,
 };
 
 const imgSizePercent = 0.4; // Define square image size defaults as a percent of width
@@ -43,10 +43,7 @@ let imgSize = 0; // This value is replaced on the first screen to adjust for win
 
 interface Props {
   // Define Props type for all screens in this flow
-  navigation: {
-    navigate: Function;
-    goBack: Function;
-  };
+  navigation: NavigationProp<any>;
 }
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
@@ -59,7 +56,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
         navigation.navigate('SRTTitrationStart', {
-          progressBarPercent: 0.08
+          progressBarPercent: 0.08,
         });
       }}
       textLabel="Welcome back! This week we'll address some of your sleep hygiene-related issues - things like light, temperature, and partners/pets. But first, let's review your sleep and how Dozy has been going for you so far."
@@ -83,15 +80,15 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
   } = recentSleepLogs.reduce(
     (
       tagsObject: { [key: string]: number },
-      sleepLog: { tags: Array<string> }
+      sleepLog: { tags: Array<string> },
     ) => {
-      let newTagsObject = tagsObject;
+      const newTagsObject = tagsObject;
       sleepLog.tags.map((tag) => {
         newTagsObject[tag] = newTagsObject[tag] ? newTagsObject[tag] + 1 : 1; // if exists, increment. Otherwise, start with 1
       });
       return newTagsObject;
     },
-    { nothing: -20 }
+    { nothing: -20 },
   ); // Add nothing way negative so it's excluded from the highest frequency
   // Then find the 3 highest from the object. Put them in an array as strings.
   const mostCommonTags = Object.keys(logTagsFrequencyObject)
@@ -111,7 +108,7 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('HYGIntro', {
-          progressBarPercent: 0.4
+          progressBarPercent: 0.4,
         });
       }}
       titleLabel="This week: Sleep hygiene improvements"
@@ -131,7 +128,7 @@ export const HYGIntro: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('HYGBenefits', {
-          progressBarPercent: 0.44
+          progressBarPercent: 0.44,
         });
       }}
       titleLabel="You've probably heard of sleep hygiene before."
@@ -151,7 +148,7 @@ export const HYGBenefits: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SHIIntro', {
-          progressBarPercent: 0.48
+          progressBarPercent: 0.48,
         });
       }}
       textLabel="Fortunately, making strategic sleep hygiene improvements can improve sleep quality, help prevent relapse, and boost the efficacy of other techniques at the same time!"
@@ -170,7 +167,7 @@ export const SHIIntro: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SHI1', {
-          progressBarPercent: 0.52
+          progressBarPercent: 0.52,
         });
       }}
       textLabel={`To get started, we'll ask a few lifestyle questions to get a better idea of how to help you.
@@ -200,7 +197,7 @@ export const SHI1: React.FC<Props> = ({ navigation }) => {
         { label: 'Rarely', value: 1, solidColor: false },
         { label: 'Sometimes', value: 2, solidColor: false },
         { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Always', value: 4, solidColor: false },
       ]}
     />
   );
@@ -222,7 +219,7 @@ export const SHI2: React.FC<Props> = ({ navigation }) => {
         { label: 'Rarely', value: 1, solidColor: false },
         { label: 'Sometimes', value: 2, solidColor: false },
         { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Always', value: 4, solidColor: false },
       ]}
     />
   );
@@ -244,7 +241,7 @@ export const SHI3: React.FC<Props> = ({ navigation }) => {
         { label: 'Rarely', value: 1, solidColor: false },
         { label: 'Sometimes', value: 2, solidColor: false },
         { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Always', value: 4, solidColor: false },
       ]}
     />
   );
@@ -272,7 +269,7 @@ export const SHI4: React.FC<Props> = ({ navigation }) => {
         { label: 'Rarely', value: 1, solidColor: false },
         { label: 'Sometimes', value: 2, solidColor: false },
         { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Always', value: 4, solidColor: false },
       ]}
     />
   );
@@ -292,7 +289,7 @@ export const SHI4a: React.FC<Props> = ({ navigation }) => {
         { label: 'Alcohol', value: 'alcohol', solidColor: false },
         { label: 'Caffeine', value: 'caffeine', solidColor: false },
         { label: 'Tobacco/Nicotene', value: 'nicotene', solidColor: false },
-        { label: 'Other', value: 'other', solidColor: false }
+        { label: 'Other', value: 'other', solidColor: false },
       ]}
     />
   );
@@ -314,7 +311,7 @@ export const SHI5: React.FC<Props> = ({ navigation }) => {
         { label: 'Rarely', value: 1, solidColor: false },
         { label: 'Sometimes', value: 2, solidColor: false },
         { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Always', value: 4, solidColor: false },
       ]}
     />
   );
@@ -336,7 +333,7 @@ export const SHI6: React.FC<Props> = ({ navigation }) => {
         { label: 'Rarely', value: 1, solidColor: false },
         { label: 'Sometimes', value: 2, solidColor: false },
         { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Always', value: 4, solidColor: false },
       ]}
     />
   );
@@ -358,7 +355,7 @@ export const SHI7: React.FC<Props> = ({ navigation }) => {
         { label: 'Rarely', value: 1, solidColor: false },
         { label: 'Sometimes', value: 2, solidColor: false },
         { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Always', value: 4, solidColor: false },
       ]}
     />
   );
@@ -380,7 +377,7 @@ export const SHI8: React.FC<Props> = ({ navigation }) => {
         { label: 'Rarely', value: 1, solidColor: false },
         { label: 'Sometimes', value: 2, solidColor: false },
         { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Always', value: 4, solidColor: false },
       ]}
     />
   );
@@ -402,7 +399,7 @@ export const SHI9: React.FC<Props> = ({ navigation }) => {
         { label: 'Rarely', value: 1, solidColor: false },
         { label: 'Sometimes', value: 2, solidColor: false },
         { label: 'Frequently', value: 3, solidColor: false },
-        { label: 'Always', value: 4, solidColor: false }
+        { label: 'Always', value: 4, solidColor: false },
       ]}
     />
   );
@@ -410,9 +407,16 @@ export const SHI9: React.FC<Props> = ({ navigation }) => {
 
 export const SHIResult: React.FC<Props> = ({ navigation }) => {
   // If nothing is undefined (shouldn't be), add answers for the total SHI score
-  const { SHI1, SHI2, SHI3, SHI4, SHI5, SHI6, SHI7, SHI8, SHI9 } = HYGState;
   HYGState.SHIScore =
-    SHI1 + SHI2 + SHI3 + SHI4 + SHI5 + SHI6 + SHI7 + SHI8 + SHI9;
+    HYGState.SHI1 +
+    HYGState.SHI2 +
+    HYGState.SHI3 +
+    HYGState.SHI4 +
+    HYGState.SHI5 +
+    HYGState.SHI6 +
+    HYGState.SHI7 +
+    HYGState.SHI8 +
+    HYGState.SHI9;
 
   return (
     <WizardContentScreen
@@ -420,7 +424,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('HYGReview', {
-          progressBarPercent: 0.96
+          progressBarPercent: 0.96,
         });
       }}
       titleLabel={`You scored a ${HYGState.SHIScore} on the shortened Sleep Hygiene Index (out of 36).`}
@@ -441,11 +445,11 @@ export const HYGReview: React.FC<Props> = ({ navigation }) => {
       onQuestionSubmit={(res: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
-            module: 'HYG'
+            module: 'HYG',
           });
         } else {
           navigation.navigate('CheckinScheduling', {
-            progressBarPercent: 0.985
+            progressBarPercent: 0.985,
           });
         }
       }}
@@ -467,7 +471,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       defaultValue={
         new Date(
-          new Date().getTime() + 86400000 * 7
+          new Date().getTime() + 86400000 * 7,
         ) /* Default date of 7 days from today */
       }
       onQuestionSubmit={(value: Date) => {
@@ -481,12 +485,12 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         if (moment().add(7, 'days').hour(0).toDate() > val) {
           return {
             severity: 'ERROR',
-            errorMsg: 'Please select a day 7 or more days from today'
+            errorMsg: 'Please select a day 7 or more days from today',
           };
         } else if (moment().add(14, 'days').hour(0).toDate() < val) {
           return {
             severity: 'WARNING',
-            errorMsg: 'Please select a day within 14 days of today'
+            errorMsg: 'Please select a day within 14 days of today',
           };
         } else {
           return true;
@@ -504,13 +508,13 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder object for next checkin
-  let reminderObject = {
+  const reminderObject = {
     expoPushToken: state.userData.reminders.expoPushToken,
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
     time: HYGState.nextCheckinTime,
-    enabled: true
+    enabled: true,
   };
 
   return (
@@ -527,7 +531,7 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
-              v.started === false && v.module !== 'HYG'
+              v.started === false && v.module !== 'HYG',
           )[0].module,
           lastCheckinModule: 'HYG',
           targetBedTime: GLOBAL.targetBedTime,
@@ -544,9 +548,9 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
             SHI7: HYGState.SHI7,
             SHI8: HYGState.SHI8,
             SHI9: HYGState.SHI9,
-            SHIScore: HYGState.SHIScore
+            SHIScore: HYGState.SHIScore,
           },
-          reminderObject: reminderObject
+          reminderObject: reminderObject,
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
@@ -558,10 +562,3 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
     </WizardContentScreen>
   );
 };
-
-const styles = StyleSheet.create({
-  BoldLabelText: {
-    fontFamily: 'RubikMedium',
-    fontSize: scale(20)
-  }
-});

@@ -1,7 +1,7 @@
 import React from 'react';
-import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
-import { scale } from 'react-native-size-matters';
+import { useWindowDimensions } from 'react-native';
 import moment from 'moment';
+import { NavigationProp } from '@react-navigation/native';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -21,7 +21,7 @@ const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
 
 // Define an interface for HYG flow state (SHI score & next checkin info)
-let COG1State = {
+const COG1State = {
   nextCheckinTime: new Date(),
   DBAS1: 0,
   DBAS2: 0,
@@ -44,7 +44,7 @@ let COG1State = {
   DBASF2: 0,
   DBASF3: 0,
   DBASF4: 0,
-  highestAvgCategoryLabel: 'ERROR'
+  highestAvgCategoryLabel: 'ERROR',
 };
 
 const imgSizePercent = 0.4; // Define square image size defaults as a percent of width
@@ -52,10 +52,7 @@ let imgSize = 0; // This value is replaced on the first screen to adjust for win
 
 interface Props {
   // Define Props type for all screens in this flow
-  navigation: {
-    navigate: Function;
-    goBack: Function;
-  };
+  navigation: NavigationProp<any>;
 }
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
@@ -68,7 +65,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
         navigation.navigate('SRTTitrationStart', {
-          progressBarPercent: 0.07
+          progressBarPercent: 0.07,
         });
       }}
       textLabel="Welcome back! This week we'll help address some anxieties and beliefs that make sleep harder. But first, let's review your sleep and how Dozy has been going for you so far."
@@ -80,27 +77,23 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
 // First screen to navigate to is 'SRTTitrationStart'
 // Screen it targets for return navigation is 'TreatmentPlan'
 
-export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
-
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('DBAS1', {
-          progressBarPercent: 0.32
-        });
-      }}
-      titleLabel="This week: Addressing Dysfunctional Beliefs & Attitudes about Sleep (DBAS)"
-      textLabel="We're going to get an idea of how you currently think about sleep. To get started, we'll ask you 16 questions. Rate how much you personally agree or disagree with each statement."
-      buttonLabel="Next"
-      flexibleLayout
-    >
-      <FemaleDoctor width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
-};
+export const TreatmentPlan: React.FC<Props> = ({ navigation }) => (
+  <WizardContentScreen
+    theme={theme}
+    bottomBackButton={() => navigation.goBack()}
+    onQuestionSubmit={() => {
+      navigation.navigate('DBAS1', {
+        progressBarPercent: 0.32,
+      });
+    }}
+    titleLabel="This week: Addressing Dysfunctional Beliefs & Attitudes about Sleep (DBAS)"
+    textLabel="We're going to get an idea of how you currently think about sleep. To get started, we'll ask you 16 questions. Rate how much you personally agree or disagree with each statement."
+    buttonLabel="Next"
+    flexibleLayout
+  >
+    <FemaleDoctor width={imgSize} height={imgSize} />
+  </WizardContentScreen>
+);
 
 export const DBAS1: React.FC<Props> = ({ navigation }) => {
   return (
@@ -118,7 +111,7 @@ export const DBAS1: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -140,7 +133,7 @@ export const DBAS2: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -162,7 +155,7 @@ export const DBAS3: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -184,7 +177,7 @@ export const DBAS4: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -206,7 +199,7 @@ export const DBAS5: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -228,7 +221,7 @@ export const DBAS6: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -250,7 +243,7 @@ export const DBAS7: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -272,7 +265,7 @@ export const DBAS8: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -294,7 +287,7 @@ export const DBAS9: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -316,7 +309,7 @@ export const DBAS10: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -338,7 +331,7 @@ export const DBAS11: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -360,7 +353,7 @@ export const DBAS12: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -382,7 +375,7 @@ export const DBAS13: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -404,7 +397,7 @@ export const DBAS14: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -426,7 +419,7 @@ export const DBAS15: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -448,7 +441,7 @@ export const DBAS16: React.FC<Props> = ({ navigation }) => {
         { label: 'Disagree', value: 2.5, solidColor: false },
         { label: 'Neutral', value: 5, solidColor: false },
         { label: 'Agree', value: 7.5, solidColor: false },
-        { label: 'Strongly agree', value: 10, solidColor: false }
+        { label: 'Strongly agree', value: 10, solidColor: false },
       ]}
     />
   );
@@ -456,57 +449,52 @@ export const DBAS16: React.FC<Props> = ({ navigation }) => {
 
 export const DBASResult: React.FC<Props> = ({ navigation }) => {
   // Add answers for the total DBAS score
-  const {
-    DBAS1,
-    DBAS2,
-    DBAS3,
-    DBAS4,
-    DBAS5,
-    DBAS6,
-    DBAS7,
-    DBAS8,
-    DBAS9,
-    DBAS10,
-    DBAS11,
-    DBAS12,
-    DBAS13,
-    DBAS14,
-    DBAS15,
-    DBAS16
-  } = COG1State;
   COG1State.DBASScore =
-    DBAS1 +
-    DBAS2 +
-    DBAS3 +
-    DBAS4 +
-    DBAS5 +
-    DBAS6 +
-    DBAS7 +
-    DBAS8 +
-    DBAS9 +
-    DBAS10 +
-    DBAS11 +
-    DBAS12 +
-    DBAS13 +
-    DBAS14 +
-    DBAS15 +
-    DBAS16;
+    COG1State.DBAS1 +
+    COG1State.DBAS2 +
+    COG1State.DBAS3 +
+    COG1State.DBAS4 +
+    COG1State.DBAS5 +
+    COG1State.DBAS6 +
+    COG1State.DBAS7 +
+    COG1State.DBAS8 +
+    COG1State.DBAS9 +
+    COG1State.DBAS10 +
+    COG1State.DBAS11 +
+    COG1State.DBAS12 +
+    COG1State.DBAS13 +
+    COG1State.DBAS14 +
+    COG1State.DBAS15 +
+    COG1State.DBAS16;
 
   // Calculate category average scores as well
-  COG1State.DBASF1 = (DBAS5 + DBAS7 + DBAS9 + DBAS12 + DBAS16) / 5;
-  COG1State.DBASF2 = (DBAS3 + DBAS4 + DBAS8 + DBAS10 + DBAS11) / 5;
-  COG1State.DBASF3 = (DBAS1 + DBAS2) / 2;
-  COG1State.DBASF4 = (DBAS6 + DBAS13 + DBAS15) / 3;
+  COG1State.DBASF1 =
+    (COG1State.DBAS5 +
+      COG1State.DBAS7 +
+      COG1State.DBAS9 +
+      COG1State.DBAS12 +
+      COG1State.DBAS16) /
+    5;
+  COG1State.DBASF2 =
+    (COG1State.DBAS3 +
+      COG1State.DBAS4 +
+      COG1State.DBAS8 +
+      COG1State.DBAS10 +
+      COG1State.DBAS11) /
+    5;
+  COG1State.DBASF3 = (COG1State.DBAS1 + COG1State.DBAS2) / 2;
+  COG1State.DBASF4 =
+    (COG1State.DBAS6 + COG1State.DBAS13 + COG1State.DBAS15) / 3;
 
   // Find the highest average scoring category, label it
   const categoryAvgScores: { [key: string]: number } = {
     DBASF1: COG1State.DBASF1,
     DBASF2: COG1State.DBASF2,
     DBASF3: COG1State.DBASF3,
-    DBASF4: COG1State.DBASF4
+    DBASF4: COG1State.DBASF4,
   };
   const highestAvgCategory = Object.keys(categoryAvgScores).sort(
-    (a, b) => categoryAvgScores[b] - categoryAvgScores[a]
+    (a, b) => categoryAvgScores[b] - categoryAvgScores[a],
   )[0];
   switch (highestAvgCategory) {
     case 'DBASF1':
@@ -529,7 +517,7 @@ export const DBASResult: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('COG1Review', {
-          progressBarPercent: 0.93
+          progressBarPercent: 0.93,
         });
       }}
       titleLabel={`Seems like your most difficult area is with ${COG1State.highestAvgCategoryLabel}.`}
@@ -550,11 +538,11 @@ export const COG1Review: React.FC<Props> = ({ navigation }) => {
       onQuestionSubmit={(res: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
-            module: 'COG1'
+            module: 'COG1',
           });
         } else {
           navigation.navigate('CheckinScheduling', {
-            progressBarPercent: 0.96
+            progressBarPercent: 0.96,
           });
         }
       }}
@@ -576,7 +564,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       defaultValue={
         new Date(
-          new Date().getTime() + 86400000 * 7
+          new Date().getTime() + 86400000 * 7,
         ) /* Default date of 7 days from today */
       }
       onQuestionSubmit={(value: Date) => {
@@ -590,12 +578,12 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         if (moment().add(7, 'days').hour(0).toDate() > val) {
           return {
             severity: 'ERROR',
-            errorMsg: 'Please select a day 7 or more days from today'
+            errorMsg: 'Please select a day 7 or more days from today',
           };
         } else if (moment().add(14, 'days').hour(0).toDate() < val) {
           return {
             severity: 'WARNING',
-            errorMsg: 'Please select a day within 14 days of today'
+            errorMsg: 'Please select a day within 14 days of today',
           };
         } else {
           return true;
@@ -613,13 +601,13 @@ export const COG1End: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder object for next checkin
-  let reminderObject = {
+  const reminderObject = {
     expoPushToken: state.userData.reminders.expoPushToken,
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
     time: COG1State.nextCheckinTime,
-    enabled: true
+    enabled: true,
   };
 
   return (
@@ -636,7 +624,7 @@ export const COG1End: React.FC<Props> = ({ navigation }) => {
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBAL.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
-              v.started === false && v.module !== 'COG1'
+              v.started === false && v.module !== 'COG1',
           )[0].module,
           lastCheckinModule: 'COG1',
           targetBedTime: GLOBAL.targetBedTime,
@@ -663,9 +651,9 @@ export const COG1End: React.FC<Props> = ({ navigation }) => {
             DBASF1: COG1State.DBASF1,
             DBASF2: COG1State.DBASF2,
             DBASF3: COG1State.DBASF3,
-            DBASF4: COG1State.DBASF4
+            DBASF4: COG1State.DBASF4,
           },
-          reminderObject: reminderObject
+          reminderObject: reminderObject,
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
@@ -677,10 +665,3 @@ export const COG1End: React.FC<Props> = ({ navigation }) => {
     </WizardContentScreen>
   );
 };
-
-const styles = StyleSheet.create({
-  BoldLabelText: {
-    fontFamily: 'RubikMedium',
-    fontSize: scale(20)
-  }
-});

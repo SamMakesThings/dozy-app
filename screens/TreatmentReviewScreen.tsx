@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { WebView } from 'react-native-webview';
 import treatments from '../constants/Treatments';
@@ -27,7 +26,7 @@ export const TreatmentReviewScreen: React.FC<Props> = ({ route }) => {
   return (
     <WebView
       source={{
-        uri: uri
+        uri: uri,
       }}
     />
   );

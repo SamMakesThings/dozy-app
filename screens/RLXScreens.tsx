@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -29,14 +28,14 @@ const imgSizePercent = 0.4;
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 // Set up state for this check-in
-let RLXState = {
+const RLXState = {
   PMRIntentionAction: 'None',
   PMRIntentionTime: new Date(),
-  nextCheckinTime: new Date()
+  nextCheckinTime: new Date(),
 };
 
 export const Welcome: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
   return (
@@ -46,7 +45,7 @@ export const Welcome: React.FC<{ navigation: Navigation }> = ({
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
         navigation.navigate('SRTTitrationStart', {
-          progressBarPercent: 0.06
+          progressBarPercent: 0.06,
         });
       }}
       textLabel="Welcome back! This week, we’ll review your sleep data, update your care plan, and get started with some relaxation techniques to help you sleep."
@@ -59,7 +58,7 @@ export const Welcome: React.FC<{ navigation: Navigation }> = ({
 // Screen it targets for return navigation is 'TreatmentPlan'
 
 export const TreatmentPlan: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <WizardContentScreen
@@ -67,7 +66,7 @@ export const TreatmentPlan: React.FC<{ navigation: Navigation }> = ({
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('WhyPMR', {
-          progressBarPercent: 0.28
+          progressBarPercent: 0.28,
         });
       }}
       titleLabel="This week: Progressive Muscle Relaxation"
@@ -83,7 +82,7 @@ export const TreatmentPlan: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const WhyPMR: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <WizardContentScreen
@@ -91,7 +90,7 @@ export const WhyPMR: React.FC<{ navigation: Navigation }> = ({
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PMROverview', {
-          progressBarPercent: 0.33
+          progressBarPercent: 0.33,
         });
       }}
       titleLabel="Why PMR?"
@@ -107,7 +106,7 @@ export const WhyPMR: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const PMROverview: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <WizardContentScreen
@@ -115,7 +114,7 @@ export const PMROverview: React.FC<{ navigation: Navigation }> = ({
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PMRWalkthrough', {
-          progressBarPercent: 0.39
+          progressBarPercent: 0.39,
         });
       }}
       titleLabel="There are 3 main steps."
@@ -135,7 +134,7 @@ It's all about noticing & releasing muscular tension.`}
 };
 
 export const PMRWalkthrough: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <WizardContentScreen
@@ -143,7 +142,7 @@ export const PMRWalkthrough: React.FC<{ navigation: Navigation }> = ({
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PostPMR', {
-          progressBarPercent: 0.44
+          progressBarPercent: 0.44,
         });
       }}
       textLabel={
@@ -153,7 +152,7 @@ export const PMRWalkthrough: React.FC<{ navigation: Navigation }> = ({
     >
       <WebView
         source={{
-          uri: 'https://www.youtube.com/embed/1nZEdqcGVzo'
+          uri: 'https://www.youtube.com/embed/1nZEdqcGVzo',
         }}
         style={{ width: useWindowDimensions().width, marginBottom: scale(20) }}
       />
@@ -162,7 +161,7 @@ export const PMRWalkthrough: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const PostPMR: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <WizardContentScreen
@@ -170,7 +169,7 @@ export const PostPMR: React.FC<{ navigation: Navigation }> = ({
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('CalibrationStart', {
-          progressBarPercent: 0.56
+          progressBarPercent: 0.56,
         });
       }}
       titleLabel="How do you feel?"
@@ -186,7 +185,7 @@ export const PostPMR: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const CalibrationStart: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <WizardContentScreen
@@ -195,11 +194,11 @@ export const CalibrationStart: React.FC<{ navigation: Navigation }> = ({
       onQuestionSubmit={(res: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
-            module: 'RLX'
+            module: 'RLX',
           });
         } else {
           navigation.navigate('PMRIntentionAction', {
-            progressBarPercent: 0.61
+            progressBarPercent: 0.61,
           });
         }
       }}
@@ -217,7 +216,7 @@ export const CalibrationStart: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const PMRIntentionAction: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <MultiButtonScreen
@@ -233,10 +232,10 @@ export const PMRIntentionAction: React.FC<{ navigation: Navigation }> = ({
         {
           label: 'After getting home from work',
           value: 'after work',
-          solidColor: false
+          solidColor: false,
         },
         { label: 'After dinner', value: 'after dinner', solidColor: false },
-        { label: 'Other', value: 'other trigger', solidColor: false }
+        { label: 'Other', value: 'other trigger', solidColor: false },
       ]}
       questionLabel="When would you like to practice PMR during the day?"
     />
@@ -244,7 +243,7 @@ export const PMRIntentionAction: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const PMRIntentionTime: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <DateTimePickerScreen
@@ -254,7 +253,7 @@ export const PMRIntentionTime: React.FC<{ navigation: Navigation }> = ({
       onQuestionSubmit={(value: Date) => {
         RLXState.PMRIntentionTime = value;
         navigation.navigate('TreatmentRecommit', {
-          progressBarPercent: 0.72
+          progressBarPercent: 0.72,
         });
       }}
       questionLabel="When would you like to be reminded?"
@@ -265,7 +264,7 @@ export const PMRIntentionTime: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const TreatmentRecommit: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <WizardContentScreen
@@ -273,7 +272,7 @@ export const TreatmentRecommit: React.FC<{ navigation: Navigation }> = ({
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('RulesRecap', {
-          progressBarPercent: 0.78
+          progressBarPercent: 0.78,
         });
       }}
       titleLabel="Can you re-commit to following the care plan this week?"
@@ -289,7 +288,7 @@ export const TreatmentRecommit: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const RulesRecap: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <WizardContentScreen
@@ -297,7 +296,7 @@ export const RulesRecap: React.FC<{ navigation: Navigation }> = ({
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('LastTip', {
-          progressBarPercent: 0.83
+          progressBarPercent: 0.83,
         });
       }}
       titleLabel="Quick recap of the 3 rules:"
@@ -321,14 +320,7 @@ export const RulesRecap: React.FC<{ navigation: Navigation }> = ({
       }
       flexibleLayout
     >
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around',
-          alignItems: 'center'
-        }}
-      >
+      <View style={styles.rulesRecapContent}>
         <AlarmClock width={imgSize * 0.5} height={imgSize * 0.5} />
         <Rule2Illustration width={imgSize * 1.2} height={imgSize} />
         <Rule3Illustration width={imgSize * 0.7} height={imgSize * 0.7} />
@@ -338,7 +330,7 @@ export const RulesRecap: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const LastTip: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <WizardContentScreen
@@ -346,7 +338,7 @@ export const LastTip: React.FC<{ navigation: Navigation }> = ({
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('CheckinScheduling', {
-          progressBarPercent: 0.9
+          progressBarPercent: 0.9,
         });
       }}
       titleLabel="One last tip"
@@ -362,7 +354,7 @@ export const LastTip: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const CheckinScheduling: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   return (
     <DateTimePickerScreen
@@ -380,12 +372,12 @@ export const CheckinScheduling: React.FC<{ navigation: Navigation }> = ({
         if (moment().add(7, 'days').hour(0).toDate() > val) {
           return {
             severity: 'ERROR',
-            errorMsg: 'Please select a day 7 or more days from today'
+            errorMsg: 'Please select a day 7 or more days from today',
           };
         } else if (moment().add(14, 'days').hour(0).toDate() < val) {
           return {
             severity: 'WARNING',
-            errorMsg: 'Please select a day within 14 days of today'
+            errorMsg: 'Please select a day within 14 days of today',
           };
         } else {
           return true;
@@ -400,20 +392,20 @@ export const CheckinScheduling: React.FC<{ navigation: Navigation }> = ({
 };
 
 export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder objects, put them in an array
-  let reminderArray = [
+  const reminderArray = [
     {
       expoPushToken: state.userData.reminders.expoPushToken,
       title: 'Next checkin is ready',
       body: 'Open the app now to get started',
       type: 'CHECKIN_REMINDER',
       time: RLXState.nextCheckinTime,
-      enabled: true
-    }
+      enabled: true,
+    },
   ];
   // Give the option to not set a reminder for PMR practice
   if (RLXState.PMRIntentionTime) {
@@ -423,7 +415,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
       body: 'Go to the home screen to practice',
       type: 'PMR_REMINDER',
       time: RLXState.PMRIntentionTime,
-      enabled: true
+      enabled: true,
     });
   }
 
@@ -441,7 +433,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
             nextCheckinDatetime: RLXState.nextCheckinTime,
             lastCheckinDatetime: new Date(),
             nextCheckinModule: GLOBAL.treatmentPlan.filter(
-              (v) => v.started === false && v.module !== 'RLX'
+              (v) => v.started === false && v.module !== 'RLX',
             )[0].module,
             lastCheckinModule: 'RLX',
             targetBedTime: GLOBAL.targetBedTime,
@@ -449,9 +441,9 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
             targetTimeInBed: GLOBAL.targetTimeInBed,
             additionalCheckinData: {
               PMRIntentionAction: RLXState.PMRIntentionAction,
-              PMRIntentionTime: RLXState.PMRIntentionTime
+              PMRIntentionTime: RLXState.PMRIntentionTime,
             },
-            reminderObject: reminderArray
+            reminderObject: reminderArray,
           });
           navigation.navigate('App');
           refreshUserData(dispatch);
@@ -470,6 +462,12 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
 const styles = StyleSheet.create({
   BoldLabelText: {
     fontFamily: 'RubikMedium',
-    fontSize: scale(20)
-  }
+    fontSize: scale(20),
+  },
+  rulesRecapContent: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
 });

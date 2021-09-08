@@ -11,10 +11,10 @@ interface Props {
   image: React.Component;
   textLabel: string;
   longText?: boolean;
-  onQuestionSubmit: Function;
+  onQuestionSubmit: (value: string | number | boolean) => void;
   buttonLabel?: string;
   bottomGreyButtonLabel?: string;
-  bottomBackButton?: Function;
+  bottomBackButton?: () => void;
   bbbDisabled?: boolean;
   onlyBackButton?: boolean;
 }
@@ -25,21 +25,14 @@ const IconExplainScreen: React.FC<Props> = (props) => {
 
   return (
     <ScreenContainer hasSafeArea={true} scrollable={false}>
-      <Container
-        style={styles.View_HeaderContainer}
-        elevation={0}
-        useThemeGutterPadding={true}
-      >
+      <Container elevation={0} useThemeGutterPadding={true}>
         <Container
           style={styles.View_BarContainer}
           elevation={0}
           useThemeGutterPadding={true}
         >
           <ProgressBar
-            style={{
-              ...styles.ProgressBar,
-              ...{ display: props.progressBarPercent ? 'flex' : 'none' }
-            }}
+            style={props.progressBarPercent ? undefined : styles.hidden}
             color={theme.colors.primary}
             progress={props.progressBarPercent}
             borderRadius={10}
@@ -52,16 +45,17 @@ const IconExplainScreen: React.FC<Props> = (props) => {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <View style={{ flex: 1 }} />
+        <View style={styles.spacer} />
         <View style={styles.View_ImageContainer}>{props.image}</View>
         <Text
-          style={{
-            ...styles.Text_Explainer,
-            ...theme.typography.body1,
-            color: theme.colors.secondary,
-            flex: props.longText ? undefined : 3,
-            marginBottom: 10
-          }}
+          style={[
+            styles.Text_Explainer,
+            theme.typography.body1,
+            {
+              color: theme.colors.secondary,
+            },
+            !props.longText && styles.shortLabel,
+          ]}
         >
           {props.textLabel}
         </Text>
@@ -82,29 +76,28 @@ const IconExplainScreen: React.FC<Props> = (props) => {
 const styles = StyleSheet.create({
   View_ImageContainer: {
     flex: 5,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   View_ContentContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   View_BarContainer: {
     width: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
-  },
-  Nav_BackButton: {
-    paddingRight: 0
+    alignItems: 'center',
   },
   Text_Explainer: {
     textAlign: 'left',
     width: '90%',
     alignItems: 'flex-start',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginBottom: 10,
   },
-  ProgressBar: {},
-  View_HeaderContainer: {}
+  shortLabel: { flex: 3 },
+  spacer: { flex: 1 },
+  hidden: { display: 'none' },
 });
 
 export default withTheme(IconExplainScreen);

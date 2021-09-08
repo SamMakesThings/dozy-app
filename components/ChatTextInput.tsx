@@ -5,13 +5,19 @@ import {
   TextInput,
   Platform,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
+  ViewStyle,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
-export const ChatTextInput = (props: { onSend: Function; viewStyle?: {} }) => {
+export interface ChatTextInputProps {
+  viewStyle?: ViewStyle;
+  onSend: (value: string) => void;
+}
+
+export const ChatTextInput: React.FC<ChatTextInputProps> = (props) => {
   const theme = dozy_theme;
 
   // Set up local state for chat message
@@ -55,15 +61,15 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   TextInput: {
     paddingLeft: scale(15),
     paddingVertical: scale(15),
     paddingBottom: Platform.OS == 'ios' ? scale(18) : scale(15),
-    flex: 1
+    flex: 1,
   },
   SendIcon: {
-    padding: scale(10)
-  }
+    padding: scale(10),
+  },
 });

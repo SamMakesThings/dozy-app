@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+import React from 'react';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import * as Icon from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
-import React, { useRef } from 'react';
-import { LogBox, Platform, StatusBar, Text } from 'react-native';
+import { LogBox, StatusBar, Text } from 'react-native';
 import LoadingOverlay from './components/LoadingOverlay';
 import { dozy_theme } from './config/Themes';
 import { AuthProvider } from './context/AuthContext';
@@ -21,14 +22,13 @@ console.warn = (message) => {
 
 // Disable font scaling app-wide, enable on things it doesn't break
 // Hmm - this code throws TS undefined errors, but works. Not sure why.
-// @ts-expect-error
+// @ts-expect-error: Unreachable code error
 Text.defaultProps = Text.defaultProps || {};
-// @ts-expect-error
+// @ts-expect-error: Unreachable code error
 Text.defaultProps.allowFontScaling = false;
 
 // Root app component
-export default function App() {
-  const isGoogleSigninConfiguredRef = useRef(false);
+export default function App(): React.ReactElement {
   // Using auth functions from react-navigation guide
   // Full dispatch code in mainAppReducer.ts
 
@@ -41,7 +41,7 @@ export default function App() {
     StatusBar.setBarStyle('light-content');
   }, []);
 
-  const _handleLoadingError = (error) => {
+  const _handleLoadingError = (error: Error) => {
     // Add error reporting here
     console.warn(error);
   };
@@ -58,7 +58,7 @@ export default function App() {
       'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       RubikRegular: require('./assets/fonts/RubikRegular.ttf'),
       RubikMedium: require('./assets/fonts/RubikMedium.ttf'),
-      RubikBold: require('./assets/fonts/RubikBold.ttf')
+      RubikBold: require('./assets/fonts/RubikBold.ttf'),
     });
   }
 

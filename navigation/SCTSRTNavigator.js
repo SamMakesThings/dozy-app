@@ -1,5 +1,4 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Screens from '../screens/SCTSRTScreens';
 import HeaderProgressBar from '../components/HeaderProgressBar';
@@ -16,8 +15,8 @@ const animConfig = {
     mass: 3,
     overshootClamping: true,
     restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01
-  }
+    restSpeedThreshold: 0.01,
+  },
 };
 
 // Create a stack screen for each component defined in DiaryEntryScreens
@@ -27,7 +26,7 @@ export default function SCTSRTNavigator() {
       initialRouteName="Welcome"
       screenOptions={{
         headerShown: true,
-        animationEnabled: true
+        animationEnabled: true,
       }}
     >
       {Object.keys(Screens).map((screen) => {
@@ -57,8 +56,8 @@ export default function SCTSRTNavigator() {
               headerTransparent: true,
               transitionSpec: {
                 open: animConfig,
-                close: animConfig
-              }
+                close: animConfig,
+              },
             })}
           />
         );
@@ -73,7 +72,7 @@ export default function SCTSRTNavigator() {
             return <HeaderProgressBar navigation={navigation} />;
           },
           animationEnabled: true,
-          headerTransparent: true
+          headerTransparent: true,
         })}
       />
     </SCTSRTStack.Navigator>

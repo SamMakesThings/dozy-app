@@ -1,5 +1,4 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as TreatmentScreens from '../screens/PITScreens';
 import * as SRTTitrationScreens from '../screens/SRTTitrationScreens';
@@ -17,8 +16,8 @@ const animConfig = {
     mass: 3,
     overshootClamping: true,
     restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01
-  }
+    restSpeedThreshold: 0.01,
+  },
 };
 
 const Screens = { ...TreatmentScreens, ...SRTTitrationScreens };
@@ -30,7 +29,7 @@ export default function PITNavigator() {
       initialRouteName="Welcome"
       screenOptions={{
         headerShown: true,
-        animationEnabled: true
+        animationEnabled: true,
       }}
     >
       {Object.keys(Screens).map((screen) => {
@@ -60,8 +59,8 @@ export default function PITNavigator() {
               headerTransparent: true,
               transitionSpec: {
                 open: animConfig,
-                close: animConfig
-              }
+                close: animConfig,
+              },
             })}
           />
         );
@@ -76,7 +75,7 @@ export default function PITNavigator() {
             return <HeaderProgressBar navigation={navigation} />;
           },
           animationEnabled: true,
-          headerTransparent: true
+          headerTransparent: true,
         })}
       />
     </PITStack.Navigator>

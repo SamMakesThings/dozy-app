@@ -30,34 +30,34 @@ export const initialState: AppState = {
       time: firestore.Timestamp.now(),
       message: '',
       sender: '',
-      sentByUser: true
-    }
+      sentByUser: true,
+    },
   ],
   tasks: [],
   selectedDate: {
     month: new Date().getMonth(),
-    year: new Date().getFullYear()
-  }
+    year: new Date().getFullYear(),
+  },
 };
 
 export type ACTION =
   | {
       type: 'RESTORE_TOKEN';
       token: string;
-      profileData: {};
+      profileData: Record<string, any>;
     }
   | {
       type: 'SIGN_IN';
       token: string;
       onboardingComplete: boolean;
       isAuthLoading: boolean;
-      profileData: {};
-      userData: {};
+      profileData: Record<string, any>;
+      userData: Record<string, any>;
     }
   | { type: 'SIGN_OUT' }
   | {
       type: 'UPDATE_USERDATA';
-      userData: {};
+      userData: Record<string, any>;
       onboardingComplete: boolean;
     }
   | { type: 'SET_SLEEPLOGS'; sleepLogs: SleepLog[] }
@@ -74,7 +74,7 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
       return {
         ...prevState,
         userId: action.token,
-        profileData: action.profileData
+        profileData: action.profileData,
       };
     case 'SIGN_IN':
       return {
@@ -84,57 +84,57 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
         onboardingComplete: action.onboardingComplete,
         authLoading: action.isAuthLoading,
         profileData: action.profileData,
-        userData: action.userData
+        userData: action.userData,
       };
     case 'SIGN_OUT':
       return {
         ...prevState,
         isSignout: true,
-        userId: undefined
+        userId: undefined,
       };
     case 'UPDATE_USERDATA':
       return {
         ...prevState,
         userData: action.userData,
-        onboardingComplete: action.onboardingComplete
+        onboardingComplete: action.onboardingComplete,
       };
     case 'SET_SLEEPLOGS':
       return {
         ...prevState,
-        sleepLogs: action.sleepLogs
+        sleepLogs: action.sleepLogs,
       };
     case 'SET_CHATS':
       return {
         ...prevState,
-        chats: action.chats
+        chats: action.chats,
       };
     case 'SET_TASKS':
       return {
         ...prevState,
-        tasks: action.tasks
+        tasks: action.tasks,
       };
     case 'CHANGE_SELECTED_MONTH':
       return {
         ...prevState,
         selectedDate: alterMonthSelection(
           prevState.selectedDate,
-          action.changeMonthBy
-        )
+          action.changeMonthBy,
+        ),
       };
     case 'AUTH_LOADING':
       return {
         ...prevState,
-        authLoading: action.isAuthLoading
+        authLoading: action.isAuthLoading,
       };
     case 'FINISH_LOADING':
       return {
         ...prevState,
-        isLoading: false
+        isLoading: false,
       };
     case 'FINISH_ONBOARDING':
       return {
         ...prevState,
-        onboardingComplete: true
+        onboardingComplete: true,
       };
   }
 };

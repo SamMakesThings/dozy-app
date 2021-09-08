@@ -4,7 +4,7 @@ import {
   Text,
   View,
   ActivityIndicator,
-  Platform
+  Platform,
 } from 'react-native';
 import { ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
@@ -26,7 +26,7 @@ import GLOBAL from '../utilities/global';
 import { Navigation } from '../types/custom';
 
 export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
-  navigation
+  navigation,
 }) => {
   const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
@@ -36,7 +36,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
     // Calculate the full treatment plan and store it in static global state
     const treatmentPlan = planTreatmentModules({
       sleepLogs: state.sleepLogs,
-      currentTreatments: state.userData.currentTreatments
+      currentTreatments: state.userData.currentTreatments,
     });
     GLOBAL.treatmentPlan = treatmentPlan;
 
@@ -61,13 +61,14 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
     // Estimate treatment completion date & % progress based on treatmentPlan
     // const estCompletionDate = treatmentPlan[treatmentPlan.length - 1].estDate;
     const modulesCompleted = treatmentPlan.filter(
-      (module) => module.started === true
+      (module) => module.started === true,
     ).length;
     const percentTreatmentCompleted =
       parseFloat((modulesCompleted / treatmentPlan.length).toFixed(2)) * 1; // Parsefloat added to make TS happy
 
     // Strip time from next checkin datetime to determine whether to show checkin button
-    let nextCheckinDate = state.userData?.currentTreatments.nextCheckinDatetime.toDate();
+    const nextCheckinDate =
+      state.userData?.currentTreatments.nextCheckinDatetime.toDate();
     nextCheckinDate.setHours(0);
 
     return (
@@ -95,7 +96,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
                 badge
                 onPress={() =>
                   navigation.navigate(
-                    state.userData.nextCheckin.treatmentModule
+                    state.userData.nextCheckin.treatmentModule,
                   )
                 }
               />
@@ -124,13 +125,13 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
                     1000 /
                     60 /
                     60 /
-                    24
+                    24,
                 )}
                 bedTime={formatDateAsTime(
-                  state.userData.currentTreatments.targetBedTime.toDate()
+                  state.userData.currentTreatments.targetBedTime.toDate(),
                 )}
                 wakeTime={formatDateAsTime(
-                  state.userData.currentTreatments.targetWakeTime.toDate()
+                  state.userData.currentTreatments.targetWakeTime.toDate(),
                 )}
               />
             )
@@ -140,7 +141,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             nextCheckinDate={state.userData.nextCheckin.nextCheckinDatetime}
             onPress={() => {
               navigation.navigate('TreatmentPlan', {
-                completionPercentProgress: percentTreatmentCompleted
+                completionPercentProgress: percentTreatmentCompleted,
               });
             }}
           />
@@ -152,7 +153,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
                   <Text
                     style={{
                       ...theme.typography.cardTitle,
-                      ...styles.Text_CardTitle
+                      ...styles.Text_CardTitle,
                     }}
                   >
                     Progressive Muscle Relaxation
@@ -160,7 +161,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
                   <Text
                     style={{
                       ...theme.typography.body2,
-                      ...styles.Text_CardSubtitle
+                      ...styles.Text_CardSubtitle,
                     }}
                   >
                     Practice once daily and before sleeping
@@ -169,9 +170,9 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
                 <View style={styles.View_CardContentContainer}>
                   <WebView
                     source={{
-                      uri: 'https://www.youtube.com/embed/1nZEdqcGVzo'
+                      uri: 'https://www.youtube.com/embed/1nZEdqcGVzo',
                     }}
-                    style={{ width: '100%' }}
+                    style={styles.webView}
                   />
                 </View>
               </CardContainer>
@@ -181,7 +182,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             <Text
               style={{
                 ...theme.typography.cardTitle,
-                ...styles.Text_CardTitle
+                ...styles.Text_CardTitle,
               }}
             >
               Previous modules
@@ -214,12 +215,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
         <ActivityIndicator
           size="large"
           color={theme.colors.primary}
-          style={{
-            width: scale(45),
-            height: scale(45),
-            marginTop: '45%',
-            alignSelf: 'center'
-          }}
+          style={styles.loader}
         />
       </View>
     );
@@ -231,44 +227,53 @@ const styles = StyleSheet.create({
     marginTop: scale(
       Platform.select({
         ios: dozy_theme.spacing.small,
-        android: dozy_theme.spacing.medium
-      }) as number
+        android: dozy_theme.spacing.medium,
+      }) as number,
     ),
-    paddingBottom: scale(25)
+    paddingBottom: scale(25),
   },
   ItemMargin: {
-    marginTop: scale(10)
+    marginTop: scale(10),
   },
   View_ContentContainer: {
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    paddingHorizontal: scale(10)
+    paddingHorizontal: scale(10),
   },
   View_CardHeaderContainer: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   View_CardContentContainer: {
-    height: 200
+    height: 200,
   },
   View_NoCard: {
     flex: 1,
-    marginVertical: scale(15)
+    marginVertical: scale(15),
   },
   Text_CardTitle: {
-    color: dozy_theme.colors.secondary
+    color: dozy_theme.colors.secondary,
   },
   Text_CardSubtitle: {
     color: dozy_theme.colors.secondary,
     opacity: 0.5,
     marginTop: scale(-5),
-    marginBottom: scale(12)
+    marginBottom: scale(12),
   },
   Icon_Clipboard: {
     margin: scale(20),
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
+  webView: {
+    width: '100%',
+  },
+  loader: {
+    width: scale(45),
+    height: scale(45),
+    marginTop: '45%',
+    alignSelf: 'center',
+  },
 });
 
 export default TreatmentScreen;

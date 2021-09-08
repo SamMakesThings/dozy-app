@@ -1,13 +1,12 @@
-/* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import {
   VictoryChart,
   VictoryTheme,
   VictoryLine,
   VictoryAxis,
-  VictoryScatter
+  VictoryScatter,
 } from 'victory-native';
 import { AuthContext } from '../context/AuthContext';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
@@ -34,34 +33,34 @@ const chartStyles = {
   chart: {
     width: scale(300),
     height: scale(300),
-    domainPadding: { x: 3, y: 35 }
+    domainPadding: { x: 3, y: 35 },
   },
   axis: {
     tickLabels: {
       angle: -45,
-      fontSize: scale(11)
+      fontSize: scale(11),
     },
     grid: {
-      stroke: theme.colors.medium
-    }
+      stroke: theme.colors.medium,
+    },
   },
   line: {
     data: {
       stroke: theme.colors.primary,
       strokeWidth: scale(4),
-      strokeLinejoin: 'round'
-    }
+      strokeLinejoin: 'round',
+    },
   },
   scatter: {
     data: {
-      fill: theme.colors.primary
-    }
-  }
+      fill: theme.colors.primary,
+    },
+  },
 };
 
 export const SRTTitrationStart = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+  const imgSize = imgSizePercent * useWindowDimensions().width;
   // Trim sleepLogs to only show most recent 7
   recentSleepLogs = state.sleepLogs.slice(0, 7);
 
@@ -71,7 +70,7 @@ export const SRTTitrationStart = ({ navigation }: Props) => {
       (recentSleepLogs.reduce((a, b) => a + b.sleepEfficiency, 0) /
         recentSleepLogs.length) *
       100
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   function getSRTTitrationLabel(sleepEffiencyAvg: number) {
@@ -108,7 +107,7 @@ export const SleepEfficiency = ({ navigation }: Props) => {
       (recentSleepLogs.reduce((a, b) => a + b.sleepEfficiency, 0) /
         recentSleepLogs.length) *
       100
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   // Pull baseline from state
@@ -131,7 +130,7 @@ export const SleepEfficiency = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SRTTitration', {
-          progressBarPercent: 0.12
+          progressBarPercent: 0.12,
         });
       }}
       textLabel={getLabel(sleepEfficiencyAvg)}
@@ -154,7 +153,7 @@ export const SleepEfficiency = ({ navigation }: Props) => {
           tickFormat={(tick) => {
             return tick.toLocaleString('en-US', {
               month: 'short',
-              day: 'numeric'
+              day: 'numeric',
             });
           }}
           tickCount={7}
@@ -181,7 +180,7 @@ export const SleepEfficiency = ({ navigation }: Props) => {
 export const SRTTitration = ({ navigation }: Props) => {
   const { state } = React.useContext(AuthContext);
 
-  let imgSize = imgSizePercent * useWindowDimensions().width;
+  const imgSize = imgSizePercent * useWindowDimensions().width;
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -189,12 +188,13 @@ export const SRTTitration = ({ navigation }: Props) => {
       (recentSleepLogs.reduce((a, b) => a + b.sleepEfficiency, 0) /
         recentSleepLogs.length) *
       100
-    ).toFixed(0)
+    ).toFixed(0),
   );
 
   // Use old target bedtime to calculate new (if needed)
-  const oldTargetBedTime = state.userData.currentTreatments.targetBedTime.toDate();
-  let newTargetBedTime = oldTargetBedTime;
+  const oldTargetBedTime =
+    state.userData.currentTreatments.targetBedTime.toDate();
+  const newTargetBedTime = oldTargetBedTime;
   GLOBAL.targetTimeInBed = state.userData.currentTreatments.targetTimeInBed;
   if (sleepEfficiencyAvg >= 90) {
     newTargetBedTime.setMinutes(oldTargetBedTime.getMinutes() - 15);
@@ -203,7 +203,7 @@ export const SRTTitration = ({ navigation }: Props) => {
   }
   const targetBedTimeLabel = formatDateAsTime(newTargetBedTime);
   const targetWakeTimeLabel = formatDateAsTime(
-    state.userData.currentTreatments.targetWakeTime.toDate()
+    state.userData.currentTreatments.targetWakeTime.toDate(),
   );
 
   function getSRTTitrationLabel(sleepEffiencyAvg: number) {
@@ -223,7 +223,8 @@ export const SRTTitration = ({ navigation }: Props) => {
       onQuestionSubmit={() => {
         // Set target bedtime and wake time in Global for use in treatment module submit function
         GLOBAL.targetBedTime = newTargetBedTime;
-        GLOBAL.targetWakeTime = state.userData.currentTreatments.targetWakeTime.toDate();
+        GLOBAL.targetWakeTime =
+          state.userData.currentTreatments.targetWakeTime.toDate();
         navigation.navigate('SleepOnset', { progressBarPercent: 0.15 });
       }}
       textLabel={getSRTTitrationLabel(sleepEfficiencyAvg)}
@@ -243,25 +244,24 @@ export const SleepOnset = ({ navigation }: Props) => {
     (
       recentSleepLogs.reduce((a, b) => a + b.minsToFallAsleep, 0) /
       recentSleepLogs.length
-    ).toFixed(0)
+    ).toFixed(0),
   );
   const baselineSleepOnsetAvg = state.userData.baselineInfo.sleepOnsetAvg;
 
-  function getLabel(sleepOnsetAvg: number) {
-    if (sleepOnsetAvg > baselineSleepOnsetAvg + 5) {
-      return `On average, it's taken you ${sleepOnsetAvg} minutes to fall asleep this week, which is a bit worse than your previous baseline of ${baselineSleepOnsetAvg} minutes. The techniques we're introducing today may help you fall asleep faster.`;
-    } else if (sleepOnsetAvg > baselineSleepOnsetAvg - 2) {
-      return `On average, it's taken you ${sleepOnsetAvg} minutes to fall asleep this week, which is about the same as your previous baseline of ${baselineSleepOnsetAvg} minutes. The techniques we're introducing today may help you fall asleep faster.`;
+  function getLabel(sleepAvg: number) {
+    if (sleepAvg > baselineSleepOnsetAvg + 5) {
+      return `On average, it's taken you ${sleepAvg} minutes to fall asleep this week, which is a bit worse than your previous baseline of ${baselineSleepOnsetAvg} minutes. The techniques we're introducing today may help you fall asleep faster.`;
+    } else if (sleepAvg > baselineSleepOnsetAvg - 2) {
+      return `On average, it's taken you ${sleepAvg} minutes to fall asleep this week, which is about the same as your previous baseline of ${baselineSleepOnsetAvg} minutes. The techniques we're introducing today may help you fall asleep faster.`;
     } else {
-      return `On average, it's taken you ${sleepOnsetAvg} minutes to fall asleep this week, which is improved over your ${baselineSleepOnsetAvg} minutes before treatment. Keep up the good work!`;
+      return `On average, it's taken you ${sleepAvg} minutes to fall asleep this week, which is improved over your ${baselineSleepOnsetAvg} minutes before treatment. Keep up the good work!`;
     }
   }
 
-  const highestValueForDomain = Math.max.apply(
-    Math,
-    recentSleepLogs.map(function (o) {
+  const highestValueForDomain = Math.max(
+    ...recentSleepLogs.map(function (o) {
       return o.minsToFallAsleep;
-    })
+    }),
   );
 
   return (
@@ -270,7 +270,7 @@ export const SleepOnset = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SleepMaintenance', {
-          progressBarPercent: 0.18
+          progressBarPercent: 0.18,
         });
       }}
       textLabel={getLabel(sleepOnsetAvg)}
@@ -290,7 +290,7 @@ export const SleepOnset = ({ navigation }: Props) => {
           tickFormat={(tick) => {
             return tick.toLocaleString('en-US', {
               month: 'short',
-              day: 'numeric'
+              day: 'numeric',
             });
           }}
           tickCount={7}
@@ -322,26 +322,25 @@ export const SleepMaintenance = ({ navigation }: Props) => {
     (
       recentSleepLogs.reduce((a, b) => a + b.nightMinsAwake, 0) /
       recentSleepLogs.length
-    ).toFixed(0)
+    ).toFixed(0),
   );
   const baselineSleepMaintenanceAvg =
     state.userData.baselineInfo.nightMinsAwakeAvg;
 
-  function getLabel(nightMinsAwakeAvg: number) {
-    if (nightMinsAwakeAvg > baselineSleepMaintenanceAvg + 5) {
-      return `You're spending ${nightMinsAwakeAvg} minutes awake during the night on average, which is a bit worse than your previous baseline of ${baselineSleepMaintenanceAvg} minutes. Consider messaging our team for some one on one advice on avoiding this nightly wakefulness.`;
-    } else if (nightMinsAwakeAvg > baselineSleepMaintenanceAvg - 2) {
-      return `You're spending ${nightMinsAwakeAvg} minutes awake during the night on average, which is about the same as your previous baseline of ${baselineSleepMaintenanceAvg} minutes. The techniques we're introducing today may help you stay asleep better.`;
+  function getLabel(nightMinsAvg: number) {
+    if (nightMinsAvg > baselineSleepMaintenanceAvg + 5) {
+      return `You're spending ${nightMinsAvg} minutes awake during the night on average, which is a bit worse than your previous baseline of ${baselineSleepMaintenanceAvg} minutes. Consider messaging our team for some one on one advice on avoiding this nightly wakefulness.`;
+    } else if (nightMinsAvg > baselineSleepMaintenanceAvg - 2) {
+      return `You're spending ${nightMinsAvg} minutes awake during the night on average, which is about the same as your previous baseline of ${baselineSleepMaintenanceAvg} minutes. The techniques we're introducing today may help you stay asleep better.`;
     } else {
-      return `You're spending ${nightMinsAwakeAvg} minutes awake during the night on average, which is improved over your ${baselineSleepMaintenanceAvg} minutes before treatment. You're making progress!`;
+      return `You're spending ${nightMinsAvg} minutes awake during the night on average, which is improved over your ${baselineSleepMaintenanceAvg} minutes before treatment. You're making progress!`;
     }
   }
 
-  const highestValueForDomain = Math.max.apply(
-    Math,
-    recentSleepLogs.map(function (o) {
+  const highestValueForDomain = Math.max(
+    ...recentSleepLogs.map(function (o) {
       return o.nightMinsAwake;
-    })
+    }),
   );
 
   return (
@@ -350,7 +349,7 @@ export const SleepMaintenance = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('SleepDuration', {
-          progressBarPercent: 0.21
+          progressBarPercent: 0.21,
         });
       }}
       textLabel={getLabel(nightMinsAwakeAvg)}
@@ -370,7 +369,7 @@ export const SleepMaintenance = ({ navigation }: Props) => {
           tickFormat={(tick) => {
             return tick.toLocaleString('en-US', {
               month: 'short',
-              day: 'numeric'
+              day: 'numeric',
             });
           }}
           tickCount={7}
@@ -402,29 +401,28 @@ export const SleepDuration = ({ navigation }: Props) => {
     (
       recentSleepLogs.reduce((a, b) => a + b.sleepDuration, 0) /
       recentSleepLogs.length
-    ).toFixed(0)
+    ).toFixed(0),
   );
   const baselineSleepDurationAvg = state.userData.baselineInfo.sleepDurationAvg;
   const sleepDurationAvgLabel = (sleepDurationAvg / 60).toFixed(1);
   const baselineSleepDurationAvgLabel = (baselineSleepDurationAvg / 60).toFixed(
-    1
+    1,
   );
 
-  function getLabel(sleepDurationAvg: number) {
-    if (sleepDurationAvg < baselineSleepDurationAvg - 8) {
+  function getLabel(sleepDurAvg: number) {
+    if (sleepDurAvg < baselineSleepDurationAvg - 8) {
       return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is a bit worse than your previous baseline of ${baselineSleepDurationAvgLabel} hours. This should improve as your sleep progresses.`;
-    } else if (sleepDurationAvg < baselineSleepDurationAvg + 5) {
+    } else if (sleepDurAvg < baselineSleepDurationAvg + 5) {
       return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is about the same as your previous baseline of ${baselineSleepDurationAvgLabel} hours. This should improve as your sleep progresses.`;
     } else {
       return `You're spending ${sleepDurationAvgLabel} hours asleep during the night on average, which is improved over your ${baselineSleepDurationAvgLabel} hours before starting with Dozy. You're making progress!`;
     }
   }
 
-  const highestValueForDomain = Math.max.apply(
-    Math,
-    recentSleepLogs.map(function (o) {
+  const highestValueForDomain = Math.max(
+    ...recentSleepLogs.map(function (o) {
       return o.sleepDuration;
-    })
+    }),
   );
 
   return (
@@ -433,7 +431,7 @@ export const SleepDuration = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('TreatmentPlan', {
-          progressBarPercent: 0.24
+          progressBarPercent: 0.24,
         });
       }}
       textLabel={getLabel(sleepDurationAvg)}
@@ -453,7 +451,7 @@ export const SleepDuration = ({ navigation }: Props) => {
           tickFormat={(tick) => {
             return tick.toLocaleString('en-US', {
               month: 'short',
-              day: 'numeric'
+              day: 'numeric',
             });
           }}
           tickCount={7}
@@ -476,12 +474,3 @@ export const SleepDuration = ({ navigation }: Props) => {
     </WizardContentScreen>
   );
 };
-
-// Now it should navigate to the screen called 'TreatmentPlan'
-
-const styles = StyleSheet.create({
-  BoldLabelText: {
-    fontFamily: 'RubikMedium',
-    fontSize: scale(20)
-  }
-});

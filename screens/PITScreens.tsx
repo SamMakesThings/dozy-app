@@ -2,6 +2,7 @@ import React from 'react';
 import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
+import { NavigationProp } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
@@ -38,7 +39,7 @@ interface Global {
   targetWakeTime: Date;
   targetTimeInBed: number;
 }
-let GLOBAL: Global = GLOBALRAW; // Create a local copy of global app state, typed with above
+const GLOBAL: Global = GLOBALRAW; // Create a local copy of global app state, typed with above
 
 // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
@@ -49,10 +50,7 @@ const imgSizePercent = 0.4;
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 interface Props {
-  navigation: {
-    navigate: Function;
-    goBack: Function;
-  };
+  navigation: NavigationProp<any>;
 }
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
@@ -64,7 +62,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
       image={<FemaleDoctor width={imgSize} height={imgSize * 1.2} />}
       onQuestionSubmit={() => {
         navigation.navigate('SRTTitrationStart', {
-          progressBarPercent: 0.09
+          progressBarPercent: 0.09,
         });
       }}
       textLabel="Welcome back! This week, we’ll review your sleep data, update your care plan, and get started with a technique to make falling asleep easier - Paradoxical Intention Therapy (PIT)."
@@ -83,7 +81,7 @@ export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('GSES1', {
-          progressBarPercent: 0.39
+          progressBarPercent: 0.39,
         });
       }}
       titleLabel="This week: Paradoxical Intention Therapy"
@@ -112,7 +110,7 @@ export const GSES1: React.FC<Props> = ({ navigation }) => {
       buttonValues={[
         { label: 'Very much', value: 2, solidColor: false },
         { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
+        { label: 'Not at all', value: 0, solidColor: false },
       ]}
     />
   );
@@ -132,7 +130,7 @@ export const GSES2: React.FC<Props> = ({ navigation }) => {
       buttonValues={[
         { label: 'Very much', value: 2, solidColor: false },
         { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
+        { label: 'Not at all', value: 0, solidColor: false },
       ]}
     />
   );
@@ -152,7 +150,7 @@ export const GSES3: React.FC<Props> = ({ navigation }) => {
       buttonValues={[
         { label: 'Very much', value: 2, solidColor: false },
         { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
+        { label: 'Not at all', value: 0, solidColor: false },
       ]}
     />
   );
@@ -172,7 +170,7 @@ export const GSES4: React.FC<Props> = ({ navigation }) => {
       buttonValues={[
         { label: 'Very much', value: 2, solidColor: false },
         { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
+        { label: 'Not at all', value: 0, solidColor: false },
       ]}
     />
   );
@@ -192,7 +190,7 @@ export const GSES5: React.FC<Props> = ({ navigation }) => {
       buttonValues={[
         { label: 'Very much', value: 2, solidColor: false },
         { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
+        { label: 'Not at all', value: 0, solidColor: false },
       ]}
     />
   );
@@ -212,7 +210,7 @@ export const GSES6: React.FC<Props> = ({ navigation }) => {
       buttonValues={[
         { label: 'Very much', value: 2, solidColor: false },
         { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
+        { label: 'Not at all', value: 0, solidColor: false },
       ]}
     />
   );
@@ -232,15 +230,21 @@ export const GSES7: React.FC<Props> = ({ navigation }) => {
       buttonValues={[
         { label: 'Very much', value: 2, solidColor: false },
         { label: 'To some extent', value: 1, solidColor: false },
-        { label: 'Not at all', value: 0, solidColor: false }
+        { label: 'Not at all', value: 0, solidColor: false },
       ]}
     />
   );
 };
 
 export const GSESResult: React.FC<Props> = ({ navigation }) => {
-  const { GSES1, GSES2, GSES3, GSES4, GSES5, GSES6, GSES7 } = GLOBAL;
-  const GSESScore = GSES1 + GSES2 + GSES3 + GSES4 + GSES5 + GSES6 + GSES7;
+  const GSESScore =
+    GLOBAL.GSES1 +
+    GLOBAL.GSES2 +
+    GLOBAL.GSES3 +
+    GLOBAL.GSES4 +
+    GLOBAL.GSES5 +
+    GLOBAL.GSES6 +
+    GLOBAL.GSES7;
   GLOBAL.GSESScore = GSESScore;
 
   return (
@@ -249,7 +253,7 @@ export const GSESResult: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('TryingToSleep', {
-          progressBarPercent: 0.74
+          progressBarPercent: 0.74,
         });
       }}
       titleLabel={`You scored a ${GSESScore} on the Glasgow Sleep Effort Scale.`}
@@ -269,7 +273,7 @@ export const TryingToSleep: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('Paradox', {
-          progressBarPercent: 0.78
+          progressBarPercent: 0.78,
         });
       }}
       titleLabel="Studies show that poor sleepers have something in common:"
@@ -289,7 +293,7 @@ export const Paradox: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('Antidote', {
-          progressBarPercent: 0.83
+          progressBarPercent: 0.83,
         });
       }}
       titleLabel="It's a paradox"
@@ -309,7 +313,7 @@ export const Antidote: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('HowToPIT', {
-          progressBarPercent: 0.87
+          progressBarPercent: 0.87,
         });
       }}
       titleLabel="Fortunately, we can counteract this with a simple technique:"
@@ -329,7 +333,7 @@ export const HowToPIT: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PITScience', {
-          progressBarPercent: 0.91
+          progressBarPercent: 0.91,
         });
       }}
       titleLabel="How to use Paradoxical Intention Therapy:"
@@ -367,7 +371,7 @@ export const PITScience: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('PITReview', {
-          progressBarPercent: 0.96
+          progressBarPercent: 0.96,
         });
       }}
       titleLabel="It may sound silly, but it's science!"
@@ -388,11 +392,11 @@ export const PITReview: React.FC<Props> = ({ navigation }) => {
       onQuestionSubmit={(res: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
-            module: 'PIT'
+            module: 'PIT',
           });
         } else {
           navigation.navigate('RulesRecap', {
-            progressBarPercent: 0.97
+            progressBarPercent: 0.97,
           });
         }
       }}
@@ -414,7 +418,7 @@ export const RulesRecap: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
         navigation.navigate('CheckinScheduling', {
-          progressBarPercent: 0.98
+          progressBarPercent: 0.98,
         });
       }}
       titleLabel="Quick recap of the 3 rules:"
@@ -438,14 +442,7 @@ export const RulesRecap: React.FC<Props> = ({ navigation }) => {
       }
       flexibleLayout
     >
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around',
-          alignItems: 'center'
-        }}
-      >
+      <View style={styles.rulesRecapContent}>
         <AlarmClock width={imgSize * 0.5} height={imgSize * 0.5} />
         <Rule2Illustration width={imgSize * 1.2} height={imgSize} />
         <Rule3Illustration width={imgSize * 0.7} height={imgSize * 0.7} />
@@ -461,7 +458,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       defaultValue={
         new Date(
-          new Date().getTime() + 86400000 * 7
+          new Date().getTime() + 86400000 * 7,
         ) /* Default date of 7 days from today */
       }
       onQuestionSubmit={(value: Date) => {
@@ -475,12 +472,12 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         if (moment().add(7, 'days').hour(0).toDate() > val) {
           return {
             severity: 'ERROR',
-            errorMsg: 'Please select a day 7 or more days from today'
+            errorMsg: 'Please select a day 7 or more days from today',
           };
         } else if (moment().add(14, 'days').hour(0).toDate() < val) {
           return {
             severity: 'WARNING',
-            errorMsg: 'Please select a day within 14 days of today'
+            errorMsg: 'Please select a day within 14 days of today',
           };
         } else {
           return true;
@@ -498,13 +495,13 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Create reminder object for next checkin
-  let reminderObject = {
+  const reminderObject = {
     expoPushToken: state.userData.reminders.expoPushToken,
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
     time: GLOBAL.nextCheckinTime,
-    enabled: true
+    enabled: true,
   };
 
   return (
@@ -521,7 +518,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBALRAW.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
-              v.started === false && v.module !== 'PIT'
+              v.started === false && v.module !== 'PIT',
           )[0].module,
           lastCheckinModule: 'PIT',
           targetBedTime: GLOBALRAW.targetBedTime, // TS is mad, but this needs to access true global state.
@@ -535,9 +532,9 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
             GSES5: GLOBAL.GSES5,
             GSES6: GLOBAL.GSES6,
             GSES7: GLOBAL.GSES7,
-            GSESTotal: GLOBAL.GSESScore
+            GSESTotal: GLOBAL.GSESScore,
           },
-          reminderObject: reminderObject
+          reminderObject: reminderObject,
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
@@ -553,6 +550,12 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   BoldLabelText: {
     fontFamily: 'RubikMedium',
-    fontSize: scale(20)
-  }
+    fontSize: scale(20),
+  },
+  rulesRecapContent: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, ViewStyle } from 'react-native';
 import { Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
@@ -8,7 +8,7 @@ interface Props {
   label: string;
   textColor: string;
   bgColor: string;
-  style?: object;
+  style?: ViewStyle;
 }
 
 const HighlightedText: React.FC<Props> = (props) => {
@@ -18,7 +18,7 @@ const HighlightedText: React.FC<Props> = (props) => {
       style={{
         ...styles.View_Container,
         borderRadius: theme.borderRadius.button,
-        ...props.style
+        ...props.style,
       }}
       elevation={0}
       backgroundColor={props.bgColor}
@@ -28,7 +28,7 @@ const HighlightedText: React.FC<Props> = (props) => {
         style={[
           theme.typography.smallLabel,
           styles.Text_Highlighted,
-          { color: props.textColor }
+          { color: props.textColor },
         ]}
       >
         {props.label}
@@ -42,14 +42,14 @@ const styles = StyleSheet.create({
     maxWidth: '94%',
     alignSelf: 'flex-start',
     marginHorizontal: 0,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   Text_Highlighted: {
     textAlign: 'center',
     width: '100%',
     paddingVertical: scale(5),
-    paddingHorizontal: scale(2)
-  }
+    paddingHorizontal: scale(2),
+  },
 });
 
 export default HighlightedText;

@@ -23,7 +23,7 @@ interface Args {
   sleepOnsetAvgBaseline?: number;
   nightMinsAwakeAvgBaseline?: number;
   sleepDurationAvgBaseline?: number;
-  additionalCheckinData?: object;
+  additionalCheckinData?: Record<string, any>;
   reminderObject?: ReminderObject | Array<ReminderObject>;
 }
 
@@ -45,8 +45,8 @@ export default function submitCheckinData({
   nightMinsAwakeAvgBaseline,
   sleepDurationAvgBaseline,
   additionalCheckinData,
-  reminderObject
-}: Args) {
+  reminderObject,
+}: Args): boolean {
   try {
     // Initialize relevant Firebase values
     const userDocRef = firestore().collection('users').doc(userId);
@@ -57,10 +57,10 @@ export default function submitCheckinData({
     userDocRef.update({
       nextCheckin: {
         nextCheckinDatetime: nextCheckinDatetime,
-        treatmentModule: nextCheckinModule
+        treatmentModule: nextCheckinModule,
       },
       'currentTreatments.nextCheckinDatetime': nextCheckinDatetime,
-      'currentTreatments.lastCheckinDatetime': lastCheckinDatetime
+      'currentTreatments.lastCheckinDatetime': lastCheckinDatetime,
     });
     if (checkinPostponed) {
       return false;
@@ -71,7 +71,7 @@ export default function submitCheckinData({
       ['currentTreatments.' + lastCheckinModule]: lastCheckinDatetime,
       'currentTreatments.targetBedTime': targetBedTime,
       'currentTreatments.targetWakeTime': targetWakeTime,
-      'currentTreatments.targetTimeInBed': targetTimeInBed
+      'currentTreatments.targetTimeInBed': targetTimeInBed,
     });
 
     // If SCTSRT checkin, add baseline stats for easy reference
@@ -80,7 +80,7 @@ export default function submitCheckinData({
         'baselineInfo.sleepEfficiencyAvg': sleepEfficiencyAvgBaseline,
         'baselineInfo.sleepOnsetAvg': sleepOnsetAvgBaseline,
         'baselineInfo.nightMinsAwakeAvg': nightMinsAwakeAvgBaseline,
-        'baselineInfo.sleepDurationAvg': sleepDurationAvgBaseline
+        'baselineInfo.sleepDurationAvg': sleepDurationAvgBaseline,
       });
     }
 
@@ -90,7 +90,7 @@ export default function submitCheckinData({
       targetBedTime: targetBedTime,
       targetWakeTime: targetWakeTime,
       targetTimeInBed: targetTimeInBed,
-      ...additionalCheckinData
+      ...additionalCheckinData,
     });
 
     // If reminder set during the module, add the reminder to user db
@@ -100,8 +100,8 @@ export default function submitCheckinData({
         reminderObject.constructor !== Array
           ? [reminderObject]
           : reminderObject;
-      reminderArray.map((reminderObject) => {
-        userDocRef.collection('notifications').add(reminderObject);
+      reminderArray.map((reminder) => {
+        userDocRef.collection('notifications').add(reminder);
       });
     }
   } catch (error) {
