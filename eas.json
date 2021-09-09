@@ -37,7 +37,8 @@
         "gradleCommand": ":app:assembleRelease"
       },
       "ios": {
-        "buildConfiguration": "Release"
+        "buildConfiguration": "Release",
+        "credentialsSource": "local"
       }
     }
   }
