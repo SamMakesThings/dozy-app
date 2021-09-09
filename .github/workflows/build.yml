@@ -38,6 +38,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
       - name: Prepare iOS Credentials
         run: echo ${{ secrets.CREDENTIALS_JSON_BASE64 }} | base64 -d > credentials.json
+      - run: mkdir ios/certs
       - name: Create iOS Distribution Certificate
         run: echo ${{ secrets.DISTRIBUTION_CERTIFICATE_BASE64 }} | base64 -d > ios/certs/distribution_certificate.p12
       - name: Create iOS Ad-Hoc Provisioning Profile
