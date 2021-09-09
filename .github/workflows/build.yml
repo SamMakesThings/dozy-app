@@ -36,5 +36,11 @@ jobs:
           eas-version: latest
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
+      - name: Prepare iOS Credentials
+        run: echo ${{ secrets.CREDENTIALS_JSON_BASE64 }} | base64 -d > credentials.json
+      - name: Create iOS Distribution Certificate
+        run: echo ${{ secrets.DISTRIBUTION_CERTIFICATE_BASE64 }} | base64 -d > ios/certs/distribution_certificate.p12
+      - name: Create iOS Ad-Hoc Provisioning Profile
+        run: echo ${{ secrets.ADHOC_PROVISION_BASE64 }} | base64 -d > ios/certs/ad_hoc_provision.mobileprovision
       - run: yarn install
       - run: eas build --platform ios --profile alpha --non-interactive
