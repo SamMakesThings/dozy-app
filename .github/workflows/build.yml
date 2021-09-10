@@ -30,11 +30,17 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.x
-      - run: bundle install
+      - name: iOS Bundle Install
+        run: bundle install
         working-directory: ./ios
-      - run: bundle exec fastlane increment_version_build_numbers
+      - name: Bumping version and iOS build number in app.json and project.pbxproj
+        run: bundle exec fastlane increment_version_build_numbers
         working-directory: ./ios
-      - run: bundle exec fastlane increment_version_build_numbers
+      - name: Android Bundle Install
+        run: bundle install
+        working-directory: ./android
+      - name: Bumping Android version code in app.json and version name & code in app/build.gradle
+        run: bundle exec fastlane increment_version_build_numbers
         working-directory: ./android
       - name: Setup Expo
         uses: expo/expo-github-action@v6
