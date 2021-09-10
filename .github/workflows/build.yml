@@ -51,7 +51,7 @@ jobs:
         run: echo ${{ secrets.ADHOC_PROVISION_BASE64 }} | base64 -d > ios/certs/ad_hoc_provision.mobileprovision
       - run: yarn install
       - run: eas build --platform all --profile alpha --non-interactive
-      - name: Commit iOS Version and Gemfile Changes
+      - name: Commit iOS and Android Version and Gemfile Changes
         uses: EndBug/add-and-commit@v7
         with:
           add: "['ios/', 'android/', app.json]"
