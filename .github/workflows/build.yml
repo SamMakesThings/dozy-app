@@ -48,18 +48,15 @@ jobs:
           eas-version: latest
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
-      - id: set_var
-        run: |
-          content=`cat package.json`
-          # the following lines are only required for multi line json
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/'%0A'}"
-          content="${content//$'\r'/'%0D'}"
-          # end of optional handling for multi line json
-          echo "::set-output name=packageJson::$content"
-      - run: |
-          echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
-      - run: expo publish --release-channel ${{ fromJson(steps.get_ota_release_channel.outputs.easJson).build.alpha.releaseChannel }}
+      - name: Get Release Channel
+        id: release_channel
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'eas.json'
+          prop_path: 'build.alpha.releaseChannel'
+      - name: Release Channel
+        run: echo ${{ steps.release_channel.outputs.prop }}
+      - run: expo publish --release-channel ${{ steps.release_channel.outputs.prop }}
       - name: Commit iOS and Android Version and Gemfile Changes
         uses: EndBug/add-and-commit@v7
         with:
