@@ -30,10 +30,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.x
-      - run: cd ios
       - run: bundle install
+        working-directory: ./ios
       - run: bundle exec fastlane increment_version_build_numbers
-      - run: cd ..
+        working-directory: ./ios
       - name: Commit iOS Version and Gemfile Changes
         uses: EndBug/add-and-commit@v7
         with:
