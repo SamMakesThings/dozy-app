@@ -35,7 +35,7 @@ jobs:
       - run: bundle exec fastlane increment_version_build_numbers
       - run: cd ..
       - name: Commit iOS Version and Gemfile Changes
-        uses: EndBug/add-and-comit@v7
+        uses: EndBug/add-and-commit@v7
         with:
           add: "['ios/']"
           default_author: github_actions
