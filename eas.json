@@ -13,6 +13,7 @@
     },
     "release": {
       "extends": "base",
+      "releaseChannel": "prod-0",
       "android": {
         "buildType": "app-bundle"
       },
@@ -31,7 +32,7 @@
     },
     "alpha": {
       "extends": "base",
-      "releaseChannel": "alpha",
+      "releaseChannel": "test-0",
       "distribution": "internal",
       "android": {
         "gradleCommand": ":app:assembleRelease"
