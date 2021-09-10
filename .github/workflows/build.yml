@@ -42,18 +42,28 @@ jobs:
       - name: Bumping Android version code in app.json and version name & code in app/build.gradle
         run: bundle exec fastlane increment_version_build_numbers
         working-directory: ./android
-      - name: Commit iOS and Android Version and Gemfile Changes
-        uses: EndBug/add-and-commit@v7
-        with:
-          add: "['ios/', 'android/', app.json]"
-          default_author: github_actions
-          message: 'bumped js, ios, android version and build numbers'
       - name: Setup Expo
         uses: expo/expo-github-action@v6
         with:
           eas-version: latest
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
+      - id: get_ota_release_channel
+        run: |
+          content=`cat eas.json`
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          echo "::set-output name=easJson::$content"
+      - name: Release Channel
+        run: echo "${{ fromJson(steps.get_ota_release_channel.outputs.easJson).build.alpha.releaseChannel }}"
+      - run: expo publish --release-channel ${{ fromJson(steps.get_ota_release_channel.outputs.easJson).build.alpha.releaseChannel }}
+      - name: Commit iOS and Android Version and Gemfile Changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: "['ios/', 'android/', app.json]"
+          default_author: github_actions
+          message: 'bumped js, ios, android version and build numbers'
       - name: Prepare iOS Credentials
         run: echo ${{ secrets.CREDENTIALS_JSON_BASE64 }} | base64 -d > credentials.json
       - run: mkdir ios/certs
