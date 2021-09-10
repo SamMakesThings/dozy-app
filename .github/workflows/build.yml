@@ -42,6 +42,12 @@ jobs:
       - name: Bumping Android version code in app.json and version name & code in app/build.gradle
         run: bundle exec fastlane increment_version_build_numbers
         working-directory: ./android
+      - name: Commit iOS and Android Version and Gemfile Changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: "['ios/', 'android/', app.json]"
+          default_author: github_actions
+          message: 'bumped js, ios, android version and build numbers'
       - name: Setup Expo
         uses: expo/expo-github-action@v6
         with:
@@ -57,9 +63,3 @@ jobs:
         run: echo ${{ secrets.ADHOC_PROVISION_BASE64 }} | base64 -d > ios/certs/ad_hoc_provision.mobileprovision
       - run: yarn install
       - run: eas build --platform all --profile alpha --non-interactive
-      - name: Commit iOS and Android Version and Gemfile Changes
-        uses: EndBug/add-and-commit@v7
-        with:
-          add: "['ios/', 'android/', app.json]"
-          default_author: github_actions
-          message: 'bumped js, ios, android version and build numbers'
