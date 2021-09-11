@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+} from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
@@ -45,8 +51,12 @@ const TextInputScreen: React.FC<Props> = (props) => {
       severity: string;
       errorMsg: string;
     }
-    const validationResult: ErrorObj | boolean | undefined =
-      props.validInputChecker ? props.validInputChecker(val) : undefined;
+    const validationResult:
+      | ErrorObj
+      | boolean
+      | undefined = props.validInputChecker
+      ? props.validInputChecker(val)
+      : undefined;
 
     if (!val && !props.optional) {
       setScreenState(States.Empty);
@@ -74,75 +84,80 @@ const TextInputScreen: React.FC<Props> = (props) => {
     screenState === States.Invalid || screenState === States.Warning;
   return (
     <ScreenContainer hasSafeArea={true} scrollable={false}>
-      <Container
-        style={styles.View_HeaderContainer}
-        elevation={0}
-        useThemeGutterPadding={true}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.KeyboardAvoidingView}
       >
-        <Container elevation={0} useThemeGutterPadding={true}></Container>
-      </Container>
-      <Container
-        style={styles.View_ContentContainer}
-        elevation={0}
-        useThemeGutterPadding={true}
-      >
-        <Text
-          style={[
-            styles.Text_Question,
-            theme.typography.headline5,
-            {
-              color: theme.colors.secondary,
-            },
-          ]}
+        <Container
+          style={styles.View_HeaderContainer}
+          elevation={0}
+          useThemeGutterPadding={true}
         >
-          {props.questionLabel}
-        </Text>
-        {(props.questionSubtitle || displayErrorMsg) && ( // If invalid input, replace subtitle with error message
+          <Container elevation={0} useThemeGutterPadding={true}></Container>
+        </Container>
+        <Container
+          style={styles.View_ContentContainer}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
           <Text
             style={[
-              styles.Text_QuestionLabel,
-              theme.typography.body1,
-              styles.Text_QuestionSubtitle,
+              styles.Text_Question,
+              theme.typography.headline5,
               {
-                color: displayErrorMsg
-                  ? theme.colors.error
-                  : theme.colors.secondary,
+                color: theme.colors.secondary,
               },
             ]}
           >
-            {displayErrorMsg ? errorMsg : props.questionSubtitle}
+            {props.questionLabel}
           </Text>
-        )}
-        <Container
-          style={{
-            ...styles.View_InputContainer,
-            borderColor: theme.colors.medium,
-          }}
-        >
-          <TextInput
-            style={styles.TextInput}
-            placeholder={props.inputLabel}
-            placeholderTextColor={theme.colors.light}
-            keyboardType="default"
-            keyboardAppearance="dark"
-            returnKeyType="done"
-            defaultValue={props.defaultValue || undefined}
-            enablesReturnKeyAutomatically={true}
-            onChangeText={(inputValue) => {
-              setTextContent(inputValue);
-              checkDataValidity(inputValue);
+          {(props.questionSubtitle || displayErrorMsg) && ( // If invalid input, replace subtitle with error message
+            <Text
+              style={[
+                styles.Text_QuestionLabel,
+                theme.typography.body1,
+                styles.Text_QuestionSubtitle,
+                {
+                  color: displayErrorMsg
+                    ? theme.colors.error
+                    : theme.colors.secondary,
+                },
+              ]}
+            >
+              {displayErrorMsg ? errorMsg : props.questionSubtitle}
+            </Text>
+          )}
+          <Container
+            style={{
+              ...styles.View_InputContainer,
+              borderColor: theme.colors.medium,
             }}
-            onSubmitEditing={(event) => {
-              if (screenState !== States.Valid) {
-                setTextContent(event.nativeEvent.text);
-              } else {
-                setTextContent(event.nativeEvent.text);
-                props.onQuestionSubmit(event.nativeEvent.text);
-              }
-            }}
-          />
+          >
+            <TextInput
+              style={styles.TextInput}
+              placeholder={props.inputLabel}
+              placeholderTextColor={theme.colors.light}
+              keyboardType="default"
+              keyboardAppearance="dark"
+              returnKeyType="done"
+              defaultValue={props.defaultValue || undefined}
+              enablesReturnKeyAutomatically={true}
+              onChangeText={(inputValue) => {
+                setTextContent(inputValue);
+                checkDataValidity(inputValue);
+              }}
+              onSubmitEditing={(event) => {
+                if (screenState !== States.Valid) {
+                  setTextContent(event.nativeEvent.text);
+                } else {
+                  setTextContent(event.nativeEvent.text);
+                  props.onQuestionSubmit(event.nativeEvent.text);
+                }
+              }}
+            />
+          </Container>
         </Container>
-      </Container>
+      </KeyboardAvoidingView>
       <BottomNavButtons
         theme={theme}
         bottomBackButton={props.bottomBackButton || undefined}
@@ -174,6 +189,9 @@ const styles = StyleSheet.create({
     width: '60%',
     alignSelf: 'center',
     borderBottomWidth: 1.5,
+  },
+  KeyboardAvoidingView: {
+    flex: 1,
   },
   // eslint-disable-next-line react-native/no-color-literals
   TextInput: {
