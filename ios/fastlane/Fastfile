@@ -43,4 +43,22 @@ platform :ios do
     increment_build_number_in_xcodeproj(build_number: next_build_number, xcodeproj: "Dozy.xcodeproj")
     increment_version_number_in_xcodeproj(version_number: next_version_number, xcodeproj: "Dozy.xcodeproj")
   end
+
+  desc "Update release channel in Expo.plist"
+  lane :update_release_channel do
+    file_path = "../eas.json"
+    # read eas.json file
+    eas_json = read_json(json_path: file_path)
+
+    # get release channel
+    release_channel = eas_json[:build][:alpha][:releaseChannel]
+
+    # update EXUpdatesReleaseChannel in Expo.plist
+    update_plist(
+      plist_path: "./Dozy/Supporting/Expo.plist",
+      block: proc do |plist|
+        plist[:EXUpdatesReleaseChannel] = release_channel
+      end
+    )
+  end
 end
