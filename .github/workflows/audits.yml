@@ -1,6 +1,8 @@
 name: Audits
 
-on: [push]
+on:
+  schedule:
+    - cron: 0 13 * * 1
 
 jobs:
   audit:
