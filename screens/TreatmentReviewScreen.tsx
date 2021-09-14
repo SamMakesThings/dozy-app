@@ -28,6 +28,11 @@ export const TreatmentReviewScreen: React.FC<Props> = ({ route }) => {
       source={{
         uri: uri,
       }}
+      style={{
+        width: '100%',
+        opacity: 0.99,
+        overflow: 'hidden',
+      }}
     />
   );
 };
