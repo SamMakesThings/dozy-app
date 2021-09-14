@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - master
     paths-ignore:
       - README.md
       - .eslintrc.json
