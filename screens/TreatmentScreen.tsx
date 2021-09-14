@@ -267,6 +267,8 @@ const styles = StyleSheet.create({
   },
   webView: {
     width: '100%',
+    opacity: 0.99,
+    overflow: 'hidden',
   },
   loader: {
     width: scale(45),
