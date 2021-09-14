@@ -1,0 +1,64 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Increment iOS patch version and build number"
+  lane :increment_version_build_numbers do
+    file_path = "../app.json"
+    # read app.json file
+    app_json = read_json(json_path: file_path)
+
+    # get version
+    version_array = app_json[:expo][:version].split(".").map(&:to_i)
+
+    # increment patch version
+    version_array[2] = (version_array[2] || 0) + 1
+    next_version_number = version_array.join(".")
+
+    # increase build number
+    build_array = app_json[:expo][:ios][:buildNumber].split(".").map(&:to_i)
+    build_array[-1] = build_array[-1] + 1
+    next_build_number = build_array.join(".")
+    
+    # update app.json file
+    app_json[:expo][:version] = next_version_number
+    app_json[:expo][:ios][:buildNumber] = next_build_number
+    write_json(hash: app_json, file_path: file_path)
+
+    # update ios/Dozy.xcodeproj/project.pbxproj
+    increment_build_number_in_xcodeproj(build_number: next_build_number, xcodeproj: "Dozy.xcodeproj")
+    increment_version_number_in_xcodeproj(version_number: next_version_number, xcodeproj: "Dozy.xcodeproj")
+  end
+
+  desc "Update release channel in Expo.plist"
+  lane :update_release_channel do
+    file_path = "../eas.json"
+    # read eas.json file
+    eas_json = read_json(json_path: file_path)
+
+    # get release channel
+    release_channel = eas_json[:build][:alpha][:releaseChannel]
+
+    # update EXUpdatesReleaseChannel in Expo.plist
+    update_plist(
+      plist_path: "./Dozy/Supporting/Expo.plist",
+      block: proc do |plist|
+        plist[:EXUpdatesReleaseChannel] = release_channel
+      end
+    )
+  end
+end

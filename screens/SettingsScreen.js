@@ -12,6 +12,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
 import { scale } from 'react-native-size-matters';
+import ExpoConstants from 'expo-constants';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../context/AuthContext';
 import { Analytics } from '../utilities/analytics.service';
@@ -164,7 +165,7 @@ function Root() {
               },
             ]}
           >
-            @dozyapp 0.7.12
+            {`@dozyapp ${ExpoConstants.nativeAppVersion}`}
           </Text>
         </Container>
       </TouchableOpacity>
