@@ -29,7 +29,7 @@ const SupportChatScreen: React.FC = () => {
         source={{
           uri: 'https://direct.lc.chat/12002154/',
         }}
-        style={{ marginTop: scale(10) }}
+        style={styles.webView}
         injectedJavaScript={livechatJavascript}
         onLoad={() => {
           // If LiveChat has a msg marked as unread, mark it as read in Firebase
@@ -52,6 +52,7 @@ const SupportChatScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
+  webView: { marginTop: scale(10), opacity: 0.99, overflow: 'hidden' },
 });
 
 export default SupportChatScreen;
