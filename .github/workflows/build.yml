@@ -24,7 +24,7 @@ on:
 jobs:
   build:
     name: Build the iOS and Android Apps using EAS build
-    runs-on: macos-11
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -36,11 +36,17 @@ jobs:
       - name: Bumping version and iOS build number in app.json and project.pbxproj
         run: bundle exec fastlane increment_version_build_numbers
         working-directory: ./ios
+      - name: Update Release Channel in Expo.plist
+        run: bundle exec fastlane update_release_channel
+        working-directory: ./ios
       - name: Android Bundle Install
         run: bundle install
         working-directory: ./android
       - name: Bumping Android version code in app.json and version name & code in app/build.gradle
         run: bundle exec fastlane increment_version_build_numbers
+        working-directory: ./android
+      - name: Update Release Channel in AndroidManifest.xml
+        run: bundle exec fastlane update_release_channel
         working-directory: ./android
       - name: Setup Expo
         uses: expo/expo-github-action@v6
@@ -50,15 +56,15 @@ jobs:
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
       - run: yarn install
-      - name: Get Release Channel
-        id: release_channel
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'eas.json'
-          prop_path: 'build.alpha.releaseChannel'
-      - name: Release Channel
-        run: echo ${{ steps.release_channel.outputs.prop }}
-      - run: expo publish --release-channel ${{ steps.release_channel.outputs.prop }}
+      # - name: Get Release Channel
+      #   id: release_channel
+      #   uses: notiz-dev/github-action-json-property@release
+      #   with:
+      #     path: 'eas.json'
+      #     prop_path: 'build.alpha.releaseChannel'
+      # - name: Release Channel
+      #   run: echo ${{ steps.release_channel.outputs.prop }}
+      # - run: expo publish --release-channel ${{ steps.release_channel.outputs.prop }}
       - name: Commit iOS and Android Version and Gemfile Changes
         uses: EndBug/add-and-commit@v7
         with:
