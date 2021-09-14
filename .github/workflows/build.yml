@@ -10,16 +10,16 @@ on:
       - .eslintignore
       - .gitignore
       - .prettierrc.json
-  pull_request:
-    branches:
-      - develop
-      - feature/CI
-    paths-ignore:
-      - README.md
-      - .eslintrc.json
-      - .eslintignore
-      - .gitignore
-      - .prettierrc.json
+  # pull_request:
+  #   branches:
+  #     - develop
+  #     - feature/CI
+  #   paths-ignore:
+  #     - README.md
+  #     - .eslintrc.json
+  #     - .eslintignore
+  #     - .gitignore
+  #     - .prettierrc.json
 
 jobs:
   build:
@@ -52,7 +52,7 @@ jobs:
         uses: expo/expo-github-action@v6
         with:
           eas-version: latest
-          expo-version: 4.x
+          # expo-version: 4.x
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
       - run: yarn install
