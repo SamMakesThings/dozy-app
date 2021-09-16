@@ -22,7 +22,8 @@
       "jsx": true,
       "impliedStrict": true
     },
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "extraFileExtensions": [".service.ts", ".mock.ts", ".mock.js"]
   },
   "rules": {
     "react/display-name": 1,
