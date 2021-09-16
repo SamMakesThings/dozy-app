@@ -10,7 +10,8 @@
     "noEmit": true,
     "strict": true,
     "target": "esnext",
-    "pretty": true
+    "pretty": true,
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",
