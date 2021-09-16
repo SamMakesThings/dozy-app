@@ -154,7 +154,11 @@ export const PMRWalkthrough: React.FC<{ navigation: Navigation }> = ({
         source={{
           uri: 'https://www.youtube.com/embed/1nZEdqcGVzo',
         }}
-        style={{ width: useWindowDimensions().width, marginBottom: scale(20) }}
+        style={{
+          ...styles.webView,
+          width: useWindowDimensions().width,
+          marginBottom: scale(20),
+        }}
       />
     </WizardContentScreen>
   );
@@ -469,5 +473,9 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  webView: {
+    opacity: 0.99,
+    overflow: 'hidden',
   },
 });

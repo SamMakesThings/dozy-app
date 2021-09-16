@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import treatments from '../constants/Treatments';
 
@@ -28,6 +29,15 @@ export const TreatmentReviewScreen: React.FC<Props> = ({ route }) => {
       source={{
         uri: uri,
       }}
+      style={styles.WebView}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  WebView: {
+    width: '100%',
+    opacity: 0.99,
+    overflow: 'hidden',
+  },
+});
