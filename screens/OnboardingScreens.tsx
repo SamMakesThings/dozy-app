@@ -627,7 +627,11 @@ export const SafetyPillsBye = ({ navigation }: Props) => {
           progressBarPercent: null,
         });
       }}
-      textLabel="Great! We’ll email & ping you again in four weeks. If you’re off sleeping pills before that, come back anytime and we’ll pick up where we left off."
+      textLabel={
+        onboardingState.otherCondition
+          ? "Finding a human provider can be a bit challenging, and options vary per country. For some (free) help, email us at info@dozy.health. Or, if you'd like to continue with the app regardless, you can navigate back and select 'I understand the risks'."
+          : 'Great! We’ll email & ping you again in four weeks. If you’re off sleeping pills before that, come back anytime and we’ll pick up where we left off.'
+      }
       onlyBackButton
     />
   );
