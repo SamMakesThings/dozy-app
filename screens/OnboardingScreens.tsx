@@ -989,7 +989,7 @@ export const SendFirstChat = ({ navigation }: Props) => {
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      textLabel="Your sleep coach will provide support and answer questions for you during the process. Let's send them a message now!"
+      textLabel="Your (real human) sleep coach will provide support and answer questions for you during the process. Let's send them a message now!"
       onQuestionSubmit={() => {
         navigation.navigate('SendFirstChatContd');
       }}
@@ -1071,7 +1071,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
         <View style={!replyVisible && styles.none}>
           <ChatMessage
             sender="Sam Stowers"
-            message="Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)"
+            message="Thanks for sending! We usually reply within 24 hours. You can find our conversation in the Support tab of the app at any time. :)"
             time={new Date()}
             sentByUser={false}
           />
