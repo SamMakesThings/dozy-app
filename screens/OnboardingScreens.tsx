@@ -596,18 +596,19 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
       longText
       textLabel={
         <>
-          <Text style={styles.BoldLabelText}>Hold on there{'\n'}</Text>
+          <Text style={styles.BoldLabelText}>A note on pills{'\n'}</Text>
           <Text style={{ lineHeight: scale(18) }}>
-            For Dozy to work best, it&apos;s recommended to stop taking sleeping
-            pills before starting the program. DON&apos;T DO THIS ON YOUR OWN,
-            as stopping use can have withdrawal effects. Talk with your
-            physician to plan tapering it off. Once you&apos;ve done that, we
-            can get started with getting you to sleep without pills.
+            Dozy can improve your sleep whether you&apos;re taking sleeping
+            pills or not. However, sleeping pills are generally not recommended
+            for long-term use. If you&apos;d like to sleep without pills,
+            it&apos;s best to stop before starting Dozy (after consulting with a
+            doctor to avoid withdrawals). You&apos;ll see improvements in either
+            case - so pick the option that sounds best to you.
           </Text>
         </>
       }
-      buttonLabel="I’ll contact my doctor - follow up w/me"
-      bottomGreyButtonLabel="Continue anyway"
+      buttonLabel="I’ll ask my doctor about stopping pills"
+      bottomGreyButtonLabel="I'll continue with sleeping pills"
     />
   );
 };
