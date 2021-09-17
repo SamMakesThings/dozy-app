@@ -399,6 +399,7 @@ export const ISIResults = ({ navigation }: Props) => {
       return 'clinically severe insomnia';
     }
   };
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -429,6 +430,18 @@ export const ISISignificant = ({ navigation }: Props) => {
     Analytics.logEvent(AnalyticsEvents.onboardingISISignificant);
   }, []);
 
+  const severityText = () => {
+    if (onboardingState.ISITotal <= 7) {
+      return 'no significant insomnia';
+    } else if (onboardingState.ISITotal <= 14) {
+      return 'Clinically mild insomnia';
+    } else if (onboardingState.ISITotal <= 21) {
+      return 'Clinically moderate insomnia';
+    } else {
+      return 'Clinically severe insomnia';
+    }
+  };
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -443,7 +456,8 @@ export const ISISignificant = ({ navigation }: Props) => {
       textLabel={
         <>
           <Text style={styles.BoldLabelText}>
-            Clinically significant insomnia{'\n'}
+            {severityText()}
+            {'\n'}
           </Text>
           <Text style={{ lineHeight: scale(18) }}>
             Your insomnia is{' '}
