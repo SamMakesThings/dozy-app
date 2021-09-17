@@ -74,9 +74,9 @@ export const SRTTitrationStart = ({ navigation }: Props) => {
   );
 
   function getSRTTitrationLabel(sleepEffiencyAvg: number) {
-    if (sleepEffiencyAvg < 85) {
+    if (sleepEffiencyAvg < 80) {
       return `Good job sticking to your target sleep schedule! However, your sleep data may indicate that more action is needed.`;
-    } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
+    } else if (sleepEffiencyAvg >= 80 && sleepEffiencyAvg < 87) {
       return `Great job sticking to your target sleep schedule! Your sleep is starting to show signs of improvement.`;
     } else {
       return 'Great job sticking to your target sleep schedule!! Thanks to your efforts, your sleep efficiency has been going up.';
@@ -115,9 +115,9 @@ export const SleepEfficiency = ({ navigation }: Props) => {
     state.userData.baselineInfo.sleepEfficiencyAvg;
 
   function getLabel(sleepEffiencyAvg: number) {
-    if (sleepEffiencyAvg < 85) {
+    if (sleepEffiencyAvg < 80) {
       return `Your sleep efficiency is ok, but with an average of ${sleepEffiencyAvg}% (previously ${sleepEfficiencyAvgBaseline}%) it's not quite where we need it to be yet.`;
-    } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
+    } else if (sleepEffiencyAvg >= 80 && sleepEffiencyAvg < 87) {
       return `Your sleep is starting to show signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since been around ${sleepEfficiencyAvg}%! You're making progress!`;
     } else {
       return `Your sleep is showing signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since risen to ${sleepEfficiencyAvg}%! You're making great progress.`;
@@ -196,7 +196,7 @@ export const SRTTitration = ({ navigation }: Props) => {
     state.userData.currentTreatments.targetBedTime.toDate();
   const newTargetBedTime = oldTargetBedTime;
   GLOBAL.targetTimeInBed = state.userData.currentTreatments.targetTimeInBed;
-  if (sleepEfficiencyAvg >= 90) {
+  if (sleepEfficiencyAvg >= 87) {
     newTargetBedTime.setMinutes(oldTargetBedTime.getMinutes() - 15);
     GLOBAL.targetTimeInBed =
       state.userData.currentTreatments.targetTimeInBed + 15;
@@ -207,9 +207,9 @@ export const SRTTitration = ({ navigation }: Props) => {
   );
 
   function getSRTTitrationLabel(sleepEffiencyAvg: number) {
-    if (sleepEffiencyAvg < 85) {
+    if (sleepEffiencyAvg < 80) {
       return `Based on your sleep efficiency, we should maintain the same target bedtime (${targetBedTimeLabel}) & wake time (${targetWakeTimeLabel}) this week. For most people, sleep efficiency climbs over 90% by the next week, and we can start allotting more time in bed. From there, it's adding 15 minutes to bedtime each week until you're sleeping the whole night through.`;
-    } else if (sleepEffiencyAvg >= 85 && sleepEffiencyAvg < 90) {
+    } else if (sleepEffiencyAvg >= 80 && sleepEffiencyAvg < 87) {
       return `Based on your sleep efficiency, we should maintain the same target bedtime (${targetBedTimeLabel}) & wake time (${targetWakeTimeLabel}) this week. For most people, sleep efficiency climbs over 90% by the next week, and we can start allotting more time in bed. From there, it's adding 15 minutes to bedtime each week until you're sleeping the whole night through.`;
     } else {
       return `Based on this result, we can increase time in bed by 15 minutes for the next week. Your new target bedtime is ${targetBedTimeLabel}. Maintain your wake time at (${targetWakeTimeLabel}).`;
