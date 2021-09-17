@@ -9,10 +9,13 @@ export default {
     title: 'Baseline collection',
     subTitle: 'Gathering data for customized care',
     image: Images.WomanInBed,
-    todos: ['Record 7 nights of sleep in your sleep diary'],
+    todos: [
+      'Record 7 nights of sleep in your sleep diary',
+      'If not done today, tap to record a new night',
+    ],
     url: 'https://dozy.customerly.help/collecting-a-baseline-of-sleep-data/',
     optional: false,
-    ready: true
+    ready: true,
   },
   SCTSRT: {
     title: 'Stimulus Control Therapy and SRT',
@@ -21,12 +24,11 @@ export default {
     todos: [
       'Stick to your target sleep schedule',
       'Do nothing in bed besides sleeping (no phone!)',
-      'If awake for 15+ mins, get up and return later'
+      'If awake for 15+ mins, get up and return later',
     ],
-    url:
-      'https://dozy.customerly.help/stimulus-control-therapy-and-sleep-restriction-therapy-sct-srt/',
+    url: 'https://dozy.customerly.help/stimulus-control-therapy-and-sleep-restriction-therapy-sct-srt/',
     optional: false,
-    ready: true
+    ready: true,
   },
   RLX: {
     title: 'Relaxation Training & PMR',
@@ -35,11 +37,11 @@ export default {
     todos: [
       'Practice PMR once during the day',
       'Use PMR before trying to sleep',
-      'Relax muscles, then gently maintain focus on breath'
+      'Relax muscles, then gently maintain focus on breath',
     ],
     url: 'https://dozy.customerly.help/progressive-muscle-relaxation-pmr/',
     optional: false,
-    ready: true
+    ready: true,
   },
   PIT: {
     title: 'Paradoxical Intention Therapy (PIT)',
@@ -48,38 +50,36 @@ export default {
     todos: ['Practice not trying to fall asleep when in bed'],
     url: 'https://dozy.customerly.help/paradoxical-intention-therapy-pit/',
     optional: false,
-    ready: true
+    ready: true,
   },
   COG1: {
     title: 'Harmful Beliefs About Sleep',
     subTitle: 'Finding and fixing harmful perspectives',
     image: Images.WomanInBed,
     todos: ['Notice harmful thoughts and replace with healthy ones'],
-    url:
-      'https://dozy.customerly.help/dysfunctional-beliefs-attitudes-about-sleep-dbas/',
+    url: 'https://dozy.customerly.help/dysfunctional-beliefs-attitudes-about-sleep-dbas/',
     optional: false,
-    ready: true
+    ready: true,
   },
   HYG: {
     title: 'Fixing Sleep Hygiene',
     subTitle: 'Improving sleep duration & quality',
     image: Images.WomanInBed,
     todos: [
-      'Message Dozy team in support tab for one-on-one sleep hygiene advice'
+      'Message Dozy team in support tab for one-on-one sleep hygiene advice',
     ],
     url: 'https://dozy.customerly.help/sleep-hygiene/',
     optional: false,
-    ready: true
+    ready: true,
   },
   COG2: {
     title: 'Revisiting Harmful Beliefs About Sleep',
     subTitle: "Checking the progress you've made",
     image: Images.WomanInBed,
     todos: ['Notice harmful thoughts and replace with healthy ones'],
-    url:
-      'https://dozy.customerly.help/dysfunctional-beliefs-attitudes-about-sleep-dbas/',
+    url: 'https://dozy.customerly.help/dysfunctional-beliefs-attitudes-about-sleep-dbas/',
     optional: false,
-    ready: false
+    ready: false,
   },
   END: {
     title: 'Maintaining Sleep Improvements',
@@ -88,7 +88,7 @@ export default {
     todos: ['Nothing to do!'],
     url: 'https://dozy.customerly.help',
     optional: false,
-    ready: false
+    ready: false,
   },
   FIX: {
     title: 'Sticking To The Schedule',
@@ -97,7 +97,7 @@ export default {
     todos: ['Stick to the target sleep schedule'],
     url: 'https://dozy.customerly.help',
     optional: true,
-    ready: false
+    ready: false,
   },
   JET: {
     title: 'Fighting Jet Lag',
@@ -106,8 +106,8 @@ export default {
     todos: ['Take melatonin before trip to prepare'],
     url: 'https://dozy.customerly.help',
     optional: true,
-    ready: false
-  }
+    ready: false,
+  },
 } as {
   [key: string]: {
     title: string;
