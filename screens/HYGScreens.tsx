@@ -288,7 +288,7 @@ export const SHI4a: React.FC<Props> = ({ navigation }) => {
       buttonValues={[
         { label: 'Alcohol', value: 'alcohol', solidColor: false },
         { label: 'Caffeine', value: 'caffeine', solidColor: false },
-        { label: 'Tobacco/Nicotene', value: 'nicotene', solidColor: false },
+        { label: 'Tobacco/Nicotine', value: 'nicotine', solidColor: false },
         { label: 'Other', value: 'other', solidColor: false },
       ]}
     />
