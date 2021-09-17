@@ -108,7 +108,14 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             linkImage={treatments[currentModule].image}
             todosArray={treatments[currentModule].todos}
             onPress={() => {
-              navigation.navigate('TreatmentReview', { module: currentModule });
+              if (currentModule == 'BSL') {
+                // If user is collecting baseline, go to log entry instead of FAQ
+                navigation.navigate('SleepDiaryEntry');
+              } else {
+                navigation.navigate('TreatmentReview', {
+                  module: currentModule,
+                });
+              }
             }}
           />
           {/* Add new todo card */}
