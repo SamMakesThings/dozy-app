@@ -23,7 +23,8 @@ import {
 import { encodeLocalTime, decodeUTCTime } from '../utilities/time';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
-function Root() {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function SettingsScreen() {
   // Pass along the signOut function from the context provider
   const { state, signOut } = React.useContext(AuthContext);
 
@@ -164,6 +165,7 @@ function Root() {
                 color: theme.colors.light,
               },
             ]}
+            testID="appVersion"
           >
             {`@dozyapp ${ExpoConstants.nativeAppVersion}`}
           </Text>
@@ -332,4 +334,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTheme(Root);
+export default withTheme(SettingsScreen);

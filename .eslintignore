@@ -1,3 +1,4 @@
 web-build/
 metro.config.js
 babel.config.js
+jest.config.js
