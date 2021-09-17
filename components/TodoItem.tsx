@@ -6,7 +6,11 @@ import { dozy_theme } from '../config/Themes';
 import { Analytics } from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
-export const TodoItem = (props: { label: string; completed: boolean }) => {
+export const TodoItem = (props: {
+  label: string;
+  completed: boolean;
+  disabled: boolean;
+}) => {
   const theme = dozy_theme;
 
   const [checked, setChecked] = React.useState(false);
@@ -14,12 +18,16 @@ export const TodoItem = (props: { label: string; completed: boolean }) => {
   const onPress = useCallback((): void => {
     setChecked(!checked);
     Analytics.logEvent(AnalyticsEvents.updateTreatmentTask, {
-      completed: !checked
+      completed: !checked,
     });
   }, [checked]);
 
   return (
-    <TouchableOpacity style={styles.View_TodoItem} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.View_TodoItem}
+      onPress={onPress}
+      disabled={props.disabled}
+    >
       <MaterialIcons
         name={checked ? 'check-box' : 'check-box-outline-blank'}
         size={scale(21)}
@@ -36,12 +44,12 @@ const styles = StyleSheet.create({
   View_TodoItem: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   Text_TodoItem: {
     color: dozy_theme.colors.secondary,
-    marginLeft: scale(8)
-  }
+    marginLeft: scale(8),
+  },
 });
 
 export default TodoItem;

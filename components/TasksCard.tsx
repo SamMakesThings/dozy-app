@@ -29,7 +29,9 @@ const TasksCard: React.FC<Props> = (props) => {
           {
             // Pull todos from treatments object, map them out
             props.todosArray.map((todo) => {
-              return <TodoItem key={todo} completed={false} label={todo} />;
+              return (
+                <TodoItem key={todo} completed={false} label={todo} disabled />
+              );
             })
           }
         </View>
