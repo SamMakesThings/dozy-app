@@ -531,6 +531,7 @@ export const SleepRatingInput = ({ navigation }: Props) => {
         { label: '5', value: 5 },
       ]}
       questionLabel="On a scale of 1-5, how would you rate the quality of your sleep last night?"
+      questionSubtitle="Where 1 is terrible and 5 is great"
     />
   );
 };
