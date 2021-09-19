@@ -51,12 +51,8 @@ const TextInputScreen: React.FC<Props> = (props) => {
       severity: string;
       errorMsg: string;
     }
-    const validationResult:
-      | ErrorObj
-      | boolean
-      | undefined = props.validInputChecker
-      ? props.validInputChecker(val)
-      : undefined;
+    const validationResult: ErrorObj | boolean | undefined =
+      props.validInputChecker ? props.validInputChecker(val) : undefined;
 
     if (!val && !props.optional) {
       setScreenState(States.Empty);

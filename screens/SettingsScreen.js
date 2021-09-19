@@ -12,6 +12,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
 import { scale } from 'react-native-size-matters';
+import ExpoConstants from 'expo-constants';
 import { dozy_theme } from '../config/Themes';
 import { AuthContext } from '../context/AuthContext';
 import { Analytics } from '../utilities/analytics.service';
@@ -22,7 +23,8 @@ import {
 import { encodeLocalTime, decodeUTCTime } from '../utilities/time';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
-function Root() {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function SettingsScreen() {
   // Pass along the signOut function from the context provider
   const { state, signOut } = React.useContext(AuthContext);
 
@@ -163,8 +165,9 @@ function Root() {
                 color: theme.colors.light,
               },
             ]}
+            testID="appVersion"
           >
-            @dozyapp 0.7.14
+            {`@dozyapp ${ExpoConstants.nativeAppVersion}`}
           </Text>
         </Container>
       </TouchableOpacity>
@@ -331,4 +334,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTheme(Root);
+export default withTheme(SettingsScreen);

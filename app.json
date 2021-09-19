@@ -2,6 +2,7 @@
   "expo": {
     "name": "Dozy",
     "slug": "dozy_app",
+    "owner": "startupsam",
     "privacy": "public",
     "sdkVersion": "41.0.0",
     "platforms": ["ios", "android"],
