@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -23,13 +23,21 @@ export const ChatTextInput: React.FC<ChatTextInputProps> = (props) => {
   // Set up local state for chat message
   const [typedMsg, setTypedMsg] = React.useState('');
 
+  const setTrimedMessage = useCallback((msg: string): void => {
+    if (msg[msg.length - 1] === '\n') {
+      setTypedMsg(msg.slice(0, msg.length - 1));
+    } else {
+      setTypedMsg(msg);
+    }
+  }, []);
+
   return (
     <View style={{ ...styles.View_ChatInput, ...props.viewStyle }}>
       <TextInput
         style={{ ...theme.typography.body2, ...styles.TextInput }}
         placeholder={'Ask a question...'}
         value={typedMsg}
-        onChangeText={setTypedMsg}
+        onChangeText={setTrimedMessage}
         multiline
         returnKeyType={'done'}
         onKeyPress={(event) => {
