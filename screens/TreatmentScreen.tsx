@@ -5,6 +5,7 @@ import {
   View,
   ActivityIndicator,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
 import { ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
@@ -108,11 +109,23 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             linkImage={treatments[currentModule].image}
             todosArray={treatments[currentModule].todos}
             onPress={() => {
-              navigation.navigate('TreatmentReview', { module: currentModule });
+              if (currentModule == 'BSL') {
+                // If user is collecting baseline, go to log entry instead of FAQ
+                navigation.navigate('SleepDiaryEntry');
+              } else {
+                navigation.navigate('TreatmentReview', {
+                  module: currentModule,
+                });
+              }
             }}
           />
           {/* Add new todo card */}
-          <TasksCard todosArray={treatments[currentModule].todos} />
+          <TouchableOpacity
+            disabled={currentModule !== 'BSL'}
+            onPress={() => navigation.navigate('SleepDiaryEntry')}
+          >
+            <TasksCard todosArray={treatments[currentModule].todos} />
+          </TouchableOpacity>
           {
             // Display target sleep schedule card if defined in backend
             state.userData.currentTreatments.targetBedTime && (

@@ -399,6 +399,7 @@ export const ISIResults = ({ navigation }: Props) => {
       return 'clinically severe insomnia';
     }
   };
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -429,6 +430,18 @@ export const ISISignificant = ({ navigation }: Props) => {
     Analytics.logEvent(AnalyticsEvents.onboardingISISignificant);
   }, []);
 
+  const severityText = () => {
+    if (onboardingState.ISITotal <= 7) {
+      return 'no significant insomnia';
+    } else if (onboardingState.ISITotal <= 14) {
+      return 'Clinically mild insomnia';
+    } else if (onboardingState.ISITotal <= 21) {
+      return 'Clinically moderate insomnia';
+    } else {
+      return 'Clinically severe insomnia';
+    }
+  };
+
   return (
     <IconExplainScreen
       theme={theme}
@@ -443,7 +456,8 @@ export const ISISignificant = ({ navigation }: Props) => {
       textLabel={
         <>
           <Text style={styles.BoldLabelText}>
-            Clinically significant insomnia{'\n'}
+            {severityText()}
+            {'\n'}
           </Text>
           <Text style={{ lineHeight: scale(18) }}>
             Your insomnia is{' '}
@@ -582,18 +596,19 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
       longText
       textLabel={
         <>
-          <Text style={styles.BoldLabelText}>Hold on there{'\n'}</Text>
+          <Text style={styles.BoldLabelText}>A note on pills{'\n'}</Text>
           <Text style={{ lineHeight: scale(18) }}>
-            For Dozy to work best, it&apos;s recommended to stop taking sleeping
-            pills before starting the program. DON&apos;T DO THIS ON YOUR OWN,
-            as stopping use can have withdrawal effects. Talk with your
-            physician to plan tapering it off. Once you&apos;ve done that, we
-            can get started with getting you to sleep without pills.
+            Dozy can improve your sleep whether you&apos;re taking sleeping
+            pills or not. However, sleeping pills are generally not recommended
+            for long-term use. If you&apos;d like to sleep without pills,
+            it&apos;s best to stop before starting Dozy (after consulting with a
+            doctor to avoid withdrawals). You&apos;ll see improvements in either
+            case - so pick the option that sounds best to you.
           </Text>
         </>
       }
-      buttonLabel="I’ll contact my doctor - follow up w/me"
-      bottomGreyButtonLabel="Continue anyway"
+      buttonLabel="I’ll ask my doctor about stopping pills"
+      bottomGreyButtonLabel="I'll continue with sleeping pills"
     />
   );
 };
@@ -613,7 +628,11 @@ export const SafetyPillsBye = ({ navigation }: Props) => {
           progressBarPercent: null,
         });
       }}
-      textLabel="Great! We’ll email & ping you again in four weeks. If you’re off sleeping pills before that, come back anytime and we’ll pick up where we left off."
+      textLabel={
+        onboardingState.otherCondition
+          ? "Finding a human provider can be a bit challenging, and options vary per country. For some (free) help, email us at info@dozy.health. Or, if you'd like to continue with the app regardless, you can navigate back and select 'I understand the risks'."
+          : 'Great! We’ll email & ping you again in four weeks. If you’re off sleeping pills before that, come back anytime and we’ll pick up where we left off.'
+      }
       onlyBackButton
     />
   );
@@ -989,7 +1008,7 @@ export const SendFirstChat = ({ navigation }: Props) => {
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      textLabel="Your sleep coach will provide support and answer questions for you during the process. Let's send them a message now!"
+      textLabel="Your (real human) sleep coach will provide support and answer questions for you during the process. Let's send them a message now!"
       onQuestionSubmit={() => {
         navigation.navigate('SendFirstChatContd');
       }}
@@ -1071,7 +1090,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
         <View style={!replyVisible && styles.none}>
           <ChatMessage
             sender="Sam Stowers"
-            message="Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)"
+            message="Thanks for sending! We usually reply within 24 hours. You can find our conversation in the Support tab of the app at any time. :)"
             time={new Date()}
             sentByUser={false}
           />

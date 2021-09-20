@@ -80,8 +80,16 @@ const SleepLogsView = (props: {
           backgroundColor={
             !loggedToday ? theme.colors.primary : theme.colors.medium
           }
-          titleLabel="How did you sleep last night?"
-          subtitleLabel="A consistent log improves care"
+          titleLabel={
+            loggedToday
+              ? 'Log sleep for a different night'
+              : 'How did you sleep last night?'
+          }
+          subtitleLabel={
+            loggedToday
+              ? 'If you missed a night previously'
+              : 'A consistent log improves care'
+          }
         />
         <ActivityIndicator
           size="large"
@@ -131,8 +139,16 @@ const SleepLogsView = (props: {
           backgroundColor={
             !loggedToday ? theme.colors.primary : theme.colors.medium
           }
-          titleLabel="How did you sleep last night?"
-          subtitleLabel="A consistent log improves care"
+          titleLabel={
+            loggedToday
+              ? 'Log sleep for a different night'
+              : 'How did you sleep last night?'
+          }
+          subtitleLabel={
+            loggedToday
+              ? 'If you missed a night previously'
+              : 'A consistent log improves care'
+          }
         />
         {props.sleepLogs.length < 7 && (
           <BaselineProgressCard nightsLogged={props.sleepLogs.length} />
