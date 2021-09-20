@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
+import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -36,7 +37,9 @@ import submitOnboardingData, {
   submitFirstChatMessage,
   OnboardingState,
 } from '../utilities/submitOnboardingData';
-import registerForPushNotificationsAsync from '../utilities/pushNotifications';
+import registerForPushNotificationsAsync, {
+  updateExpoPushToken,
+} from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
 import { Analytics } from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
@@ -1110,7 +1113,14 @@ export const OnboardingEnd: React.FC<Props> = ({ navigation }) => {
         submitOnboardingData(onboardingState, dispatch);
         // Ask push notification permission if user didn't allow to set a reminder
         if (onboardingState.expoPushToken === 'No push token provided') {
-          registerForPushNotificationsAsync();
+          registerForPushNotificationsAsync().then(async (expoPushToken) => {
+            if (expoPushToken) {
+              const userId = await SecureStore.getItemAsync('userId');
+              if (userId) {
+                updateExpoPushToken(expoPushToken, userId);
+              }
+            }
+          });
         }
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
