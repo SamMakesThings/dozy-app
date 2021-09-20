@@ -121,7 +121,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
           />
           {/* Add new todo card */}
           <TouchableOpacity
-            disabled={!(currentModule == 'BSL')}
+            disabled={currentModule !== 'BSL'}
             onPress={() => navigation.navigate('SleepDiaryEntry')}
           >
             <TasksCard todosArray={treatments[currentModule].todos} />
