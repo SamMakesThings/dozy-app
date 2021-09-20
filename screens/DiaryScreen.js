@@ -84,6 +84,7 @@ function DiaryScreen() {
             paddingTop: scale(10),
           },
         }}
+        lazy
         style={{ backgroundColor: theme.colors.primary }}
       >
         <Tab.Screen name="Entries" component={DiaryEntriesScreen} />
