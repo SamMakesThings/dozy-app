@@ -604,6 +604,18 @@ export const SafetyPillsStop: React.FC<Props> = ({ navigation }) => {
 export const SafetyPillsBye: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyPillsBye);
+
+    if (onboardingState.expoPushToken === 'No push token provided') {
+      registerForPushNotificationsAsync().then(async (expoPushToken) => {
+        if (expoPushToken) {
+          onboardingState.expoPushToken = expoPushToken;
+          const userId = await SecureStore.getItemAsync('userId');
+          if (userId) {
+            updateExpoPushToken(expoPushToken, userId);
+          }
+        }
+      });
+    }
   }, []);
 
   return (
@@ -834,6 +846,18 @@ export const BaselineIntro: React.FC<Props> = ({ navigation }) => {
 export const BaselineBye: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingBaselineBye);
+
+    if (onboardingState.expoPushToken === 'No push token provided') {
+      registerForPushNotificationsAsync().then(async (expoPushToken) => {
+        if (expoPushToken) {
+          onboardingState.expoPushToken = expoPushToken;
+          const userId = await SecureStore.getItemAsync('userId');
+          if (userId) {
+            updateExpoPushToken(expoPushToken, userId);
+          }
+        }
+      });
+    }
   }, []);
 
   return (
@@ -927,7 +951,6 @@ export const DiaryReminder: React.FC<Props> = ({ navigation }) => {
             onboardingState.expoPushToken = pushToken;
           }
         }
-        console.log('value ============== ', value);
         if (typeof value != 'boolean') {
           onboardingState.diaryReminderTime = value;
           setPushToken();
@@ -948,6 +971,15 @@ export const DiaryReminder: React.FC<Props> = ({ navigation }) => {
 export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingCheckinScheduling);
+
+    // Ask push notification permission if user didn't allow to set a reminder
+    if (onboardingState.expoPushToken === 'No push token provided') {
+      registerForPushNotificationsAsync().then(async (expoPushToken) => {
+        if (expoPushToken) {
+          onboardingState.expoPushToken = expoPushToken;
+        }
+      });
+    }
   }, []);
 
   return (
@@ -1111,17 +1143,6 @@ export const OnboardingEnd: React.FC<Props> = ({ navigation }) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         submitOnboardingData(onboardingState, dispatch);
-        // Ask push notification permission if user didn't allow to set a reminder
-        if (onboardingState.expoPushToken === 'No push token provided') {
-          registerForPushNotificationsAsync().then(async (expoPushToken) => {
-            if (expoPushToken) {
-              const userId = await SecureStore.getItemAsync('userId');
-              if (userId) {
-                updateExpoPushToken(expoPushToken, userId);
-              }
-            }
-          });
-        }
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
       buttonLabel="Continue"
