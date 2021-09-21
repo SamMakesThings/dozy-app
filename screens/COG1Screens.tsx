@@ -480,8 +480,9 @@ export const DBASResult: React.FC<Props> = ({ navigation }) => {
       COG1State.DBAS4 +
       COG1State.DBAS8 +
       COG1State.DBAS10 +
-      COG1State.DBAS11) /
-    5;
+      COG1State.DBAS11 +
+      COG1State.DBAS14) /
+    6;
   COG1State.DBASF3 = (COG1State.DBAS1 + COG1State.DBAS2) / 2;
   COG1State.DBASF4 =
     (COG1State.DBAS6 + COG1State.DBAS13 + COG1State.DBAS15) / 3;
