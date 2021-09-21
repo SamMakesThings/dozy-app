@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
+import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -36,7 +37,9 @@ import submitOnboardingData, {
   submitFirstChatMessage,
   OnboardingState,
 } from '../utilities/submitOnboardingData';
-import registerForPushNotificationsAsync from '../utilities/pushNotifications';
+import registerForPushNotificationsAsync, {
+  updateExpoPushToken,
+} from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
 import { Analytics } from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
@@ -74,7 +77,7 @@ const onboardingState: OnboardingState = {
   firstChatMessageContent: 'Hi',
 };
 
-export const Welcome = ({ navigation }: Props) => {
+export const Welcome: React.FC<Props> = ({ navigation }) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
 
   useEffect((): void => {
@@ -98,7 +101,7 @@ export const Welcome = ({ navigation }: Props) => {
   );
 };
 
-export const Overview = ({ navigation }: Props) => {
+export const Overview: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingOverview);
   }, []);
@@ -119,7 +122,7 @@ export const Overview = ({ navigation }: Props) => {
   );
 };
 
-export const Asks = ({ navigation }: Props) => {
+export const Asks: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingAsks);
   }, []);
@@ -140,7 +143,7 @@ export const Asks = ({ navigation }: Props) => {
   );
 };
 
-export const ISIIntro = ({ navigation }: Props) => {
+export const ISIIntro: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISIIntro);
   }, []);
@@ -161,7 +164,7 @@ export const ISIIntro = ({ navigation }: Props) => {
   );
 };
 
-export const ISI1 = ({ navigation }: Props) => {
+export const ISI1: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISI1);
   }, []);
@@ -190,7 +193,7 @@ export const ISI1 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI2 = ({ navigation }: Props) => {
+export const ISI2: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISI2);
   }, []);
@@ -219,7 +222,7 @@ export const ISI2 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI3 = ({ navigation }: Props) => {
+export const ISI3: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISI3);
   }, []);
@@ -251,7 +254,7 @@ export const ISI3 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI4 = ({ navigation }: Props) => {
+export const ISI4: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISI4);
   }, []);
@@ -284,7 +287,7 @@ export const ISI4 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI5 = ({ navigation }: Props) => {
+export const ISI5: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISI5);
   }, []);
@@ -313,7 +316,7 @@ export const ISI5 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI6 = ({ navigation }: Props) => {
+export const ISI6: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISI6);
   }, []);
@@ -342,7 +345,7 @@ export const ISI6 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI7 = ({ navigation }: Props) => {
+export const ISI7: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISI7);
   }, []);
@@ -383,7 +386,7 @@ export const ISI7 = ({ navigation }: Props) => {
   );
 };
 
-export const ISIResults = ({ navigation }: Props) => {
+export const ISIResults: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISIResults);
   }, []);
@@ -425,7 +428,7 @@ export const ISIResults = ({ navigation }: Props) => {
   );
 };
 
-export const ISISignificant = ({ navigation }: Props) => {
+export const ISISignificant: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISISignificant);
   }, []);
@@ -474,7 +477,7 @@ export const ISISignificant = ({ navigation }: Props) => {
   );
 };
 
-export const ISINoSignificant = ({ navigation }: Props) => {
+export const ISINoSignificant: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISINoSignificant);
   }, []);
@@ -510,7 +513,7 @@ export const ISINoSignificant = ({ navigation }: Props) => {
   );
 };
 
-export const SafetyIntro = ({ navigation }: Props) => {
+export const SafetyIntro: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyIntro);
   }, []);
@@ -531,7 +534,7 @@ export const SafetyIntro = ({ navigation }: Props) => {
   );
 };
 
-export const SafetyPills = ({ navigation }: Props) => {
+export const SafetyPills: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyPills);
   }, []);
@@ -570,7 +573,7 @@ export const SafetyPills = ({ navigation }: Props) => {
   );
 };
 
-export const SafetyPillsStop = ({ navigation }: Props) => {
+export const SafetyPillsStop: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyPillsStop);
   }, []);
@@ -613,9 +616,21 @@ export const SafetyPillsStop = ({ navigation }: Props) => {
   );
 };
 
-export const SafetyPillsBye = ({ navigation }: Props) => {
+export const SafetyPillsBye: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyPillsBye);
+
+    if (onboardingState.expoPushToken === 'No push token provided') {
+      registerForPushNotificationsAsync().then(async (expoPushToken) => {
+        if (expoPushToken) {
+          onboardingState.expoPushToken = expoPushToken;
+          const userId = await SecureStore.getItemAsync('userId');
+          if (userId) {
+            updateExpoPushToken(expoPushToken, userId);
+          }
+        }
+      });
+    }
   }, []);
 
   return (
@@ -638,7 +653,7 @@ export const SafetyPillsBye = ({ navigation }: Props) => {
   );
 };
 
-export const SafetySnoring = ({ navigation }: Props) => {
+export const SafetySnoring: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetySnoring);
   }, []);
@@ -667,7 +682,7 @@ export const SafetySnoring = ({ navigation }: Props) => {
   );
 };
 
-export const SafetyLegs = ({ navigation }: Props) => {
+export const SafetyLegs: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyLegs);
   }, []);
@@ -697,7 +712,7 @@ export const SafetyLegs = ({ navigation }: Props) => {
   );
 };
 
-export const SafetyParas = ({ navigation }: Props) => {
+export const SafetyParas: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyParas);
   }, []);
@@ -726,7 +741,7 @@ export const SafetyParas = ({ navigation }: Props) => {
   );
 };
 
-export const SafetyCatchall = ({ navigation }: Props) => {
+export const SafetyCatchall: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyCatchall);
   }, []);
@@ -755,7 +770,10 @@ export const SafetyCatchall = ({ navigation }: Props) => {
   );
 };
 
-export const SafetyIllnessWarning = ({ navigation, route }: Props) => {
+export const SafetyIllnessWarning: React.FC<Props> = ({
+  navigation,
+  route,
+}) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyIllnessWarning);
   }, []);
@@ -798,7 +816,7 @@ export const SafetyIllnessWarning = ({ navigation, route }: Props) => {
   );
 };
 
-export const BaselineIntro = ({ navigation }: Props) => {
+export const BaselineIntro: React.FC<Props> = ({ navigation }) => {
   const windowDimensions = useWindowDimensions();
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingBaselineIntro);
@@ -844,9 +862,21 @@ export const BaselineIntro = ({ navigation }: Props) => {
   );
 };
 
-export const BaselineBye = ({ navigation }: Props) => {
+export const BaselineBye: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingBaselineBye);
+
+    if (onboardingState.expoPushToken === 'No push token provided') {
+      registerForPushNotificationsAsync().then(async (expoPushToken) => {
+        if (expoPushToken) {
+          onboardingState.expoPushToken = expoPushToken;
+          const userId = await SecureStore.getItemAsync('userId');
+          if (userId) {
+            updateExpoPushToken(expoPushToken, userId);
+          }
+        }
+      });
+    }
   }, []);
 
   return (
@@ -865,7 +895,7 @@ export const BaselineBye = ({ navigation }: Props) => {
   );
 };
 
-export const DiaryIntro = ({ navigation }: Props) => {
+export const DiaryIntro: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingDiaryIntro);
   }, []);
@@ -886,7 +916,7 @@ export const DiaryIntro = ({ navigation }: Props) => {
   );
 };
 
-export const DiaryHabit = ({ navigation }: Props) => {
+export const DiaryHabit: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingDiaryHabit);
   }, []);
@@ -921,7 +951,7 @@ export const DiaryHabit = ({ navigation }: Props) => {
   );
 };
 
-export const DiaryReminder = ({ navigation }: Props) => {
+export const DiaryReminder: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingDiaryReminder);
   }, []);
@@ -934,7 +964,6 @@ export const DiaryReminder = ({ navigation }: Props) => {
       onQuestionSubmit={(value: Date | boolean) => {
         // TODO: Can I just make the arrow function async instead of below
         async function setPushToken() {
-          // let pushToken = await registerForPushNotificationsAsync(); // lol wtf why did I do this twice, will fix later
           // TODO: Make less dumb
           const pushToken = await registerForPushNotificationsAsync();
           if (pushToken) {
@@ -958,9 +987,18 @@ export const DiaryReminder = ({ navigation }: Props) => {
   );
 };
 
-export const CheckinScheduling = ({ navigation }: Props) => {
+export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingCheckinScheduling);
+
+    // Ask push notification permission if user didn't allow to set a reminder
+    if (onboardingState.expoPushToken === 'No push token provided') {
+      registerForPushNotificationsAsync().then(async (expoPushToken) => {
+        if (expoPushToken) {
+          onboardingState.expoPushToken = expoPushToken;
+        }
+      });
+    }
   }, []);
 
   return (
@@ -999,7 +1037,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
   );
 };
 
-export const SendFirstChat = ({ navigation }: Props) => {
+export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChat);
   }, []);
@@ -1032,7 +1070,7 @@ export const SendFirstChat = ({ navigation }: Props) => {
   );
 };
 
-export const SendFirstChatContd = ({ navigation }: Props) => {
+export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
   const displayName = state.userData.userInfo.displayName;
 
@@ -1110,7 +1148,7 @@ export const SendFirstChatContd = ({ navigation }: Props) => {
   );
 };
 
-export const OnboardingEnd = ({ navigation }: Props) => {
+export const OnboardingEnd: React.FC<Props> = ({ navigation }) => {
   const { dispatch } = React.useContext(AuthContext);
 
   useEffect((): void => {
@@ -1124,7 +1162,6 @@ export const OnboardingEnd = ({ navigation }: Props) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         submitOnboardingData(onboardingState, dispatch);
-        // finishOnboarding(); TODO: Remove this if everything is working fine
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
       buttonLabel="Continue"

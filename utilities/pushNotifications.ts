@@ -10,29 +10,25 @@ export default async function registerForPushNotificationsAsync(): Promise<
 > {
   let token: string | undefined = undefined;
 
-  if (Constants.isDevice) {
-    let isGranted = await isNotificationEnabled();
-    if (!isGranted) {
-      isGranted = await askNotificationPermission(false);
-    }
-
-    if (!isGranted) {
-      Alert.alert('Failed to get push token for push notification!');
-      return;
-    }
-    token = (
-      await Notifications.getExpoPushTokenAsync({
-        experienceId: `@startupsam/${Constants.manifest.slug}`
-      })
-    ).data;
-  } else {
-    Alert.alert('Must use physical device for Push Notifications');
+  let isGranted = await isNotificationEnabled();
+  if (!isGranted) {
+    isGranted = await askNotificationPermission(false);
   }
+
+  if (!isGranted) {
+    Alert.alert('Failed to get push token for push notification!');
+    return;
+  }
+  token = (
+    await Notifications.getExpoPushTokenAsync({
+      experienceId: `@startupsam/${Constants.manifest.slug}`,
+    })
+  )?.data;
 
   if (Platform.OS === 'android') {
     Notifications.setNotificationChannelAsync('default', {
       name: 'default',
-      importance: 100
+      importance: 100,
     });
   }
 
@@ -46,7 +42,7 @@ export async function isNotificationEnabled(): Promise<boolean> {
 }
 
 export async function askNotificationPermission(
-  maybeRedirectToSettings = false
+  maybeRedirectToSettings = false,
 ): Promise<boolean> {
   let isSuccess = false;
 
@@ -68,14 +64,14 @@ export async function askNotificationPermission(
               IntentLauncher.startActivityAsync(
                 IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
                 {
-                  data: `package:${Application.applicationId}`
-                }
+                  data: `package:${Application.applicationId}`,
+                },
               );
             }
-          }
+          },
         },
-        { text: 'No' }
-      ]
+        { text: 'No' },
+      ],
     );
   }
 
@@ -84,7 +80,7 @@ export async function askNotificationPermission(
 
 export async function updateExpoPushToken(
   expoPushToken: string,
-  userId: string
+  userId: string,
 ): Promise<void> {
   const userDocRef = firestore().collection('users').doc(userId);
 
@@ -93,7 +89,7 @@ export async function updateExpoPushToken(
     if (data.docs.length) {
       data.docs.forEach((doc) => {
         notificationsCollection.doc(doc.id).update({
-          expoPushToken
+          expoPushToken,
         });
       });
     }
@@ -101,7 +97,7 @@ export async function updateExpoPushToken(
 
   userDocRef.update({
     reminders: {
-      expoPushToken
-    }
+      expoPushToken,
+    },
   });
 }
