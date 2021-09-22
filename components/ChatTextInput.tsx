@@ -23,7 +23,7 @@ export const ChatTextInput: React.FC<ChatTextInputProps> = (props) => {
   // Set up local state for chat message
   const [typedMsg, setTypedMsg] = React.useState('');
 
-  const setTrimedMessage = useCallback((msg: string): void => {
+  const setTrimmedMessage = useCallback((msg: string): void => {
     if (msg[msg.length - 1] === '\n') {
       setTypedMsg(msg.slice(0, msg.length - 1));
     } else {
@@ -37,7 +37,7 @@ export const ChatTextInput: React.FC<ChatTextInputProps> = (props) => {
         style={{ ...theme.typography.body2, ...styles.TextInput }}
         placeholder={'Ask a question...'}
         value={typedMsg}
-        onChangeText={setTrimedMessage}
+        onChangeText={setTrimmedMessage}
         multiline
         returnKeyType={'done'}
         onKeyPress={(event) => {
