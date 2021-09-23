@@ -25,10 +25,11 @@ interface LogState {
   SCTDaytimeNaps: undefined | boolean;
   PMRPractice: undefined | string;
   PITPractice: undefined | boolean;
+  isZeroSleep: boolean;
 }
 
 export default async function submitSleepDiaryData(
-  logState: LogState
+  logState: LogState,
 ): Promise<void> {
   // Initialize relevant Firebase values
   const userId = await SecureStore.getItemAsync('userId');
@@ -76,21 +77,26 @@ export default async function submitSleepDiaryData(
  * @returns {Object} - SleepLog
  */
 export function normalizeSleepLog(
-  logState: any,
-  isChangeTimezone = false
+  logState: LogState,
+  isChangeTimezone = false,
 ): SleepLog {
   const newLogState = cloneDeep(logState);
 
   // If bedtime/sleeptime are in the evening, change them to be the day before
-  if (logState.bedTime > logState.wakeTime) {
+  if (
+    logState.bedTime >
+    (logState.isZeroSleep ? logState.upTime : logState.wakeTime)
+  ) {
     newLogState.bedTime = moment(logState.bedTime).subtract(1, 'days').toDate();
+  }
+  if (logState.isZeroSleep) {
+    newLogState.wakeTime = newLogState.bedTime;
   }
 
   // If log isn't for today, adjust all date values accordingly
   const dateToCompare = newLogState.logId ? newLogState.upTime : new Date();
-  const logDate = newLogState.logDate;
-  let daysDiff = moment(logDate).diff(dateToCompare, 'days');
-  daysDiff = logDate > dateToCompare ? daysDiff + 1 : daysDiff; // Add 1 if set date is larger than today. To make sure it catches diff accurately
+  let daysDiff = moment(newLogState.logDate).diff(dateToCompare, 'days');
+  daysDiff = newLogState.logDate > dateToCompare ? daysDiff + 1 : daysDiff; // Add 1 if set date is larger than today. To make sure it catches diff accurately
   if (daysDiff !== 0) {
     newLogState.bedTime = moment(newLogState.bedTime)
       .add(daysDiff, 'days')
@@ -104,20 +110,29 @@ export function normalizeSleepLog(
   }
 
   // calculate total time in bed, time between waking & getting up, and time awake in bed
-  const minsInBedTotalMs =
-    newLogState.upTime.getTime() - newLogState.bedTime.getTime();
-  const minsInBedTotal = Math.floor(minsInBedTotalMs / 1000 / 60);
-  const minsInBedAfterWakingMs =
-    newLogState.upTime.getTime() - newLogState.wakeTime.getTime();
-  const minsInBedAfterWaking = Math.floor(minsInBedAfterWakingMs / 1000 / 60);
-  const minsAwakeInBedTotal =
-    newLogState.nightMinsAwake +
-    newLogState.minsToFallAsleep +
-    minsInBedAfterWaking;
+  const minsInBedTotal = Math.floor(
+    (newLogState.upTime.getTime() - newLogState.bedTime.getTime()) / 1000 / 60,
+  );
+  if (logState.isZeroSleep) {
+    newLogState.minsToFallAsleep = minsInBedTotal / 2;
+    newLogState.nightMinsAwake = minsInBedTotal / 2;
+  }
+  const minsInBedAfterWaking = Math.floor(
+    (newLogState.upTime.getTime() - newLogState.wakeTime.getTime()) / 1000 / 60,
+  );
+  const minsAwakeInBedTotal = logState.isZeroSleep
+    ? minsInBedTotal
+    : newLogState.nightMinsAwake +
+      newLogState.minsToFallAsleep +
+      minsInBedAfterWaking;
 
   // calculate sleep duration & sleep efficiency
-  const sleepDuration = minsInBedTotal - minsAwakeInBedTotal;
-  const sleepEfficiency = +(sleepDuration / minsInBedTotal).toFixed(2);
+  const sleepDuration = logState.isZeroSleep
+    ? 0
+    : minsInBedTotal - minsAwakeInBedTotal;
+  const sleepEfficiency = logState.isZeroSleep
+    ? 0
+    : +(sleepDuration / minsInBedTotal).toFixed(2);
 
   // Create an object, add any additional treatment module data
   // Currently added: SCT, RLX (PMR), PIT
@@ -127,24 +142,24 @@ export function normalizeSleepLog(
       SCTUpCount: newLogState.SCTUpCount,
       SCTAnythingNonSleepInBed: newLogState.SCTAnythingNonSleepInBed,
       SCTNonSleepActivities: newLogState.SCTNonSleepActivities || null,
-      SCTDaytimeNaps: newLogState.SCTDaytimeNaps
+      SCTDaytimeNaps: newLogState.SCTDaytimeNaps,
     });
   }
   if (newLogState.PMRPractice) {
     treatmentModuleData = Object.assign(treatmentModuleData, {
-      PMRPractice: newLogState.PMRPractice
+      PMRPractice: newLogState.PMRPractice,
     });
   }
   if (newLogState.PITPractice) {
     treatmentModuleData = Object.assign(treatmentModuleData, {
-      PITPractice: newLogState.PITPractice
+      PITPractice: newLogState.PITPractice,
     });
   }
 
   // Convert to UTC but has the same YYYY-MM-DD HH:mm as the local time's
   const bedTimeUTCData = encodeLocalTime(newLogState.bedTime);
   const fallAsleepTime = moment(newLogState.bedTime)
-    .add(logState.minsToFallAsleep, 'minutes')
+    .add(newLogState.minsToFallAsleep, 'minutes')
     .toDate();
   const fallAsleepTimeUTCData = encodeLocalTime(fallAsleepTime);
   const wakeTimeUTCData = encodeLocalTime(newLogState.wakeTime);
@@ -157,42 +172,50 @@ export function normalizeSleepLog(
       'wakeCount',
       'nightMinsAwake',
       'sleepRating',
-      'sleepRating',
       'notes',
-      'tags'
+      'tags',
     ]),
     bedTime: firestore.Timestamp.fromDate(
-      isChangeTimezone ? bedTimeUTCData.value : newLogState.bedTime
+      isChangeTimezone ? bedTimeUTCData.value : newLogState.bedTime,
     ),
     fallAsleepTime: firestore.Timestamp.fromDate(
-      isChangeTimezone ? fallAsleepTimeUTCData.value : fallAsleepTime
+      isChangeTimezone ? fallAsleepTimeUTCData.value : fallAsleepTime,
     ),
     wakeTime: firestore.Timestamp.fromDate(
-      isChangeTimezone ? wakeTimeUTCData.value : newLogState.wakeTime
+      isChangeTimezone ? wakeTimeUTCData.value : newLogState.wakeTime,
     ),
     upTime: firestore.Timestamp.fromDate(
-      isChangeTimezone ? upTimeUTCData.value : newLogState.upTime
+      isChangeTimezone ? upTimeUTCData.value : newLogState.upTime,
     ),
     version: bedTimeUTCData.version,
     sleepEfficiency,
     sleepDuration,
     minsInBedTotal,
     minsAwakeInBedTotal,
-    ...treatmentModuleData
+    ...treatmentModuleData,
   };
 }
 
-export function validateSleepLog(logState: any): boolean {
+export function validateSleepLog(logState: LogState): boolean {
   let isValid = true;
 
-  const bedTime = moment(logState.bedTime).isAfter(logState.wakeTime)
+  const bedTime = moment(logState.bedTime).isAfter(
+    logState.isZeroSleep ? logState.upTime : logState.wakeTime,
+  )
     ? moment(logState.bedTime).subtract(1, 'days')
     : moment(logState.bedTime);
 
-  if (bedTime.isSameOrAfter(logState.wakeTime)) {
+  if (
+    bedTime.isSameOrAfter(
+      logState.isZeroSleep ? logState.upTime : logState.wakeTime,
+    )
+  ) {
     // If bed time is the same as wake time
     isValid = false;
-  } else if (moment(logState.upTime).isBefore(logState.wakeTime)) {
+  } else if (
+    !logState.isZeroSleep &&
+    moment(logState.upTime).isBefore(logState.wakeTime)
+  ) {
     // If get up time is before wake up time
     isValid = false;
   } else if (
@@ -205,6 +228,7 @@ export function validateSleepLog(logState: any): boolean {
     // If fall asleep time exceeds the maxium time
     isValid = false;
   } else if (
+    !logState.isZeroSleep &&
     bedTime
       .add(logState.minsToFallAsleep, 'minutes')
       .isSameOrAfter(logState.wakeTime)
@@ -212,12 +236,17 @@ export function validateSleepLog(logState: any): boolean {
     // If fall asleep time is same or after wake up time
     isValid = false;
   } else if (
+    !logState.isZeroSleep &&
     logState.nightMinsAwake >=
-    moment(logState.wakeTime).diff(bedTime) / 60000 - logState.minsToFallAsleep
+      moment(logState.wakeTime).diff(bedTime) / 60000 -
+        logState.minsToFallAsleep
   ) {
     // If night awake time is same or exceeds sleep time
     isValid = false;
-  } else if (logState.minsToFallAsleep < 0 || logState.nightMinsAwake < 0) {
+  } else if (
+    (!logState.isZeroSleep && logState.minsToFallAsleep < 0) ||
+    logState.nightMinsAwake < 0
+  ) {
     // Invalid values
     isValid = false;
   }
