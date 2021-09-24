@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FeedbackWidget should match the snapshot 1`] = `
+<View
+  style={
+    Array [
+      false,
+      Object {
+        "alignItems": "center",
+        "alignSelf": "stretch",
+        "padding": 20,
+      },
+      false,
+      Object {
+        "backgroundColor": "rgba(64, 75, 105, 1)",
+        "borderRadius": 6,
+      },
+      undefined,
+    ]
+  }
+>
+  <SwipeRating
+    fractions={1}
+    imageSize={40}
+    jumpValue={0.5}
+    minValue={0.5}
+    ratingBackgroundColor="white"
+    ratingColor="#f1c40f"
+    ratingCount={5}
+    ratingImage={1}
+    ratingTextColor="rgba(0, 129, 138, 1)"
+    showRating={true}
+    showReadOnlyText={true}
+    startingValue={0}
+    tintColor="rgba(64, 75, 105, 1)"
+    type="star"
+  />
+  <Text
+    style={
+      Array [
+        Object {
+          "fontFamily": "RubikMedium",
+          "fontSize": 34.285714285714285,
+          "lineHeight": 51.42857142857143,
+        },
+        Object {
+          "color": "rgba(0, 129, 138, 1)",
+        },
+        Object {
+          "marginTop": 34.285714285714285,
+        },
+      ]
+    }
+  >
+    Please tell us why you gave this rating.
+  </Text>
+  <Component
+    allowFontScaling={true}
+    multiline={true}
+    numberOfLines={5}
+    rejectResponderTermination={true}
+    style={
+      Array [
+        Object {
+          "alignSelf": "stretch",
+          "borderRadius": 17.142857142857142,
+          "height": 214.28571428571428,
+          "marginTop": 17.142857142857142,
+          "padding": 17.142857142857142,
+          "textAlignVertical": "top",
+        },
+        Object {
+          "fontFamily": "RubikRegular",
+          "fontSize": 30,
+          "lineHeight": 47.14285714285714,
+        },
+        Object {
+          "backgroundColor": "rgba(35, 43, 63, 1)",
+          "color": "rgba(255, 255, 255, 1)",
+        },
+      ]
+    }
+    underlineColorAndroid="transparent"
+  />
+  <ForwardRef
+    disabled={false}
+    style={
+      Array [
+        Object {
+          "borderRadius": 17.142857142857142,
+          "marginTop": 51.42857142857143,
+          "paddingHorizontal": 34.285714285714285,
+          "paddingVertical": 17.142857142857142,
+        },
+        Object {
+          "backgroundColor": "rgba(0, 129, 138, 1)",
+        },
+        false,
+      ]
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "fontFamily": "RubikRegular",
+            "fontSize": 34.285714285714285,
+            "lineHeight": 34.285714285714285,
+          },
+          Object {
+            "color": "rgba(219, 237, 243, 1)",
+          },
+        ]
+      }
+    >
+      Submit
+    </Text>
+  </ForwardRef>
+</View>
+`;
