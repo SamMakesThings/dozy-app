@@ -32,7 +32,7 @@
     },
     "alpha": {
       "extends": "base",
-      "releaseChannel": "test-0",
+      "releaseChannel": "bugfix-chat-conversation-issue",
       "distribution": "internal",
       "android": {
         "gradleCommand": ":app:assembleRelease"
