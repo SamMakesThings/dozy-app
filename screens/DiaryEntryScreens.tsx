@@ -217,13 +217,14 @@ export const MinsToFallAsleepInput = ({ navigation }: Props) => {
         text: 'click here',
         onPress: () => {
           logState.isZeroSleep = true;
-          logState.wakeCount = 0;
-          // If RLX (PMR) started, navigate to RLX. If PIT but no RLX, then PIT. Otherwise wakeCount
+          // If RLX (PMR) started, navigate to RLX. If PIT but no RLX, then PIT.
+          // Otherwise go to WakeCountInput or skip WakeCountInput in case of zero sleep
           if (globalState.userData?.currentTreatments?.RLX) {
             navigation.navigate('PMRAsk', { progressBarPercent: 0.3 });
           } else if (globalState.userData?.currentTreatments?.PIT) {
             navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
           } else {
+            logState.wakeCount = 0;
             goToNextFromWakeCountInput(navigation, Number.MAX_SAFE_INTEGER, 0);
           }
         },
