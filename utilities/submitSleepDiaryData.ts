@@ -117,22 +117,21 @@ export function normalizeSleepLog(
     newLogState.minsToFallAsleep = minsInBedTotal / 2;
     newLogState.nightMinsAwake = minsInBedTotal / 2;
   }
-  const minsInBedAfterWaking = Math.floor(
-    (newLogState.upTime.getTime() - newLogState.wakeTime.getTime()) / 1000 / 60,
-  );
-  const minsAwakeInBedTotal = logState.isZeroSleep
-    ? minsInBedTotal
-    : newLogState.nightMinsAwake +
-      newLogState.minsToFallAsleep +
-      minsInBedAfterWaking;
+  const minsInBedAfterWaking = logState.isZeroSleep
+    ? 0
+    : Math.floor(
+        (newLogState.upTime.getTime() - newLogState.wakeTime.getTime()) /
+          1000 /
+          60,
+      );
+  const minsAwakeInBedTotal =
+    newLogState.nightMinsAwake +
+    newLogState.minsToFallAsleep +
+    minsInBedAfterWaking;
 
   // calculate sleep duration & sleep efficiency
-  const sleepDuration = logState.isZeroSleep
-    ? 0
-    : minsInBedTotal - minsAwakeInBedTotal;
-  const sleepEfficiency = logState.isZeroSleep
-    ? 0
-    : +(sleepDuration / minsInBedTotal).toFixed(2);
+  const sleepDuration = minsInBedTotal - minsAwakeInBedTotal;
+  const sleepEfficiency = +(sleepDuration / minsInBedTotal).toFixed(2);
 
   // Create an object, add any additional treatment module data
   // Currently added: SCT, RLX (PMR), PIT
