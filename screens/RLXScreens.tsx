@@ -19,6 +19,7 @@ import SleepingFace from '../assets/images/SleepingFace.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation } from '../types/custom';
+import Feedback from '../utilities/feedback.service';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -399,6 +400,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
   const { state, dispatch } = React.useContext(AuthContext);
+  const { setShowingFeedbackPopup } = Feedback.useFeedback();
 
   // Create reminder objects, put them in an array
   const reminderArray = [
@@ -451,6 +453,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
           });
           navigation.navigate('App');
           refreshUserData(dispatch);
+          setShowingFeedbackPopup(true);
         } else {
           console.log('ERROR IN SCTSRTend: Invalid user id');
         }

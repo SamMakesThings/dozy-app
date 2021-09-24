@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   Text,
@@ -19,11 +19,15 @@ import { CardContainer } from '../components/CardContainer';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
+import FeedbackPopupModal from '../components/FeedbackPopupModal';
+import FeedbackWidget from '../components/FeedbackWidget';
 import { dozy_theme } from '../config/Themes';
 import treatments from '../constants/Treatments';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import planTreatmentModules from '../utilities/planTreatmentModules';
 import GLOBAL from '../utilities/global';
+import Feedback from '../utilities/feedback.service';
+import submitFeedback from '../utilities/submitFeedback';
 import { Navigation } from '../types/custom';
 
 export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
@@ -31,6 +35,21 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
 }) => {
   const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
+  const {
+    showingFeedbackWidget,
+    showingFeedbackPopup,
+    setShowingFeedbackPopup,
+  } = Feedback.useFeedback();
+  const [rate, setRate] = useState(0);
+  const [feedback, setFeedback] = useState('');
+
+  const onSubmitFeedback = useCallback((): void => {
+    submitFeedback(rate, feedback);
+  }, [rate, feedback]);
+
+  const onCloseFeedbackPopup = useCallback((): void => {
+    setShowingFeedbackPopup(false);
+  }, [setShowingFeedbackPopup]);
 
   // If state is available, show screen. Otherwise, show loading indicator.
   if (state.sleepLogs && state.userData?.currentTreatments) {
@@ -74,6 +93,10 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
 
     return (
       <ScreenContainer hasSafeArea={true} scrollable={true} style={styles.Root}>
+        <FeedbackPopupModal
+          visible={showingFeedbackPopup}
+          onRequestClose={onCloseFeedbackPopup}
+        />
         <View style={styles.View_ContentContainer}>
           <Icon
             style={styles.Icon_Clipboard}
@@ -102,6 +125,15 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
                 }
               />
             )}
+          {showingFeedbackWidget && (
+            <FeedbackWidget
+              style={styles.FeedbackWidget}
+              rate={rate}
+              onRateChange={setRate}
+              onFeedbackChange={setFeedback}
+              onSubmit={onSubmitFeedback}
+            />
+          )}
           <CurrentTreatmentsCard
             progressPercent={progressPercent}
             linkTitle={treatments[currentModule].title}
@@ -252,6 +284,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     paddingHorizontal: scale(10),
+  },
+  FeedbackWidget: {
+    marginBottom: scale(15),
   },
   View_CardHeaderContainer: {
     flexDirection: 'column',
