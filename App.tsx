@@ -10,6 +10,7 @@ import { dozy_theme } from './config/Themes';
 import { AuthProvider } from './context/AuthContext';
 import AppNavigator from './navigation/AppNavigator';
 import { Updates } from './utilities/updates.service';
+import Feedback from './utilities/feedback.service';
 
 // Mute "setting a timer" firebase warnings in console
 LogBox.ignoreLogs(['Setting a timer']);
@@ -33,6 +34,7 @@ export default function App(): React.ReactElement {
   // Full dispatch code in mainAppReducer.ts
 
   const isCheckingUpdate: boolean = Updates.useUpdating();
+  const feedbackContextValue = Feedback.useFeedbackService();
   const [isLoading, setIsLoading] = React.useState(true);
 
   // Create authContext so relevant functions are available through the app
@@ -74,18 +76,20 @@ export default function App(): React.ReactElement {
   } else {
     return (
       <AuthProvider>
-        <ThemeProvider theme={dozy_theme}>
-          <StatusBar
-            barStyle="light-content"
-            backgroundColor={dozy_theme.colors.background}
-          />
-          <AppNavigator />
-          {isCheckingUpdate && (
-            <LoadingOverlay
-              title={isCheckingUpdate ? 'Downloading updates...' : ''}
+        <Feedback.Context.Provider value={feedbackContextValue}>
+          <ThemeProvider theme={dozy_theme}>
+            <StatusBar
+              barStyle="light-content"
+              backgroundColor={dozy_theme.colors.background}
             />
-          )}
-        </ThemeProvider>
+            <AppNavigator />
+            {isCheckingUpdate && (
+              <LoadingOverlay
+                title={isCheckingUpdate ? 'Downloading updates...' : ''}
+              />
+            )}
+          </ThemeProvider>
+        </Feedback.Context.Provider>
       </AuthProvider>
     );
   }
