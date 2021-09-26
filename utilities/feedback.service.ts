@@ -11,7 +11,7 @@ class Feedback {
   static Context = createContext<FeedbackContextValue | null>(null);
 
   static useFeedbackService(): FeedbackContextValue {
-    const [showingFeedbackPopup, setShowingFeedbackPopup] = useState(true);
+    const [showingFeedbackPopup, setShowingFeedbackPopup] = useState(false);
     const [showingFeedbackWidget, setShowingFeedbackWidget] = useState(true);
 
     const contextValue = useMemo(
