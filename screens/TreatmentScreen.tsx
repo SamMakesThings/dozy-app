@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Platform,
   TouchableOpacity,
+  LayoutAnimation,
 } from 'react-native';
 import { ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
@@ -19,7 +20,6 @@ import { CardContainer } from '../components/CardContainer';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
-import FeedbackPopupModal from '../components/FeedbackPopupModal';
 import FeedbackWidget from '../components/FeedbackWidget';
 import { dozy_theme } from '../config/Themes';
 import treatments from '../constants/Treatments';
@@ -35,21 +35,19 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
 }) => {
   const theme = dozy_theme;
   const { state } = React.useContext(AuthContext);
-  const {
-    showingFeedbackWidget,
-    showingFeedbackPopup,
-    setShowingFeedbackPopup,
-  } = Feedback.useFeedback();
+  const { showingFeedbackWidget, isFeedbackSubmitted, setFeedbackSubmitted } =
+    Feedback.useFeedback();
   const [rate, setRate] = useState(0);
   const [feedback, setFeedback] = useState('');
 
   const onSubmitFeedback = useCallback((): void => {
     submitFeedback(rate, feedback);
+    LayoutAnimation.configureNext({
+      ...LayoutAnimation.Presets.easeInEaseOut,
+      duration: 100,
+    });
+    setFeedbackSubmitted(true);
   }, [rate, feedback]);
-
-  const onCloseFeedbackPopup = useCallback((): void => {
-    setShowingFeedbackPopup(false);
-  }, [setShowingFeedbackPopup]);
 
   // If state is available, show screen. Otherwise, show loading indicator.
   if (state.sleepLogs && state.userData?.currentTreatments) {
@@ -93,10 +91,6 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
 
     return (
       <ScreenContainer hasSafeArea={true} scrollable={true} style={styles.Root}>
-        <FeedbackPopupModal
-          visible={showingFeedbackPopup}
-          onRequestClose={onCloseFeedbackPopup}
-        />
         <View style={styles.View_ContentContainer}>
           <Icon
             style={styles.Icon_Clipboard}
@@ -129,6 +123,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             <FeedbackWidget
               style={styles.FeedbackWidget}
               rate={rate}
+              submitted={isFeedbackSubmitted}
               onRateChange={setRate}
               onFeedbackChange={setFeedback}
               onSubmit={onSubmitFeedback}
