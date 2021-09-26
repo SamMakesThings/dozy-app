@@ -494,7 +494,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const PITEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
-  const { setShowingFeedbackPopup } = Feedback.useFeedback();
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin
   const reminderObject = {
@@ -540,7 +540,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
-        setShowingFeedbackPopup(true);
+        setShowingFeedbackWidget(true);
       }}
       textLabel="Weekly check-in completed!"
       buttonLabel="Finish"

@@ -507,7 +507,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const HYGEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
-  const { setShowingFeedbackPopup } = Feedback.useFeedback();
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin
   const reminderObject = {
@@ -556,7 +556,7 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
-        setShowingFeedbackPopup(true);
+        setShowingFeedbackWidget(true);
       }}
       textLabel="Well done! You've taken one more step towards sleeping through the night."
       buttonLabel="Finish"

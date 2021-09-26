@@ -400,7 +400,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
   const { state, dispatch } = React.useContext(AuthContext);
-  const { setShowingFeedbackPopup } = Feedback.useFeedback();
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder objects, put them in an array
   const reminderArray = [
@@ -453,7 +453,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
           });
           navigation.navigate('App');
           refreshUserData(dispatch);
-          setShowingFeedbackPopup(true);
+          setShowingFeedbackWidget(true);
         } else {
           console.log('ERROR IN SCTSRTend: Invalid user id');
         }

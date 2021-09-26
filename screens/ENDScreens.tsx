@@ -625,7 +625,7 @@ export const ENDEnd: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
   const { state, dispatch } = React.useContext(AuthContext);
-  const { setShowingFeedbackPopup } = Feedback.useFeedback();
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   return (
     <WizardContentScreen
@@ -661,7 +661,7 @@ export const ENDEnd: React.FC<{ navigation: Navigation }> = ({
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
-        setShowingFeedbackPopup(true);
+        setShowingFeedbackWidget(true);
       }}
       textLabel={`You're done! Press "finish" to mark this check-in as completed.`}
       buttonLabel="Finish"

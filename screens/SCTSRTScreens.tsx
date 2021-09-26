@@ -907,7 +907,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
 
 export const SCTSRTEnd = ({ navigation }: Props) => {
   const { state, dispatch } = React.useContext(AuthContext);
-  const { setShowingFeedbackPopup } = Feedback.useFeedback();
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Calculate some baseline statistics for later reference
   const sleepLogs: Array<SleepLog> = state.sleepLogs;
@@ -980,7 +980,7 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
-        setShowingFeedbackPopup(true);
+        setShowingFeedbackWidget(true);
       }}
       textLabel="Weekly check-in completed!"
       buttonLabel="Finish"
