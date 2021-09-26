@@ -4,7 +4,7 @@ import { Provider as ThemeProvider } from '@draftbit/ui';
 import * as Icon from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
-import { LogBox, StatusBar, Text } from 'react-native';
+import { LogBox, StatusBar, Text, UIManager, Platform } from 'react-native';
 import LoadingOverlay from './components/LoadingOverlay';
 import { dozy_theme } from './config/Themes';
 import { AuthProvider } from './context/AuthContext';
@@ -27,6 +27,14 @@ console.warn = (message) => {
 Text.defaultProps = Text.defaultProps || {};
 // @ts-expect-error: Unreachable code error
 Text.defaultProps.allowFontScaling = false;
+
+// LayoutAnimation for Android
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 // Root app component
 export default function App(): React.ReactElement {
