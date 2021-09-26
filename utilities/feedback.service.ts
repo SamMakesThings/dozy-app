@@ -1,27 +1,27 @@
 import React, { useState, useContext, createContext, useMemo } from 'react';
 
 export interface FeedbackContextValue {
-  showingFeedbackPopup: boolean;
-  setShowingFeedbackPopup: (showing: boolean) => void;
   showingFeedbackWidget: boolean;
   setShowingFeedbackWidget: (showing: boolean) => void;
+  isFeedbackSubmitted: boolean;
+  setFeedbackSubmitted: (submitted: boolean) => void;
 }
 
 class Feedback {
   static Context = createContext<FeedbackContextValue | null>(null);
 
   static useFeedbackService(): FeedbackContextValue {
-    const [showingFeedbackPopup, setShowingFeedbackPopup] = useState(false);
-    const [showingFeedbackWidget, setShowingFeedbackWidget] = useState(true);
+    const [showingFeedbackWidget, setShowingFeedbackWidget] = useState(false);
+    const [isFeedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
     const contextValue = useMemo(
       () => ({
-        showingFeedbackPopup,
-        setShowingFeedbackPopup,
         showingFeedbackWidget,
         setShowingFeedbackWidget,
+        isFeedbackSubmitted,
+        setFeedbackSubmitted,
       }),
-      [showingFeedbackPopup, showingFeedbackWidget],
+      [showingFeedbackWidget, isFeedbackSubmitted],
     );
 
     return contextValue;
