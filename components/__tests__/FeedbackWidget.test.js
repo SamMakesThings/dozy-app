@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, TextInput } from 'react-native';
 import { FeedbackWidget } from '../FeedbackWidget';
 import { dozy_theme } from '../../config/Themes';
 
@@ -10,31 +10,23 @@ describe('FeedbackWidget', () => {
     expect(component).toMatchSnapshot();
   });
 
-  it('should call onSubmit function when rate is not 0', () => {
-    const rate = 1;
-    const onSubmit = jest.fn(() => rate);
+  it('should show the textbox when rate is not 0', async () => {
+    const rate = 5;
     const component = shallow(
-      <FeedbackWidget rate={rate} theme={dozy_theme} onSubmit={onSubmit} />,
+      <FeedbackWidget rate={rate} theme={dozy_theme} />,
     );
 
-    expect(onSubmit).not.toHaveBeenCalled();
-
-    component.find(TouchableOpacity).first().props().onPress();
-
-    expect(onSubmit.mock.calls.length).toBe(1);
-    expect(component.find(TouchableOpacity).first().props().onPress()).toBe(
-      rate,
-    );
+    expect(component.find(TextInput).exists()).toBeTruthy();
+    expect(component.find(TouchableOpacity).exists()).toBeTruthy();
   });
 
-  it('should disable the submit button if rate is 0', () => {
+  it('should not show the textbox if rate is 0', () => {
     const rate = 0;
     const component = shallow(
       <FeedbackWidget rate={rate} theme={dozy_theme} />,
     );
 
-    expect(
-      component.find(TouchableOpacity).first().props().disabled,
-    ).toBeTruthy();
+    expect(component.find(TextInput).exists()).toBeFalsy();
+    expect(component.find(TouchableOpacity).exists()).toBeFalsy();
   });
 });

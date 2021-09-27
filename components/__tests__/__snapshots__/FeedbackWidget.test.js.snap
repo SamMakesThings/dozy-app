@@ -28,9 +28,10 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
     ratingColor="#f1c40f"
     ratingCount={5}
     ratingImage={1}
-    ratingTextColor="rgba(0, 129, 138, 1)"
+    ratingTextColor="rgba(219, 237, 243, 1)"
+    readonly={false}
     showRating={true}
-    showReadOnlyText={true}
+    showReadOnlyText={false}
     startingValue={0}
     tintColor="rgba(64, 75, 105, 1)"
     type="star"
@@ -39,20 +40,21 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
     style={
       Array [
         Object {
-          "fontFamily": "RubikMedium",
-          "fontSize": 34.285714285714285,
-          "lineHeight": 51.42857142857143,
+          "fontFamily": "RubikRegular",
+          "fontSize": 30,
+          "lineHeight": 47.14285714285714,
         },
         Object {
-          "color": "rgba(0, 129, 138, 1)",
+          "color": "rgba(219, 237, 243, 1)",
         },
         Object {
           "marginTop": 34.285714285714285,
+          "textAlign": "center",
         },
       ]
     }
   >
-    Please tell us why you gave this rating.
+    How likely is it that you would recommend Dozy to a friend?
   </Text>
   <Component
     allowFontScaling={true}
@@ -63,7 +65,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
       Array [
         Object {
           "alignSelf": "stretch",
-          "borderRadius": 17.142857142857142,
+          "borderRadius": 12.857142857142858,
           "height": 214.28571428571428,
           "marginTop": 17.142857142857142,
           "padding": 17.142857142857142,

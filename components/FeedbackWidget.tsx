@@ -35,7 +35,7 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
   ...props
 }) => {
   const prevRate = useRef(rate);
-  const [showingInputbox, setShowingInputbox] = useState(false);
+  const [showingInputbox, setShowingInputbox] = useState(rate !== 0);
 
   useEffect((): void => {
     if (prevRate.current === 0 && rate) {
