@@ -54,6 +54,16 @@ export default function submitCheckinData({
 
     // Update nextCheckin & currentTreatments
     // If postponed, update checkin date while not updating anything else
+    if (checkinPostponed) {
+      userDocRef.update({
+        nextCheckin: {
+          nextCheckinDatetime: nextCheckinDatetime,
+        },
+        'currentTreatments.nextCheckinDatetime': nextCheckinDatetime,
+        'currentTreatments.lastCheckinDatetime': lastCheckinDatetime,
+      });
+      return false;
+    }
     userDocRef.update({
       nextCheckin: {
         nextCheckinDatetime: nextCheckinDatetime,
@@ -62,9 +72,6 @@ export default function submitCheckinData({
       'currentTreatments.nextCheckinDatetime': nextCheckinDatetime,
       'currentTreatments.lastCheckinDatetime': lastCheckinDatetime,
     });
-    if (checkinPostponed) {
-      return false;
-    }
     userDocRef.update({
       'currentTreatments.currentModule': lastCheckinModule,
       'currentTreatments.nextTreatmentModule': nextCheckinModule,
