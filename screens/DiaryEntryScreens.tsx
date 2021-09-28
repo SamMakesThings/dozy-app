@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { DatePicker } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
@@ -18,6 +18,7 @@ import { AuthContext } from '../context/AuthContext';
 import { Navigation, SleepLog } from '../types/custom';
 import { Analytics } from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
+import { RichTextData } from '../types/RichTextData';
 
 // Define the theme & state objects for the file globally
 const theme = dozy_theme;
@@ -47,6 +48,7 @@ const logState = {
   logDate: new Date(),
   bedTime: new Date(),
   minsToFallAsleep: 0,
+  isZeroSleep: false,
   PMRPractice: undefined as undefined | string,
   PITPractice: undefined as undefined | boolean,
   wakeCount: 0,
@@ -60,6 +62,43 @@ const logState = {
   sleepRating: 0,
   notes: '',
   tags: [] as string[],
+};
+
+const goToNextFromWakeCountInput = (
+  navigation: Props['navigation'],
+  minsToFallAsleep: number,
+  wakeCount: number,
+) => {
+  logState.wakeCount = wakeCount;
+  if (
+    globalState.userData?.currentTreatments?.SCTSRT &&
+    (minsToFallAsleep >= 20 || wakeCount >= 1)
+  ) {
+    // If SCTSRT has started AND user woke 1+ times or took 20+ mins to sleep, navigate to SCT questions
+    navigation.navigate('SCTUpCountInput', { progressBarPercent: 0.44 });
+  } else if (globalState.userData?.currentTreatments?.SCTSRT) {
+    // If user started SCTSRT but slept quickly, skip to asking about daytime naps
+    // & set SCT values appropriately
+    logState.SCTUpCount = 0;
+    logState.SCTAnythingNonSleepInBed = false;
+    navigation.navigate('SCTDaytimeNapsInput', {
+      progressBarPercent: 0.5,
+    });
+  } else if (wakeCount === 0) {
+    // If user didn't wake in the night, skip asking how long they were awake
+    logState.nightMinsAwake = 0;
+    if (logState.isZeroSleep) {
+      // If zero sleep, skip WakeTimeInput step
+      navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
+    } else {
+      navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
+    }
+  } else {
+    // Otherwise, ask how long they were awake
+    navigation.navigate('NightMinsAwakeInput', {
+      progressBarPercent: 0.5,
+    });
+  }
 };
 
 export const BedTimeInput = ({ navigation, route }: Props) => {
@@ -171,6 +210,29 @@ export const BedTimeInput = ({ navigation, route }: Props) => {
 };
 
 export const MinsToFallAsleepInput = ({ navigation }: Props) => {
+  const subTitle = useMemo(
+    (): RichTextData => [
+      { text: "Or, if you couldn't sleep at all last night, " },
+      {
+        text: 'click here',
+        onPress: () => {
+          logState.isZeroSleep = true;
+          // If RLX (PMR) started, navigate to RLX. If PIT but no RLX, then PIT.
+          // Otherwise go to WakeCountInput or skip WakeCountInput in case of zero sleep
+          if (globalState.userData?.currentTreatments?.RLX) {
+            navigation.navigate('PMRAsk', { progressBarPercent: 0.3 });
+          } else if (globalState.userData?.currentTreatments?.PIT) {
+            navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
+          } else {
+            logState.wakeCount = 0;
+            goToNextFromWakeCountInput(navigation, Number.MAX_SAFE_INTEGER, 0);
+          }
+        },
+      },
+    ],
+    [navigation],
+  );
+
   return (
     <NumInputScreen
       theme={theme}
@@ -202,6 +264,7 @@ export const MinsToFallAsleepInput = ({ navigation }: Props) => {
         }
       }}
       questionLabel="Roughly how long did it take you to fall asleep?"
+      questionSubtitle={subTitle}
       inputLabel="(in minutes)"
     />
   );
@@ -217,7 +280,7 @@ export const PMRAsk = ({ navigation }: Props) => {
         if (globalState.userData?.currentTreatments?.PIT) {
           navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
         } else {
-          navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
+          goToNextFromWakeCountInput(navigation, Number.MAX_SAFE_INTEGER, 0);
         }
       }}
       buttonValues={[
@@ -240,7 +303,7 @@ export const PITAsk = ({ navigation }: Props) => {
       theme={theme}
       onQuestionSubmit={(value: boolean) => {
         logState.PITPractice = value;
-        navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
+        goToNextFromWakeCountInput(navigation, Number.MAX_SAFE_INTEGER, 0);
       }}
       buttonValues={[
         { label: 'Yes', value: true },
@@ -257,30 +320,11 @@ export const WakeCountInput = ({ navigation }: Props) => {
       theme={theme}
       onQuestionSubmit={(value: number) => {
         logState.wakeCount = value;
-        if (
-          globalState.userData?.currentTreatments?.SCTSRT &&
-          (logState.minsToFallAsleep >= 20 || value >= 1)
-        ) {
-          // If SCTSRT has started AND user woke 1+ times or took 20+ mins to sleep, navigate to SCT questions
-          navigation.navigate('SCTUpCountInput', { progressBarPercent: 0.44 });
-        } else if (globalState.userData?.currentTreatments?.SCTSRT) {
-          // If user started SCTSRT but slept quickly, skip to asking about daytime naps
-          // & set SCT values appropriately
-          logState.SCTUpCount = 0;
-          logState.SCTAnythingNonSleepInBed = false;
-          navigation.navigate('SCTDaytimeNapsInput', {
-            progressBarPercent: 0.5,
-          });
-        } else if (value === 0) {
-          // If user didn't wake in the night, skip asking how long they were awake
-          logState.nightMinsAwake = 0;
-          navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
-        } else {
-          // Otherwise, ask how long they were awake
-          navigation.navigate('NightMinsAwakeInput', {
-            progressBarPercent: 0.5,
-          });
-        }
+        goToNextFromWakeCountInput(
+          navigation,
+          logState.minsToFallAsleep,
+          value,
+        );
       }}
       buttonValues={[
         { label: "0 (didn't wake up)", value: 0 },
@@ -368,14 +412,19 @@ export const SCTDaytimeNapsInput = ({ navigation }: Props) => {
       theme={theme}
       onQuestionSubmit={(value: number) => {
         logState.SCTDaytimeNaps = value === 1;
-        // If user didn't wake in the night, skip asking how long they were awake
-        if (logState.wakeCount === 0) {
-          navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
-          logState.nightMinsAwake = 0;
+        // If zero sleep, go to UpTimeInput step
+        if (logState.isZeroSleep) {
+          navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
         } else {
-          navigation.navigate('NightMinsAwakeInput', {
-            progressBarPercent: 0.61,
-          });
+          // If user didn't wake in the night, skip asking how long they were awake
+          if (logState.wakeCount === 0) {
+            navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
+            logState.nightMinsAwake = 0;
+          } else {
+            navigation.navigate('NightMinsAwakeInput', {
+              progressBarPercent: 0.61,
+            });
+          }
         }
       }}
       buttonValues={[
@@ -491,7 +540,10 @@ export const UpTimeInput = ({ navigation }: Props) => {
             errorMsg:
               'Did you set AM/PM correctly? Selected time is late for a wake time.',
           };
-        } else if (moment(val).add(1, 'minutes').toDate() < logState.wakeTime) {
+        } else if (
+          !logState.isZeroSleep &&
+          moment(val).add(1, 'minutes').toDate() < logState.wakeTime
+        ) {
           return {
             severity: 'ERROR',
             errorMsg:
@@ -543,7 +595,6 @@ export const TagsNotesInput = ({ navigation }: Props) => {
 
   const onInvalidForm = useCallback((): void => {
     navigation.navigate('BedTimeInput');
-    console.log('navigate to sleepdiaryentry');
   }, [navigation.navigate]);
 
   return (

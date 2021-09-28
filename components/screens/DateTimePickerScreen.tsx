@@ -7,13 +7,15 @@ import {
   DatePicker,
 } from '@draftbit/ui';
 import BottomNavButtons from '../BottomNavButtons';
+import RichText from '../RichText';
 import { Theme } from '../../types/theme';
+import { RichTextData } from '../../types/RichTextData';
 
 // Define types for props
 interface Props {
   defaultValue?: Date;
   questionLabel: string;
-  questionSubtitle?: string;
+  questionSubtitle?: string | RichTextData;
   inputLabel?: string;
   onQuestionSubmit: (value: Date | boolean) => void;
   buttonLabel?: string;
@@ -80,6 +82,7 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
   const { theme } = props;
   const displayErrorMsg =
     screenState === States.Invalid || screenState === States.Warning;
+
   return (
     <ScreenContainer
       style={{ backgroundColor: theme.colors.background }}
@@ -108,22 +111,35 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
           >
             {props.questionLabel}
           </Text>
-          {(props.questionSubtitle || displayErrorMsg) && ( // If invalid input, replace subtitle with error message
-            <Text
-              style={[
-                styles.Text_QuestionLabel,
-                theme.typography.body1,
-                styles.Text_QuestionSubtitle,
-                {
-                  color: displayErrorMsg
-                    ? theme.colors.error
-                    : theme.colors.secondary,
-                },
-              ]}
-            >
-              {displayErrorMsg ? errorMsg : props.questionSubtitle}
-            </Text>
-          )}
+          {(props.questionSubtitle || displayErrorMsg) && // If invalid input, replace subtitle with error message
+            (displayErrorMsg || typeof props.questionSubtitle === 'string' ? (
+              <Text
+                style={[
+                  styles.Text_QuestionLabel,
+                  theme.typography.body1,
+                  styles.Text_QuestionSubtitle,
+                  {
+                    color: displayErrorMsg
+                      ? theme.colors.error
+                      : theme.colors.secondary,
+                  },
+                ]}
+              >
+                {displayErrorMsg ? errorMsg : props.questionSubtitle}
+              </Text>
+            ) : (
+              <RichText
+                style={[
+                  styles.Text_QuestionLabel,
+                  theme.typography.body1,
+                  styles.Text_QuestionSubtitle,
+                  {
+                    color: theme.colors.secondary,
+                  },
+                ]}
+                data={props.questionSubtitle as RichTextData}
+              />
+            ))}
         </View>
         {props.mode === 'datetime' && Platform.OS === 'android' ? (
           <View style={styles.View_DateTimeAndroidContainer}>

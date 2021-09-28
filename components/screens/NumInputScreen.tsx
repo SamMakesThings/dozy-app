@@ -9,11 +9,13 @@ import {
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
+import RichText from '../RichText';
 import { Theme } from '../../types/theme';
+import { RichTextData } from '../../types/RichTextData';
 
 interface Props {
   questionLabel: string;
-  questionSubtitle?: string;
+  questionSubtitle?: string | RichTextData;
   inputLabel: string;
   defaultValue?: string;
   progressBarPercent?: number;
@@ -109,22 +111,35 @@ const NumInputScreen: React.FC<Props> = (props) => {
           >
             {props.questionLabel}
           </Text>
-          {(props.questionSubtitle || displayErrorMsg) && ( // If invalid input, replace subtitle with error message
-            <Text
-              style={[
-                styles.Text_QuestionLabel,
-                theme.typography.body1,
-                styles.Text_QuestionSubtitle,
-                {
-                  color: displayErrorMsg
-                    ? theme.colors.error
-                    : theme.colors.secondary,
-                },
-              ]}
-            >
-              {displayErrorMsg ? errorMsg : props.questionSubtitle}
-            </Text>
-          )}
+          {(props.questionSubtitle || displayErrorMsg) && // If invalid input, replace subtitle with error message
+            (displayErrorMsg || typeof props.questionSubtitle === 'string' ? (
+              <Text
+                style={[
+                  styles.Text_QuestionLabel,
+                  theme.typography.body1,
+                  styles.Text_QuestionSubtitle,
+                  {
+                    color: displayErrorMsg
+                      ? theme.colors.error
+                      : theme.colors.secondary,
+                  },
+                ]}
+              >
+                {displayErrorMsg ? errorMsg : props.questionSubtitle}
+              </Text>
+            ) : (
+              <RichText
+                style={[
+                  styles.Text_QuestionLabel,
+                  theme.typography.body1,
+                  styles.Text_QuestionSubtitle,
+                  {
+                    color: theme.colors.secondary,
+                  },
+                ]}
+                data={props.questionSubtitle as RichTextData}
+              />
+            ))}
           <Container
             style={{
               ...styles.View_InputContainer,
