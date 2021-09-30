@@ -58,7 +58,11 @@ export function SettingsScreen() {
           const notifData = notif.data();
           dispatch({
             type: 'SET_LOG_REMINDER_TIME',
-            time: decodeUTCTime(notifData.time.toDate(), notifData.version),
+            time: decodeUTCTime({
+              version: notifData.version,
+              value: notifData.time.toDate(),
+              timezone: notifData.timezone,
+            }),
           });
           dispatch({
             type: 'TOGGLE_LOG_NOTIFS',
@@ -97,6 +101,7 @@ export function SettingsScreen() {
           updateFbLogNotification({
             time: encodedTimeData.value,
             version: encodedTimeData.version,
+            timezone: encodedTimeData.timezone,
           });
           return {
             ...prevState,

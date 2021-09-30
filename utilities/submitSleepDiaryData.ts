@@ -187,6 +187,7 @@ export function normalizeSleepLog(
       isChangeTimezone ? upTimeUTCData.value : newLogState.upTime,
     ),
     version: bedTimeUTCData.version,
+    timezone: bedTimeUTCData.timezone,
     sleepEfficiency,
     sleepDuration,
     minsInBedTotal,
