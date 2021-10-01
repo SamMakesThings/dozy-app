@@ -30,6 +30,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.x
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+          bundler-cache: true
       - name: iOS Bundle Install
         run: bundle install
         working-directory: ./ios
