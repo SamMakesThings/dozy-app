@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - master
     paths-ignore:
       - README.md
       - .eslintrc.json
@@ -24,7 +23,7 @@ on:
 
 jobs:
   build:
-    name: Build the iOS and Android Apps using EAS build
+    name: Build the iOS (Ad-hoc) and Android Apps using EAS build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
