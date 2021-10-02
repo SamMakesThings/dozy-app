@@ -34,7 +34,7 @@ jobs:
         run: bundle exec fastlane increment_version_build_numbers
         working-directory: ./ios
       - name: Update Release Channel in Expo.plist
-        run: bundle exec fastlane update_release_channel
+        run: bundle exec fastlane update_release_channel_prod
         working-directory: ./ios
       - name: Android Bundle Install
         run: bundle install
@@ -43,7 +43,7 @@ jobs:
         run: bundle exec fastlane increment_version_build_numbers
         working-directory: ./android
       - name: Update Release Channel in AndroidManifest.xml
-        run: bundle exec fastlane update_release_channel
+        run: bundle exec fastlane update_release_channel_prod
         working-directory: ./android
       - name: Setup Expo
         uses: expo/expo-github-action@v6
