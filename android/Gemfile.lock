@@ -161,6 +161,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.12.4-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.12.4-x86_64-linux)
+      racc (~> 1.4)
     optparse (0.1.1)
     os (1.1.1)
     plist (3.6.0)
@@ -214,6 +216,7 @@ GEM
 
 PLATFORMS
   universal-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   fastlane
@@ -222,4 +225,4 @@ DEPENDENCIES
   fastlane-plugin-versioning_android
 
 BUNDLED WITH
-   2.2.27
+   2.2.28
