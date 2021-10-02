@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    name: Build the iOS (Testflight) and Android Apps using EAS build
+    name: Production Build (iOS Testflight and Android Apps using EAS build)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
