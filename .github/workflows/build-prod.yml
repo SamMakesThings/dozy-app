@@ -27,6 +27,8 @@ jobs:
         with:
           ruby-version: 2.6
           bundler-cache: true
+      - name: Update Bundler
+        run: sudo gem install bundler:2.2.27
       - name: iOS Bundle Install
         run: bundle install
         working-directory: ./ios
