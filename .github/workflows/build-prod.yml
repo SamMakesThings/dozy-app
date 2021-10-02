@@ -27,10 +27,8 @@ jobs:
         with:
           ruby-version: 2.6
           bundler-cache: true
-      - name: Update Bundler
-        run: sudo gem install bundler:2.2.27
       - name: iOS Bundle Install
-        run: bundle install
+        run: gem install bundler && bundle install
         working-directory: ./ios
       - name: Bumping version and iOS build number in app.json and project.pbxproj
         run: bundle exec fastlane increment_version_build_numbers
