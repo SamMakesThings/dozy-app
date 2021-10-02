@@ -10,9 +10,6 @@ on:
       - .eslintignore
       - .gitignore
       - .prettierrc.json
-  pull_request:
-    branches:
-      - develop
 
 jobs:
   build:
