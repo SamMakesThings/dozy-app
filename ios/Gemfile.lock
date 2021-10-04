@@ -207,6 +207,7 @@ GEM
 
 PLATFORMS
   universal-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   fastlane
@@ -214,4 +215,4 @@ DEPENDENCIES
   fastlane-plugin-versioning
 
 BUNDLED WITH
-   2.2.27
+   2.2.28
