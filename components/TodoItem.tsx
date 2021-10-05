@@ -9,7 +9,7 @@ import AnalyticsEvents from '../constants/AnalyticsEvents';
 export const TodoItem = (props: {
   label: string;
   completed: boolean;
-  disabled: boolean;
+  disabled?: boolean;
 }) => {
   const theme = dozy_theme;
 
