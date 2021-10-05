@@ -32,7 +32,7 @@ jobs:
           node-version: 14.x
       - uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.7.3
+          ruby-version: 2.7
           bundler-cache: true
       - name: iOS Bundle Install
         run: gem install bundler && bundle install
