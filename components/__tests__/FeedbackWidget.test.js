@@ -6,7 +6,7 @@ import { dozy_theme } from '../../config/Themes';
 
 describe('FeedbackWidget', () => {
   it('should match the snapshot', () => {
-    const component = shallow(<FeedbackWidget theme={dozy_theme} />);
+    const component = shallow(<FeedbackWidget theme={dozy_theme} rate={5} />);
     expect(component).toMatchSnapshot();
   });
 

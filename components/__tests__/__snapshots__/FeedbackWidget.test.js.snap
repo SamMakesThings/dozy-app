@@ -44,7 +44,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
           }
         }
       >
-        6/10
+        10/10
       </Text>
     </View>
     <Text
@@ -95,7 +95,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
     <View
       style={
         Object {
-          "display": "none",
+          "width": "100%",
         }
       }
     >
