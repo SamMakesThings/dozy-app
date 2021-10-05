@@ -18,7 +18,6 @@ import { dozy_theme } from '../config/Themes';
 export interface FeedbackWidgetProps extends ViewProps {
   theme: Theme;
   rate: number;
-  hasShadow?: boolean;
   submitted?: boolean;
   onRateChange?: (rate: number) => void;
   onFeedbackChange?: (value: string) => void;
@@ -29,7 +28,6 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
   theme,
   style,
   rate,
-  hasShadow = false,
   submitted = false,
   onRateChange,
   onFeedbackChange,
@@ -177,9 +175,9 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
           readonly={submitted}
           showReadOnlyText={false}
           onFinishRating={onRateChange}
-          style={{flexDirection: 'column-reverse', paddingBottom: scale(23)}}
+          style={styles.Rating}
         />
-        <View style={{display: 'flex', width: '100%'}}>
+        <View style={showingInputbox ? styles.hidden : styles.View_InputBox}>
           <Container
             style={{
               ...styles.View_InputContainer,
@@ -225,44 +223,16 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
 
 const styles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-color-literals
-  container: {
+  /* container: {
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 20,
+  }, */
+  hidden: {
+    display: 'none',
   },
-  containerShadow: {
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  feedbackTitle: {
-    marginBottom: scale(16),
-    textAlign: 'center',
-  },
-  feedback: {
-    alignSelf: 'stretch',
-    height: scale(100),
-    marginTop: scale(8),
-    padding: scale(8),
-    textAlignVertical: 'top',
-    borderRadius: scale(6),
-  },
-  button: {
-    marginTop: scale(24),
-    paddingHorizontal: scale(16),
-    paddingTop: scale(11),
-    paddingBottom: scale(8),
-    borderRadius: scale(50),
-  },
-  disabledButton: {
-    opacity: 0.5,
-  },
-  ItemMargin: {
-    marginTop: scale(10)
+  View_InputBox: {
+    width: '100%',
   },
   View_CardHeaderContainer: {
     flexDirection: 'column',
@@ -279,9 +249,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingTop: scale(30),
   },
-  View_TextInputContainer: {
-    width: '100%',
-  },
   Text_CardTitle: {
     color: dozy_theme.colors.secondary
   },
@@ -297,14 +264,15 @@ const styles = StyleSheet.create({
     marginTop: scale(0),
     lineHeight: scale(15)
   },
+  Rating: {
+    flexDirection: 'column-reverse', 
+    paddingBottom: scale(23),
+  },
   View_InputContainer: {
     marginTop: scale(-18),
     marginBottom: scale(18),
     width: '100%',
     borderBottomWidth: 1.5,
-  },
-  KeyboardAvoidingView: {
-    flex: 1,
   },
   // eslint-disable-next-line react-native/no-color-literals
   TextInput: {
