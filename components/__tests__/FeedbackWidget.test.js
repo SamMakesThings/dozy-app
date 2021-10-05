@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TouchableOpacity, TextInput } from 'react-native';
+// import { TouchableOpacity, TextInput } from 'react-native';
 import { FeedbackWidget } from '../FeedbackWidget';
 import { dozy_theme } from '../../config/Themes';
 
