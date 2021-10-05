@@ -10,9 +10,6 @@ on:
       - .eslintignore
       - .gitignore
       - .prettierrc.json
-  pull_request:
-    branches:
-      - develop
 
 jobs:
   build:
@@ -57,5 +54,5 @@ jobs:
         with:
           add: "['ios/', 'android/', app.json]"
           default_author: github_actions
-          message: 'bumped js, ios, android version and build numbers'
+          message: 'bumped js, ios, android version and build numbers, set the production channel'
       - run: eas build --platform all --profile release --non-interactive

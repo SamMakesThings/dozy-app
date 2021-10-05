@@ -74,7 +74,7 @@ jobs:
         with:
           add: "['ios/', 'android/', app.json]"
           default_author: github_actions
-          message: 'bumped js, ios, android version and build numbers'
+          message: 'bumped js, ios, android version and build numbers, set the alpha channel'
       - name: Prepare iOS Credentials
         run: echo ${{ secrets.CREDENTIALS_JSON_BASE64 }} | base64 -d > credentials.json
       - run: mkdir ios/certs
