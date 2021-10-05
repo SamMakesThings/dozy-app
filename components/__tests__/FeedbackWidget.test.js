@@ -1,5 +1,3 @@
-/* TODO: RE-ENABLE THESE ONCE COMPONENT IS WORKING AGAIN
-
 import React from 'react';
 import { shallow } from 'enzyme';
 import { TouchableOpacity, TextInput } from 'react-native';
@@ -12,6 +10,7 @@ describe('FeedbackWidget', () => {
     expect(component).toMatchSnapshot();
   });
 
+  /*
   it('should show the textbox when rate is not 0', async () => {
     const rate = 5;
     const component = shallow(
@@ -30,6 +29,5 @@ describe('FeedbackWidget', () => {
 
     expect(component.find(TextInput).exists()).toBeFalsy();
     expect(component.find(TouchableOpacity).exists()).toBeFalsy();
-  }); 
+  }); */
 });
-*/
