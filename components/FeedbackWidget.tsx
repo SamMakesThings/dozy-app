@@ -101,11 +101,17 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
           style={styles.Rating}
         />
         {submitted ? (
-          <Text style={[theme.typography.body2, styles.Text_CardSubtitle]}>
+          <Text
+            testID="Thanks"
+            style={[theme.typography.body2, styles.Text_CardSubtitle]}
+          >
             Thanks for your feedback!
           </Text>
         ) : (
-          <View style={showingInputbox ? styles.View_InputBox : styles.hidden}>
+          <View
+            testID="Footer"
+            style={showingInputbox ? styles.View_InputBox : styles.hidden}
+          >
             <Container
               style={{
                 ...styles.View_InputContainer,
@@ -141,12 +147,6 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
 };
 
 const styles = StyleSheet.create({
-  // eslint-disable-next-line react-native/no-color-literals
-  /* container: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 20,
-  }, */
   hidden: {
     display: 'none',
   },

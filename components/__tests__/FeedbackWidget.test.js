@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-// import { TouchableOpacity, TextInput } from 'react-native';
 import { FeedbackWidget } from '../FeedbackWidget';
 import { dozy_theme } from '../../config/Themes';
+import { findByTestID } from '../../utilities/tests';
 
 describe('FeedbackWidget', () => {
   it('should match the snapshot', () => {
@@ -10,24 +10,18 @@ describe('FeedbackWidget', () => {
     expect(component).toMatchSnapshot();
   });
 
-  /*
-  it('should show the textbox when rate is not 0', async () => {
-    const rate = 5;
+  it('should show the footer when the feedbak is not submitted', async () => {
     const component = shallow(
-      <FeedbackWidget rate={rate} theme={dozy_theme} />,
+      <FeedbackWidget submitted={false} theme={dozy_theme} />,
     );
 
-    expect(component.find(TextInput).exists()).toBeTruthy();
-    expect(component.find(TouchableOpacity).exists()).toBeTruthy();
+    expect(findByTestID(component, 'Footer').exists()).toBeTruthy();
   });
 
-  it('should not show the textbox if rate is 0', () => {
-    const rate = 0;
-    const component = shallow(
-      <FeedbackWidget rate={rate} theme={dozy_theme} />,
-    );
+  it('should not show the footer when the feedback is submitted, but show the thanks text', () => {
+    const component = shallow(<FeedbackWidget submitted theme={dozy_theme} />);
 
-    expect(component.find(TextInput).exists()).toBeFalsy();
-    expect(component.find(TouchableOpacity).exists()).toBeFalsy();
-  }); */
+    expect(findByTestID(component, 'Footer').exists()).toBeFalsy();
+    expect(findByTestID(component, 'Thanks').exists()).toBeTruthy();
+  });
 });

@@ -98,6 +98,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
           "width": "100%",
         }
       }
+      testID="Footer"
     >
       <withTheme(Container)
         style={
