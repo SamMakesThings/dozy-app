@@ -1,5 +1,11 @@
-import React from 'react';
-import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
+import React, { useMemo, useCallback, useEffect } from 'react';
+import {
+  useWindowDimensions,
+  Text,
+  StyleSheet,
+  View,
+  Dimensions,
+} from 'react-native';
 import { scale } from 'react-native-size-matters';
 import {
   VictoryChart,
@@ -13,9 +19,11 @@ import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
+import FAQs from '../components/FAQs';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
+import ThinkingFace from '../assets/images/ThinkingFace.svg';
 import Clipboard from '../assets/images/Clipboard.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import SCTSRTTreatmentPlan from '../assets/images/SCTSRTTreatmentPlan.svg';
@@ -822,6 +830,7 @@ export const DeprivationWarning = ({ navigation }: Props) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(val: string) => {
         if (val !== 'Wait, I have some concerns') {
+          SCTSRTState.checkinPostponed = false;
           navigation.navigate('CheckinScheduling', {
             progressBarPercent: 0.88,
           });
@@ -840,20 +849,22 @@ export const DeprivationWarning = ({ navigation }: Props) => {
 };
 
 export const AddressingConcerns = ({ navigation }: Props) => {
+  useEffect(() => {
+    SCTSRTState.checkinPostponed = false;
+  }, []);
+
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(val: string) => {
-        if (val !== 'Postpone, not a good time') {
-          SCTSRTState.checkinPostponed = false;
-          navigation.navigate('TreatmentReview', {
-            module: 'SCTSRT',
-            progressBarPercent: 0.95,
+        if (val === 'Postpone, not a good time') {
+          SCTSRTState.checkinPostponed = true;
+          navigation.navigate('CheckinScheduling', {
+            progressBarPercent: 0.88,
           });
         } else {
-          SCTSRTState.checkinPostponed = true;
-          navigation.navigate('CheckinScheduling');
+          navigation.navigate('FAQList');
         }
       }}
       titleLabel="What's up?"
@@ -867,6 +878,91 @@ export const AddressingConcerns = ({ navigation }: Props) => {
     </WizardContentScreen>
   );
 };
+
+export const FAQList: React.FC<Props> = ({ navigation }) => {
+  const QAs = useMemo(
+    () => [
+      {
+        question:
+          "I'll be like a yo-yo in and out of bed. Is that to be expected?",
+        answer:
+          "Yes, Especially at first, you'll probably be getting in and out of bed quite a lot. Stick with it though! By doing this, you're rewiring how your brain deals with sleep. Think of it as an investment in your future without insomnia.",
+      },
+      {
+        question:
+          'How long will it take for me to see improvements in my sleep?',
+        answer: 'No answer yet ¯\\_(ツ)_/¯',
+      },
+      {
+        question: 'Why maintain the sleep restricted schedule?',
+        answer:
+          'By temporarily depriving your body of sleep, your sleep efficiency will climb over 90% on its own. This, combined with the other 3 rules, trains your brain to sleep more effectively and on command.',
+      },
+      {
+        question: 'Why get out of bed after 15 minutes?',
+        answer:
+          "Because lying awake in bed for long stretches trains your brain to be awake in bed. By removing that stimulus, we're training your brain to fall asleep faster.\n\nAt first, you'll be yo-yo-ing in and out of bed. Don't worry-you'll start falling asleep faster pretty quickly.",
+      },
+      {
+        question:
+          "Why can't I read/be on my phone/do things in bed? And why can't I take naps?",
+        answer:
+          "Those activities associate the bed with things other than sleep, which weakens your brain's ability to sleep in bed. By reserving the bed for nightly sleep, we strengthen that association and make it easier to sleep when you need to.\n\nNaps, meanwhile, will reduce your ability to sleep the next night-reversing any gains you've made.\n\n(Sex is allowed though. 🙈)",
+      },
+    ],
+    [],
+  );
+
+  const questions = useMemo(() => QAs.map((it) => it.question), [QAs]);
+
+  const onQuestionClick = useCallback(
+    (questionIndex: number) => {
+      navigation.navigate('Answer', QAs[questionIndex]);
+    },
+    [navigation, QAs],
+  );
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(val: string) => {
+        if (val !== "My question isn't here...") {
+          navigation.goBack();
+        } else {
+          navigation.goBack();
+        }
+      }}
+      buttonLabel="Ok, I think that answers my questions"
+      bottomGreyButtonLabel="My question isn't here..."
+      bottomBackButtonLabel="Back"
+      flexibleLayout
+      contentContainerStyle={styles.faqListContentContainer}
+    >
+      <ThinkingFace width={imgSize} height={imgSize} />
+      <FAQs
+        style={styles.faqs}
+        questions={questions}
+        title="What would you like to know?"
+        onQuestionClick={onQuestionClick}
+      />
+    </WizardContentScreen>
+  );
+};
+
+export const Answer: React.FC<
+  Props & { route: { params: { question: string; answer: string } } }
+> = ({ navigation, route }) => (
+  <WizardContentScreen
+    theme={theme}
+    bottomBackButton={() => navigation.goBack()}
+    titleLabel={route.params.question}
+    textLabel={route.params.answer}
+    bottomBackButtonLabel="Back"
+    flexibleLayout
+    onlyBackButton
+  />
+);
 
 export const CheckinScheduling = ({ navigation }: Props) => {
   return (
@@ -896,8 +992,16 @@ export const CheckinScheduling = ({ navigation }: Props) => {
           return true;
         }
       }}
-      questionLabel="Last step: When would you like your next weekly check-in?"
-      questionSubtitle="Check-ins take 5-10 minutes and adjust care based on your sleep patterns. A new technique is usually introduced weekly."
+      questionLabel={
+        SCTSRTState.checkinPostponed
+          ? 'Got it. When would you like to do your next weekly check-in?'
+          : 'Last step: When would you like to do your next weekly check-in?'
+      }
+      questionSubtitle={
+        SCTSRTState.checkinPostponed
+          ? 'Check-ins take 5-10 minutes and introduce you to new treatment techniques based on your sleep patterns.'
+          : 'Check-ins take 5-10 minutes and adjust care based on your sleep patterns. A new technique is usually introduced weekly.'
+      }
       buttonLabel="I've picked a date 7+ days from today"
       mode="datetime"
     />
@@ -997,5 +1101,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  faqListContentContainer: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  faqs: {
+    marginTop: scale(40),
+    maxHeight: Dimensions.get('window').height * 0.37,
   },
 });
