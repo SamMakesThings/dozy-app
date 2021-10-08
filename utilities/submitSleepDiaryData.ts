@@ -6,6 +6,10 @@ import { cloneDeep, pick } from 'lodash';
 import SleepConstants from '../constants/Sleep';
 import { SleepLog } from '../types/custom';
 import { encodeLocalTime } from './time';
+import {
+  setBadgeNumber,
+  calculateBadgeNumber,
+} from '../utilities/pushNotifications';
 
 interface LogState {
   logId?: string;
@@ -58,6 +62,16 @@ export default async function submitSleepDiaryData(
     sleepLogsRef.add(logDataForDoc).catch(function (error) {
       console.error('Error pushing sleep log data:', error);
     });
+    // Update the app icon's badge
+    if (
+      moment(logDataForDoc.upTime.toDate()).isSameOrAfter(
+        moment().startOf('date'),
+      )
+    ) {
+      calculateBadgeNumber(userId!, false, true, true).then((badgeNumber) => {
+        setBadgeNumber(badgeNumber);
+      });
+    }
   }
 
   // Make sure userStatus is "active" in Firebase
