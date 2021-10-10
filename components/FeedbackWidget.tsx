@@ -72,14 +72,16 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
           >
             Quick question
           </Text>
-          <Text
-            style={{
-              ...theme.typography.cardTitle,
-              ...styles.Text_RightSubHeader,
-            }}
-          >
-            {`${rate * 2}/10`}
-          </Text>
+          {!!rate && (
+            <Text
+              style={{
+                ...theme.typography.cardTitle,
+                ...styles.Text_RightSubHeader,
+              }}
+            >
+              {`${rate}/5`}
+            </Text>
+          )}
         </View>
         <Text
           style={{ ...theme.typography.body2, ...styles.Text_CardSubtitle }}
@@ -197,6 +199,7 @@ const styles = StyleSheet.create({
   TextInput: {
     color: '#ffffff',
     fontSize: scale(15),
+    height: scale(45),
   },
   Button_Submit: {
     marginTop: scale(25),
