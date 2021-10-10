@@ -44,7 +44,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
           }
         }
       >
-        10/10
+        5/5
       </Text>
     </View>
     <Text
@@ -125,6 +125,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
             Object {
               "color": "#ffffff",
               "fontSize": 32.14285714285714,
+              "height": 96.42857142857143,
             }
           }
           underlineColorAndroid="transparent"
