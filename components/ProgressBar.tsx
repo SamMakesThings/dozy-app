@@ -4,7 +4,7 @@ import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
 interface Props {
-  progress: number;
+  progress?: number;
   style?: ViewStyle;
   color?: string;
   unfilledColor?: string;

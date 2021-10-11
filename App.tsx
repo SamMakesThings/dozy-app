@@ -14,7 +14,7 @@ import { Updates } from './utilities/updates.service';
 // Mute "setting a timer" firebase warnings in console
 LogBox.ignoreLogs(['Setting a timer']);
 const _console = { ...console };
-console.warn = (message) => {
+console.warn = (message: string): void => {
   if (message.indexOf('Setting a timer') <= -1) {
     _console.warn(message);
   }

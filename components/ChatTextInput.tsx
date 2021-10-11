@@ -6,6 +6,7 @@ import {
   Platform,
   TouchableOpacity,
   Keyboard,
+  StyleProp,
   ViewStyle,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,7 +14,7 @@ import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
 export interface ChatTextInputProps {
-  viewStyle?: ViewStyle;
+  viewStyle?: StyleProp<ViewStyle>;
   onSend: (value: string) => void;
 }
 
@@ -32,7 +33,7 @@ export const ChatTextInput: React.FC<ChatTextInputProps> = (props) => {
   }, []);
 
   return (
-    <View style={{ ...styles.View_ChatInput, ...props.viewStyle }}>
+    <View style={[styles.View_ChatInput, props.viewStyle]}>
       <TextInput
         style={{ ...theme.typography.body2, ...styles.TextInput }}
         placeholder={'Ask a question...'}

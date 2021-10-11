@@ -22,6 +22,7 @@ import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { dozy_theme } from '../config/Themes';
 import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { Navigation, SleepLog } from '../types/custom';
+import { Theme } from '../types/theme';
 import fetchTasks from '../utilities/fetchTasks';
 import { Analytics } from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
@@ -31,6 +32,8 @@ if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/tr-TR');
   require('date-time-format-timezone');
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   Intl.__disableRegExpRestore(); /*For syntaxerror invalid regular expression unmatched parentheses*/
 }
 
@@ -167,7 +170,9 @@ const SleepLogsView = (props: {
   }
 };
 
-const SleepLogsScreen: React.FC<{ navigation: Navigation }> = (props) => {
+const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
+  props,
+) => {
   // Get global state & dispatch
   const { state, dispatch } = React.useContext(AuthContext);
 
