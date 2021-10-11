@@ -9,6 +9,7 @@ import {
 import BottomNavButtons from '../BottomNavButtons';
 import RichText from '../RichText';
 import { Theme } from '../../types/theme';
+import { ErrorObj } from '../../types/error';
 import { RichTextData } from '../../types/RichTextData';
 
 // Define types for props
@@ -19,11 +20,11 @@ interface Props {
   inputLabel?: string;
   onQuestionSubmit: (value: Date | boolean) => void;
   buttonLabel?: string;
-  bottomBackButton: () => void;
+  bottomBackButton?: () => void;
   bottomGreyButtonLabel?: string;
   mode: string;
   theme: Theme;
-  validInputChecker?: (value: Date) => boolean;
+  validInputChecker?: (value: Date) => ErrorObj | boolean;
 }
 
 // Define possible states w/a TypeScript enum
@@ -53,10 +54,6 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
     // If invalid, function should return an error object, with a severity prop and a message prop.
     // Severity can be either "WARNING" or "ERROR"
 
-    interface ErrorObj {
-      severity: string;
-      errorMsg: string;
-    }
     const validationResult: ErrorObj | boolean | undefined =
       props.validInputChecker ? props.validInputChecker(val) : undefined;
 
@@ -196,14 +193,14 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
       </Container>
       <BottomNavButtons
         theme={theme}
-        onPress={(value: string) => {
-          if (value && value == props.bottomGreyButtonLabel) {
+        onPress={(value?: string | number | boolean) => {
+          if (value === props.bottomGreyButtonLabel) {
             props.onQuestionSubmit(false);
           } else {
             props.onQuestionSubmit(selectedTime);
           }
         }}
-        bottomBackButton={props.bottomBackButton || null}
+        bottomBackButton={props.bottomBackButton}
         bottomGreyButtonLabel={props.bottomGreyButtonLabel}
         buttonLabel={props.buttonLabel}
         disabled={screenState === States.Invalid}
