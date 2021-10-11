@@ -107,7 +107,7 @@ InitialAuthNavigator.propTypes = {
   authLoading: PropTypes.bool,
 };
 
-export default function AppNavigator() {
+const AppNavigator = () => {
   const { state, dispatch } = useContext(AuthContext);
   const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
   Crashlytics.useCrashlytics(state.userId);
@@ -155,7 +155,7 @@ export default function AppNavigator() {
       </View>
     </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-color-literals
@@ -164,3 +164,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#232B3F',
   },
 });
+
+export default AppNavigator;

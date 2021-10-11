@@ -58,7 +58,7 @@ const chartStyles = {
   },
 };
 
-export const SRTTitrationStart = ({ navigation }: Props) => {
+export const SRTTitrationStart: React.FC<Props> = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
   const imgSize = imgSizePercent * useWindowDimensions().width;
   // Trim sleepLogs to only show most recent 7
@@ -98,7 +98,7 @@ export const SRTTitrationStart = ({ navigation }: Props) => {
   );
 };
 
-export const SleepEfficiency = ({ navigation }: Props) => {
+export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
 
   // Calculate recent sleep efficiency average
@@ -177,7 +177,7 @@ export const SleepEfficiency = ({ navigation }: Props) => {
   );
 };
 
-export const SRTTitration = ({ navigation }: Props) => {
+export const SRTTitration: React.FC<Props> = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
 
   const imgSize = imgSizePercent * useWindowDimensions().width;
@@ -236,7 +236,7 @@ export const SRTTitration = ({ navigation }: Props) => {
   );
 };
 
-export const SleepOnset = ({ navigation }: Props) => {
+export const SleepOnset: React.FC<Props> = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
 
   // Calculate recent sleep onset average & fetch baseline for comparison
@@ -314,7 +314,7 @@ export const SleepOnset = ({ navigation }: Props) => {
   );
 };
 
-export const SleepMaintenance = ({ navigation }: Props) => {
+export const SleepMaintenance: React.FC<Props> = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
 
   // Calculate recent night mins awake average & fetch baseline for comparison
@@ -393,7 +393,7 @@ export const SleepMaintenance = ({ navigation }: Props) => {
   );
 };
 
-export const SleepDuration = ({ navigation }: Props) => {
+export const SleepDuration: React.FC<Props> = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
 
   // Calculate recent night mins awake average & fetch baseline for comparison

@@ -3,7 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import {
   GoogleSignin,
   statusCodes,
-  User as GoogleUserInfo
+  User as GoogleUserInfo,
 } from '@react-native-google-signin/google-signin';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Crypto from 'expo-crypto';
@@ -17,11 +17,11 @@ import {
   ACTION,
   initialState,
   appReducer,
-  AppState
+  AppState,
 } from '../utilities/mainAppReducer';
 import refreshUserData from '../utilities/refreshUserData';
 import registerForPushNotificationsAsync, {
-  updateExpoPushToken
+  updateExpoPushToken,
 } from '../utilities/pushNotifications';
 
 export type AuthType = {
@@ -39,7 +39,7 @@ const initialAuth: AuthType = {
   signIn: () => new Promise<void>(() => {}),
   signInWithApple: () => new Promise<void>(() => {}),
   signOut: () => new Promise<void>(() => {}),
-  finishOnboarding: () => {}
+  finishOnboarding: () => {},
 };
 
 export const AuthContext = React.createContext<AuthType>(initialAuth);
@@ -54,18 +54,18 @@ export const AuthProvider: React.FC = ({ children }) => {
     GoogleSignin.configure({
       scopes: [
         'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/userinfo.email'
+        'https://www.googleapis.com/auth/userinfo.email',
       ],
       webClientId:
         '713165282203-jjc54if1n7krahda9gvkio0siqltq57t.apps.googleusercontent.com',
       offlineAccess: false,
-      forceCodeForRefreshToken: false
+      forceCodeForRefreshToken: false,
     });
     //   isGoogleSigninConfiguredRef.current = true;
     // }
     try {
       await GoogleSignin.hasPlayServices({
-        showPlayServicesUpdateDialog: true
+        showPlayServicesUpdateDialog: true,
       });
       googleUserInfo = await GoogleSignin.signIn();
     } catch (error) {
@@ -104,20 +104,20 @@ export const AuthProvider: React.FC = ({ children }) => {
       const rawNonce = Math.random().toString(36).substring(2, 10);
       const hashedNonce = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
-        rawNonce
+        rawNonce,
       );
 
       let credential = await AppleAuthentication.signInAsync({
         requestedScopes: [
           AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-          AppleAuthentication.AppleAuthenticationScope.EMAIL
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
         ],
-        nonce: hashedNonce
+        nonce: hashedNonce,
       });
       if (credential.fullName?.givenName) {
         SecureStore.setItemAsync(
           'appleId.givenName',
-          credential.fullName.givenName
+          credential.fullName.givenName,
         );
       } else {
         const givenName = await SecureStore.getItemAsync('appleId.givenName');
@@ -125,14 +125,14 @@ export const AuthProvider: React.FC = ({ children }) => {
           ...credential,
           fullName: {
             ...credential.fullName,
-            givenName
-          } as AppleAuthentication.AppleAuthenticationFullName
+            givenName,
+          } as AppleAuthentication.AppleAuthenticationFullName,
         };
       }
       if (credential.fullName?.familyName) {
         SecureStore.setItemAsync(
           'appleId.familyName',
-          credential.fullName.familyName
+          credential.fullName.familyName,
         );
       } else {
         const familyName = await SecureStore.getItemAsync('appleId.familyName');
@@ -140,8 +140,8 @@ export const AuthProvider: React.FC = ({ children }) => {
           ...credential,
           fullName: {
             ...credential.fullName,
-            familyName
-          } as AppleAuthentication.AppleAuthenticationFullName
+            familyName,
+          } as AppleAuthentication.AppleAuthenticationFullName,
         };
       }
 
@@ -159,20 +159,20 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   async function firebaseAuthApple(
     appleAuthResponse: AppleAuthentication.AppleAuthenticationCredential,
-    rawNonce?: string
+    rawNonce?: string,
   ): Promise<void> {
     dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
     // Pipe the result of Sign in with Apple into Firebase auth
     const { identityToken, fullName } = appleAuthResponse;
     const credential = auth.AppleAuthProvider.credential(
       identityToken!,
-      rawNonce
+      rawNonce,
     );
     const fbSigninResult = await auth().signInWithCredential(credential);
 
     return processFbLogin(
       fbSigninResult,
-      `${fullName?.givenName} ${fullName?.familyName}`
+      `${fullName?.givenName} ${fullName?.familyName}`,
     );
   }
 
@@ -188,7 +188,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   async function processFbLogin(
     result: FirebaseAuthTypes.UserCredential,
-    displayName?: string
+    displayName?: string,
   ): Promise<void> {
     // Store credentials in SecureStore
     if ('user' in result) {
@@ -196,7 +196,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       SecureStore.setItemAsync('userId', result.user.uid);
       SecureStore.setItemAsync(
         'profileData',
-        JSON.stringify(result?.additionalUserInfo?.profile)
+        JSON.stringify(result?.additionalUserInfo?.profile),
       ).catch((error) => {
         Alert.alert('Signin failed', error.message);
         if (__DEV__) {
@@ -221,15 +221,15 @@ export const AuthProvider: React.FC = ({ children }) => {
                   displayName: result.user.displayName || displayName,
                   email: result.user.email,
                   uid: result.user.uid,
-                  photoURL: result.user.photoURL ?? ''
+                  photoURL: result.user.photoURL ?? '',
                 },
                 onboardingComplete: false,
                 lastChat: {
                   message: '',
                   sender: '',
                   sentByUser: true,
-                  time: firestore.Timestamp.now()
-                }
+                  time: firestore.Timestamp.now(),
+                },
               })
               .catch((error) => {
                 console.error('Error creating user document: ', error);
@@ -259,14 +259,14 @@ export const AuthProvider: React.FC = ({ children }) => {
         userData: {
           displayName: result.user.displayName,
           email: result.user.email,
-          uid: result.user.uid
-        }
+          uid: result.user.uid,
+        },
       });
       Analytics.logEvent(AnalyticsEvents.logIn);
     } else {
       Alert.alert(
         'Signin failed',
-        'Unexpected error occurred! Please try again later.'
+        'Unexpected error occurred! Please try again later.',
       );
       console.log('Error signing in (maybe cancelled)');
     }
@@ -282,11 +282,11 @@ export const AuthProvider: React.FC = ({ children }) => {
       signIn,
       signOut,
       signInWithApple,
-      finishOnboarding
+      finishOnboarding,
     }),
-    [state]
+    [state],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = (): AuthType => useContext<AuthType>(AuthContext);
