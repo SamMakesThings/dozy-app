@@ -32,6 +32,7 @@ import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation, SleepLog } from '../types/custom';
+import { ErrorObj } from '../types/error';
 
 interface Props {
   navigation: Navigation;
@@ -86,7 +87,7 @@ const chartStyles = {
   },
 };
 
-export const Welcome = ({ navigation }: Props) => {
+export const Welcome: React.FC<Props> = ({ navigation }) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
   return (
     <IconExplainScreen
@@ -103,7 +104,7 @@ export const Welcome = ({ navigation }: Props) => {
   );
 };
 
-export const SleepEfficiency = ({ navigation }: Props) => {
+export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
 
   // Trim sleepLogs to only show most recent 10
@@ -183,7 +184,7 @@ export const SleepEfficiency = ({ navigation }: Props) => {
   );
 };
 
-export const SleepOnset = ({ navigation }: Props) => {
+export const SleepOnset: React.FC<Props> = ({ navigation }) => {
   // Calculate recent sleep efficiency average
   const sleepOnsetAvg = Number(
     (
@@ -246,7 +247,7 @@ export const SleepOnset = ({ navigation }: Props) => {
   );
 };
 
-export const SleepMaintenance = ({ navigation }: Props) => {
+export const SleepMaintenance: React.FC<Props> = ({ navigation }) => {
   // Calculate recent sleep efficiency average
   const nightMinsAwakeAvg = Number(
     (
@@ -310,7 +311,7 @@ export const SleepMaintenance = ({ navigation }: Props) => {
   );
 };
 
-export const TreatmentPlan = ({ navigation }: Props) => {
+export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -331,7 +332,7 @@ export const TreatmentPlan = ({ navigation }: Props) => {
   );
 };
 
-export const TreatmentPlanContinued = ({ navigation }: Props) => {
+export const TreatmentPlanContinued: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -351,7 +352,7 @@ export const TreatmentPlanContinued = ({ navigation }: Props) => {
   );
 };
 
-export const DriversOfSleep = ({ navigation }: Props) => {
+export const DriversOfSleep: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -379,7 +380,7 @@ export const DriversOfSleep = ({ navigation }: Props) => {
   );
 };
 
-export const WhySleepDrives = ({ navigation }: Props) => {
+export const WhySleepDrives: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -400,7 +401,7 @@ export const WhySleepDrives = ({ navigation }: Props) => {
 };
 
 // TODO: ONLY SAY THIS IF THEIR SLEEP IS FUCKING FRAGMENTED (e.g. Snehan is an exception)
-export const FragmentedSleep = ({ navigation }: Props) => {
+export const FragmentedSleep: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -420,7 +421,7 @@ export const FragmentedSleep = ({ navigation }: Props) => {
   );
 };
 
-export const ConsolidatingSleep = ({ navigation }: Props) => {
+export const ConsolidatingSleep: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -440,7 +441,7 @@ export const ConsolidatingSleep = ({ navigation }: Props) => {
   );
 };
 
-export const ReduceTimeInBed = ({ navigation }: Props) => {
+export const ReduceTimeInBed: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -460,7 +461,7 @@ export const ReduceTimeInBed = ({ navigation }: Props) => {
   );
 };
 
-export const SCTSRTIntro = ({ navigation }: Props) => {
+export const SCTSRTIntro: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -479,7 +480,7 @@ export const SCTSRTIntro = ({ navigation }: Props) => {
   );
 };
 
-export const Rule1 = ({ navigation }: Props) => {
+export const Rule1: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -498,7 +499,7 @@ export const Rule1 = ({ navigation }: Props) => {
   );
 };
 
-export const Rule2 = ({ navigation }: Props) => {
+export const Rule2: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -517,7 +518,7 @@ export const Rule2 = ({ navigation }: Props) => {
   );
 };
 
-export const Rule3 = ({ navigation }: Props) => {
+export const Rule3: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -535,7 +536,7 @@ export const Rule3 = ({ navigation }: Props) => {
   );
 };
 
-export const RulesRecap = ({ navigation }: Props) => {
+export const RulesRecap: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -575,7 +576,7 @@ export const RulesRecap = ({ navigation }: Props) => {
   );
 };
 
-export const WhatToExpect = ({ navigation }: Props) => {
+export const WhatToExpect: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -595,12 +596,12 @@ export const WhatToExpect = ({ navigation }: Props) => {
   );
 };
 
-export const UnderstandingAsk = ({ navigation }: Props) => {
+export const UnderstandingAsk: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(res: string) => {
+      onQuestionSubmit={(res?: string) => {
         if (res === 'I have some questions or concerns') {
           navigation.navigate('TreatmentReview', {
             module: 'SCTSRT',
@@ -623,7 +624,7 @@ export const UnderstandingAsk = ({ navigation }: Props) => {
 
 // TreatmentReview screen is defined in the SCTSRTNavigator.js file!
 
-export const SRTCalibrationIntro = ({ navigation }: Props) => {
+export const SRTCalibrationIntro: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -642,19 +643,19 @@ export const SRTCalibrationIntro = ({ navigation }: Props) => {
   );
 };
 
-export const WakeTimeSetting = ({ navigation }: Props) => {
+export const WakeTimeSetting: React.FC<Props> = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().hour(9).minute(0).toDate()}
-      onQuestionSubmit={(value: Date) => {
-        SCTSRTState.SCTSRTWakeTime = value;
+      onQuestionSubmit={(value: Date | boolean) => {
+        SCTSRTState.SCTSRTWakeTime = value as Date;
         navigation.navigate('SleepDurationCalculation', {
           progressBarPercent: 0.74,
         });
       }}
-      validInputChecker={(val: Date) => {
+      validInputChecker={(val: Date): ErrorObj | boolean => {
         // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
         return moment(val).hour() < 17
           ? true
@@ -671,7 +672,7 @@ export const WakeTimeSetting = ({ navigation }: Props) => {
   );
 };
 
-export const SleepDurationCalculation = ({ navigation }: Props) => {
+export const SleepDurationCalculation: React.FC<Props> = ({ navigation }) => {
   // Calculate recent sleep efficiency average
   const sleepDurationAvg = Number(
     (
@@ -747,7 +748,7 @@ export const SleepDurationCalculation = ({ navigation }: Props) => {
   );
 };
 
-export const TargetBedtime = ({ navigation }: Props) => {
+export const TargetBedtime: React.FC<Props> = ({ navigation }) => {
   // Calculate target bedtime based on TIB and wake time
   const targetBedTime = moment(SCTSRTState.SCTSRTWakeTime)
     .subtract(SCTSRTState.SCTSRTTimeInBedTarget, 'minutes')
@@ -782,7 +783,7 @@ export const TargetBedtime = ({ navigation }: Props) => {
   );
 };
 
-export const PrescriptionSummary = ({ navigation }: Props) => {
+export const PrescriptionSummary: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -815,12 +816,12 @@ export const PrescriptionSummary = ({ navigation }: Props) => {
   );
 };
 
-export const DeprivationWarning = ({ navigation }: Props) => {
+export const DeprivationWarning: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(val: string) => {
+      onQuestionSubmit={(val?: string) => {
         if (val !== 'Wait, I have some concerns') {
           navigation.navigate('CheckinScheduling', {
             progressBarPercent: 0.88,
@@ -839,12 +840,12 @@ export const DeprivationWarning = ({ navigation }: Props) => {
   );
 };
 
-export const AddressingConcerns = ({ navigation }: Props) => {
+export const AddressingConcerns: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(val: string) => {
+      onQuestionSubmit={(val?: string) => {
         if (val !== 'Postpone, not a good time') {
           SCTSRTState.checkinPostponed = false;
           navigation.navigate('TreatmentReview', {
@@ -868,17 +869,17 @@ export const AddressingConcerns = ({ navigation }: Props) => {
   );
 };
 
-export const CheckinScheduling = ({ navigation }: Props) => {
+export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
   return (
     <DateTimePickerScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
-      onQuestionSubmit={(value: Date) => {
-        SCTSRTState.nextCheckinTime = value;
+      onQuestionSubmit={(value: Date | boolean) => {
+        SCTSRTState.nextCheckinTime = value as Date;
         navigation.navigate('SCTSRTEnd', { progressBarPercent: 1 });
       }}
-      validInputChecker={(val: Date) => {
+      validInputChecker={(val: Date): ErrorObj | boolean => {
         // Make sure the selected date is 7+ days from today
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
@@ -904,7 +905,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
   );
 };
 
-export const SCTSRTEnd = ({ navigation }: Props) => {
+export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
 
   // Calculate some baseline statistics for later reference
@@ -954,7 +955,6 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
         if (!state.userId) throw new Error();
