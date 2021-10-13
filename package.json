@@ -41,6 +41,7 @@
     "@react-native-firebase/crashlytics": "12.1.0",
     "@react-native-firebase/firestore": "^12.1.0",
     "@react-native-firebase/remote-config": "12.1.0",
+    "@react-native-firebase/storage": "^12.1.0",
     "@react-native-google-signin/google-signin": "^6.0.1",
     "@react-navigation/bottom-tabs": "^5.5.2",
     "@react-navigation/material-top-tabs": "^5.2.10",
