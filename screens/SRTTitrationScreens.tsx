@@ -118,9 +118,13 @@ export const SleepEfficiency = ({ navigation }: Props) => {
     if (sleepEffiencyAvg < 80) {
       return `Your sleep efficiency is ok, but with an average of ${sleepEffiencyAvg}% (previously ${sleepEfficiencyAvgBaseline}%) it's not quite where we need it to be yet.`;
     } else if (sleepEffiencyAvg >= 80 && sleepEffiencyAvg < 87) {
-      return `Your sleep is starting to show signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since been around ${sleepEfficiencyAvg}%! You're making progress!`;
+      return sleepEfficiencyAvg >= sleepEfficiencyAvgBaseline
+        ? `Your sleep is starting to show signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since been around ${sleepEfficiencyAvg}%! You're making progress!`
+        : `Your sleep is showing signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since been around ${sleepEfficiencyAvg}%! Keep going!`;
     } else {
-      return `Your sleep is showing signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since risen to ${sleepEfficiencyAvg}%! You're making great progress.`;
+      return sleepEfficiencyAvg >= sleepEfficiencyAvgBaseline
+        ? `Your sleep is showing signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since risen to ${sleepEfficiencyAvg}%! You're making great progress.`
+        : `Your sleep is showing signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since been around ${sleepEfficiencyAvg}%! Keep going!`;
     }
   }
 
