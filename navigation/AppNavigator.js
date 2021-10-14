@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -23,6 +23,7 @@ import refreshUserData from '../utilities/refreshUserData';
 import auth from '@react-native-firebase/auth';
 import { Crashlytics } from '../utilities/crashlytics.service';
 import { ABTesting } from '../utilities/abTesting.service';
+import { getCoachByUserId } from '../utilities/coach';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -129,6 +130,17 @@ export default function AppNavigator() {
     });
     return subscriber;
   }, []);
+
+  useEffect(() => {
+    if (state.onboardingComplete && state.userId) {
+      getCoachByUserId(state.userId).then((coach) => {
+        dispatch({
+          type: 'SET_COACH',
+          coach,
+        });
+      });
+    }
+  }, [state.onboardingComplete]);
 
   const DozyNavTheme = {
     dark: true,
