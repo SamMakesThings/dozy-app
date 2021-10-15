@@ -11,10 +11,8 @@ export async function getOnboardingCoach(): Promise<Coach> {
     .collection<CoachDTO>('coaches')
     .where('firstName', '==', 'Sam')
     .get();
-  console.log('defaultCoachQuery: ', defaultCoachQuery);
   if (defaultCoachQuery.docs.length) {
     coachDTO = defaultCoachQuery.docs[0].data();
-    console.log('coachDTO: ', coachDTO);
   } else {
     const coachesQuery = await firestore()
       .collection<CoachDTO>('coaches')
@@ -30,7 +28,6 @@ export async function getOnboardingCoach(): Promise<Coach> {
       image,
     };
   }
-  console.log('coach**** ', coach);
 
   return coach;
 }
@@ -71,7 +68,6 @@ export async function getCoachImage(
 export async function getCoachByUserId(userId: string): Promise<Coach> {
   let coachId: string;
   const userData = await firestore().collection('users').doc(userId).get();
-  console.log('userData: ', userData.data());
 
   if (userData.data()?.lastChat?.sentByUser === false) {
     coachId = userData.data()?.lastChat.sender;

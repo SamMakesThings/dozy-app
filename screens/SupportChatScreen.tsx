@@ -34,7 +34,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
 }) => {
   // Get global state & dispatch
   const { state, dispatch } = React.useContext(AuthContext);
-
+  const coach = `${state.coach.firstName} ${state.coach.lastName}`;
   // Set Firebase DB references if userId is defined
   let colRef: FirebaseFirestoreTypes.CollectionReference;
   if (state.userId) {
@@ -95,7 +95,9 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
         <FocusAwareStatusBar backgroundColor={dozy_theme.colors.medium} />
         <View style={styles.Root}>
           <View style={styles.View_HeaderContainer}>
-            <Image source={Images.SamProfile} style={styles.Img_Profile} />
+            {!!state.coach.image && (
+              <Image source={state.coach.image} style={styles.Img_Profile} />
+            )}
             <View style={styles.View_ChatNameContainer}>
               <Text
                 style={{
@@ -103,12 +105,12 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
                   ...styles.Text_CoachName,
                 }}
               >
-                Sam Stowers
+                {coach}
               </Text>
               <Text
                 style={{ ...theme.typography.body2, ...styles.Text_CoachTitle }}
               >
-                Founder & Sleep Coach
+                {state.coach.title}
               </Text>
             </View>
             <TouchableOpacity
@@ -132,10 +134,17 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
           >
             <FlatList
               contentContainerStyle={styles.View_ContentContainer}
-              renderItem={({ item, index }) => ChatMessage(item, index)}
-              keyExtractor={(item, index) => {
-                return index.toString();
-              }}
+              renderItem={({ item }) => (
+                <ChatMessage
+                  message={item.message}
+                  time={(
+                    item.time as FirebaseFirestoreTypes.Timestamp
+                  ).toDate()}
+                  sentByUser={item.sentByUser}
+                  coach={coach}
+                />
+              )}
+              keyExtractor={(item, index) => `${item.message}${index}`}
               inverted={true}
               data={state.chats}
             />
