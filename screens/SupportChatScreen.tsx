@@ -19,7 +19,6 @@ import { AntDesign } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../context/AuthContext';
 import { dozy_theme } from '../config/Themes';
-import Images from '../config/Images';
 import fetchChats from '../utilities/fetchChats';
 import sendChatMessage from '../utilities/sendChatMessage';
 import { ChatMessage } from '../components/ChatMessage';
