@@ -1,5 +1,5 @@
 import moment from 'moment';
-import TimeConstants from '../constants/Time';
+import TimeConstants from '../constants/Versions';
 
 export function convertLocalDateToUTCWithSameValues(date: Date): Date {
   return moment.utc(moment(date).format('YYYY-MM-DD HH:mm')).toDate();
@@ -12,7 +12,7 @@ export function convertUTCDateToLocalWithSameValues(date: Date): Date {
 export function encodeLocalTime(date: Date): { value: Date; version: string } {
   return {
     version: TimeConstants.timeDataVersion,
-    value: convertLocalDateToUTCWithSameValues(date)
+    value: convertLocalDateToUTCWithSameValues(date),
   };
 }
 

@@ -300,6 +300,9 @@ PODS:
   - Firebase/RemoteConfig (8.1.1):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 8.1.0)
+  - Firebase/Storage (8.1.1):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 8.1.0)
   - FirebaseABTesting (8.5.0):
     - FirebaseCore (~> 8.0)
   - FirebaseAnalytics/Base (8.0.0):
@@ -363,6 +366,9 @@ PODS:
     - FirebaseInstallations (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
     - "GoogleUtilities/NSData+zlib (~> 7.4)"
+  - FirebaseStorage (8.1.0):
+    - FirebaseCore (~> 8.0)
+    - GTMSessionFetcher/Core (~> 1.5)
   - Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -702,6 +708,10 @@ PODS:
     - Firebase/RemoteConfig (= 8.1.1)
     - React-Core
     - RNFBApp
+  - RNFBStorage (12.9.1):
+    - Firebase/Storage (= 8.1.1)
+    - React-Core
+    - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNGoogleSignin (6.0.1):
@@ -826,6 +836,7 @@ DEPENDENCIES:
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBRemoteConfig (from `../node_modules/@react-native-firebase/remote-config`)"
+  - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -863,6 +874,7 @@ SPEC REPOS:
     - FirebaseFirestore
     - FirebaseInstallations
     - FirebaseRemoteConfig
+    - FirebaseStorage
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleSignIn
@@ -988,6 +1000,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/firestore"
   RNFBRemoteConfig:
     :path: "../node_modules/@react-native-firebase/remote-config"
+  RNFBStorage:
+    :path: "../node_modules/@react-native-firebase/storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
@@ -1066,6 +1080,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: c4be8314e9fa156f44b54025f7a98ecbff6971a6
   FirebaseInstallations: f2bc590b291d25fb40a9a05b8281c02a881b5117
   FirebaseRemoteConfig: eef8513f6d368ba5c6ed6d1cb267b4d949cf65bf
+  FirebaseStorage: 5b5958efaf84fb991568ad36f157f60c76bdcd80
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   GoogleAppMeasurement: c6bbc9753d046b5456dd4f940057fbad2c28419e
@@ -1111,6 +1126,7 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: 963a2757f6a52e37ae50adab5832162a7d81f98f
   RNFBFirestore: b96f258a3f5d6a901ff96cd64306e3a2d221ad08
   RNFBRemoteConfig: c8546356d2879524e712022629a8ce981a7da099
+  RNFBStorage: 6b775f59b7036070e212612a92e60463f3b9a36c
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: e64616a4080cf7d83f4b292fad82d174587444e2
   RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
