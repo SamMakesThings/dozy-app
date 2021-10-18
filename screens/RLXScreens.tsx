@@ -19,6 +19,7 @@ import SleepingFace from '../assets/images/SleepingFace.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation } from '../types/custom';
+import { ErrorObj } from '../types/error';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -195,7 +196,7 @@ export const CalibrationStart: React.FC<{ navigation: Navigation }> = ({
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(res: string) => {
+      onQuestionSubmit={(res?: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
             module: 'RLX',
@@ -226,8 +227,8 @@ export const PMRIntentionAction: React.FC<{ navigation: Navigation }> = ({
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: string) => {
-        RLXState.PMRIntentionAction = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        RLXState.PMRIntentionAction = value as string;
         navigation.navigate('PMRIntentionTime', { progressBarPercent: 0.67 });
       }}
       buttonValues={[
@@ -254,8 +255,8 @@ export const PMRIntentionTime: React.FC<{ navigation: Navigation }> = ({
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().hour(11).minute(0).toDate()}
-      onQuestionSubmit={(value: Date) => {
-        RLXState.PMRIntentionTime = value;
+      onQuestionSubmit={(value: Date | boolean) => {
+        RLXState.PMRIntentionTime = value as Date;
         navigation.navigate('TreatmentRecommit', {
           progressBarPercent: 0.72,
         });
@@ -365,11 +366,11 @@ export const CheckinScheduling: React.FC<{ navigation: Navigation }> = ({
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={new Date(new Date().getTime() + 86400000 * 7)}
-      onQuestionSubmit={(value: Date) => {
-        RLXState.nextCheckinTime = value;
+      onQuestionSubmit={(value: Date | boolean) => {
+        RLXState.nextCheckinTime = value as Date;
         navigation.navigate('SCTSRTEnd', { progressBarPercent: 1 });
       }}
-      validInputChecker={(val: Date) => {
+      validInputChecker={(val: Date): ErrorObj | boolean => {
         // Make sure the selected date is 7+ days from today
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
@@ -427,7 +428,6 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
         if (state.userId) {
