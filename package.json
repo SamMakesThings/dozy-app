@@ -7,8 +7,9 @@
     "test": "TZ=UTC jest",
     "devtools": "react-devtools",
     "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "tsc": "tsc --noEmit"
+    "eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "tsc": "tsc --noEmit",
+    "lint": "yarn eslint && yarn tsc"
   },
   "jest": {
     "setupFilesAfterEnv": [
