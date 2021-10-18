@@ -2831,10 +2831,10 @@
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-theme-type":
-  version "39.7.1-patch-theme-type"
-  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-theme-type.tgz#d3e6bda47f0e20705f2f2b78abbe4bdc242b3576"
-  integrity sha512-vGp8fqCq7SjPfcOhfJsj9+2dBK246+tHVHtOxqDQqV2E1nDGnNxb5GoEOL7Q4u5MLwfTpBbqx3In+3t2aLjhAw==
+"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-container-prop-type":
+  version "39.7.1-patch-container-prop-type"
+  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-container-prop-type.tgz#f6a5c0d37bb515881f476c8b829bf1e5d08fec4a"
+  integrity sha512-FM9lDartaXZEGW2sdnpzFkT3lEQgRdv80opW2/EY+Wnw8+vpbHp8bVwCim2E8ZXyBzrdVhP9PrmSSKqXAv1Nsg==
   dependencies:
     "@date-io/date-fns" "^1.3.13"
     "@draftbit/react-theme-provider" "npm:@fancydevpro/react-theme-provider@2.1.1-type-patch-1"
