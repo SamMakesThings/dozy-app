@@ -62,88 +62,90 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
 
   return (
     <CardContainer {...props}>
-      <View style={styles.View_CardHeaderContainer}>
-        <View style={styles.View_CardHeaderSubContainer}>
-          <Text
-            style={{
-              ...theme.typography.cardTitle,
-              ...styles.Text_CardTitle,
-            }}
-          >
-            Quick question
-          </Text>
-          {!!rate && (
-            <Text
-              style={{
-                ...theme.typography.cardTitle,
-                ...styles.Text_RightSubHeader,
-              }}
-            >
-              {`${rate}/5`}
-            </Text>
-          )}
-        </View>
+      {submitted ? (
         <Text
-          style={{ ...theme.typography.body2, ...styles.Text_CardSubtitle }}
+          testID="Thanks"
+          style={[theme.typography.body2, styles.Text_CardSubtitle]}
         >
-          How likely is it that you would recommend Dozy to a friend?
+          Thanks for your feedback!
         </Text>
-      </View>
-      <View style={styles.View_CardContentContainer}>
-        <Rating
-          fractions={1}
-          ratingTextColor={theme.colors.secondary}
-          tintColor={theme.colors.medium}
-          jumpValue={0.5}
-          minValue={0.5}
-          startingValue={0}
-          readonly={submitted}
-          showReadOnlyText={false}
-          onFinishRating={onRateChange}
-          style={styles.Rating}
-        />
-        {submitted ? (
-          <Text
-            testID="Thanks"
-            style={[theme.typography.body2, styles.Text_CardSubtitle]}
-          >
-            Thanks for your feedback!
-          </Text>
-        ) : (
-          <View
-            testID="Footer"
-            style={showingInputbox ? styles.View_InputBox : styles.hidden}
-          >
-            <Container
-              style={{
-                ...styles.View_InputContainer,
-                borderColor: theme.colors.light,
-              }}
+      ) : (
+        <>
+          <View style={styles.View_CardHeaderContainer}>
+            <View style={styles.View_CardHeaderSubContainer}>
+              <Text
+                style={{
+                  ...theme.typography.cardTitle,
+                  ...styles.Text_CardTitle,
+                }}
+              >
+                Quick question
+              </Text>
+              {!!rate && (
+                <Text
+                  style={{
+                    ...theme.typography.cardTitle,
+                    ...styles.Text_RightSubHeader,
+                  }}
+                >
+                  {`${rate}/5`}
+                </Text>
+              )}
+            </View>
+            <Text
+              style={{ ...theme.typography.body2, ...styles.Text_CardSubtitle }}
             >
-              <TextInput
-                style={styles.TextInput}
-                placeholder={'Why did you give that rating? (optional)'}
-                placeholderTextColor={theme.colors.light}
-                keyboardType="default"
-                keyboardAppearance="dark"
-                returnKeyType="done"
-                defaultValue={defaultValue}
-                enablesReturnKeyAutomatically={true}
-                onChangeText={onFeedbackChange}
-                onSubmitEditing={onFeedbackSubmitEditing}
-              />
-            </Container>
-            <Button
-              style={[theme.buttonLayout as ViewStyle, styles.Button_Submit]}
-              type="solid"
-              onPress={onSubmit}
-              color={theme.colors.primary}
-            >
-              Submit feedback
-            </Button>
+              How likely is it that you would recommend Dozy to a friend?
+            </Text>
           </View>
-        )}
-      </View>
+          <View style={styles.View_CardContentContainer}>
+            <Rating
+              fractions={1}
+              ratingTextColor={theme.colors.secondary}
+              tintColor={theme.colors.medium}
+              jumpValue={0.5}
+              minValue={0.5}
+              startingValue={0}
+              readonly={submitted}
+              showReadOnlyText={false}
+              onFinishRating={onRateChange}
+              style={styles.Rating}
+            />
+            <View
+              testID="Footer"
+              style={showingInputbox ? styles.View_InputBox : styles.hidden}
+            >
+              <Container
+                style={{
+                  ...styles.View_InputContainer,
+                  borderColor: theme.colors.light,
+                }}
+              >
+                <TextInput
+                  style={styles.TextInput}
+                  placeholder={'Why did you give that rating? (optional)'}
+                  placeholderTextColor={theme.colors.light}
+                  keyboardType="default"
+                  keyboardAppearance="dark"
+                  returnKeyType="done"
+                  defaultValue={defaultValue}
+                  enablesReturnKeyAutomatically={true}
+                  onChangeText={onFeedbackChange}
+                  onSubmitEditing={onFeedbackSubmitEditing}
+                />
+              </Container>
+              <Button
+                style={[theme.buttonLayout as ViewStyle, styles.Button_Submit]}
+                type="solid"
+                onPress={onSubmit}
+                color={theme.colors.primary}
+              >
+                Submit feedback
+              </Button>
+            </View>
+          </View>
+        </>
+      )}
     </CardContainer>
   );
 };
