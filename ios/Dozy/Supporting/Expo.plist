@@ -9,7 +9,7 @@
 	<key>EXUpdatesLaunchWaitMs</key>
 	<integer>0</integer>
 	<key>EXUpdatesReleaseChannel</key>
-	<string>default6</string>
+	<string>bugfix-chat-conversation-issue</string>
 	<key>EXUpdatesSDKVersion</key>
 	<string>41.0.0</string>
 	<key>EXUpdatesURL</key>
