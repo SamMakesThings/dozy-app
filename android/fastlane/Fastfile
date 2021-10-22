@@ -63,7 +63,7 @@ platform :android do
     android_set_version_name(version_name: next_version_name, gradle_file: "app/build.gradle")
   end
 
-  desc "Update release channel in AndroidManifest.xml"
+  desc "Update release channel in AndroidManifest.xml (Alpha)"
   lane :update_release_channel do
     file_path = "../eas.json"
     # read eas.json file
@@ -71,6 +71,24 @@ platform :android do
 
     # get release channel
     release_channel = eas_json[:build][:alpha][:releaseChannel]
+
+    # update expo.modules.updates.EXPO_RELEASE_CHANNEL in AndroidManifest.xml
+    modify_meta_data(
+      manifest_file: "./app/src/main/AndroidManifest.xml",
+      meta_info: {
+        "expo.modules.updates.EXPO_RELEASE_CHANNEL" => release_channel
+      }
+    )
+  end
+
+  desc "Update release channel in AndroidManifest.xml (Production)"
+  lane :update_release_channel_prod do
+    file_path = "../eas.json"
+    # read eas.json file
+    eas_json = read_json(json_path: file_path)
+
+    # get release channel
+    release_channel = eas_json[:build][:release][:releaseChannel]
 
     # update expo.modules.updates.EXPO_RELEASE_CHANNEL in AndroidManifest.xml
     modify_meta_data(
