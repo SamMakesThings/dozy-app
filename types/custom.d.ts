@@ -27,6 +27,7 @@ export interface SleepLog {
   notes: string;
   tags: string[];
   version?: string;
+  timezone?: string;
 }
 
 export type Chat = {

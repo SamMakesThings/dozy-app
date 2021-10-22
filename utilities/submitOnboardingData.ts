@@ -28,7 +28,7 @@ export interface OnboardingState {
 
 export default async function submitOnboardingData(
   onboardingState: OnboardingState,
-  dispatch: React.Dispatch<ACTION>
+  dispatch: React.Dispatch<ACTION>,
 ) {
   // Initialize relevant Firebase values
   const userId = await SecureStore.getItemAsync('userId');
@@ -42,7 +42,7 @@ export default async function submitOnboardingData(
     .update({
       testingGroup: 'beta3',
       userStatus: 'onboarded',
-      onboardingComplete: true
+      onboardingComplete: true,
     })
     .catch(function (error) {
       console.error('Error adding health history data: ', error);
@@ -56,7 +56,7 @@ export async function submitISIResults(
   isiResults: Pick<
     OnboardingState,
     'ISI1' | 'ISI2' | 'ISI3' | 'ISI4' | 'ISI5' | 'ISI6' | 'ISI7' | 'ISITotal'
-  >
+  >,
 ): Promise<void> {
   // Initialize relevant Firebase values
   const userId = await SecureStore.getItemAsync('userId');
@@ -75,7 +75,7 @@ export async function submitISIResults(
     ISI6: isiResults.ISI6,
     ISI7: isiResults.ISI7,
     ISITotal: isiResults.ISITotal,
-    timestamp: new Date()
+    timestamp: new Date(),
   };
 
   try {
@@ -95,8 +95,8 @@ export async function submitISIResults(
     await userDocRef.update({
       baselineInfo: {
         baselineStartDate: new Date(),
-        isiTotal: isiResults.ISITotal
-      }
+        isiTotal: isiResults.ISITotal,
+      },
     });
   } catch (error) {
     console.error('Error adding ISITotal data into user baselineInfo: ', error);
@@ -109,7 +109,7 @@ export async function submitHealthHistoryData(
       OnboardingState,
       'pills' | 'snoring' | 'rls' | 'parasomnias' | 'otherCondition'
     >
-  >
+  >,
 ): Promise<void> {
   // Initialize relevant Firebase values
   const userId = await SecureStore.getItemAsync('userId');
@@ -134,7 +134,7 @@ export async function submitDiaryReminderAndCheckinData(
       | 'firstCheckinTime'
       | 'expoPushToken'
     >
-  >
+  >,
 ): Promise<void> {
   // Initialize relevant Firebase values
   const userId = await SecureStore.getItemAsync('userId');
@@ -148,7 +148,7 @@ export async function submitDiaryReminderAndCheckinData(
   const notificationsCollection = userDocRef.collection('notifications');
   let logReminderDocId: string | undefined = undefined;
   const diaryReminderTimeDataAsUTC = encodeLocalTime(
-    diaryAndCheckinData.diaryReminderTime ?? new Date()
+    diaryAndCheckinData.diaryReminderTime ?? new Date(),
   );
 
   try {
@@ -164,7 +164,8 @@ export async function submitDiaryReminderAndCheckinData(
       type: 'DAILY_LOG',
       time: diaryReminderTimeDataAsUTC.value,
       version: diaryReminderTimeDataAsUTC.version,
-      enabled: !!diaryAndCheckinData.diaryReminderTime
+      timezone: diaryReminderTimeDataAsUTC.timezone,
+      enabled: !!diaryAndCheckinData.diaryReminderTime,
     };
     if (querySnapshot.docs.length) {
       logReminderDocId = querySnapshot.docs[0].id;
@@ -188,7 +189,7 @@ export async function submitDiaryReminderAndCheckinData(
         body: 'Open the app now to get started',
         type: 'CHECKIN_REMINDER',
         time: diaryAndCheckinData.firstCheckinTime,
-        enabled: true
+        enabled: true,
       };
       if (querySnapshot.docs.length) {
         notificationsCollection
@@ -207,24 +208,24 @@ export async function submitDiaryReminderAndCheckinData(
             sleepDiaryReminder: {
               diaryHabitTrigger: diaryAndCheckinData.diaryHabitTrigger,
               diaryReminderTime: diaryReminderTimeDataAsUTC.value,
-              version: diaryReminderTimeDataAsUTC.version
+              version: diaryReminderTimeDataAsUTC.version,
             },
             expoPushToken:
-              diaryAndCheckinData.expoPushToken || 'No push token provided'
+              diaryAndCheckinData.expoPushToken || 'No push token provided',
           }
         : {},
       nextCheckin: {
         nextCheckinDatetime: diaryAndCheckinData.firstCheckinTime,
-        treatmentModule: 'SCTSRT'
+        treatmentModule: 'SCTSRT',
       },
       currentTreatments: {
         BSL: new Date(),
         currentModule: 'BSL',
         lastCheckinDatetime: new Date(),
         nextCheckinDatetime: diaryAndCheckinData.firstCheckinTime,
-        nextTreatmentModule: 'SCTSRT'
+        nextTreatmentModule: 'SCTSRT',
       },
-      logReminderId: logReminderDocId
+      logReminderId: logReminderDocId,
     })
     .catch(function (error) {
       console.error('Error adding health history data: ', error);
@@ -233,7 +234,7 @@ export async function submitDiaryReminderAndCheckinData(
 
 export async function submitFirstChatMessage(
   firstChatMessageContent: string,
-  displayName?: string
+  displayName?: string,
 ): Promise<void> {
   // Initialize relevant Firebase values
   const userId = await SecureStore.getItemAsync('userId');
@@ -248,26 +249,26 @@ export async function submitFirstChatMessage(
     sender: 'Sam Stowers',
     message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
     time: sub(new Date(), { minutes: 4 }),
-    sentByUser: false
+    sentByUser: false,
   });
   chatColRef.add({
     sender: 'Sam Stowers',
     message: 'Why do you want to improve your sleep?',
     time: sub(new Date(), { minutes: 3 }),
-    sentByUser: false
+    sentByUser: false,
   });
   chatColRef.add({
     sender: displayName ?? 'You',
     message: firstChatMessageContent,
     time: sub(new Date(), { minutes: 2 }),
-    sentByUser: true
+    sentByUser: true,
   });
   const lastChat = {
     sender: 'Sam Stowers',
     message:
       "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
     time: new Date(),
-    sentByUser: false
+    sentByUser: false,
   };
   chatColRef.add(lastChat);
 
@@ -276,7 +277,7 @@ export async function submitFirstChatMessage(
     .update({
       lastChat,
       lastSupportNotifSent: lastChat.time,
-      livechatUnreadMsg: false
+      livechatUnreadMsg: false,
     })
     .catch(function (error) {
       console.error('Error adding health history data: ', error);
