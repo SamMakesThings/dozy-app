@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FeedbackWidget should match the snapshot 1`] = `
+<CardContainer>
+  <View
+    style={
+      Object {
+        "alignItems": "flex-start",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "width": "100%",
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "rgba(219, 237, 243, 1)",
+            "fontFamily": "RubikMedium",
+            "fontSize": 42.857142857142854,
+            "lineHeight": 55.714285714285715,
+          }
+        }
+      >
+        Quick question
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "rgba(219, 237, 243, 1)",
+            "fontFamily": "RubikRegular",
+            "fontSize": 36.42857142857143,
+            "lineHeight": 55.714285714285715,
+            "opacity": 0.5,
+          }
+        }
+      >
+        5/5
+      </Text>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "rgba(219, 237, 243, 1)",
+          "fontFamily": "RubikRegular",
+          "fontSize": 30,
+          "lineHeight": 32.14285714285714,
+          "marginTop": 0,
+          "opacity": 0.5,
+        }
+      }
+    >
+      How likely is it that you would recommend Dozy to a friend?
+    </Text>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "flex-start",
+        "paddingTop": 64.28571428571428,
+      }
+    }
+  >
+    <SwipeRating
+      fractions={1}
+      imageSize={40}
+      jumpValue={0.5}
+      minValue={0.5}
+      ratingBackgroundColor="white"
+      ratingColor="#f1c40f"
+      ratingCount={5}
+      ratingImage={1}
+      ratingTextColor="rgba(219, 237, 243, 1)"
+      readonly={false}
+      showReadOnlyText={false}
+      startingValue={0}
+      style={
+        Object {
+          "flexDirection": "column-reverse",
+          "paddingBottom": 49.285714285714285,
+        }
+      }
+      tintColor="rgba(64, 75, 105, 1)"
+      type="star"
+    />
+    <View
+      style={
+        Object {
+          "width": "100%",
+        }
+      }
+      testID="Footer"
+    >
+      <withTheme(Container)
+        style={
+          Object {
+            "borderBottomWidth": 1.5,
+            "borderColor": "rgba(153, 172, 185, 1)",
+            "marginBottom": 38.57142857142857,
+            "marginTop": -38.57142857142857,
+            "width": "100%",
+          }
+        }
+      >
+        <Component
+          allowFontScaling={true}
+          enablesReturnKeyAutomatically={true}
+          keyboardAppearance="dark"
+          keyboardType="default"
+          onSubmitEditing={[Function]}
+          placeholder="Why did you give that rating? (optional)"
+          placeholderTextColor="rgba(153, 172, 185, 1)"
+          rejectResponderTermination={true}
+          returnKeyType="done"
+          style={
+            Object {
+              "color": "#ffffff",
+              "fontSize": 32.14285714285714,
+              "height": 96.42857142857143,
+            }
+          }
+          underlineColorAndroid="transparent"
+        />
+      </withTheme(Container)>
+      <withTheme(Button)
+        color="rgba(0, 129, 138, 1)"
+        style={
+          Array [
+            Object {
+              "height": 100.71428571428571,
+              "justifyContent": "center",
+            },
+            Object {
+              "marginTop": 53.57142857142857,
+            },
+          ]
+        }
+        type="solid"
+      >
+        Submit feedback
+      </withTheme(Button)>
+    </View>
+  </View>
+</CardContainer>
+`;

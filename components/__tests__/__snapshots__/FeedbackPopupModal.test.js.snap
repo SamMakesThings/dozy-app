@@ -1,0 +1,198 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FeedbackPopupModal should match the snapshot 1`] = `
+<Component
+  animationType="slide"
+  hardwareAccelerated={false}
+  theme={
+    Object {
+      "borderRadius": Object {
+        "button": 36,
+        "global": 6,
+      },
+      "buttonLayout": Object {
+        "height": 100.71428571428571,
+        "justifyContent": "center",
+      },
+      "colors": Object {
+        "background": "rgba(35, 43, 63, 1)",
+        "divider": "rgba(234, 237, 242, 1)",
+        "error": "rgba(255, 69, 100, 1)",
+        "light": "rgba(153, 172, 185, 1)",
+        "lightInverse": "rgba(153, 172, 185, 0.3)",
+        "medium": "rgba(64, 75, 105, 1)",
+        "mediumInverse": "rgba(255, 255, 255, 0.87)",
+        "primary": "rgba(0, 129, 138, 1)",
+        "secondary": "rgba(219, 237, 243, 1)",
+        "strong": "rgba(255, 255, 255, 1)",
+        "strongInverse": "rgba(255, 255, 255, 1)",
+        "surface": "rgba(255, 255, 255, 1)",
+      },
+      "disabledOpacity": 0.5,
+      "elevation": Object {
+        "0": Object {
+          "borderColor": "rgba(18, 20, 44, 1)",
+          "borderOpacity": 0,
+          "borderWidth": 0,
+          "shadowColor": "rgba(18, 20, 44, 1)",
+          "shadowOffset": Object {
+            "height": 0,
+            "width": 0,
+          },
+          "shadowOpacity": 0,
+          "shadowRadius": 0,
+        },
+        "1": Object {
+          "borderColor": "rgba(18, 20, 44, 1)",
+          "borderOpacity": 0.06,
+          "borderWidth": 1,
+          "shadowColor": "rgba(18, 20, 44, 1)",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.06,
+          "shadowRadius": 4,
+        },
+        "2": Object {
+          "borderColor": "rgba(18, 20, 44, 1)",
+          "borderOpacity": 0,
+          "borderWidth": 0,
+          "shadowColor": "rgba(18, 20, 44, 1)",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.2,
+          "shadowRadius": 4,
+        },
+        "3": Object {
+          "borderColor": "rgba(18, 20, 44, 1)",
+          "borderOpacity": 0,
+          "borderWidth": 0,
+          "shadowColor": "rgba(18, 20, 44, 1)",
+          "shadowOffset": Object {
+            "height": 6,
+            "width": 0,
+          },
+          "shadowOpacity": 0.12,
+          "shadowRadius": 6,
+        },
+      },
+      "spacing": Object {
+        "gutters": 16,
+        "large": 16,
+        "medium": 12,
+        "small": 8,
+        "text": 4,
+      },
+      "typography": Object {
+        "body1": Object {
+          "fontFamily": "RubikRegular",
+          "fontSize": 38.57142857142857,
+          "letterSpacing": -0.25,
+          "lineHeight": 47.14285714285714,
+        },
+        "body2": Object {
+          "fontFamily": "RubikRegular",
+          "fontSize": 30,
+          "lineHeight": 47.14285714285714,
+        },
+        "button": Object {
+          "fontFamily": "RubikRegular",
+          "fontSize": 34.285714285714285,
+          "lineHeight": 34.285714285714285,
+        },
+        "caption": Object {
+          "fontFamily": "RubikRegular",
+          "fontSize": 25.714285714285715,
+          "lineHeight": 34.285714285714285,
+        },
+        "cardTitle": Object {
+          "fontFamily": "RubikMedium",
+          "fontSize": 42.857142857142854,
+          "lineHeight": 55.714285714285715,
+        },
+        "headline1": Object {
+          "fontFamily": "RubikBold",
+          "fontSize": 128.57142857142856,
+          "lineHeight": 152.14285714285714,
+        },
+        "headline2": Object {
+          "fontFamily": "RubikMedium",
+          "fontSize": 102.85714285714286,
+          "lineHeight": 124.28571428571428,
+        },
+        "headline3": Object {
+          "fontFamily": "RubikMedium",
+          "fontSize": 60,
+          "lineHeight": 75,
+        },
+        "headline4": Object {
+          "fontFamily": "RubikBold",
+          "fontSize": 51.42857142857143,
+          "lineHeight": 68.57142857142857,
+        },
+        "headline5": Object {
+          "fontFamily": "RubikMedium",
+          "fontSize": 47.14285714285714,
+          "lineHeight": 55.714285714285715,
+        },
+        "headline6": Object {
+          "fontFamily": "RubikMedium",
+          "fontSize": 34.285714285714285,
+          "lineHeight": 51.42857142857143,
+        },
+        "overline": Object {
+          "fontFamily": "RubikRegular",
+          "fontSize": 25.714285714285715,
+          "letterSpacing": 2,
+          "lineHeight": 34.285714285714285,
+        },
+        "smallLabel": Object {
+          "fontFamily": "RubikRegular",
+          "fontSize": 34.285714285714285,
+          "lineHeight": 55.714285714285715,
+        },
+        "subtitle1": Object {
+          "fontFamily": "RubikRegular",
+          "fontSize": 34.285714285714285,
+          "lineHeight": 55.714285714285715,
+        },
+        "subtitle2": Object {
+          "fontFamily": "RubikRegular",
+          "fontSize": 30,
+          "lineHeight": 47.14285714285714,
+        },
+      },
+    }
+  }
+  transparent={true}
+  visible={true}
+>
+  <TouchableWithoutFeedback>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+        }
+      }
+    >
+      <withTheme(FeedbackWidget)
+        hasShadow={true}
+        onFeedbackChange={[Function]}
+        onRateChange={[Function]}
+        onSubmit={[Function]}
+        rate={0}
+        style={
+          Object {
+            "marginHorizontal": 21.428571428571427,
+          }
+        }
+      />
+    </View>
+  </TouchableWithoutFeedback>
+</Component>
+`;

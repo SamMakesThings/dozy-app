@@ -20,6 +20,7 @@ import BarChart from '../assets/images/BarChart.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation } from '../types/custom';
+import Feedback from '../utilities/feedback.service';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -624,6 +625,7 @@ export const ENDEnd: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
   const { state, dispatch } = React.useContext(AuthContext);
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   return (
     <WizardContentScreen
@@ -659,6 +661,7 @@ export const ENDEnd: React.FC<{ navigation: Navigation }> = ({
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
+        setShowingFeedbackWidget(true);
       }}
       textLabel={`You're done! Press "finish" to mark this check-in as completed.`}
       buttonLabel="Finish"

@@ -1,12 +1,18 @@
 import React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewProps } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
-export const CardContainer: React.FC<{ style?: ViewStyle }> = (props) => {
+export type CardContainerProps = ViewProps;
+
+export const CardContainer: React.FC<CardContainerProps> = ({
+  style,
+  children,
+  ...props
+}) => {
   return (
-    <View style={[styles.View_CardContainer, props.style]}>
-      {props.children}
+    <View style={[styles.View_CardContainer, style]} {...props}>
+      {children}
     </View>
   );
 };
