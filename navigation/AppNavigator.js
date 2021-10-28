@@ -23,7 +23,7 @@ import refreshUserData from '../utilities/refreshUserData';
 import auth from '@react-native-firebase/auth';
 import { Crashlytics } from '../utilities/crashlytics.service';
 import { ABTesting } from '../utilities/abTesting.service';
-import { getCoachByUserId } from '../utilities/coach';
+import { getCoachAssignedToUser } from '../utilities/coach';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -133,7 +133,7 @@ export default function AppNavigator() {
 
   useEffect(() => {
     if (state.onboardingComplete && state.userId) {
-      getCoachByUserId(state.userId).then((coach) => {
+      getCoachAssignedToUser(state.userId).then((coach) => {
         dispatch({
           type: 'SET_COACH',
           coach,

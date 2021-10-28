@@ -65,7 +65,7 @@ export async function getCoachImage(
   return image;
 }
 
-export async function getCoachByUserId(userId: string): Promise<Coach> {
+export async function getCoachAssignedToUser(userId: string): Promise<Coach> {
   let coachId: string;
   const userData = await firestore().collection('users').doc(userId).get();
 
