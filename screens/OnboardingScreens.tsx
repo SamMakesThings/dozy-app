@@ -40,7 +40,7 @@ import registerForPushNotificationsAsync, {
   updateExpoPushToken,
 } from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import { getOnboardingCoach } from '../utilities/coach';
 import AnalyticsEvents from '../constants/AnalyticsEvents';

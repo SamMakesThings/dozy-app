@@ -7,7 +7,7 @@ export interface FeedbackContextValue {
   setFeedbackSubmitted: (submitted: boolean) => void;
 }
 
-class Feedback {
+export default class Feedback {
   static Context = createContext<FeedbackContextValue | null>(null);
 
   static useFeedbackService(): FeedbackContextValue {
@@ -33,5 +33,3 @@ class Feedback {
     );
   }
 }
-
-export default Feedback;

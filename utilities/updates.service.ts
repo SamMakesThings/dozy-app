@@ -4,11 +4,10 @@ import * as ExpoUpdates from 'expo-updates';
 
 type SetCheckingUpdateStateFunc = (isChecking: boolean) => void;
 
-export class Updates {
+export default class Updates {
   static useUpdating = (): boolean => {
-    const [isCheckingUpdate, setCheckingUpdate] = React.useState<boolean>(
-      false
-    );
+    const [isCheckingUpdate, setCheckingUpdate] =
+      React.useState<boolean>(false);
 
     React.useEffect(() => {
       // Wait firebase to be initialized for some seconds and reload if there is an update
@@ -17,7 +16,7 @@ export class Updates {
       }, 4000);
 
       const handleAppStateChange = async (
-        newState: AppStateStatus
+        newState: AppStateStatus,
       ): Promise<void> => {
         if (newState === 'active') {
           Updates.checkForUpdate(setCheckingUpdate);
@@ -34,7 +33,7 @@ export class Updates {
   };
 
   static async checkForUpdate(
-    updateState: SetCheckingUpdateStateFunc
+    updateState: SetCheckingUpdateStateFunc,
   ): Promise<void> {
     if (__DEV__) {
       return;

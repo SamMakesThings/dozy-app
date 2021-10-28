@@ -17,11 +17,11 @@ import HYGNavigator from './HYGNavigator';
 import COG1Navigator from './COG1Navigator';
 import ENDNavigator from './ENDNavigator';
 import HeaderProgressBar from '../components/HeaderProgressBar';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
 import refreshUserData from '../utilities/refreshUserData';
 import auth from '@react-native-firebase/auth';
-import { Crashlytics } from '../utilities/crashlytics.service';
-import { ABTesting } from '../utilities/abTesting.service';
+import Crashlytics from '../utilities/crashlytics.service';
+import ABTesting from '../utilities/abTesting.service';
 import Auth from '../utilities/auth.service';
 import { getCoachAssignedToUser } from '../utilities/coach';
 

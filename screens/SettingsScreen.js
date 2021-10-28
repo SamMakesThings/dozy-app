@@ -14,7 +14,7 @@ import * as SecureStore from 'expo-secure-store';
 import { scale } from 'react-native-size-matters';
 import ExpoConstants from 'expo-constants';
 import { dozy_theme } from '../config/Themes';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
 import {
   isNotificationEnabled,
   askNotificationPermission,

@@ -17,7 +17,7 @@ import submitSleepDiaryData, {
 import { dozy_theme } from '../config/Themes';
 import { Navigation, SleepLog } from '../types/custom';
 import { ErrorObj } from '../types/error';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { RichTextData } from '../types/RichTextData';

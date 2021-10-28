@@ -3,7 +3,7 @@ import analytics from '@react-native-firebase/analytics';
 import {
   NavigationContainerRef,
   NavigationState,
-  PartialState
+  PartialState,
 } from '@react-navigation/native';
 
 import { convertAnalyticsEventName } from './common';
@@ -14,7 +14,7 @@ export interface AnalyticsContextValue {
   onStateChange: (state: NavigationState) => void;
 }
 
-export class Analytics {
+export default class Analytics {
   static useAnalytics = (userId?: string): AnalyticsContextValue => {
     const routeNameRef = useRef<string>();
     const navigationRef = useRef<NavigationContainerRef>(null);
@@ -22,11 +22,11 @@ export class Analytics {
     useEffect(() => {
       navigationRef.current!.getRootState();
       routeNameRef.current = Analytics.getActiveRouteName(
-        navigationRef.current!.getRootState()
+        navigationRef.current!.getRootState(),
       )!;
       analytics().logScreenView({
         screen_name: routeNameRef.current,
-        screen_class: routeNameRef.current
+        screen_class: routeNameRef.current,
       });
       if (SeparatelyTrackedScreens.includes(routeNameRef.current)) {
         // Tracks this screen as a separate event
@@ -42,14 +42,13 @@ export class Analytics {
 
     const onStateChange = useCallback((currentState: NavigationState): void => {
       const prevRouteName: string | undefined = routeNameRef.current;
-      const currentRouteName: string = Analytics.getActiveRouteName(
-        currentState
-      )!;
+      const currentRouteName: string =
+        Analytics.getActiveRouteName(currentState)!;
 
       if (prevRouteName !== currentRouteName) {
         analytics().logScreenView({
           screen_name: currentRouteName,
-          screen_class: currentRouteName
+          screen_class: currentRouteName,
         });
         if (SeparatelyTrackedScreens.includes(currentRouteName)) {
           // Tracks this screen as a separate event
@@ -63,16 +62,16 @@ export class Analytics {
     const analyticsContext = useMemo(
       (): AnalyticsContextValue => ({
         navigationRef,
-        onStateChange
+        onStateChange,
       }),
-      [onStateChange]
+      [onStateChange],
     );
 
     return analyticsContext;
   };
 
   static getActiveRouteName(
-    navigationState: NavigationState | PartialState<NavigationState>
+    navigationState: NavigationState | PartialState<NavigationState>,
   ): string | null {
     if (!navigationState) {
       return null;

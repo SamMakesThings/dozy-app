@@ -14,7 +14,7 @@ export interface ABTestingContextValue {
   initABTesting: () => Promise<void>;
 }
 
-export class ABTesting {
+export default class ABTesting {
   static Context = createContext<ABTestingContextValue | null>(null);
 
   static onboardingSteps: OnboardingMeta = Onboarding.defaultSteps;

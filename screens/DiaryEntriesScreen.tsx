@@ -24,7 +24,7 @@ import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { Navigation, SleepLog } from '../types/custom';
 import { Theme } from '../types/theme';
 import fetchTasks from '../utilities/fetchTasks';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 

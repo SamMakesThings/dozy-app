@@ -17,7 +17,7 @@ import * as Crypto from 'expo-crypto';
 import * as SecureStore from 'expo-secure-store';
 import { Alert } from 'react-native';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
-import { Analytics } from './analytics.service';
+import Analytics from './analytics.service';
 import { ACTION, initialState, appReducer, AppState } from './mainAppReducer';
 import refreshUserData from './refreshUserData';
 import registerForPushNotificationsAsync, {
@@ -55,17 +55,21 @@ export default class Auth {
       ): Promise<void> => {
         // Store credentials in SecureStore
         if ('user' in result) {
-          SecureStore.setItemAsync('providerId', result.user.providerId);
-          SecureStore.setItemAsync('userId', result.user.uid);
-          SecureStore.setItemAsync(
-            'profileData',
-            JSON.stringify(result?.additionalUserInfo?.profile),
-          ).catch((error) => {
-            Alert.alert('Signin failed', error.message);
-            if (__DEV__) {
-              console.log('Error signing in: ' + error);
-            }
-          });
+          const profileData = result?.additionalUserInfo?.profile
+            ? {
+                ...result.additionalUserInfo.profile,
+                name: result.additionalUserInfo.profile.name || displayName,
+              }
+            : {};
+
+          await Promise.all([
+            SecureStore.setItemAsync('providerId', result.user.providerId),
+            SecureStore.setItemAsync('userId', result.user.uid),
+            SecureStore.setItemAsync(
+              'profileData',
+              JSON.stringify(profileData),
+            ),
+          ]);
 
           // Check if that user's document exists, in order to direct them to or past onboarding
           const onboardingComplete = await firestore()
@@ -106,9 +110,18 @@ export default class Auth {
             });
 
           if (onboardingComplete) {
-            const expoPushToken = await registerForPushNotificationsAsync();
-            if (expoPushToken) {
-              updateExpoPushToken(expoPushToken, result.user.uid);
+            try {
+              const expoPushToken = await registerForPushNotificationsAsync();
+              if (expoPushToken) {
+                updateExpoPushToken(expoPushToken, result.user.uid);
+              }
+            } catch (error) {
+              if (__DEV__) {
+                console.log(
+                  'Error when registering push notification: ',
+                  error,
+                );
+              }
             }
           }
 
@@ -117,10 +130,10 @@ export default class Auth {
             type: 'SIGN_IN',
             token: result.user.uid,
             onboardingComplete: onboardingComplete,
-            profileData: result.additionalUserInfo?.profile ?? {},
+            profileData,
             isAuthLoading: false,
             userData: {
-              displayName: result.user.displayName,
+              displayName: result.user.displayName || displayName,
               email: result.user.email,
               uid: result.user.uid,
             },
@@ -159,7 +172,7 @@ export default class Auth {
           showPlayServicesUpdateDialog: true,
         });
         googleUserInfo = await GoogleSignin.signIn();
-      } catch (error) {
+      } catch (error: any) {
         error.message =
           error.code === statusCodes.SIGN_IN_CANCELLED
             ? ''
@@ -196,14 +209,17 @@ export default class Auth {
     }, [dispatch]);
 
     const signInWithApple = useCallback(async (): Promise<void> => {
+      let credential: AppleAuthentication.AppleAuthenticationCredential;
+      let rawNonce: string | undefined;
+
       try {
-        const rawNonce = Math.random().toString(36).substring(2, 10);
+        rawNonce = Math.random().toString(36).substring(2, 10);
         const hashedNonce = await Crypto.digestStringAsync(
           Crypto.CryptoDigestAlgorithm.SHA256,
           rawNonce,
         );
 
-        let credential = await AppleAuthentication.signInAsync({
+        credential = await AppleAuthentication.signInAsync({
           requestedScopes: [
             AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
             AppleAuthentication.AppleAuthenticationScope.EMAIL,
@@ -242,27 +258,29 @@ export default class Auth {
             } as AppleAuthentication.AppleAuthenticationFullName,
           };
         }
-
-        dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
-        // Pipe the result of Sign in with Apple into Firebase auth
-        const { identityToken, fullName } = credential;
-        const appleAuthCredential = auth.AppleAuthProvider.credential(
-          identityToken!,
-          rawNonce,
-        );
-        const fbSigninResult = await auth().signInWithCredential(
-          appleAuthCredential,
-        );
-
-        return await processFbLogin(
-          fbSigninResult,
-          `${fullName?.givenName} ${fullName?.familyName}`,
-        );
-      } catch (error) {
+      } catch (error: any) {
         if (error.code !== 'ERR_CANCELED') {
           Alert.alert('Signin failed', error.message);
         }
+
+        return;
       }
+
+      dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
+      // Pipe the result of Sign in with Apple into Firebase auth
+      const { identityToken, fullName } = credential;
+      const appleAuthCredential = auth.AppleAuthProvider.credential(
+        identityToken!,
+        rawNonce,
+      );
+      const fbSigninResult = await auth().signInWithCredential(
+        appleAuthCredential,
+      );
+
+      return processFbLogin(
+        fbSigninResult,
+        `${fullName?.givenName} ${fullName?.familyName}`,
+      );
     }, [dispatch, processFbLogin]);
 
     const finishOnboarding = useCallback(async () => {

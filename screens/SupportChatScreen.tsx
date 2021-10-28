@@ -23,7 +23,7 @@ import sendChatMessage from '../utilities/sendChatMessage';
 import { ChatMessage } from '../components/ChatMessage';
 import { ChatTextInput } from '../components/ChatTextInput';
 import { Chat, Navigation } from '../types/custom';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {

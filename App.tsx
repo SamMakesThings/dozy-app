@@ -8,7 +8,7 @@ import { LogBox, StatusBar, Text, UIManager, Platform } from 'react-native';
 import LoadingOverlay from './components/LoadingOverlay';
 import { dozy_theme } from './config/Themes';
 import AppNavigator from './navigation/AppNavigator';
-import { Updates } from './utilities/updates.service';
+import Updates from './utilities/updates.service';
 import Feedback from './utilities/feedback.service';
 import Auth from './utilities/auth.service';
 

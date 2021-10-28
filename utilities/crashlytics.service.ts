@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-export class Crashlytics {
+export default class Crashlytics {
   static useCrashlytics(userId?: string): void {
     useEffect((): void => {
       if (userId) {
@@ -19,7 +19,7 @@ export class Crashlytics {
   }
 
   static async setAttributes(
-    attributes: Record<string, string>
+    attributes: Record<string, string>,
   ): Promise<null> {
     return crashlytics().setAttributes(attributes);
   }
