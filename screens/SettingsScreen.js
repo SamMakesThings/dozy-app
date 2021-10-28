@@ -95,20 +95,21 @@ export function SettingsScreen() {
       const dailyLogNotificationDocs = await notifFbQuery.get();
       dailyLogNotificationDocs.forEach((querySnapshot) => {
         querySnapshot.ref.onSnapshot((notif) => {
-          const notifData = notif.data();
-          dispatch({
-            type: 'SET_LOG_REMINDER_TIME',
-            time: decodeUTCTime({
-              version: notifData.version,
-              value: notifData.time.toDate(),
-              timezone: notifData.timezone,
-            }),
-          });
-          dispatch({
-            type: 'TOGGLE_LOG_NOTIFS',
-            enabledStatus: notifData.enabled,
-          });
-          // setNotifsEnabled(notifData.enabled);
+          if (notif) {
+            const notifData = notif.data();
+            dispatch({
+              type: 'SET_LOG_REMINDER_TIME',
+              time: decodeUTCTime({
+                version: notifData.version,
+                value: notifData.time.toDate(),
+                timezone: notifData.timezone,
+              }),
+            });
+            dispatch({
+              type: 'TOGGLE_LOG_NOTIFS',
+              enabledStatus: notifData.enabled,
+            });
+          }
         });
       });
     };
