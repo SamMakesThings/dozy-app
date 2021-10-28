@@ -164,6 +164,7 @@ export async function submitDiaryReminderAndCheckinData(
       type: 'DAILY_LOG',
       time: diaryReminderTimeDataAsUTC.value,
       version: diaryReminderTimeDataAsUTC.version,
+      timezone: diaryReminderTimeDataAsUTC.timezone,
       enabled: !!diaryAndCheckinData.diaryReminderTime,
     };
     if (querySnapshot.docs.length) {

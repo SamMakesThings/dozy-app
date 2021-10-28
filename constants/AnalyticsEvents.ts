@@ -4,7 +4,7 @@ export const SeparatelyTrackedScreens = [
   'Support',
   'Settings',
   'TreatmentPlan',
-  'TreatmentReview'
+  'TreatmentReview',
 ];
 
 export default {
@@ -78,5 +78,6 @@ export default {
   onboardingCheckinScheduling: 'onboarding checkin scheduling', // Visits the checking scheduling page in the onboarding
   onboardingSendFirstChat: 'onboarding send first chat', // Visits the send first chat page in the onboarding
   onboardingSendFirstChatContd: 'onboarding send first chat contd', // Visits the send first chat contd page in the onboarding
-  onboardingOnboardingEnd: 'onboarding end' // Visits the end page in the onboarding
+  onboardingOnboardingEnd: 'onboarding end', // Visits the end page in the onboarding
+  leaveFeedback: 'leaveFeedback', // Leaves a feedback
 };

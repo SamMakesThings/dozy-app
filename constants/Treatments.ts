@@ -88,7 +88,7 @@ export default {
     todos: ['Nothing to do!'],
     url: 'https://dozy.customerly.help',
     optional: false,
-    ready: false,
+    ready: true,
   },
   FIX: {
     title: 'Sticking To The Schedule',

@@ -26,9 +26,8 @@ export default function BottomTabs() {
     return moment(nextCheckinAsDate).startOf('date');
   }, [state.userData?.currentTreatments?.nextCheckinDatetime]);
 
-  const nextCheckinReady = !!treatments[
-    state.userData?.nextCheckin?.treatmentModule
-  ]?.ready;
+  const nextCheckinReady =
+    !!treatments[state.userData?.nextCheckin?.treatmentModule]?.ready;
 
   return (
     <Tab.Navigator
@@ -37,8 +36,8 @@ export default function BottomTabs() {
         inactiveTintColor: '#7FC0C4',
         style: {
           backgroundColor: '#00818A',
-          borderTopWidth: 0
-        }
+          borderTopWidth: 0,
+        },
       }}
     >
       {/* Sleep diary entries screen */}
@@ -54,7 +53,7 @@ export default function BottomTabs() {
               color={color}
               name={Platform.OS === 'ios' ? 'ios-journal' : 'md-journal'}
             />
-          )
+          ),
         }}
       />
 
@@ -72,7 +71,7 @@ export default function BottomTabs() {
               name={Platform.OS === 'ios' ? 'ios-medical' : 'md-medical'}
               badge={nextCheckinDate.isBefore(moment()) && nextCheckinReady}
             />
-          )
+          ),
         }}
       />
 
@@ -92,7 +91,7 @@ export default function BottomTabs() {
               }
               badge={state.userData?.livechatUnreadMsg}
             />
-          )
+          ),
         }}
       />
       <Tab.Screen
@@ -107,7 +106,7 @@ export default function BottomTabs() {
               color={color}
               name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
             />
-          )
+          ),
         }}
       />
     </Tab.Navigator>
@@ -116,5 +115,5 @@ export default function BottomTabs() {
 
 BottomTabs.propTypes = {
   color: PropTypes.string,
-  focused: PropTypes.bool
+  focused: PropTypes.bool,
 };

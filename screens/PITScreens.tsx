@@ -23,6 +23,7 @@ import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { ErrorObj } from '../types/error';
+import Feedback from '../utilities/feedback.service';
 
 // Use a local state object instead of GLOBAL for GSES score, next checkin time
 interface Global {
@@ -495,6 +496,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const PITEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin
   const reminderObject = {
@@ -540,6 +542,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
+        setShowingFeedbackWidget(true);
       }}
       textLabel="Weekly check-in completed!"
       buttonLabel="Finish"

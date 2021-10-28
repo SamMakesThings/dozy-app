@@ -18,6 +18,7 @@ import RaisedHands from '../assets/images/RaisedHands.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { ErrorObj } from '../types/error';
+import Feedback from '../utilities/feedback.service';
 
 const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
@@ -507,6 +508,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const HYGEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin
   const reminderObject = {
@@ -555,6 +557,7 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
+        setShowingFeedbackWidget(true);
       }}
       textLabel="Well done! You've taken one more step towards sleeping through the night."
       buttonLabel="Finish"

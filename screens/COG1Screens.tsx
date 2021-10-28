@@ -15,6 +15,7 @@ import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { AuthContext } from '../context/AuthContext';
 import { ErrorObj } from '../types/error';
+import Feedback from '../utilities/feedback.service';
 
 // TODO: Update percentage values
 
@@ -601,6 +602,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const COG1End: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin
   const reminderObject = {
@@ -659,6 +661,7 @@ export const COG1End: React.FC<Props> = ({ navigation }) => {
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
+        setShowingFeedbackWidget(true);
       }}
       textLabel="Well done! You've taken one more step towards sleeping through the night."
       buttonLabel="Finish"

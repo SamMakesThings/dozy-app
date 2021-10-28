@@ -33,6 +33,7 @@ import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation, SleepLog } from '../types/custom';
 import { ErrorObj } from '../types/error';
+import Feedback from '../utilities/feedback.service';
 
 interface Props {
   navigation: Navigation;
@@ -907,6 +908,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = React.useContext(AuthContext);
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Calculate some baseline statistics for later reference
   const sleepLogs: Array<SleepLog> = state.sleepLogs;
@@ -978,6 +980,7 @@ export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
+        setShowingFeedbackWidget(true);
       }}
       textLabel="Weekly check-in completed!"
       buttonLabel="Finish"

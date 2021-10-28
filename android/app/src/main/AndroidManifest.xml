@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.dozyhealth.dozy">
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
@@ -7,7 +8,7 @@
     <meta-data android:name="expo.modules.updates.EXPO_SDK_VERSION" android:value="41.0.0"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="true"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
-    <meta-data android:name="expo.modules.updates.EXPO_RELEASE_CHANNEL" android:value="default6"/>
+    <meta-data android:name="expo.modules.updates.EXPO_RELEASE_CHANNEL" android:value="bugfix-chat-conversation-issue"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
     <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:theme="@style/Theme.App.SplashScreen" android:screenOrientation="portrait">
       <intent-filter>

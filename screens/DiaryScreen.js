@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,6 +11,8 @@ import { withTheme } from '@draftbit/ui';
 import { Entypo } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import firestore from '@react-native-firebase/firestore';
+import momentTZ from 'moment-timezone';
 import DiaryEntriesScreen from './DiaryEntriesScreen';
 import { DiaryStatsScreen } from './DiaryStatsScreen';
 import { dozy_theme } from '../config/Themes';
@@ -33,6 +35,38 @@ function DiaryScreen() {
     month: 'long',
     year: 'numeric',
   });
+
+  useEffect(() => {
+    const maybeUpdateReminderTimezone = async () => {
+      if (state.userData.logReminderId) {
+        const logReminderDoc = await firestore()
+          .collection('users')
+          .doc(state.userId)
+          .collection('notifications')
+          .doc(state.userData.logReminderId)
+          .get();
+        const logReminderData = logReminderDoc.data();
+        if (logReminderData.version === '0.3') {
+          const currentTimezone = momentTZ.tz.guess(true);
+          if (logReminderData.timezone !== currentTimezone) {
+            firestore()
+              .collection('users')
+              .doc(state.userId)
+              .update({
+                version: '0.3',
+                value: momentTZ(
+                  momentTZ(logReminderData.time.toDate())
+                    .tz(logReminderData.timezone)
+                    .format('YYYY-MM-DD HH:mm'),
+                ).toDate(),
+                timezone: currentTimezone,
+              });
+          }
+        }
+      }
+    };
+    maybeUpdateReminderTimezone();
+  }, []);
 
   return (
     <SafeAreaView style={styles.ScreenContainer} edges={['top']}>

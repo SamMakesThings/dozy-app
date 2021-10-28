@@ -45,33 +45,6 @@ export function SettingsScreen() {
     var notifFbQuery = notifColRef.where('type', '==', 'DAILY_LOG');
   }
 
-  // Add function to pull existing settings from Firebase, update state with them
-  function getSettings() {
-    if (notifFbQuery === undefined) {
-      return 'ERROR: Firebase not loading correctly';
-    }
-
-    notifFbQuery
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((notif) => {
-          const notifData = notif.data();
-          dispatch({
-            type: 'SET_LOG_REMINDER_TIME',
-            time: decodeUTCTime(notifData.time.toDate(), notifData.version),
-          });
-          dispatch({
-            type: 'TOGGLE_LOG_NOTIFS',
-            enabledStatus: notifData.enabled,
-          });
-          // setNotifsEnabled(notifData.enabled);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   // Add function to update notification in Firebase based on local state
   function updateFbLogNotification(update) {
     notifLogReminderRef.update(update);
@@ -97,6 +70,7 @@ export function SettingsScreen() {
           updateFbLogNotification({
             time: encodedTimeData.value,
             version: encodedTimeData.version,
+            timezone: encodedTimeData.timezone,
           });
           return {
             ...prevState,
@@ -112,6 +86,32 @@ export function SettingsScreen() {
 
   // Make sure the screen uses updated state once it loads for the first time.
   React.useEffect(() => {
+    // Add function to pull existing settings from Firebase, update state with them
+    const getSettings = async () => {
+      if (notifFbQuery === undefined) {
+        return 'ERROR: Firebase not loading correctly';
+      }
+
+      const dailyLogNotificationDocs = await notifFbQuery.get();
+      dailyLogNotificationDocs.forEach((querySnapshot) => {
+        querySnapshot.ref.onSnapshot((notif) => {
+          const notifData = notif.data();
+          dispatch({
+            type: 'SET_LOG_REMINDER_TIME',
+            time: decodeUTCTime({
+              version: notifData.version,
+              value: notifData.time.toDate(),
+              timezone: notifData.timezone,
+            }),
+          });
+          dispatch({
+            type: 'TOGGLE_LOG_NOTIFS',
+            enabledStatus: notifData.enabled,
+          });
+          // setNotifsEnabled(notifData.enabled);
+        });
+      });
+    };
     getSettings();
   }, []);
 
