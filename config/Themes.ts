@@ -1,7 +1,8 @@
 import { scale } from 'react-native-size-matters';
+import { Theme } from '../types/theme';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const dozy_theme = {
+export const dozy_theme: Theme = {
   disabledOpacity: 0.5,
   spacing: {
     gutters: 16,

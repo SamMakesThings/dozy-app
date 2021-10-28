@@ -181,7 +181,6 @@ exports[`FeedbackPopupModal should match the snapshot 1`] = `
       }
     >
       <withTheme(FeedbackWidget)
-        hasShadow={true}
         onFeedbackChange={[Function]}
         onRateChange={[Function]}
         onSubmit={[Function]}

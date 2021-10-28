@@ -7,8 +7,9 @@
     "test": "TZ=UTC jest",
     "devtools": "react-devtools",
     "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "tsc": "tsc --noEmit",
+    "lint": "yarn eslint && yarn tsc",
     "build-alpha": "git status -s -uall && if ! git diff-index --quiet HEAD --; then echo \"\\033[0;31mPlease commit all changes before the operation! Aborting...\"; exit 1; else cd ios && bundle install && bundle exec fastlane increment_version_build_numbers && bundle exec fastlane update_release_channel && cd ../android && bundle install && bundle exec fastlane increment_version_build_numbers && bundle exec fastlane update_release_channel && cd .. && git add . && git commit -m 'bumped js, ios, android version and build numbers, set the alpha channel' && eas build --platform all --profile alpha --non-interactive; fi",
     "build-prod": "git status -s -uall && if ! git diff-index --quiet HEAD --; then echo \"\\033[0;31mPlease commit all changes before the operation! Aborting...\"; exit 1; else cd ios && bundle install && bundle exec fastlane increment_version_build_numbers && bundle exec fastlane update_release_channel_prod && cd ../android && bundle install && bundle exec fastlane increment_version_build_numbers && bundle exec fastlane update_release_channel_prod && cd .. && git add . && git commit -m 'bumped js, ios, android version and build numbers, set the production channel' && eas build --platform all --profile release --non-interactive; fi"
   },
@@ -31,7 +32,7 @@
     "react-native-safe-area-context": "3.2.0"
   },
   "dependencies": {
-    "@draftbit/ui": "npm:@fancydevpro/draftbit-ui@39.7.1-patch-date-picker-3",
+    "@draftbit/ui": "npm:@fancydevpro/draftbit-ui@39.7.1-patch-container-prop-type",
     "@expo-google-fonts/rubik": "^0.1.0",
     "@expo/vector-icons": "^12.0.0",
     "@react-native-community/datetimepicker": "3.2.0",

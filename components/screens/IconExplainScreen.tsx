@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TextProps } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { ProgressBar } from '../ProgressBar';
 import BottomNavButtons from '../BottomNavButtons';
@@ -7,11 +7,11 @@ import { Theme } from '../../types/theme';
 
 interface Props {
   theme: Theme;
-  progressBarPercent: number;
-  image: React.Component;
-  textLabel: string;
+  progressBarPercent?: number;
+  image: React.ReactElement;
+  textLabel: string | React.ReactElement<TextProps>;
   longText?: boolean;
-  onQuestionSubmit: (value: string | number | boolean) => void;
+  onQuestionSubmit: (value?: string | number | boolean) => void;
   buttonLabel?: string;
   bottomGreyButtonLabel?: string;
   bottomBackButton?: () => void;

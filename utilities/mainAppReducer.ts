@@ -16,7 +16,7 @@ export type AppState = {
   authLoading: boolean;
   chats: Chat[] | [];
   tasks: Task[];
-  selectedDate: Record<string, any>;
+  selectedDate: { year: number; month: number };
 };
 export const initialState: AppState = {
   isLoading: true,

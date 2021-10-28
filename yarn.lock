@@ -2823,21 +2823,21 @@
   dependencies:
     "@date-io/core" "^1.3.13"
 
-"@draftbit/react-theme-provider@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@draftbit/react-theme-provider/-/react-theme-provider-2.1.1.tgz#8ae9d097d1d3c8a08fe04c583d4f020764e24f72"
-  integrity sha512-3LZeOaNik9QHox4bhqyMGZFYsuGP7ErTh075uuh5uwWfLgS1S19kqCL5vi/LcxdBEVcX8MOwn9GktYFD7Y6QYQ==
+"@draftbit/react-theme-provider@npm:@fancydevpro/react-theme-provider@2.1.1-type-patch-1":
+  version "2.1.1-type-patch-1"
+  resolved "https://registry.yarnpkg.com/@fancydevpro/react-theme-provider/-/react-theme-provider-2.1.1-type-patch-1.tgz#f7d71462c7d85f30018e777956b5009f827c3736"
+  integrity sha512-BWAab330eSfIR6bDHeXTxpctar+v1xwcMv5AVRISdBlDDkenUoU5cV465T4/49yiSdoc5R6pRxgC5YeQQ4GGNg==
   dependencies:
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-date-picker-3":
-  version "39.7.1-patch-date-picker-3"
-  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-date-picker-3.tgz#b59f94871326e6cf88976ca99a41e22760cbd7bb"
-  integrity sha512-WVvtdqEUdhroo0ZZoxObUmsKYBfJLCbIfVZhh9QpKcTUA3Yk6XPVMKzYkGcODJc3HEtEKQegEQUfY1LdI1TfuA==
+"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-container-prop-type":
+  version "39.7.1-patch-container-prop-type"
+  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-container-prop-type.tgz#f6a5c0d37bb515881f476c8b829bf1e5d08fec4a"
+  integrity sha512-FM9lDartaXZEGW2sdnpzFkT3lEQgRdv80opW2/EY+Wnw8+vpbHp8bVwCim2E8ZXyBzrdVhP9PrmSSKqXAv1Nsg==
   dependencies:
     "@date-io/date-fns" "^1.3.13"
-    "@draftbit/react-theme-provider" "^2.1.1"
+    "@draftbit/react-theme-provider" "npm:@fancydevpro/react-theme-provider@2.1.1-type-patch-1"
     "@material-ui/core" "^4.11.0"
     "@material-ui/pickers" "^3.2.10"
     "@react-native-community/slider" "~3.0.3"

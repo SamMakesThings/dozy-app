@@ -2,14 +2,14 @@ import { SleepLog } from '../types/custom';
 import { subDays } from 'date-fns';
 
 // Helper function. Return true if date2 is the day before date1 (or same day)
-export function isPreviousDay(date1: Date, date2: Date) {
+export function isPreviousDay(date1: Date, date2: Date): boolean {
   // Earliest candidate is midnight of 1 day ago
   const midnight = subDays(date1, 1);
   midnight.setHours(0, 0, 0, 0);
   return midnight <= date2 && date2 <= date1;
 }
 
-export function getLogStreakLength(sleepLogs: SleepLog[]) {
+export function getLogStreakLength(sleepLogs: SleepLog[]): number {
   let streakLength = 0;
 
   // Calculate the current diary streak length
@@ -31,7 +31,7 @@ export function getLogStreakLength(sleepLogs: SleepLog[]) {
       !sleepLogs[streakLength + 1] || // Make sure the next index is defined or the below code breaks
       !isPreviousDay(
         sleepLogs[streakLength].upTime.toDate(),
-        sleepLogs[streakLength + 1].upTime.toDate()
+        sleepLogs[streakLength + 1].upTime.toDate(),
       )
     ) {
       break;

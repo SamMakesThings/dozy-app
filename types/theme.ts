@@ -1,3 +1,9 @@
+import { ViewStyle } from 'react-native';
+
+type Deep<T> = {
+  [P in keyof T]: Deep<T[P]> | number | string | ViewStyle['justifyContent'];
+};
+
 export interface Theme {
   disabledOpacity: number;
   spacing: {
@@ -13,7 +19,7 @@ export interface Theme {
   };
   buttonLayout: {
     height: number;
-    justifyContent: string;
+    justifyContent: ViewStyle['justifyContent'];
   };
   typography: {
     smallLabel: {
@@ -158,4 +164,5 @@ export interface Theme {
       borderOpacity: number;
     };
   };
+  [key: string]: number | string | Deep<any>;
 }

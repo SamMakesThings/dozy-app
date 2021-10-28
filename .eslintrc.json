@@ -37,8 +37,17 @@
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "react/jsx-filename-extension": "off",
-    "react-native/no-raw-text": "off"
+    "react-native/no-raw-text": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": ["warn"]
+      }
+    }
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "react",

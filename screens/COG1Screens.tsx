@@ -14,6 +14,7 @@ import RaisedHands from '../assets/images/RaisedHands.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { AuthContext } from '../context/AuthContext';
+import { ErrorObj } from '../types/error';
 import Feedback from '../utilities/feedback.service';
 
 // TODO: Update percentage values
@@ -101,8 +102,8 @@ export const DBAS1: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS1 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS1 = value as number;
         navigation.navigate('DBAS2', { progressBarPercent: 0.36 });
       }}
       questionLabel="I need 8 hours of sleep to feel refreshed and function well during the day."
@@ -123,8 +124,8 @@ export const DBAS2: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS2 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS2 = value as number;
         navigation.navigate('DBAS3', { progressBarPercent: 0.39 });
       }}
       questionLabel="When I don't get the proper amount of sleep on a given night, I need to catch up the next day by napping or the next night by sleeping longer."
@@ -145,8 +146,8 @@ export const DBAS3: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS3 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS3 = value as number;
         navigation.navigate('DBAS4', { progressBarPercent: 0.43 });
       }}
       questionLabel="I am concerned that chronic insomnia may have serious consequences on my physical health."
@@ -167,8 +168,8 @@ export const DBAS4: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS4 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS4 = value as number;
         navigation.navigate('DBAS5', { progressBarPercent: 0.46 });
       }}
       questionLabel="I am worried that I may lose control over my ability to sleep."
@@ -189,8 +190,8 @@ export const DBAS5: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS5 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS5 = value as number;
         navigation.navigate('DBAS6', { progressBarPercent: 0.5 });
       }}
       questionLabel="After a poor night's sleep, I know it will interfere with my activities the next day."
@@ -211,8 +212,8 @@ export const DBAS6: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS6 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS6 = value as number;
         navigation.navigate('DBAS7', { progressBarPercent: 0.54 });
       }}
       questionLabel="To be alert and function well during the day, I believe I would be better off taking a sleeping pill rather than having a poor night's sleep."
@@ -233,8 +234,8 @@ export const DBAS7: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS7 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS7 = value as number;
         navigation.navigate('DBAS8', { progressBarPercent: 0.57 });
       }}
       questionLabel="When I feel irritable, depressed, or anxious during the day, it is mostly because I did not sleep well the night before."
@@ -255,8 +256,8 @@ export const DBAS8: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS8 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS8 = value as number;
         navigation.navigate('DBAS9', { progressBarPercent: 0.61 });
       }}
       questionLabel="When I sleep poorly one night, I know it will disturb my sleep schedule for the whole week."
@@ -277,8 +278,8 @@ export const DBAS9: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS9 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS9 = value as number;
         navigation.navigate('DBAS10', { progressBarPercent: 0.64 });
       }}
       questionLabel="Without an adequate night's sleep, I can hardly function the next day."
@@ -299,8 +300,8 @@ export const DBAS10: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS10 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS10 = value as number;
         navigation.navigate('DBAS11', { progressBarPercent: 0.68 });
       }}
       questionLabel="I can't ever predict whether I'll have a good or poor night's sleep."
@@ -321,8 +322,8 @@ export const DBAS11: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS11 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS11 = value as number;
         navigation.navigate('DBAS12', { progressBarPercent: 0.71 });
       }}
       questionLabel="I have little ability to manage the negative consequences of disturbed sleep."
@@ -343,8 +344,8 @@ export const DBAS12: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS12 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS12 = value as number;
         navigation.navigate('DBAS13', { progressBarPercent: 0.75 });
       }}
       questionLabel="When I feel tired, have no energy, or just seem to not function well during the day, it is generally because I did not sleep well the night before."
@@ -365,8 +366,8 @@ export const DBAS13: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS13 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS13 = value as number;
         navigation.navigate('DBAS14', { progressBarPercent: 0.79 });
       }}
       questionLabel="I believe insomnia is the result of a chemical imbalance."
@@ -387,8 +388,8 @@ export const DBAS14: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS14 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS14 = value as number;
         navigation.navigate('DBAS15', { progressBarPercent: 0.82 });
       }}
       questionLabel="I feel insomnia is ruining my ability to enjoy life and prevents me from doing what I want."
@@ -409,8 +410,8 @@ export const DBAS15: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS15 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS15 = value as number;
         navigation.navigate('DBAS16', { progressBarPercent: 0.86 });
       }}
       questionLabel="Medication is probably the only solution to sleeplessness."
@@ -431,8 +432,8 @@ export const DBAS16: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        COG1State.DBAS16 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        COG1State.DBAS16 = value as number;
         navigation.navigate('DBASResult', { progressBarPercent: 0.89 });
       }}
       questionLabel="I avoid or cancel obligations (social, family) after a poor night's sleep."
@@ -537,7 +538,7 @@ export const COG1Review: React.FC<Props> = ({ navigation }) => {
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(res: string) => {
+      onQuestionSubmit={(res?: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
             module: 'COG1',
@@ -569,11 +570,11 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
           new Date().getTime() + 86400000 * 7,
         ) /* Default date of 7 days from today */
       }
-      onQuestionSubmit={(value: Date) => {
-        COG1State.nextCheckinTime = value;
+      onQuestionSubmit={(value: Date | boolean) => {
+        COG1State.nextCheckinTime = value as Date;
         navigation.navigate('COG1End', { progressBarPercent: 1 });
       }}
-      validInputChecker={(val: Date) => {
+      validInputChecker={(val: Date): ErrorObj | boolean => {
         // Make sure the selected date is 7+ days from today
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true

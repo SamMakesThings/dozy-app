@@ -1,20 +1,14 @@
 import React from 'react';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { Button, ScreenContainer, Container, Touchable } from '@draftbit/ui';
-import {
-  StyleSheet,
-  Text,
-  ImageBackground,
-  Platform,
-  ViewStyle,
-} from 'react-native';
+import { StyleSheet, Text, ImageBackground, Platform } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { AuthContext } from '../context/AuthContext';
 import { dozy_theme } from '../config/Themes';
 import WordmarkTrans from '../assets/images/WordmarkTrans.svg';
 import UndrawBed from '../assets/images/UndrawBed.svg';
 
-function LoginScreen() {
+const LoginScreen: React.FC = () => {
   // Pull the theme manually
   const theme = dozy_theme;
 
@@ -90,10 +84,10 @@ function LoginScreen() {
                 AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
               }
               cornerRadius={theme.borderRadius.button}
-              style={StyleSheet.flatten([
-                theme.buttonLayout as ViewStyle,
+              style={[
+                theme.buttonLayout,
                 { borderRadius: theme.borderRadius.button },
-              ])}
+              ]}
               onPress={signInWithApple}
             />
           )}
@@ -101,13 +95,13 @@ function LoginScreen() {
           <Button
             type="solid"
             color={theme.colors.primary}
-            style={StyleSheet.flatten([
+            style={[
               theme.buttonLayout,
               {
                 borderRadius: theme.borderRadius.button,
-                marginTop: Platform.OS === 'ios' ? scale(5) : 0,
               },
-            ])}
+              Platform.OS === 'ios' && styles.Button_Signin_iOS,
+            ]}
             onPress={signIn}
           >
             {Platform.OS === 'ios' ? 'Continue with Google' : 'Get started'}
@@ -127,7 +121,7 @@ function LoginScreen() {
       </ImageBackground>
     </ScreenContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   View_RootContainer: {},
@@ -174,6 +168,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   background: { resizeMode: 'contain' },
+  Button_Signin_iOS: {
+    marginTop: scale(5),
+  },
 });
 
 export default LoginScreen;

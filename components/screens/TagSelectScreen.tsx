@@ -9,6 +9,7 @@ import {
   ScrollView,
   InteractionManager,
 } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -28,11 +29,11 @@ if (Platform.OS === 'android') {
 
 interface Props {
   theme: Theme;
-  touchableTags: Array<{
+  touchableTags: {
     label: string;
-    selected: boolean;
-    icon: string;
-  }>;
+    selected?: boolean;
+    icon: React.ComponentProps<typeof Entypo>['name'];
+  }[];
   defaultTags?: string[];
   defaultNotes?: string;
   questionLabel: string;

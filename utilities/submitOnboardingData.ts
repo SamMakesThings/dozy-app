@@ -29,7 +29,7 @@ export interface OnboardingState {
 export default async function submitOnboardingData(
   onboardingState: OnboardingState,
   dispatch: React.Dispatch<ACTION>,
-) {
+): Promise<void> {
   // Initialize relevant Firebase values
   const userId = await SecureStore.getItemAsync('userId');
   const userDocRef =

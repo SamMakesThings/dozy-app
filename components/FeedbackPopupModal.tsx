@@ -42,7 +42,6 @@ export const FeedbackPopupModal: React.FC<FeedbackPopupModalProps> = ({
           <FeedbackWidget
             style={styles.modalView}
             rate={rate}
-            hasShadow
             onRateChange={setRate}
             onFeedbackChange={setFeedback}
             onSubmit={onSubmit}
