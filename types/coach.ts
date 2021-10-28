@@ -8,7 +8,7 @@ export interface Coach {
   lastName: string;
   title?: string;
   image?: CoachImage;
-  expoPushToken: string;
+  expoPushToken?: string;
 }
 
 export interface CoachImageDTO {
