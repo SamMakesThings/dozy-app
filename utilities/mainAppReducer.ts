@@ -7,7 +7,7 @@ export type AppState = {
   isSignout: boolean;
   userId: string | undefined;
   userData: Record<string, any>;
-  onboardingComplete: boolean;
+  onboardingComplete: boolean | undefined;
   profileData: Record<string, any>;
   sleepLogs: SleepLog[];
   authLoading: boolean;
@@ -15,12 +15,13 @@ export type AppState = {
   tasks: Task[];
   selectedDate: Record<string, any>;
 };
+
 export const initialState: AppState = {
   isLoading: true,
   isSignout: false,
   userId: undefined,
   userData: {},
-  onboardingComplete: false,
+  onboardingComplete: undefined,
   profileData: {},
   sleepLogs: [],
   authLoading: false,
@@ -58,7 +59,7 @@ export type ACTION =
   | {
       type: 'UPDATE_USERDATA';
       userData: Record<string, any>;
-      onboardingComplete: boolean;
+      onboardingComplete: boolean | undefined;
     }
   | { type: 'SET_SLEEPLOGS'; sleepLogs: SleepLog[] }
   | { type: 'SET_CHATS'; chats: Chat[] | [] }
