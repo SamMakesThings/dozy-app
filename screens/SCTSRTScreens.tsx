@@ -32,6 +32,7 @@ import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation, SleepLog } from '../types/custom';
+import Feedback from '../utilities/feedback.service';
 
 interface Props {
   navigation: Navigation;
@@ -906,6 +907,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
 
 export const SCTSRTEnd = ({ navigation }: Props) => {
   const { state, dispatch } = React.useContext(AuthContext);
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Calculate some baseline statistics for later reference
   const sleepLogs: Array<SleepLog> = state.sleepLogs;
@@ -978,6 +980,7 @@ export const SCTSRTEnd = ({ navigation }: Props) => {
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
+        setShowingFeedbackWidget(true);
       }}
       textLabel="Weekly check-in completed!"
       buttonLabel="Finish"

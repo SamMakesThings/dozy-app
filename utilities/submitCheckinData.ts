@@ -1,4 +1,8 @@
 import firestore from '@react-native-firebase/firestore';
+import {
+  setBadgeNumber,
+  calculateBadgeNumber,
+} from '../utilities/pushNotifications';
 
 interface ReminderObject {
   expoPushToken: string;
@@ -51,6 +55,11 @@ export default function submitCheckinData({
     // Initialize relevant Firebase values
     const userDocRef = firestore().collection('users').doc(userId);
     const userTreatmentsColRef = userDocRef.collection('treatmentsHistory');
+
+    // Update the app icon's badge
+    calculateBadgeNumber(userId, true, false, true).then((badgeNumber) => {
+      setBadgeNumber(badgeNumber);
+    });
 
     // Update nextCheckin & currentTreatments
     // If postponed, update checkin date while not updating anything else

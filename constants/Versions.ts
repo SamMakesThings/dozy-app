@@ -1,3 +1,3 @@
 export default {
-  timeDataVersion: '0.2',
+  timeDataVersion: '0.3',
 };

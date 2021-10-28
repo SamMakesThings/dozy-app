@@ -27,6 +27,10 @@ import { Chat, Navigation } from '../types/custom';
 import { Analytics } from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import {
+  setBadgeNumber,
+  calculateBadgeNumber,
+} from '../utilities/pushNotifications';
 
 export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
@@ -50,6 +54,12 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
         firestore().collection('users').doc(state.userId).update({
           livechatUnreadMsg: false,
         });
+        // Update the app icon's badge
+        calculateBadgeNumber(state.userId!, true, true, false).then(
+          (badgeNumber) => {
+            setBadgeNumber(badgeNumber);
+          },
+        );
       }
     }, []),
   );

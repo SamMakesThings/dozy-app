@@ -8,7 +8,9 @@
     "devtools": "react-devtools",
     "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "build-alpha": "git status -s -uall && if ! git diff-index --quiet HEAD --; then echo \"\\033[0;31mPlease commit all changes before the operation! Aborting...\"; exit 1; else cd ios && bundle install && bundle exec fastlane increment_version_build_numbers && bundle exec fastlane update_release_channel && cd ../android && bundle install && bundle exec fastlane increment_version_build_numbers && bundle exec fastlane update_release_channel && cd .. && git add . && git commit -m 'bumped js, ios, android version and build numbers, set the alpha channel' && eas build --platform all --profile alpha --non-interactive; fi",
+    "build-prod": "git status -s -uall && if ! git diff-index --quiet HEAD --; then echo \"\\033[0;31mPlease commit all changes before the operation! Aborting...\"; exit 1; else cd ios && bundle install && bundle exec fastlane increment_version_build_numbers && bundle exec fastlane update_release_channel_prod && cd ../android && bundle install && bundle exec fastlane increment_version_build_numbers && bundle exec fastlane update_release_channel_prod && cd .. && git add . && git commit -m 'bumped js, ios, android version and build numbers, set the production channel' && eas build --platform all --profile release --non-interactive; fi"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -71,6 +73,7 @@
     "intl": "^1.2.5",
     "lodash": "^4.17.21",
     "moment": "^2.27.0",
+    "moment-timezone": "^0.5.33",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -78,6 +81,7 @@
     "react-native-gesture-handler": "~1.10.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-pager-view": "^5.4.1",
+    "react-native-ratings": "^8.1.0",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
