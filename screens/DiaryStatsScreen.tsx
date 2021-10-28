@@ -5,13 +5,13 @@ import { scale } from 'react-native-size-matters';
 import { Entypo } from '@expo/vector-icons';
 import { CardContainer } from '../components/CardContainer';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../context/AuthContext';
 import { SleepLog } from '../types/custom';
 import { getLogStreakLength } from '../utilities/getLogStreakLength';
+import Auth from '../utilities/auth.service';
 import { LogStatsLineGraph } from '../components/LogStatsLineGraphComponent';
 
 export const DiaryStatsScreen: React.FC = () => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
   const allSleepLogs: Array<SleepLog> = state.sleepLogs;
 
   // Calculate the current diary streak length

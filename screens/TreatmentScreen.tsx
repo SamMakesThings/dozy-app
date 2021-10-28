@@ -12,7 +12,6 @@ import { ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
-import { AuthContext } from '../context/AuthContext';
 import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
 import TasksCard from '../components/TasksCard';
@@ -28,13 +27,14 @@ import planTreatmentModules from '../utilities/planTreatmentModules';
 import GLOBAL from '../utilities/global';
 import Feedback from '../utilities/feedback.service';
 import submitFeedback from '../utilities/submitFeedback';
+import Auth from '../utilities/auth.service';
 import { Navigation } from '../types/custom';
 
 export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
   const theme = dozy_theme;
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
   const { showingFeedbackWidget, isFeedbackSubmitted, setFeedbackSubmitted } =
     Feedback.useFeedback();
   const [rate, setRate] = useState(0);

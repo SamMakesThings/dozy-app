@@ -3,7 +3,6 @@ import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
 import { WebView } from 'react-native-webview';
-import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -20,6 +19,7 @@ import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation } from '../types/custom';
 import Feedback from '../utilities/feedback.service';
+import Auth from '../utilities/auth.service';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -399,7 +399,7 @@ export const CheckinScheduling: React.FC<{ navigation: Navigation }> = ({
 export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder objects, put them in an array

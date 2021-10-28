@@ -9,7 +9,6 @@ import {
   VictoryScatter,
 } from 'victory-native';
 import moment from 'moment';
-import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -33,6 +32,7 @@ import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation, SleepLog } from '../types/custom';
 import Feedback from '../utilities/feedback.service';
+import Auth from '../utilities/auth.service';
 
 interface Props {
   navigation: Navigation;
@@ -105,7 +105,7 @@ export const Welcome = ({ navigation }: Props) => {
 };
 
 export const SleepEfficiency = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   // Trim sleepLogs to only show most recent 10
   recentSleepLogs = state.sleepLogs.slice(0, 10);
@@ -906,7 +906,7 @@ export const CheckinScheduling = ({ navigation }: Props) => {
 };
 
 export const SCTSRTEnd = ({ navigation }: Props) => {
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Calculate some baseline statistics for later reference

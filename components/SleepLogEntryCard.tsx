@@ -5,6 +5,7 @@ import {
   GestureResponderEvent,
   View,
   Alert,
+  StyleSheet,
 } from 'react-native';
 import { Container } from '@draftbit/ui';
 import firestore from '@react-native-firebase/firestore';
@@ -13,9 +14,8 @@ import { Entypo } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
 import HighlightedText from './HighlightedText';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
+import Auth from '../utilities/auth.service';
 import { SleepLog } from '../types/custom';
-import { useAuth } from '../context/AuthContext';
-import { StyleSheet } from 'react-native';
 
 interface Props {
   sleepLog: SleepLog;
@@ -24,7 +24,7 @@ interface Props {
 
 const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
   const theme = dozy_theme;
-  const { state } = useAuth();
+  const { state } = Auth.useAuth();
   const userId = state.userId;
   const openDeleteSleepLogAlert = () =>
     Alert.alert(

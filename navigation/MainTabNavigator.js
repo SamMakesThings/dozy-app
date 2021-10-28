@@ -9,12 +9,12 @@ import SettingsScreen from '../screens/SettingsScreen';
 import { TreatmentScreen } from '../screens/TreatmentScreen';
 import { SupportChatScreen } from '../screens/SupportChatScreen';
 import treatments from '../constants/Treatments';
-import { AuthContext } from '../context/AuthContext';
+import Auth from '../utilities/auth.service';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   // Strip time from next checkin datetime to determine whether to show checkin badge
   // If userData isn't defined yet, set an old date so things don't break

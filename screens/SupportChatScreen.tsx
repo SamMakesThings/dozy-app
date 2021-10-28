@@ -17,7 +17,6 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 import { AntDesign } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
-import { AuthContext } from '../context/AuthContext';
 import { dozy_theme } from '../config/Themes';
 import Images from '../config/Images';
 import fetchChats from '../utilities/fetchChats';
@@ -32,12 +31,13 @@ import {
   setBadgeNumber,
   calculateBadgeNumber,
 } from '../utilities/pushNotifications';
+import Auth from '../utilities/auth.service';
 
 export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
   // Get global state & dispatch
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
 
   // Set Firebase DB references if userId is defined
   let colRef: FirebaseFirestoreTypes.CollectionReference;

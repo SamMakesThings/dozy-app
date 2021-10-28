@@ -13,8 +13,8 @@ import BarChart from '../assets/images/BarChart.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
-import { AuthContext } from '../context/AuthContext';
 import Feedback from '../utilities/feedback.service';
+import Auth from '../utilities/auth.service';
 
 // TODO: Update percentage values
 
@@ -600,7 +600,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const COG1End: React.FC<Props> = ({ navigation }) => {
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin

@@ -24,8 +24,8 @@ import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { Navigation, SleepLog } from '../types/custom';
 import fetchTasks from '../utilities/fetchTasks';
 import { Analytics } from '../utilities/analytics.service';
+import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
-import { AuthContext } from '../context/AuthContext';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -41,7 +41,7 @@ const SleepLogsView = (props: {
   navigation: Navigation;
 }) => {
   const theme = dozy_theme;
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
   let loggedToday = false;
   let selectedSleepLogs: Array<SleepLog> = [];
 
@@ -169,7 +169,7 @@ const SleepLogsView = (props: {
 
 const SleepLogsScreen: React.FC<{ navigation: Navigation }> = (props) => {
   // Get global state & dispatch
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
 
   // Set local state for loading/not loading
   const [logsLoading, setLogsLoading] = React.useState(true);

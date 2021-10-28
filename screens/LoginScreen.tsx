@@ -9,7 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
-import { AuthContext } from '../context/AuthContext';
+import Auth from '../utilities/auth.service';
 import { dozy_theme } from '../config/Themes';
 import WordmarkTrans from '../assets/images/WordmarkTrans.svg';
 import UndrawBed from '../assets/images/UndrawBed.svg';
@@ -19,7 +19,7 @@ function LoginScreen() {
   const theme = dozy_theme;
 
   // Get my auth functions from hook
-  const { signIn, signInWithApple } = React.useContext(AuthContext);
+  const { signIn, signInWithApple } = Auth.useAuth();
 
   return (
     <ScreenContainer

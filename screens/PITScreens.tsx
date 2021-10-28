@@ -3,7 +3,6 @@ import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
 import { NavigationProp } from '@react-navigation/native';
-import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -23,6 +22,7 @@ import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import Feedback from '../utilities/feedback.service';
+import Auth from '../utilities/auth.service';
 
 // Use a local state object instead of GLOBAL for GSES score, next checkin time
 interface Global {
@@ -493,7 +493,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const PITEnd: React.FC<Props> = ({ navigation }) => {
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin
