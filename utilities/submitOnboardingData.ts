@@ -234,6 +234,7 @@ export async function submitDiaryReminderAndCheckinData(
 
 export async function submitFirstChatMessage(
   firstChatMessageContent: string,
+  coachId: string,
   displayName?: string,
 ): Promise<void> {
   // Initialize relevant Firebase values
@@ -246,13 +247,13 @@ export async function submitFirstChatMessage(
   // Add initial support chat messages to chat collection
   const chatColRef = userDocRef.collection('supportMessages');
   chatColRef.add({
-    sender: 'Sam Stowers',
+    sender: coachId,
     message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
     time: sub(new Date(), { minutes: 4 }),
     sentByUser: false,
   });
   chatColRef.add({
-    sender: 'Sam Stowers',
+    sender: coachId,
     message: 'Why do you want to improve your sleep?',
     time: sub(new Date(), { minutes: 3 }),
     sentByUser: false,
@@ -264,7 +265,7 @@ export async function submitFirstChatMessage(
     sentByUser: true,
   });
   const lastChat = {
-    sender: 'Sam Stowers',
+    sender: coachId,
     message:
       "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
     time: new Date(),

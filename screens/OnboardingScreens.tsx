@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
   useWindowDimensions,
   Text,
@@ -42,6 +42,7 @@ import registerForPushNotificationsAsync, {
 } from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
 import { Analytics } from '../utilities/analytics.service';
+import { getOnboardingCoach } from '../utilities/coach';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 // Define the theme for the file globally
@@ -78,9 +79,16 @@ const onboardingState: OnboardingState = {
 };
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
+  const { dispatch } = useContext(AuthContext);
   imgSize = imgSizePercent * useWindowDimensions().width;
 
   useEffect((): void => {
+    getOnboardingCoach().then((coach) => {
+      dispatch({
+        type: 'SET_COACH',
+        coach,
+      });
+    });
     Analytics.logEvent(AnalyticsEvents.onboardingWelcome);
   }, []);
 
@@ -1038,9 +1046,13 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
+  const { state } = useContext(AuthContext);
+
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChat);
   }, []);
+
+  const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
 
   return (
     <WizardContentScreen
@@ -1054,13 +1066,13 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
     >
       <View>
         <ChatMessage
-          sender="Sam Stowers"
+          coach={senderName}
           message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
           time={new Date()}
           sentByUser={false}
         />
         <ChatMessage
-          sender="Sam Stowers"
+          coach={senderName}
           message="Why do you want to improve your sleep?"
           time={new Date()}
           sentByUser={false}
@@ -1073,6 +1085,7 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
 export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
   const { state } = React.useContext(AuthContext);
   const displayName = state.userData.userInfo.displayName;
+  const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
 
   const [message, setMessage] = React.useState('');
   const [replyVisible, makeReplyVisible] = React.useState(false);
@@ -1106,20 +1119,20 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
       >
         <View style={styles.spacer6} />
         <ChatMessage
-          sender="Sam Stowers"
+          coach={senderName}
           message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
           time={new Date()}
           sentByUser={false}
         />
         <ChatMessage
-          sender="Sam Stowers"
+          coach={senderName}
           message="Why do you want to improve your sleep?"
           time={new Date()}
           sentByUser={false}
         />
         <View style={!messageSent && styles.none}>
           <ChatMessage
-            sender="You"
+            coach="You"
             message={message}
             time={new Date()}
             sentByUser={true}
@@ -1127,7 +1140,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
         </View>
         <View style={!replyVisible && styles.none}>
           <ChatMessage
-            sender="Sam Stowers"
+            coach={senderName}
             message="Thanks for sending! We usually reply within 24 hours. You can find our conversation in the Support tab of the app at any time. :)"
             time={new Date()}
             sentByUser={false}
@@ -1139,7 +1152,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
             onboardingState.firstChatMessageContent = typedMsg;
             setMessage(typedMsg);
             Keyboard.dismiss();
-            submitFirstChatMessage(typedMsg, displayName);
+            submitFirstChatMessage(typedMsg, state.coach.id, displayName);
           }}
           viewStyle={!!messageSent && styles.none}
         />

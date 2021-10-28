@@ -5,10 +5,7 @@
     "owner": "startupsam",
     "privacy": "public",
     "sdkVersion": "41.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "primaryColor": "#00818A",
     "version": "0.7.19",
     "orientation": "portrait",
@@ -21,9 +18,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.dozyhealth.dozy",
@@ -45,9 +40,7 @@
           "apiKey": "AIzaSyC0GREVi9E3rPHvX35XHmk7y3lsccH2zPA"
         }
       },
-      "permissions": [
-
-      ],
+      "permissions": [],
       "googleServicesFile": "./android/app/google-services.json"
     },
     "packagerOpts": {

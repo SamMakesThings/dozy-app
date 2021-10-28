@@ -1,6 +1,6 @@
 import moment from 'moment';
 import momentTZ from 'moment-timezone';
-import TimeConstants from '../constants/Time';
+import TimeConstants from '../constants/Versions';
 import { TimeFormat } from '../types/time';
 
 export function convertLocalDateToUTCWithSameValues(date: Date): Date {

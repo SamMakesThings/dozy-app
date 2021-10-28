@@ -1,6 +1,6 @@
 import momentTZ from 'moment-timezone';
 import { encodeLocalTime, decodeUTCTime } from '../time';
-import Time from '../../constants/Time';
+import Time from '../../constants/Versions';
 
 describe('time utilities', () => {
   it('encodeLocalTime should have timezone field', () => {
