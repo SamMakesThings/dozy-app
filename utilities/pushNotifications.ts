@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import * as Application from 'expo-application';
 import * as IntentLauncher from 'expo-intent-launcher';
 import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
 
 export default async function registerForPushNotificationsAsync(): Promise<
   string | undefined
@@ -46,7 +47,14 @@ export async function askNotificationPermission(
 ): Promise<boolean> {
   let isSuccess = false;
 
-  const { status } = await Notifications.requestPermissionsAsync();
+  const { status } = await Notifications.requestPermissionsAsync({
+    ios: {
+      allowAlert: true,
+      allowBadge: true,
+      allowSound: true,
+      allowAnnouncements: true,
+    },
+  });
 
   if (status === 'granted') {
     isSuccess = true;
@@ -100,4 +108,74 @@ export async function updateExpoPushToken(
       expoPushToken,
     },
   });
+}
+
+export async function setBadgeNumber(badgeCount: number): Promise<boolean> {
+  return Notifications.setBadgeCountAsync(badgeCount);
+}
+
+export async function calculateBadgeNumber(
+  userId: string,
+  considerSleepLog = true,
+  considerCheckin = true,
+  considerUnreadMessages = true,
+): Promise<number> {
+  let badgeNumber = 0;
+
+  if (userId) {
+    const userDoc = (
+      await firestore().collection('users').doc(userId).get()
+    )?.data();
+
+    // Check if the relevant checkin exists
+    if (considerCheckin && userDoc) {
+      const lastCheckinDate = userDoc?.currentTreatments?.lastCheckinDatetime;
+      const nextCheckinDate = userDoc?.currentTreatments?.nextCheckinDatetime;
+      if (
+        lastCheckinDate &&
+        nextCheckinDate &&
+        moment(nextCheckinDate.toDate()).isSameOrBefore(moment()) &&
+        moment(lastCheckinDate.toDate()).isBefore(
+          moment(nextCheckinDate.toDate()),
+        )
+      ) {
+        badgeNumber++;
+      }
+    }
+
+    // Check if the relevant sleep log exists
+    if (considerSleepLog) {
+      const sleepLogsAfterToday = await firestore()
+        .collection('users')
+        .doc(userId)
+        .collection('sleepLogs')
+        .where('upTime', '>=', moment().startOf('date').valueOf())
+        .get();
+      if (!sleepLogsAfterToday.docs.length) {
+        badgeNumber++;
+      }
+    }
+
+    // Check unread messages count
+    if (
+      considerUnreadMessages &&
+      userDoc?.livechatUnreadMsg &&
+      !userDoc?.lastChat?.sentByUser
+    ) {
+      const lastMessages = await firestore()
+        .collection('users')
+        .doc(userId)
+        .collection('supportMessages')
+        .orderBy('time', 'desc')
+        .limit(100)
+        .get();
+      let index = 0;
+      while (!lastMessages?.docs?.[index]?.data()?.sentByUser) {
+        badgeNumber++;
+        index++;
+      }
+    }
+  }
+
+  return badgeNumber;
 }
