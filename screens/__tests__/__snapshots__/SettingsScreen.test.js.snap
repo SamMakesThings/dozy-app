@@ -69,7 +69,7 @@ exports[`SettingsScreen should match the snapshot 1`] = `
         }
         testID="appVersion"
       >
-        @dozyapp 0.7.19
+        @dozyapp 0.7.20
       </Text>
     </withTheme(Container)>
   </ForwardRef>
