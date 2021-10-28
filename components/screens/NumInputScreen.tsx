@@ -11,18 +11,19 @@ import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
 import RichText from '../RichText';
 import { Theme } from '../../types/theme';
+import { ErrorObj } from '../../types/error';
 import { RichTextData } from '../../types/RichTextData';
 
 interface Props {
   questionLabel: string;
   questionSubtitle?: string | RichTextData;
   inputLabel: string;
-  defaultValue?: string;
+  defaultValue?: number;
   progressBarPercent?: number;
-  onQuestionSubmit: (value: number | string) => void;
+  onQuestionSubmit: (value: number) => void;
   optional?: boolean;
   bottomBackButton?: () => void;
-  validInputChecker?: (value: number) => boolean;
+  validInputChecker?: (value: number) => ErrorObj | boolean;
   theme: Theme;
 }
 
@@ -51,10 +52,6 @@ const NumInputScreen: React.FC<Props> = (props) => {
     // If invalid, function should return an error object, with a severity prop and a message prop.
     // Severity can be either "WARNING" or "ERROR"
 
-    interface ErrorObj {
-      severity: string;
-      errorMsg: string;
-    }
     const validationResult: ErrorObj | boolean | undefined =
       props.validInputChecker ? props.validInputChecker(val) : undefined;
 

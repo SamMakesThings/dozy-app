@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -23,6 +23,7 @@ import auth from '@react-native-firebase/auth';
 import { Crashlytics } from '../utilities/crashlytics.service';
 import { ABTesting } from '../utilities/abTesting.service';
 import Auth from '../utilities/auth.service';
+import { getCoachAssignedToUser } from '../utilities/coach';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -107,7 +108,7 @@ InitialAuthNavigator.propTypes = {
   authLoading: PropTypes.bool,
 };
 
-export default function AppNavigator() {
+const AppNavigator = () => {
   const { state, dispatch } = Auth.useAuth();
   const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
   Crashlytics.useCrashlytics(state.userId);
@@ -129,6 +130,17 @@ export default function AppNavigator() {
     });
     return subscriber;
   }, []);
+
+  useEffect(() => {
+    if (state.onboardingComplete && state.userId) {
+      getCoachAssignedToUser(state.userId).then((coach) => {
+        dispatch({
+          type: 'SET_COACH',
+          coach,
+        });
+      });
+    }
+  }, [state.onboardingComplete]);
 
   const DozyNavTheme = {
     dark: true,
@@ -155,7 +167,7 @@ export default function AppNavigator() {
       </View>
     </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-color-literals
@@ -164,3 +176,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#232B3F',
   },
 });
+
+export default AppNavigator;

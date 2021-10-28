@@ -1,6 +1,8 @@
 import firestore from '@react-native-firebase/firestore';
 import { Chat, SleepLog, Task } from '../types/custom';
 import alterMonthSelection from './alterMonthSelection';
+import CoachConstants from '../constants/Coach';
+import { Coach } from '../types/coach';
 
 export type AppState = {
   isLoading: boolean;
@@ -8,12 +10,13 @@ export type AppState = {
   userId: string | undefined;
   userData: Record<string, any>;
   onboardingComplete: boolean | undefined;
+  coach: Coach;
   profileData: Record<string, any>;
   sleepLogs: SleepLog[];
   authLoading: boolean;
   chats: Chat[] | [];
   tasks: Task[];
-  selectedDate: Record<string, any>;
+  selectedDate: { year: number; month: number };
 };
 
 export const initialState: AppState = {
@@ -22,6 +25,7 @@ export const initialState: AppState = {
   userId: undefined,
   userData: {},
   onboardingComplete: undefined,
+  coach: CoachConstants.defaultCoach,
   profileData: {},
   sleepLogs: [],
   authLoading: false,
@@ -67,7 +71,8 @@ export type ACTION =
   | { type: 'CHANGE_SELECTED_MONTH'; changeMonthBy: any }
   | { type: 'AUTH_LOADING'; isAuthLoading: boolean }
   | { type: 'FINISH_LOADING' }
-  | { type: 'FINISH_ONBOARDING' };
+  | { type: 'FINISH_ONBOARDING' }
+  | { type: 'SET_COACH'; coach: Coach };
 
 export const appReducer = (prevState: AppState, action: ACTION): AppState => {
   switch (action.type) {
@@ -137,6 +142,11 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
       return {
         ...prevState,
         onboardingComplete: true,
+      };
+    case 'SET_COACH':
+      return {
+        ...prevState,
+        coach: action.coach,
       };
   }
 };

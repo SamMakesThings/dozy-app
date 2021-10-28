@@ -42,7 +42,9 @@ import registerForPushNotificationsAsync, {
 import { Navigation } from '../types/custom';
 import { Analytics } from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
+import { getOnboardingCoach } from '../utilities/coach';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
+import { ErrorObj } from '../types/error';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -78,9 +80,16 @@ const onboardingState: OnboardingState = {
 };
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
+  const { dispatch } = Auth.useAuth();
   imgSize = imgSizePercent * useWindowDimensions().width;
 
   useEffect((): void => {
+    getOnboardingCoach().then((coach) => {
+      dispatch({
+        type: 'SET_COACH',
+        coach,
+      });
+    });
     Analytics.logEvent(AnalyticsEvents.onboardingWelcome);
   }, []);
 
@@ -173,8 +182,8 @@ export const ISI1: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        onboardingState.ISI1 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.ISI1 = value as number;
         navigation.navigate('ISI2', { progressBarPercent: 0.28 });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionFallingAsleepDifficulty,
@@ -202,8 +211,8 @@ export const ISI2: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        onboardingState.ISI2 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.ISI2 = value as number;
         navigation.navigate('ISI3', { progressBarPercent: 0.42 });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionStayingAsleepDifficulty,
@@ -231,8 +240,8 @@ export const ISI3: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        onboardingState.ISI3 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.ISI3 = value as number;
         navigation.navigate('ISI4', { progressBarPercent: 0.56 });
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionWakingUpProblem, {
           answer: value,
@@ -263,8 +272,8 @@ export const ISI4: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        onboardingState.ISI4 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.ISI4 = value as number;
         navigation.navigate('ISI5', { progressBarPercent: 0.7 });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionSleepPatternSatisfaction,
@@ -296,8 +305,8 @@ export const ISI5: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        onboardingState.ISI5 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.ISI5 = value as number;
         navigation.navigate('ISI6', { progressBarPercent: 0.84 });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionSleepProblemImpairness,
@@ -325,8 +334,8 @@ export const ISI6: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        onboardingState.ISI6 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.ISI6 = value as number;
         navigation.navigate('ISI7', { progressBarPercent: 0.95 });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionSleepPatternWorries,
@@ -354,9 +363,9 @@ export const ISI7: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
+      onQuestionSubmit={(value?: string | number | boolean) => {
         // Sum ISI scores, store value & navigate accordingly
-        onboardingState.ISI7 = value;
+        onboardingState.ISI7 = value as number;
         onboardingState.ISITotal =
           onboardingState.ISI1 +
           onboardingState.ISI2 +
@@ -364,7 +373,7 @@ export const ISI7: React.FC<Props> = ({ navigation }) => {
           onboardingState.ISI4 +
           onboardingState.ISI5 +
           onboardingState.ISI6 +
-          value;
+          (value as number);
         navigation.navigate('ISIResults', { progressBarPercent: null });
         Analytics.logEvent(
           AnalyticsEvents.onboardingQuestionSleepProblemInterference,
@@ -543,8 +552,8 @@ export const SafetyPills: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: string) => {
-        onboardingState.pills = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.pills = value as string;
         navigation.navigate(
           value == 'none' ? 'SafetySnoring' : 'SafetyPillsStop',
           { progressBarPercent: null },
@@ -552,7 +561,7 @@ export const SafetyPills: React.FC<Props> = ({ navigation }) => {
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyPills, {
           answer: value,
         });
-        submitHealthHistoryData({ pills: value });
+        submitHealthHistoryData({ pills: value as string });
       }}
       buttonValues={[
         { label: 'Nope', value: 'none', solidColor: true },
@@ -583,7 +592,7 @@ export const SafetyPillsStop: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<Stop width={imgSize} height={imgSize} />}
-      onQuestionSubmit={(result: string) => {
+      onQuestionSubmit={(result?: string | number | boolean) => {
         navigation.navigate(
           result === 'Continue anyway' ? 'SafetySnoring' : 'SafetyPillsBye',
           {
@@ -662,8 +671,8 @@ export const SafetySnoring: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: boolean) => {
-        onboardingState.snoring = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.snoring = value as boolean;
         navigation.navigate(!value ? 'SafetyLegs' : 'SafetyIllnessWarning', {
           warnAbout: 'sleep apneas',
           nextScreen: 'SafetyLegs',
@@ -671,7 +680,7 @@ export const SafetySnoring: React.FC<Props> = ({ navigation }) => {
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetySnoring, {
           answer: value,
         });
-        submitHealthHistoryData({ snoring: value });
+        submitHealthHistoryData({ snoring: value as boolean });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
@@ -691,8 +700,8 @@ export const SafetyLegs: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: boolean) => {
-        onboardingState.rls = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.rls = value as boolean;
         navigation.navigate(!value ? 'SafetyParas' : 'SafetyIllnessWarning', {
           warnAbout: 'Restless Leg Syndrome',
           nextScreen: 'SafetyParas',
@@ -700,7 +709,7 @@ export const SafetyLegs: React.FC<Props> = ({ navigation }) => {
         Analytics.logEvent(AnalyticsEvents.onboardingSafetyLegs, {
           answer: value,
         });
-        submitHealthHistoryData({ rls: value });
+        submitHealthHistoryData({ rls: value as boolean });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
@@ -721,8 +730,8 @@ export const SafetyParas: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: boolean) => {
-        onboardingState.parasomnias = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.parasomnias = value as boolean;
         navigation.navigate(
           !value ? 'SafetyCatchall' : 'SafetyIllnessWarning',
           { warnAbout: 'parasomnias', nextScreen: 'SafetyCatchall' },
@@ -730,7 +739,7 @@ export const SafetyParas: React.FC<Props> = ({ navigation }) => {
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyParas, {
           answer: value,
         });
-        submitHealthHistoryData({ parasomnias: value });
+        submitHealthHistoryData({ parasomnias: value as boolean });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
@@ -750,8 +759,8 @@ export const SafetyCatchall: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: boolean) => {
-        onboardingState.otherCondition = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.otherCondition = value as boolean;
         navigation.navigate(!value ? 'BaselineIntro' : 'SafetyIllnessWarning', {
           warnAbout: 'such conditions',
           nextScreen: 'BaselineIntro',
@@ -759,7 +768,7 @@ export const SafetyCatchall: React.FC<Props> = ({ navigation }) => {
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyCatchall, {
           answer: value,
         });
-        submitHealthHistoryData({ otherCondition: value });
+        submitHealthHistoryData({ otherCondition: value as boolean });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
@@ -783,7 +792,7 @@ export const SafetyIllnessWarning: React.FC<Props> = ({
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<TiredFace width={imgSize} height={imgSize} />}
-      onQuestionSubmit={(result: string) => {
+      onQuestionSubmit={(result?: string | number | boolean) => {
         navigation.navigate(
           result === 'I understand the risks, continue anyway'
             ? route.params.nextScreen
@@ -827,7 +836,7 @@ export const BaselineIntro: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<WarningTriangle width={imgSize} height={imgSize} />}
-      onQuestionSubmit={(result: string) => {
+      onQuestionSubmit={(result?: string | number | boolean) => {
         navigation.navigate(
           result === 'My sleep will be unusual, let’s postpone'
             ? 'BaselineBye'
@@ -925,8 +934,8 @@ export const DiaryHabit: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: string) => {
-        onboardingState.diaryHabitTrigger = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.diaryHabitTrigger = value as string;
         navigation.navigate('DiaryReminder', { progressBarPercent: 0.4 });
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionDiaryHabit, {
           answer: value,
@@ -1006,12 +1015,12 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().add(1, 'weeks').toDate()}
-      onQuestionSubmit={(value: Date) => {
-        onboardingState.firstCheckinTime = value;
+      onQuestionSubmit={(value: Date | boolean) => {
+        onboardingState.firstCheckinTime = value as Date;
         navigation.navigate('SendFirstChat', { progressBarPercent: 0.8 });
         submitDiaryReminderAndCheckinData(onboardingState);
       }}
-      validInputChecker={(val: Date) => {
+      validInputChecker={(val: Date): ErrorObj | boolean => {
         // Make sure the selected date is 7+ days from today
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
@@ -1038,9 +1047,13 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
+
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChat);
   }, []);
+
+  const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
 
   return (
     <WizardContentScreen
@@ -1054,13 +1067,13 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
     >
       <View>
         <ChatMessage
-          sender="Sam Stowers"
+          coach={senderName}
           message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
           time={new Date()}
           sentByUser={false}
         />
         <ChatMessage
-          sender="Sam Stowers"
+          coach={senderName}
           message="Why do you want to improve your sleep?"
           time={new Date()}
           sentByUser={false}
@@ -1073,6 +1086,7 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
 export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
   const { state } = Auth.useAuth();
   const displayName = state.userData.userInfo.displayName;
+  const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
 
   const [message, setMessage] = React.useState('');
   const [replyVisible, makeReplyVisible] = React.useState(false);
@@ -1106,20 +1120,20 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
       >
         <View style={styles.spacer6} />
         <ChatMessage
-          sender="Sam Stowers"
+          coach={senderName}
           message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
           time={new Date()}
           sentByUser={false}
         />
         <ChatMessage
-          sender="Sam Stowers"
+          coach={senderName}
           message="Why do you want to improve your sleep?"
           time={new Date()}
           sentByUser={false}
         />
         <View style={!messageSent && styles.none}>
           <ChatMessage
-            sender="You"
+            coach="You"
             message={message}
             time={new Date()}
             sentByUser={true}
@@ -1127,7 +1141,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
         </View>
         <View style={!replyVisible && styles.none}>
           <ChatMessage
-            sender="Sam Stowers"
+            coach={senderName}
             message="Thanks for sending! We usually reply within 24 hours. You can find our conversation in the Support tab of the app at any time. :)"
             time={new Date()}
             sentByUser={false}
@@ -1139,7 +1153,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
             onboardingState.firstChatMessageContent = typedMsg;
             setMessage(typedMsg);
             Keyboard.dismiss();
-            submitFirstChatMessage(typedMsg, displayName);
+            submitFirstChatMessage(typedMsg, state.coach.id, displayName);
           }}
           viewStyle={!!messageSent && styles.none}
         />

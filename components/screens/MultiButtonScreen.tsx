@@ -7,13 +7,13 @@ import { Theme } from '../../types/theme';
 interface Props {
   questionLabel: string;
   questionSubtitle?: string;
-  bottomBackButton: () => void;
+  bottomBackButton?: () => void;
   buttonValues: Array<{
     label: string;
     value: string | number | boolean;
     solidColor?: boolean;
   }>;
-  onQuestionSubmit: (value: string | number | boolean) => void;
+  onQuestionSubmit: (value?: string | number | boolean) => void;
   theme: Theme;
 }
 
@@ -62,7 +62,7 @@ const MultiButtonScreen: React.FC<Props> = (props) => {
       </Container>
       <BottomNavButtons
         theme={theme}
-        bottomBackButton={props.bottomBackButton || null}
+        bottomBackButton={props.bottomBackButton}
         buttonValues={props.buttonValues}
         onlyBackButton
         onPress={props.onQuestionSubmit}

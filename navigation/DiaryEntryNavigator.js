@@ -19,7 +19,7 @@ const animConfig = {
 };
 
 // Create a stack screen for each component defined in DiaryEntryScreens
-export default function DiaryEntryNavigator() {
+const DiaryEntryNavigator = () => {
   return (
     <DiaryEntryStack.Navigator
       initialRouteName="BedTimeInput"
@@ -65,4 +65,6 @@ export default function DiaryEntryNavigator() {
       })}
     </DiaryEntryStack.Navigator>
   );
-}
+};
+
+export default DiaryEntryNavigator;
