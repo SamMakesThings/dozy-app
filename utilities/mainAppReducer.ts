@@ -92,6 +92,7 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
         ...prevState,
         isSignout: true,
         userId: undefined,
+        onboardingComplete: undefined,
       };
     case 'UPDATE_USERDATA':
       return {
