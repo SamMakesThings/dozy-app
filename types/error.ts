@@ -1,4 +1,4 @@
 export interface ErrorObj {
-  severity: string;
+  severity: 'WARNING' | 'ERROR';
   errorMsg: string;
 }
