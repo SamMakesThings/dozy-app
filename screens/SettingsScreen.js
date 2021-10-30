@@ -14,19 +14,19 @@ import * as SecureStore from 'expo-secure-store';
 import { scale } from 'react-native-size-matters';
 import ExpoConstants from 'expo-constants';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../context/AuthContext';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
 import {
   isNotificationEnabled,
   askNotificationPermission,
 } from '../utilities/pushNotifications';
 import { encodeLocalTime, decodeUTCTime } from '../utilities/time';
+import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function SettingsScreen() {
   // Pass along the signOut function from the context provider
-  const { state, signOut } = React.useContext(AuthContext);
+  const { state, signOut } = Auth.useAuth();
 
   // Get theme object
   const theme = dozy_theme;

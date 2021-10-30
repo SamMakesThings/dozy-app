@@ -16,15 +16,15 @@ import momentTZ from 'moment-timezone';
 import DiaryEntriesScreen from './DiaryEntriesScreen';
 import { DiaryStatsScreen } from './DiaryStatsScreen';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../context/AuthContext';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import Auth from '../utilities/auth.service';
 
 // Create tab nav for switching between entries and stats
 const Tab = createMaterialTopTabNavigator();
 
 function DiaryScreen() {
   const theme = dozy_theme;
-  const { dispatch, state } = React.useContext(AuthContext);
+  const { dispatch, state } = Auth.useAuth();
 
   // Set date value from selected month
   const selectedDate = new Date();

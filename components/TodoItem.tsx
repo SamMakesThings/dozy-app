@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { MaterialIcons } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 export interface TodoItemProps {

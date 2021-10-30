@@ -8,13 +8,13 @@ import {
   VictoryAxis,
   VictoryScatter,
 } from 'victory-native';
-import { AuthContext } from '../context/AuthContext';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import ThumbsUp from '../assets/images/ThumbsUp.svg';
 import AlarmClock from '../assets/images/AlarmClock.svg';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
+import Auth from '../utilities/auth.service';
 import { Navigation, SleepLog } from '../types/custom';
 
 interface Props {
@@ -59,7 +59,7 @@ const chartStyles = {
 };
 
 export const SRTTitrationStart: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
   const imgSize = imgSizePercent * useWindowDimensions().width;
   // Trim sleepLogs to only show most recent 7
   recentSleepLogs = state.sleepLogs.slice(0, 7);
@@ -99,7 +99,7 @@ export const SRTTitrationStart: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -182,7 +182,7 @@ export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SRTTitration: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   const imgSize = imgSizePercent * useWindowDimensions().width;
 
@@ -241,7 +241,7 @@ export const SRTTitration: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepOnset: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   // Calculate recent sleep onset average & fetch baseline for comparison
   const sleepOnsetAvg = Number(
@@ -319,7 +319,7 @@ export const SleepOnset: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepMaintenance: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   // Calculate recent night mins awake average & fetch baseline for comparison
   const nightMinsAwakeAvg = Number(
@@ -398,7 +398,7 @@ export const SleepMaintenance: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepDuration: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   // Calculate recent night mins awake average & fetch baseline for comparison
   const sleepDurationAvg = Number(

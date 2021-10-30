@@ -7,10 +7,10 @@ import * as Font from 'expo-font';
 import { LogBox, StatusBar, Text, UIManager, Platform } from 'react-native';
 import LoadingOverlay from './components/LoadingOverlay';
 import { dozy_theme } from './config/Themes';
-import { AuthProvider } from './context/AuthContext';
 import AppNavigator from './navigation/AppNavigator';
-import { Updates } from './utilities/updates.service';
+import Updates from './utilities/updates.service';
 import Feedback from './utilities/feedback.service';
+import Auth from './utilities/auth.service';
 
 // Mute "setting a timer" firebase warnings in console
 LogBox.ignoreLogs(['Setting a timer']);
@@ -43,7 +43,12 @@ export default function App(): React.ReactElement {
 
   const isCheckingUpdate: boolean = Updates.useUpdating();
   const feedbackContextValue = Feedback.useFeedbackService();
+  const authContextValue = Auth.useAuthService();
   const [isLoading, setIsLoading] = React.useState(true);
+
+  const isCheckingOnboarding: boolean =
+    !!authContextValue.state.userId &&
+    authContextValue.state.onboardingComplete === undefined;
 
   // Create authContext so relevant functions are available through the app
 
@@ -83,7 +88,7 @@ export default function App(): React.ReactElement {
     );
   } else {
     return (
-      <AuthProvider>
+      <Auth.Context.Provider value={authContextValue}>
         <Feedback.Context.Provider value={feedbackContextValue}>
           <ThemeProvider theme={dozy_theme}>
             <StatusBar
@@ -91,14 +96,14 @@ export default function App(): React.ReactElement {
               backgroundColor={dozy_theme.colors.background}
             />
             <AppNavigator />
-            {isCheckingUpdate && (
+            {(isCheckingUpdate || isCheckingOnboarding) && (
               <LoadingOverlay
                 title={isCheckingUpdate ? 'Downloading updates...' : ''}
               />
             )}
           </ThemeProvider>
         </Feedback.Context.Provider>
-      </AuthProvider>
+      </Auth.Context.Provider>
     );
   }
 }

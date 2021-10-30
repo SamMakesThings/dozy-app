@@ -15,10 +15,10 @@ import submitSleepDiaryData, {
   normalizeSleepLog,
 } from '../utilities/submitSleepDiaryData';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../context/AuthContext';
 import { Navigation, SleepLog } from '../types/custom';
 import { ErrorObj } from '../types/error';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
+import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { RichTextData } from '../types/RichTextData';
 
@@ -122,10 +122,8 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
   // Also use hook to set globalState value for the file
   const safeInsets = useSafeAreaInsets();
   globalState =
-    (pick(React.useContext(AuthContext).state, [
-      'userData',
-      'sleepLogs',
-    ]) as GlobalState) || globalState;
+    (pick(Auth.useAuth().state, ['userData', 'sleepLogs']) as GlobalState) ||
+    globalState;
   let defaultDate = moment().hour(22).minute(0).toDate();
   if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
     defaultDate = moment()

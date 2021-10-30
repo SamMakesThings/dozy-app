@@ -8,8 +8,8 @@ import { LinkCard } from '../components/LinkCard';
 import { dozy_theme } from '../config/Themes';
 import { CardContainer } from '../components/CardContainer';
 import treatments from '../constants/Treatments';
-import { AuthContext } from '../context/AuthContext';
 import GLOBAL from '../utilities/global';
+import Auth from '../utilities/auth.service';
 
 const theme = dozy_theme;
 
@@ -17,7 +17,7 @@ const TreatmentPlanScreen: React.FC<{
   navigation: NavigationProp<any>;
   route: { params: { completionPercentProgress: number } };
 }> = ({ navigation, route }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
   const treatmentPlan = GLOBAL.treatmentPlan;
 
   // Calculate flex value for the vertical progress bar

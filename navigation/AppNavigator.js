@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,12 +17,12 @@ import HYGNavigator from './HYGNavigator';
 import COG1Navigator from './COG1Navigator';
 import ENDNavigator from './ENDNavigator';
 import HeaderProgressBar from '../components/HeaderProgressBar';
-import { Analytics } from '../utilities/analytics.service';
-import { AuthContext } from '../context/AuthContext';
+import Analytics from '../utilities/analytics.service';
 import refreshUserData from '../utilities/refreshUserData';
 import auth from '@react-native-firebase/auth';
-import { Crashlytics } from '../utilities/crashlytics.service';
-import { ABTesting } from '../utilities/abTesting.service';
+import Crashlytics from '../utilities/crashlytics.service';
+import ABTesting from '../utilities/abTesting.service';
+import Auth from '../utilities/auth.service';
 import { getCoachAssignedToUser } from '../utilities/coach';
 
 // Create the main app auth navigation flow
@@ -109,7 +109,7 @@ InitialAuthNavigator.propTypes = {
 };
 
 const AppNavigator = () => {
-  const { state, dispatch } = useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
   const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
   Crashlytics.useCrashlytics(state.userId);
   const { initABTesting } = ABTesting.useABTestingService();

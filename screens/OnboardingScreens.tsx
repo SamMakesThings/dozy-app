@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import {
   useWindowDimensions,
   Text,
@@ -11,7 +11,6 @@ import {
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
 import * as SecureStore from 'expo-secure-store';
-import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -41,7 +40,8 @@ import registerForPushNotificationsAsync, {
   updateExpoPushToken,
 } from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
+import Auth from '../utilities/auth.service';
 import { getOnboardingCoach } from '../utilities/coach';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { ErrorObj } from '../types/error';
@@ -80,7 +80,7 @@ const onboardingState: OnboardingState = {
 };
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
-  const { dispatch } = useContext(AuthContext);
+  const { dispatch } = Auth.useAuth();
   imgSize = imgSizePercent * useWindowDimensions().width;
 
   useEffect((): void => {
@@ -1047,7 +1047,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
-  const { state } = useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChat);
@@ -1084,7 +1084,7 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
   const displayName = state.userData.userInfo.displayName;
   const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
 
@@ -1163,7 +1163,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
 };
 
 export const OnboardingEnd: React.FC<Props> = ({ navigation }) => {
-  const { dispatch } = React.useContext(AuthContext);
+  const { dispatch } = Auth.useAuth();
 
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingOnboardingEnd);

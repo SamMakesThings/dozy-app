@@ -1,7 +1,6 @@
 import React from 'react';
 import { useWindowDimensions, Text, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -21,6 +20,7 @@ import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation } from '../types/custom';
 import Feedback from '../utilities/feedback.service';
+import Auth from '../utilities/auth.service';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -298,7 +298,7 @@ export const ISIProcessing: React.FC<Props> = ({ navigation }) => {
 // TODO: Handle (unlikely but possible) worse sleep numbers with different flow
 
 export const ISIResults: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   // Get % improvement in ISI score, format it nicely
   const prevISITotal = state.userData.baselineInfo.isiTotal;
@@ -342,7 +342,7 @@ export const ISIResults: React.FC<Props> = ({ navigation }) => {
 };
 
 export const ISICategoryChange: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   const prevISITotal = state.userData.baselineInfo.isiTotal;
   const currentISITotal = ENDState.ISITotal;
@@ -602,7 +602,7 @@ export const AccessAndFAQ: React.FC<Props> = ({ navigation }) => {
 };
 
 export const ENDEnd: React.FC<Props> = ({ navigation }) => {
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   return (

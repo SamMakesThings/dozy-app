@@ -9,7 +9,7 @@ export type AppState = {
   isSignout: boolean;
   userId: string | undefined;
   userData: Record<string, any>;
-  onboardingComplete: boolean;
+  onboardingComplete: boolean | undefined;
   coach: Coach;
   profileData: Record<string, any>;
   sleepLogs: SleepLog[];
@@ -18,12 +18,13 @@ export type AppState = {
   tasks: Task[];
   selectedDate: { year: number; month: number };
 };
+
 export const initialState: AppState = {
   isLoading: true,
   isSignout: false,
   userId: undefined,
   userData: {},
-  onboardingComplete: false,
+  onboardingComplete: undefined,
   coach: CoachConstants.defaultCoach,
   profileData: {},
   sleepLogs: [],
@@ -62,7 +63,7 @@ export type ACTION =
   | {
       type: 'UPDATE_USERDATA';
       userData: Record<string, any>;
-      onboardingComplete: boolean;
+      onboardingComplete: boolean | undefined;
     }
   | { type: 'SET_SLEEPLOGS'; sleepLogs: SleepLog[] }
   | { type: 'SET_CHATS'; chats: Chat[] | [] }
@@ -96,6 +97,7 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
         ...prevState,
         isSignout: true,
         userId: undefined,
+        onboardingComplete: undefined,
       };
     case 'UPDATE_USERDATA':
       return {

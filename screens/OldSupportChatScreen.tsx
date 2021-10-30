@@ -4,12 +4,12 @@ import { scale } from 'react-native-size-matters';
 import firestore from '@react-native-firebase/firestore';
 import { WebView } from 'react-native-webview';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../context/AuthContext';
 import refreshUserData from '../utilities/refreshUserData';
+import Auth from '../utilities/auth.service';
 
 const SupportChatScreen: React.FC = () => {
   const theme = dozy_theme;
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
 
   const livechatJavascript = `
   setTimeout(function(){
