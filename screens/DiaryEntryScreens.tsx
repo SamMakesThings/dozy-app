@@ -297,8 +297,10 @@ export const PMRAsk: React.FC<Props> = ({ navigation }) => {
         // If PIT started, navigate to PIT. Otherwise navigate to WakeCountInput
         if (globalState.userData?.currentTreatments?.PIT) {
           navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
-        } else {
+        } else if (logState.isZeroSleep) {
           goToNextFromWakeCountInput(navigation, Number.MAX_SAFE_INTEGER, 0);
+        } else {
+          navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
         }
       }}
       buttonValues={[
@@ -321,7 +323,11 @@ export const PITAsk: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       onQuestionSubmit={(value?: string | number | boolean) => {
         logState.PITPractice = value as boolean;
-        goToNextFromWakeCountInput(navigation, Number.MAX_SAFE_INTEGER, 0);
+        if (logState.isZeroSleep) {
+          goToNextFromWakeCountInput(navigation, Number.MAX_SAFE_INTEGER, 0);
+        } else {
+          navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
+        }
       }}
       buttonValues={[
         { label: 'Yes', value: true },
