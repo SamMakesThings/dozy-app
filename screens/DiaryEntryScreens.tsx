@@ -184,7 +184,9 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
         }}
         validInputChecker={(val: Date): ErrorObj | boolean => {
           // Make sure the selected time isn't between 8:00 and 18:00, a likely sign of AM/PM mixup
-          return !(moment(val).hour() > 8 && moment(val).hour() < 18)
+          return moment(val).isSameOrBefore(
+            moment(val).hour(8).startOf('hour'),
+          ) || moment(val).isSameOrAfter(moment(val).hour(18).startOf('hour'))
             ? true
             : {
                 severity: 'WARNING',
