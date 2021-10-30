@@ -99,14 +99,17 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   const signInWithApple = async () => {
+    let credential: AppleAuthentication.AppleAuthenticationCredential;
+    let rawNonce: string | undefined;
+
     try {
-      const rawNonce = Math.random().toString(36).substring(2, 10);
+      rawNonce = Math.random().toString(36).substring(2, 10);
       const hashedNonce = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
         rawNonce,
       );
 
-      let credential = await AppleAuthentication.signInAsync({
+      credential = await AppleAuthentication.signInAsync({
         requestedScopes: [
           AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
           AppleAuthentication.AppleAuthenticationScope.EMAIL,
@@ -143,13 +146,14 @@ export const AuthProvider: React.FC = ({ children }) => {
           } as AppleAuthentication.AppleAuthenticationFullName,
         };
       }
-
-      return await firebaseAuthApple(credential, rawNonce);
     } catch (error) {
       if (error.code !== 'ERR_CANCELED') {
         Alert.alert('Signin failed', error.message);
       }
+      return;
     }
+
+    return firebaseAuthApple(credential, rawNonce);
   };
 
   const finishOnboarding = async () => {
@@ -191,17 +195,25 @@ export const AuthProvider: React.FC = ({ children }) => {
   ): Promise<void> {
     // Store credentials in SecureStore
     if ('user' in result) {
-      SecureStore.setItemAsync('providerId', result.user.providerId);
-      SecureStore.setItemAsync('userId', result.user.uid);
-      SecureStore.setItemAsync(
-        'profileData',
-        JSON.stringify(result?.additionalUserInfo?.profile),
-      ).catch((error) => {
+      const profileData = result?.additionalUserInfo?.profile
+        ? {
+            ...result.additionalUserInfo.profile,
+            name: result.additionalUserInfo.profile.name || displayName,
+          }
+        : {};
+
+      try {
+        await Promise.all([
+          SecureStore.setItemAsync('providerId', result.user.providerId),
+          SecureStore.setItemAsync('userId', result.user.uid),
+          SecureStore.setItemAsync('profileData', JSON.stringify(profileData)),
+        ]);
+      } catch (error: any) {
         Alert.alert('Signin failed', error.message);
         if (__DEV__) {
           console.log('Error signing in: ' + error);
         }
-      });
+      }
 
       // Check if that user's document exists, in order to direct them to or past onboarding
       const onboardingComplete = await firestore()
@@ -242,9 +254,15 @@ export const AuthProvider: React.FC = ({ children }) => {
         });
 
       if (onboardingComplete) {
-        const expoPushToken = await registerForPushNotificationsAsync();
-        if (expoPushToken) {
-          updateExpoPushToken(expoPushToken, result.user.uid);
+        try {
+          const expoPushToken = await registerForPushNotificationsAsync();
+          if (expoPushToken) {
+            updateExpoPushToken(expoPushToken, result.user.uid);
+          }
+        } catch (error) {
+          if (__DEV__) {
+            console.log('Error when registering push notification: ', error);
+          }
         }
       }
 
@@ -253,10 +271,10 @@ export const AuthProvider: React.FC = ({ children }) => {
         type: 'SIGN_IN',
         token: result.user.uid,
         onboardingComplete: onboardingComplete,
-        profileData: result.additionalUserInfo?.profile ?? {},
+        profileData,
         isAuthLoading: false,
         userData: {
-          displayName: result.user.displayName,
+          displayName: result.user.displayName || displayName,
           email: result.user.email,
           uid: result.user.uid,
         },

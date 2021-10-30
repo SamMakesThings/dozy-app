@@ -194,7 +194,7 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
       <BottomNavButtons
         theme={theme}
         onPress={(value?: string | number | boolean) => {
-          if (value === props.bottomGreyButtonLabel) {
+          if (value !== undefined && value === props.bottomGreyButtonLabel) {
             props.onQuestionSubmit(false);
           } else {
             props.onQuestionSubmit(selectedTime);
