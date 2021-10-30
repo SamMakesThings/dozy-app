@@ -1,5 +1,5 @@
 import momentTZ from 'moment-timezone';
-import { encodeLocalTime, decodeUTCTime } from '../time';
+import { encodeLocalTime, decodeServerTime } from '../time';
 import Time from '../../constants/Versions';
 
 describe('time utilities', () => {
@@ -9,13 +9,13 @@ describe('time utilities', () => {
     expect(encodedTime.timezone).toBeDefined();
   });
 
-  it('decodeUTCTime should have the same hour and minute values', () => {
+  it('decodeServerTime should have the same hour and minute values', () => {
     const hour = 10;
     const minute = 30;
     const timezone = 'America/Los_Angeles';
     const time = momentTZ.tz(`2021-09-30 ${hour}:${minute}`, timezone).toDate();
 
-    const decodedTime = decodeUTCTime({
+    const decodedTime = decodeServerTime({
       version: Time.timeDataVersion,
       value: time,
       timezone,
