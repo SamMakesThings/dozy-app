@@ -230,7 +230,7 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
               },
             ]}
           >
-            {(sleepLog.sleepEfficiency * 100).toFixed(0).toString()}%
+            {((sleepLog.sleepEfficiency || 0) * 100).toFixed(0).toString()}%
           </Text>
           <Text
             style={[
