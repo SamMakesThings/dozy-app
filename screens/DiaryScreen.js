@@ -71,7 +71,14 @@ function DiaryScreen() {
             firestore()
               .collection('users')
               .doc(state.userId)
-              .update(encodedTimeData);
+              .update({
+                reminders: {
+                  sleepDiaryReminder: {
+                    diaryReminderTime: encodedTimeData.value,
+                    version: encodedTimeData.version,
+                  },
+                },
+              });
           }
         }
       });
