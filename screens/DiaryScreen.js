@@ -18,6 +18,7 @@ import { DiaryStatsScreen } from './DiaryStatsScreen';
 import { dozy_theme } from '../config/Themes';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Auth from '../utilities/auth.service';
+import { decodeUTCTime, encodeLocalTime } from '../utilities/time';
 
 // Create tab nav for switching between entries and stats
 const Tab = createMaterialTopTabNavigator();
@@ -38,33 +39,44 @@ function DiaryScreen() {
 
   useEffect(() => {
     const maybeUpdateReminderTimezone = async () => {
-      if (state.userData.logReminderId) {
-        const logReminderDoc = await firestore()
-          .collection('users')
-          .doc(state.userId)
-          .collection('notifications')
-          .doc(state.userData.logReminderId)
-          .get();
-        const logReminderData = logReminderDoc.data();
-        if (logReminderData.version === '0.3') {
-          const currentTimezone = momentTZ.tz.guess(true);
-          if (logReminderData.timezone !== currentTimezone) {
+      const notifications = await firestore()
+        .collection('users')
+        .doc(state.userId)
+        .collection('notifications')
+        .get();
+      const currentTimezone = momentTZ.tz.guess(true);
+
+      notifications.docs.forEach((querySnapshot) => {
+        const notificationData = querySnapshot.data();
+        const localDate = decodeUTCTime({
+          version: notificationData.version,
+          value: notificationData.time.toDate(),
+          timezone: notificationData.timezone,
+        });
+
+        if (
+          (notificationData.version === '0.3' &&
+            notificationData.timezone !== currentTimezone) ||
+          notificationData.version === '0.2'
+        ) {
+          const encodedTimeData = encodeLocalTime(localDate);
+          firestore()
+            .collection('users')
+            .doc(state.userId)
+            .collection('notifications')
+            .doc(querySnapshot.id)
+            .update(encodedTimeData);
+
+          if (querySnapshot.id === state.userData.logReminderId) {
             firestore()
               .collection('users')
               .doc(state.userId)
-              .update({
-                version: '0.3',
-                value: momentTZ(
-                  momentTZ(logReminderData.time.toDate())
-                    .tz(logReminderData.timezone)
-                    .format('YYYY-MM-DD HH:mm'),
-                ).toDate(),
-                timezone: currentTimezone,
-              });
+              .update(encodedTimeData);
           }
         }
-      }
+      });
     };
+
     maybeUpdateReminderTimezone();
   }, []);
 
