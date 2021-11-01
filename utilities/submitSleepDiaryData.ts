@@ -227,7 +227,7 @@ export function validateSleepLog(logState: LogState): ErrorObj | boolean {
     return {
       severity: 'ERROR',
       errorMsg:
-        'Your sleep time is same or after the wake time. Please check your sleep or wake time.',
+        'The times you selected say you woke up before you went to sleep! Please double check your bedtime and/or wake time.',
     };
   } else if (
     !logState.isZeroSleep &&
@@ -237,7 +237,7 @@ export function validateSleepLog(logState: LogState): ErrorObj | boolean {
     return {
       severity: 'ERROR',
       errorMsg:
-        'Your getup time is before the wake time. Please check your wake or getup time.',
+        'The times you selected suggest you got up before you woke up! Please double check your wake time and/or up time.',
     };
   } else if (
     moment(logState.upTime).diff(bedTime) / 60000 >
@@ -266,7 +266,7 @@ export function validateSleepLog(logState: LogState): ErrorObj | boolean {
     return {
       severity: 'ERROR',
       errorMsg:
-        'You fell asleep after your wake time. Please check your bed time, fall aleep time or wake time.',
+        'Your fall asleep time is after the time you woke up! Please double check your bedtime, fall aleep time, or wake time.',
     };
   } else if (
     !logState.isZeroSleep &&
@@ -278,7 +278,7 @@ export function validateSleepLog(logState: LogState): ErrorObj | boolean {
     return {
       severity: 'ERROR',
       errorMsg:
-        'Your awake duration exceeds your sleep time. Please check your bed time, wake time, fall asleep time or awake duration.',
+        'The time you recorded as awake exceeds your total time in bed last night. Please check your bed time, wake time, fall asleep time or awake duration.',
     };
   } else if (
     (!logState.isZeroSleep && logState.minsToFallAsleep < 0) ||
@@ -288,7 +288,7 @@ export function validateSleepLog(logState: LogState): ErrorObj | boolean {
     return {
       severity: 'ERROR',
       errorMsg:
-        'Your fall asleep time or awake duration is negative. Please check them again.',
+        'The time it took you to fall asleep, or minutes awake, was recorded as negaive?? Please check those values again.',
     };
   }
 
