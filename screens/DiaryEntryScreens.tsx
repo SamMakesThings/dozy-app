@@ -184,7 +184,9 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
         }}
         validInputChecker={(val: Date): ErrorObj | boolean => {
           // Make sure the selected time isn't between 8:00 and 18:00, a likely sign of AM/PM mixup
-          return !(moment(val).hour() > 8 && moment(val).hour() < 18)
+          return moment(val).isSameOrBefore(
+            moment(val).hour(8).startOf('hour'),
+          ) || moment(val).isSameOrAfter(moment(val).hour(18).startOf('hour'))
             ? true
             : {
                 severity: 'WARNING',
@@ -494,12 +496,17 @@ export const NightMinsAwakeInput: React.FC<Props> = ({ navigation }) => {
 export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
   // If there is a sleep log recorded, use the most recent
   // wake time value as a default
-  let defaultDate = moment().hour(9).minute(0).toDate();
+  let defaultDate;
   if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
     defaultDate = moment()
       .hour(globalState.sleepLogs[0].wakeTime.toDate().getHours())
       .minute(globalState.sleepLogs[0].wakeTime.toDate().getMinutes())
       .toDate();
+  } else {
+    defaultDate =
+      moment().hour() >= 9
+        ? moment().hour(9).startOf('hours').toDate()
+        : new Date();
   }
 
   return (
@@ -513,7 +520,7 @@ export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
       validInputChecker={(val: Date): ErrorObj | boolean => {
         // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
         // Also make sure the wake time occurs after the bedtime (complex b/c PM>AM crossover)
-        if (!(moment(val).hour() < 17)) {
+        if (moment(val).hour() >= 17) {
           return {
             severity: 'WARNING',
             errorMsg:
@@ -521,14 +528,19 @@ export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
           };
         } else if (
           val < logState.bedTime &&
-          !(moment(logState.bedTime).hour() > 17)
+          moment(logState.bedTime).hour() <= 17
         ) {
           return {
             severity: 'ERROR',
             errorMsg:
               'Did you set AM/PM correctly? Selected wake time is before your entered bed time.',
           };
-        } else if (moment(val).isAfter(new Date(), 'minute')) {
+        } else if (
+          moment(logState.logDate)
+            .startOf('date')
+            .isSameOrAfter(moment().startOf('date')) &&
+          moment(val).isAfter(new Date(), 'minute')
+        ) {
           return {
             severity: 'WARNING',
             errorMsg:
@@ -566,14 +578,19 @@ export const UpTimeInput: React.FC<Props> = ({ navigation }) => {
           };
         } else if (
           !logState.isZeroSleep &&
-          moment(val).add(1, 'minutes').toDate() < logState.wakeTime
+          moment(val).isBefore(logState.wakeTime)
         ) {
           return {
             severity: 'ERROR',
             errorMsg:
               'Selected up time is earlier than selected wake time. Did you set AM/PM correctly?',
           };
-        } else if (moment(val).isAfter(new Date(), 'minute')) {
+        } else if (
+          moment(logState.logDate)
+            .startOf('date')
+            .isSameOrAfter(moment().startOf('date')) &&
+          moment(val).isAfter(new Date(), 'minute')
+        ) {
           return {
             severity: 'WARNING',
             errorMsg:
@@ -613,13 +630,11 @@ export const SleepRatingInput: React.FC<Props> = ({ navigation }) => {
 };
 
 export const TagsNotesInput: React.FC<Props> = ({ navigation }) => {
-  const preFormSubmit = useCallback((): boolean => {
-    return validateSleepLog(logState);
-  }, []);
-
   const onInvalidForm = useCallback((): void => {
     navigation.navigate('BedTimeInput');
   }, [navigation.navigate]);
+
+  const validateLog = useCallback(() => validateSleepLog(logState), []);
 
   return (
     <TagSelectScreen
@@ -648,7 +663,7 @@ export const TagsNotesInput: React.FC<Props> = ({ navigation }) => {
         { label: 'late caffeine', icon: 'drop' },
         { label: 'late alcohol', icon: 'cup' },
       ]}
-      preFormSubmit={preFormSubmit}
+      validateSleepLog={validateLog}
       onInvalidForm={onInvalidForm}
       onFormSubmit={async (res: { notes: string; tags: string[] }) => {
         // Update state with new values

@@ -19,7 +19,7 @@ import {
   isNotificationEnabled,
   askNotificationPermission,
 } from '../utilities/pushNotifications';
-import { encodeLocalTime, decodeUTCTime } from '../utilities/time';
+import { encodeLocalTime, decodeServerTime } from '../utilities/time';
 import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
@@ -99,7 +99,7 @@ export function SettingsScreen() {
             const notifData = notif.data();
             dispatch({
               type: 'SET_LOG_REMINDER_TIME',
-              time: decodeUTCTime({
+              time: decodeServerTime({
                 version: notifData.version,
                 value: notifData.time.toDate(),
                 timezone: notifData.timezone,

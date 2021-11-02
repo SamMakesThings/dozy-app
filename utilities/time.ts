@@ -19,7 +19,7 @@ export function encodeLocalTime(date: Date): TimeFormat {
   };
 }
 
-export function decodeUTCTime(data: TimeFormat): Date {
+export function decodeServerTime(data: TimeFormat): Date {
   let localDate: Date;
 
   if (data.version === '0.3') {
