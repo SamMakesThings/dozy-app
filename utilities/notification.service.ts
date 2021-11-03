@@ -63,10 +63,13 @@ export default class Notification {
 
   static async registerForPushNotificationsAsync(
     showAlert = true,
+    maybeRedirectToSettings = false,
   ): Promise<string | undefined> {
     let isGranted = await Notification.isNotificationEnabled();
     if (!isGranted) {
-      isGranted = await Notification.askNotificationPermission(false);
+      isGranted = await Notification.askNotificationPermission(
+        maybeRedirectToSettings,
+      );
     }
 
     if (!isGranted) {

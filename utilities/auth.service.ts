@@ -110,7 +110,7 @@ export default class Auth {
           if (onboardingComplete) {
             try {
               const expoPushToken =
-                await Notification.registerForPushNotificationsAsync();
+                await Notification.registerForPushNotificationsAsync(false);
               if (expoPushToken) {
                 Notification.updateExpoPushToken(
                   expoPushToken,
