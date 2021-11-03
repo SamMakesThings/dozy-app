@@ -20,9 +20,7 @@ import AnalyticsEvents from '../constants/AnalyticsEvents';
 import Analytics from './analytics.service';
 import { ACTION, initialState, appReducer, AppState } from './mainAppReducer';
 import refreshUserData from './refreshUserData';
-import registerForPushNotificationsAsync, {
-  updateExpoPushToken,
-} from './pushNotifications';
+import Notification from './notification.service';
 
 export type AuthContextValue = {
   state: AppState;
@@ -111,9 +109,13 @@ export default class Auth {
 
           if (onboardingComplete) {
             try {
-              const expoPushToken = await registerForPushNotificationsAsync();
+              const expoPushToken =
+                await Notification.registerForPushNotificationsAsync();
               if (expoPushToken) {
-                updateExpoPushToken(expoPushToken, result.user.uid);
+                Notification.updateExpoPushToken(
+                  expoPushToken,
+                  result.user.uid,
+                );
               }
             } catch (error) {
               if (__DEV__) {

@@ -7,10 +7,7 @@ import SleepConstants from '../constants/Sleep';
 import { SleepLog } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import { encodeLocalTime } from './time';
-import {
-  setBadgeNumber,
-  calculateBadgeNumber,
-} from '../utilities/pushNotifications';
+import Notification from './notification.service';
 
 interface LogState {
   logId?: string;
@@ -69,9 +66,11 @@ export default async function submitSleepDiaryData(
         moment().startOf('date'),
       )
     ) {
-      calculateBadgeNumber(userId!, false, true, true).then((badgeNumber) => {
-        setBadgeNumber(badgeNumber);
-      });
+      Notification.calculateBadgeNumber(userId!, false, true, true).then(
+        (badgeNumber) => {
+          Notification.setBadgeNumber(badgeNumber);
+        },
+      );
     }
   }
 
