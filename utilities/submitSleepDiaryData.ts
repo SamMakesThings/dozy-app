@@ -103,6 +103,16 @@ export function normalizeSleepLog(
     (logState.isZeroSleep ? logState.upTime : logState.wakeTime)
   ) {
     newLogState.bedTime = moment(logState.bedTime).subtract(1, 'days').toDate();
+  } else if (
+    !logState.isZeroSleep &&
+    logState.upTime < logState.bedTime &&
+    logState.bedTime < logState.wakeTime &&
+    logState.upTime < logState.wakeTime
+  ) {
+    newLogState.bedTime = moment(logState.bedTime).subtract(1, 'days').toDate();
+    newLogState.wakeTime = moment(logState.wakeTime)
+      .subtract(1, 'days')
+      .toDate();
   }
   if (logState.isZeroSleep) {
     newLogState.wakeTime = newLogState.bedTime;
