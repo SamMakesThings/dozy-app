@@ -147,8 +147,14 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
       logState.wakeCount = baseSleepLog.wakeCount;
       logState.nightMinsAwake = baseSleepLog.nightMinsAwake;
       logState.SCTNonSleepActivities = baseSleepLog.SCTNonSleepActivities;
-      logState.wakeTime = baseSleepLog.wakeTime.toDate();
-      logState.upTime = baseSleepLog.upTime.toDate();
+      logState.wakeTime = moment(initialDateVal)
+        .hour(baseSleepLog.wakeTime.toDate().getHours())
+        .minute(baseSleepLog.wakeTime.toDate().getMinutes())
+        .startOf('minute')
+        .toDate();
+      logState.upTime = moment(baseSleepLog.upTime.toDate())
+        .startOf('minute')
+        .toDate();
       logState.notes = baseSleepLog.notes;
       logState.tags = baseSleepLog.tags;
     } else {
@@ -165,9 +171,9 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
       <DateTimePickerScreen
         theme={theme}
         defaultValue={
-          // Sets the bedtime's date as the wake time's date
+          // Sets the bedtime's date as the log date
           prevBedtime
-            ? moment(logState.wakeTime)
+            ? moment(selectedDate)
                 .hours(prevBedtime.getHours())
                 .minutes(prevBedtime.getMinutes())
                 .startOf('minute')
@@ -175,7 +181,11 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
             : defaultDate
         }
         onQuestionSubmit={(value: Date | boolean) => {
-          logState.bedTime = value as Date;
+          logState.bedTime = moment(selectedDate)
+            .hour((value as Date).getHours())
+            .minute((value as Date).getMinutes())
+            .startOf('minute')
+            .toDate();
           logState.logDate = selectedDate; // Make sure this is set even if user doesn't change it
           navigation.setParams({ progressBarPercent: 0.13 });
           navigation.navigate('MinsToFallAsleepInput', {
@@ -498,10 +508,14 @@ export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
   // wake time value as a default
   let defaultDate;
   if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
-    defaultDate = moment()
-      .hour(globalState.sleepLogs[0].wakeTime.toDate().getHours())
-      .minute(globalState.sleepLogs[0].wakeTime.toDate().getMinutes())
-      .toDate();
+    const previousWakeTime = globalState.sleepLogs[0].wakeTime.toDate();
+    const correctedPrevWakeTime = moment(logState.logDate)
+      .hour(previousWakeTime.getHours())
+      .minute(previousWakeTime.getMinutes())
+      .startOf('minute');
+    defaultDate = moment().isAfter(correctedPrevWakeTime)
+      ? correctedPrevWakeTime.toDate()
+      : new Date();
   } else {
     defaultDate =
       moment().hour() >= 9
@@ -514,21 +528,25 @@ export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       defaultValue={logState.logId ? logState.wakeTime : defaultDate}
       onQuestionSubmit={(value: Date | boolean) => {
-        logState.wakeTime = value as Date;
+        logState.wakeTime = moment(logState.logDate)
+          .hour((value as Date).getHours())
+          .minute((value as Date).getMinutes())
+          .startOf('minute')
+          .toDate();
         navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
       }}
       validInputChecker={(val: Date): ErrorObj | boolean => {
         // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
         // Also make sure the wake time occurs after the bedtime (complex b/c PM>AM crossover)
-        if (moment(val).hour() >= 17) {
+        if (val.getHours() >= 17) {
           return {
             severity: 'WARNING',
             errorMsg:
               'Did you set AM/PM correctly? Selected time is late for a wake time.',
           };
         } else if (
-          val < logState.bedTime &&
-          moment(logState.bedTime).hour() <= 17
+          val.getHours() < logState.bedTime.getHours() &&
+          logState.bedTime.getHours() <= 17
         ) {
           return {
             severity: 'ERROR',
@@ -539,7 +557,10 @@ export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
           moment(logState.logDate)
             .startOf('date')
             .isSameOrAfter(moment().startOf('date')) &&
-          moment(val).isAfter(new Date(), 'minute')
+          moment()
+            .hour(val.getHours())
+            .minute(val.getMinutes())
+            .isAfter(new Date(), 'minute')
         ) {
           return {
             severity: 'WARNING',
@@ -563,14 +584,22 @@ export const UpTimeInput: React.FC<Props> = ({ navigation }) => {
     <DateTimePickerScreen
       theme={theme}
       onQuestionSubmit={(value: Date | boolean) => {
-        logState.upTime = value as Date;
+        logState.upTime = moment(logState.logDate)
+          .hour((value as Date).getHours())
+          .minute((value as Date).getMinutes())
+          .startOf('minute')
+          .toDate();
         navigation.navigate('SleepRatingInput', { progressBarPercent: 0.87 });
       }}
       validInputChecker={(val: Date): ErrorObj | boolean => {
+        const upTime = moment(logState.logDate)
+          .hour(val.getHours())
+          .minute(val.getMinutes())
+          .startOf('minute');
         // Make sure the selected time is before 18:00, otherwise it's a likely sign of AM/PM mixup
         // Also make sure up time is after or equal to wake time
         // Also make sure up time cannot be future time.
-        if (moment(val).hour() > 18) {
+        if (val.getHours() > 18) {
           return {
             severity: 'WARNING',
             errorMsg:
@@ -578,7 +607,15 @@ export const UpTimeInput: React.FC<Props> = ({ navigation }) => {
           };
         } else if (
           !logState.isZeroSleep &&
-          moment(val).isBefore(logState.wakeTime)
+          ((moment(logState.bedTime).isBefore(upTime) &&
+            upTime.isBefore(logState.wakeTime) &&
+            moment(logState.bedTime).isBefore(logState.wakeTime)) ||
+            (moment(logState.wakeTime).isBefore(logState.bedTime) &&
+              moment(logState.bedTime).isBefore(upTime) &&
+              moment(logState.wakeTime).isBefore(upTime)) ||
+            (upTime.isBefore(logState.wakeTime) &&
+              moment(logState.wakeTime).isBefore(logState.bedTime) &&
+              upTime.isBefore(logState.bedTime)))
         ) {
           return {
             severity: 'ERROR',
