@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   useWindowDimensions,
   Text,
@@ -7,10 +7,15 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  FlatList,
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
+import firestore, {
+  FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
+import { findLast } from 'lodash';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -36,12 +41,13 @@ import submitOnboardingData, {
   submitFirstChatMessage,
   OnboardingState,
 } from '../utilities/submitOnboardingData';
-import { Navigation } from '../types/custom';
 import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import { getOnboardingCoach } from '../utilities/coach';
 import Notification from '../utilities/notification.service';
+import fetchChats from '../utilities/fetchChats';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
+import { Navigation, Chat } from '../types/custom';
 import { ErrorObj } from '../types/error';
 
 // Define the theme for the file globally
@@ -1052,10 +1058,27 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const { state, dispatch } = Auth.useAuth();
 
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChat);
+
+    if (state.userId) {
+      fetchChats(firestore(), state.userId)
+        .then((chats: Array<Chat>) => {
+          // Check that theres >1 entry. If no, set state accordingly
+          if (chats.length === 0) {
+            dispatch({ type: 'SET_CHATS', chats: [] });
+          } else {
+            dispatch({ type: 'SET_CHATS', chats: chats });
+          }
+
+          return;
+        })
+        .catch(function (error) {
+          console.log('Error getting chats:', error);
+        });
+    }
   }, []);
 
   const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
@@ -1092,6 +1115,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
   const { state } = Auth.useAuth();
   const displayName = state.userData.userInfo.displayName;
   const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
+  const coach = `${state.coach.firstName} ${state.coach.lastName}`;
 
   const [message, setMessage] = React.useState('');
   const [replyVisible, makeReplyVisible] = React.useState(false);
@@ -1103,9 +1127,33 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
     setTimeout(() => makeReplyVisible(true), 1500);
   }
 
+  const chats = useMemo(
+    (): Chat[] =>
+      message
+        ? [
+            ...state.chats,
+            {
+              sender: senderName ?? 'You',
+              message,
+              time: new Date(),
+              sentByUser: true,
+            },
+          ]
+        : state.chats,
+    [],
+  );
+
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChatContd);
   }, []);
+
+  useEffect((): void => {
+    const lastUserMessage = findLast(state.chats, { sentByUser: true });
+    if (lastUserMessage?.message) {
+      setMessage(lastUserMessage.message);
+      makeReplyVisible(true);
+    }
+  }, [state.chats]);
 
   return (
     <WizardContentScreen
@@ -1124,34 +1172,53 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
         style={styles.keyboardAvoidingView}
       >
         <View style={styles.spacer6} />
-        <ChatMessage
-          coach={senderName}
-          message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
-          time={new Date()}
-          sentByUser={false}
-        />
-        <ChatMessage
-          coach={senderName}
-          message="Why do you want to improve your sleep?"
-          time={new Date()}
-          sentByUser={false}
-        />
-        <View style={!messageSent && styles.none}>
-          <ChatMessage
-            coach="You"
-            message={message}
-            time={new Date()}
-            sentByUser={true}
+        {state.chats.length ? (
+          <FlatList
+            contentContainerStyle={styles.View_ContentContainer}
+            renderItem={({ item }) => (
+              <ChatMessage
+                message={item.message}
+                time={(item.time as FirebaseFirestoreTypes.Timestamp).toDate()}
+                sentByUser={item.sentByUser}
+                coach={coach}
+              />
+            )}
+            keyExtractor={(item, index) => `${item.message}${index}`}
+            inverted={true}
+            data={chats}
           />
-        </View>
-        <View style={!replyVisible && styles.none}>
-          <ChatMessage
-            coach={senderName}
-            message="Thanks for sending! We usually reply within 24 hours. You can find our conversation in the Support tab of the app at any time. :)"
-            time={new Date()}
-            sentByUser={false}
-          />
-        </View>
+        ) : (
+          <>
+            <ChatMessage
+              coach={senderName}
+              message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
+              time={new Date()}
+              sentByUser={false}
+            />
+            <ChatMessage
+              coach={senderName}
+              message="Why do you want to improve your sleep?"
+              time={new Date()}
+              sentByUser={false}
+            />
+            <View style={!messageSent && styles.none}>
+              <ChatMessage
+                coach="You"
+                message={message}
+                time={new Date()}
+                sentByUser={true}
+              />
+            </View>
+            <View style={!replyVisible && styles.none}>
+              <ChatMessage
+                coach={senderName}
+                message="Thanks for sending! We usually reply within 24 hours. You can find our conversation in the Support tab of the app at any time. :)"
+                time={new Date()}
+                sentByUser={false}
+              />
+            </View>
+          </>
+        )}
         <View style={styles.spacer} />
         <ChatTextInput
           onSend={(typedMsg: string) => {
@@ -1200,4 +1267,10 @@ const styles = StyleSheet.create({
   spacer6: { flex: 0.6 },
   spacer: { flex: 1 },
   none: { display: 'none' },
+  View_ContentContainer: {
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    paddingHorizontal: scale(10),
+    paddingVertical: scale(40),
+  },
 });
