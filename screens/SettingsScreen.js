@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import {
   withTheme,
@@ -15,12 +15,9 @@ import { scale } from 'react-native-size-matters';
 import ExpoConstants from 'expo-constants';
 import { dozy_theme } from '../config/Themes';
 import Analytics from '../utilities/analytics.service';
-import {
-  isNotificationEnabled,
-  askNotificationPermission,
-} from '../utilities/pushNotifications';
 import { encodeLocalTime, decodeServerTime } from '../utilities/time';
 import Auth from '../utilities/auth.service';
+import Notification from '../utilities/notification.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -83,6 +80,16 @@ export function SettingsScreen() {
       logNotifsEnabled: false,
     },
   );
+
+  const maybeAskNotificationPermission = useCallback(async () => {
+    if (!(await Notification.isNotificationEnabled())) {
+      const expoPushToken =
+        await Notification.registerForPushNotificationsAsync(false, true);
+      if (expoPushToken) {
+        Notification.updateExpoPushToken(expoPushToken, state.userId);
+      }
+    }
+  }, [state.userId]);
 
   // Make sure the screen uses updated state once it loads for the first time.
   React.useEffect(() => {
@@ -230,8 +237,8 @@ export function SettingsScreen() {
               Analytics.logEvent(AnalyticsEvents.switchSleepLogReminders, {
                 enabled: value,
               });
-              if (value && !(await isNotificationEnabled())) {
-                await askNotificationPermission(true);
+              if (value) {
+                maybeAskNotificationPermission();
               }
             }}
           />
@@ -265,6 +272,7 @@ export function SettingsScreen() {
             onDateChange={(result) => {
               dispatch({ type: 'SET_LOG_REMINDER_TIME', time: result });
               Analytics.logEvent(AnalyticsEvents.editReminderTime);
+              maybeAskNotificationPermission();
             }}
           />
         </Container>

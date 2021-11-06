@@ -23,6 +23,7 @@ import auth from '@react-native-firebase/auth';
 import Crashlytics from '../utilities/crashlytics.service';
 import ABTesting from '../utilities/abTesting.service';
 import Auth from '../utilities/auth.service';
+import Notification from '../utilities/notification.service';
 import { getCoachAssignedToUser } from '../utilities/coach';
 
 // Create the main app auth navigation flow
@@ -112,6 +113,7 @@ const AppNavigator = () => {
   const { state, dispatch } = Auth.useAuth();
   const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
   Crashlytics.useCrashlytics(state.userId);
+  Notification.useNotificationService(state.userId);
   const { initABTesting } = ABTesting.useABTestingService();
 
   React.useEffect(() => {

@@ -26,11 +26,8 @@ import { Chat, Navigation } from '../types/custom';
 import Analytics from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import {
-  setBadgeNumber,
-  calculateBadgeNumber,
-} from '../utilities/pushNotifications';
 import Auth from '../utilities/auth.service';
+import Notification from '../utilities/notification.service';
 
 export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
@@ -55,11 +52,14 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
           livechatUnreadMsg: false,
         });
         // Update the app icon's badge
-        calculateBadgeNumber(state.userId!, true, true, false).then(
-          (badgeNumber) => {
-            setBadgeNumber(badgeNumber);
-          },
-        );
+        Notification.calculateBadgeNumber(
+          state.userId!,
+          true,
+          true,
+          false,
+        ).then((badgeNumber) => {
+          Notification.setBadgeNumber(badgeNumber);
+        });
       }
     }, []),
   );

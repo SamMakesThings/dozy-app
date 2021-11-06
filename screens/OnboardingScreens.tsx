@@ -36,13 +36,11 @@ import submitOnboardingData, {
   submitFirstChatMessage,
   OnboardingState,
 } from '../utilities/submitOnboardingData';
-import registerForPushNotificationsAsync, {
-  updateExpoPushToken,
-} from '../utilities/pushNotifications';
 import { Navigation } from '../types/custom';
 import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import { getOnboardingCoach } from '../utilities/coach';
+import Notification from '../utilities/notification.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { ErrorObj } from '../types/error';
 
@@ -630,15 +628,17 @@ export const SafetyPillsBye: React.FC<Props> = ({ navigation }) => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyPillsBye);
 
     if (onboardingState.expoPushToken === 'No push token provided') {
-      registerForPushNotificationsAsync().then(async (expoPushToken) => {
-        if (expoPushToken) {
-          onboardingState.expoPushToken = expoPushToken;
-          const userId = await SecureStore.getItemAsync('userId');
-          if (userId) {
-            updateExpoPushToken(expoPushToken, userId);
+      Notification.registerForPushNotificationsAsync().then(
+        async (expoPushToken) => {
+          if (expoPushToken) {
+            onboardingState.expoPushToken = expoPushToken;
+            const userId = await SecureStore.getItemAsync('userId');
+            if (userId) {
+              Notification.updateExpoPushToken(expoPushToken, userId);
+            }
           }
-        }
-      });
+        },
+      );
     }
   }, []);
 
@@ -876,15 +876,17 @@ export const BaselineBye: React.FC<Props> = ({ navigation }) => {
     Analytics.logEvent(AnalyticsEvents.onboardingBaselineBye);
 
     if (onboardingState.expoPushToken === 'No push token provided') {
-      registerForPushNotificationsAsync().then(async (expoPushToken) => {
-        if (expoPushToken) {
-          onboardingState.expoPushToken = expoPushToken;
-          const userId = await SecureStore.getItemAsync('userId');
-          if (userId) {
-            updateExpoPushToken(expoPushToken, userId);
+      Notification.registerForPushNotificationsAsync().then(
+        async (expoPushToken) => {
+          if (expoPushToken) {
+            onboardingState.expoPushToken = expoPushToken;
+            const userId = await SecureStore.getItemAsync('userId');
+            if (userId) {
+              Notification.updateExpoPushToken(expoPushToken, userId);
+            }
           }
-        }
-      });
+        },
+      );
     }
   }, []);
 
@@ -974,7 +976,8 @@ export const DiaryReminder: React.FC<Props> = ({ navigation }) => {
         // TODO: Can I just make the arrow function async instead of below
         async function setPushToken() {
           // TODO: Make less dumb
-          const pushToken = await registerForPushNotificationsAsync();
+          const pushToken =
+            await Notification.registerForPushNotificationsAsync();
           if (pushToken) {
             onboardingState.expoPushToken = pushToken;
           }
@@ -1002,11 +1005,13 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
     // Ask push notification permission if user didn't allow to set a reminder
     if (onboardingState.expoPushToken === 'No push token provided') {
-      registerForPushNotificationsAsync().then(async (expoPushToken) => {
-        if (expoPushToken) {
-          onboardingState.expoPushToken = expoPushToken;
-        }
-      });
+      Notification.registerForPushNotificationsAsync().then(
+        async (expoPushToken) => {
+          if (expoPushToken) {
+            onboardingState.expoPushToken = expoPushToken;
+          }
+        },
+      );
     }
   }, []);
 
