@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { DatePicker } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
@@ -137,30 +137,35 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
     (sleepLog) => sleepLog.logId === route.params?.logId,
   );
 
-  // If editing existing sleep log, set defaults from that. Otherwise, use normal defaults
-  if (route.params?.logId) {
-    if (baseSleepLog) {
-      initialDateVal = baseSleepLog.upTime.toDate(); // If editing, use upTime as initial logDate value
+  useEffect((): void => {
+    // If editing existing sleep log, set defaults from that. Otherwise, use normal defaults
+    if (route.params?.logId) {
+      if (baseSleepLog) {
+        initialDateVal = baseSleepLog.upTime.toDate(); // If editing, use upTime as initial logDate value
 
-      logState.logId = route.params.logId;
-      logState.minsToFallAsleep = baseSleepLog.minsToFallAsleep;
-      logState.wakeCount = baseSleepLog.wakeCount;
-      logState.nightMinsAwake = baseSleepLog.nightMinsAwake;
-      logState.SCTNonSleepActivities = baseSleepLog.SCTNonSleepActivities;
-      logState.wakeTime = moment(initialDateVal)
-        .hour(baseSleepLog.wakeTime.toDate().getHours())
-        .minute(baseSleepLog.wakeTime.toDate().getMinutes())
-        .startOf('minute')
-        .toDate();
-      logState.upTime = moment(baseSleepLog.upTime.toDate())
-        .startOf('minute')
-        .toDate();
-      logState.notes = baseSleepLog.notes;
-      logState.tags = baseSleepLog.tags;
+        logState.logId = route.params.logId;
+        logState.minsToFallAsleep = baseSleepLog.minsToFallAsleep;
+        logState.wakeCount = baseSleepLog.wakeCount;
+        logState.nightMinsAwake = baseSleepLog.nightMinsAwake;
+        logState.SCTNonSleepActivities = baseSleepLog.SCTNonSleepActivities;
+        logState.wakeTime = moment(initialDateVal)
+          .hour(baseSleepLog.wakeTime.toDate().getHours())
+          .minute(baseSleepLog.wakeTime.toDate().getMinutes())
+          .startOf('minute')
+          .toDate();
+        logState.upTime = moment(baseSleepLog.upTime.toDate())
+          .startOf('minute')
+          .toDate();
+        logState.notes = baseSleepLog.notes;
+        logState.tags = baseSleepLog.tags;
+      } else {
+        console.error("Attempted to edit sleep log that doesn't exist!");
+      }
     } else {
-      console.error("Attempted to edit sleep log that doesn't exist!");
+      logState.logId = undefined;
     }
-  }
+  }, [route.params?.logId]);
+
   const prevBedtime = baseSleepLog?.bedTime?.toDate();
 
   // Create state to display selected log date
