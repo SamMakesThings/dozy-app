@@ -672,7 +672,7 @@ export const SafetySnoring: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value?: string | number | boolean) => {
-        onboardingState.snoring = value as boolean;
+        onboardingState.snoring = value as boolean | string;
         navigation.navigate(!value ? 'SafetyLegs' : 'SafetyIllnessWarning', {
           warnAbout: 'sleep apneas',
           nextScreen: 'SafetyLegs',
@@ -680,11 +680,12 @@ export const SafetySnoring: React.FC<Props> = ({ navigation }) => {
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetySnoring, {
           answer: value,
         });
-        submitHealthHistoryData({ snoring: value as boolean });
+        submitHealthHistoryData({ snoring: value as boolean | string });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
         { label: 'No', value: false, solidColor: true },
+        { label: "I don't know", value: 'unknown', solidColor: true },
       ]}
       questionLabel="Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apneas)?"
     />
