@@ -8,12 +8,15 @@ export interface ChatMessageProps {
   time: Date;
   sentByUser: boolean;
   coach: string;
+  pending?: boolean;
 }
+new Date().getTime();
 export const ChatMessage: React.FC<ChatMessageProps> = ({
   message,
   time,
   sentByUser,
   coach,
+  pending = false,
 }) => {
   const theme = dozy_theme;
 
@@ -39,6 +42,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         <Text style={{ ...theme.typography.body2, ...styles.Text_Msg }}>
           {message}
         </Text>
+        {sentByUser && <Text style={styles.tick}>{pending ? '🕓' : '✓'}</Text>}
       </View>
     </View>
   );
@@ -72,6 +76,11 @@ const styles = StyleSheet.create({
   },
   sentContainer: {
     alignItems: 'flex-end',
+  },
+  tick: {
+    alignSelf: 'flex-end',
+    fontSize: scale(10),
+    color: dozy_theme.colors.secondary,
   },
 });
 
