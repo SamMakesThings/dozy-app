@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import {
   useWindowDimensions,
   Text,
@@ -82,6 +82,8 @@ const onboardingState: OnboardingState = {
   firstCheckinTime: null,
   firstChatMessageContent: 'Hi',
 };
+
+let chatSubscriber: (() => void) | undefined;
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   const { dispatch } = Auth.useAuth();
@@ -1061,23 +1063,33 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = Auth.useAuth();
 
   useEffect((): void => {
+    chatSubscriber = undefined;
     Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChat);
 
     if (state.userId) {
-      fetchChats(firestore(), state.userId)
-        .then((chats: Array<Chat>) => {
-          // Check that theres >1 entry. If no, set state accordingly
-          if (chats.length === 0) {
-            dispatch({ type: 'SET_CHATS', chats: [] });
-          } else {
-            dispatch({ type: 'SET_CHATS', chats: chats });
-          }
+      const fetchSupportMessages = () => {
+        fetchChats(firestore(), state.userId!)
+          .then((chats: Array<Chat>) => {
+            // Check that theres >1 entry. If no, set state accordingly
+            if (chats.length === 0) {
+              dispatch({ type: 'SET_CHATS', chats: [] });
+            } else {
+              dispatch({ type: 'SET_CHATS', chats: chats });
+            }
+            console.log('set chats: ', chats);
 
-          return;
-        })
-        .catch(function (error) {
-          console.log('Error getting chats:', error);
-        });
+            return;
+          })
+          .catch(function (error) {
+            console.log('Error getting chats:', error);
+          });
+      };
+
+      chatSubscriber = firestore()
+        .collection('users')
+        .doc(state.userId)
+        .collection('supportMessages')
+        .onSnapshot(fetchSupportMessages);
     }
   }, []);
 
@@ -1120,28 +1132,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
   const [message, setMessage] = React.useState('');
   const [replyVisible, makeReplyVisible] = React.useState(false);
 
-  const messageSent = message != '';
-
-  if (messageSent) {
-    // Send message after a delay to simulate actual reply
-    setTimeout(() => makeReplyVisible(true), 1500);
-  }
-
-  const chats = useMemo(
-    (): Chat[] =>
-      message
-        ? [
-            ...state.chats,
-            {
-              sender: senderName ?? 'You',
-              message,
-              time: new Date(),
-              sentByUser: true,
-            },
-          ]
-        : state.chats,
-    [],
-  );
+  const messageSent = message?.trim().length > 0;
 
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChatContd);
@@ -1185,7 +1176,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
             )}
             keyExtractor={(item, index) => `${item.message}${index}`}
             inverted={true}
-            data={chats}
+            data={state.chats}
           />
         ) : (
           <>
@@ -1207,6 +1198,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
                 message={message}
                 time={new Date()}
                 sentByUser={true}
+                pending={!replyVisible}
               />
             </View>
             <View style={!replyVisible && styles.none}>
@@ -1222,10 +1214,15 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
         <View style={styles.spacer} />
         <ChatTextInput
           onSend={(typedMsg: string) => {
-            onboardingState.firstChatMessageContent = typedMsg;
-            setMessage(typedMsg);
-            Keyboard.dismiss();
-            submitFirstChatMessage(typedMsg, state.coach.id, displayName);
+            if (typedMsg?.trim().length) {
+              onboardingState.firstChatMessageContent = typedMsg;
+              setMessage(typedMsg);
+              Keyboard.dismiss();
+              submitFirstChatMessage(typedMsg, state.coach.id, displayName);
+              setTimeout(() => {
+                makeReplyVisible(true);
+              }, 1000);
+            }
           }}
           viewStyle={!!messageSent && styles.none}
         />
@@ -1248,6 +1245,9 @@ export const OnboardingEnd: React.FC<Props> = ({ navigation }) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         submitOnboardingData(onboardingState, dispatch);
+        if (chatSubscriber) {
+          chatSubscriber();
+        }
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
       buttonLabel="Continue"
