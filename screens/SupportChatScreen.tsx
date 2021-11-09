@@ -151,6 +151,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
                   ).toDate()}
                   sentByUser={item.sentByUser}
                   coach={coach}
+                  pending={item.pending}
                 />
               )}
               keyExtractor={(item, index) => `${item.message}${index}`}
@@ -159,16 +160,23 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
             />
             <ChatTextInput
               onSend={(typedMsg: string) => {
-                if (!state.userId) throw new Error();
-                sendChatMessage(firestore(), state.userId, {
-                  sender:
-                    state.profileData.name ||
-                    state.userData.userInfo?.displayName,
-                  message: typedMsg,
-                  time: new Date(),
-                  sentByUser: true,
-                });
-                Analytics.logEvent(AnalyticsEvents.sendMessage);
+                if (state.userId && typedMsg?.trim().length) {
+                  const newMessage: Chat = {
+                    sender:
+                      state.profileData.name ||
+                      state.userData.userInfo?.displayName,
+                    message: typedMsg,
+                    time: firestore.Timestamp.fromDate(new Date()),
+                    sentByUser: true,
+                    pending: true,
+                  };
+                  dispatch({
+                    type: 'SET_CHATS',
+                    chats: [newMessage, ...state.chats],
+                  });
+                  sendChatMessage(firestore(), state.userId, newMessage);
+                  Analytics.logEvent(AnalyticsEvents.sendMessage);
+                }
               }}
             />
           </KeyboardAvoidingView>
