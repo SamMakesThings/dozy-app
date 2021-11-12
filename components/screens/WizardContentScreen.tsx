@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+  TextProps,
+} from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
@@ -8,9 +15,9 @@ import { Theme } from '../../types/theme';
 interface Props {
   theme: Theme;
   flexibleLayout?: boolean;
-  textLabel: string | JSX.Element;
+  textLabel?: string | React.ReactElement<TextProps>;
   titleLabel?: string;
-  onQuestionSubmit: (value: string) => void;
+  onQuestionSubmit?: (value?: string) => void;
   buttonLabel?: string;
   bottomBackButtonLabel?: string;
   bottomGreyButtonLabel?: string;
@@ -88,7 +95,9 @@ const WizardContentScreen: React.FC<Props> = (props) => {
         )}
       </Container>
       <BottomNavButtons
-        onPress={props.onQuestionSubmit}
+        onPress={
+          props.onQuestionSubmit as (value?: string | number | boolean) => void
+        }
         buttonLabel={props.buttonLabel}
         bottomGreyButtonLabel={props.bottomGreyButtonLabel}
         bottomBackButton={props.bottomBackButton}
@@ -139,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withTheme(WizardContentScreen);
+export default withTheme<Props, React.FC<Props>>(WizardContentScreen);

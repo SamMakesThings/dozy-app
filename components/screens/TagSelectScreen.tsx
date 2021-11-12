@@ -9,15 +9,17 @@ import {
   ScrollView,
   InteractionManager,
 } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ToggleTag from '../ToggleTag';
 import BottomNavButtons from '../BottomNavButtons';
-import { Theme } from '../../types/theme';
 import KeyboardAwareView from '../KeyboardAwareView';
 import ConfirmSleepTimeModal from '../ConfirmSleepTimeModal';
+import { Theme } from '../../types/theme';
 import { SleepLog } from '../../types/custom';
+import { ErrorObj } from '../../types/error';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -28,16 +30,16 @@ if (Platform.OS === 'android') {
 
 interface Props {
   theme: Theme;
-  touchableTags: Array<{
+  touchableTags: {
     label: string;
-    selected: boolean;
-    icon: string;
-  }>;
+    selected?: boolean;
+    icon: React.ComponentProps<typeof Entypo>['name'];
+  }[];
   defaultTags?: string[];
   defaultNotes?: string;
   questionLabel: string;
   inputLabel: string;
-  preFormSubmit: () => boolean;
+  validateSleepLog: () => ErrorObj | boolean;
   onInvalidForm: () => void;
   onFormSubmit: (value: { notes: string; tags: string[] }) => void;
   sleepLog: SleepLog;
@@ -51,7 +53,7 @@ const TagSelectScreen: React.FC<Props> = ({
   questionLabel,
   inputLabel,
   sleepLog,
-  preFormSubmit,
+  validateSleepLog,
   onInvalidForm,
   onFormSubmit,
 }) => {
@@ -59,6 +61,7 @@ const TagSelectScreen: React.FC<Props> = ({
   const [selectedTags, updateTags] = React.useState(defaultTags || []) as any;
   const [notes, setNotes] = useState(defaultNotes || '');
   const [showingModal, setShowingModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
   const { top, bottom } = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const scrollViewRef = React.useRef<ScrollView>(null);
@@ -76,12 +79,14 @@ const TagSelectScreen: React.FC<Props> = ({
   }, [onFormSubmit, notes, selectedTags]);
 
   const onSubmit = useCallback((): void => {
-    if (preFormSubmit()) {
+    const validationResult = validateSleepLog();
+    if (validationResult === true) {
       onFormSubmitWithNotesAndTags();
     } else {
+      setErrorMessage((validationResult as ErrorObj).errorMsg);
       setShowingModal(true);
     }
-  }, [preFormSubmit, onFormSubmitWithNotesAndTags]);
+  }, [validateSleepLog, onFormSubmitWithNotesAndTags]);
 
   const onFixSleepLog = useCallback((): void => {
     setShowingModal(false);
@@ -97,6 +102,7 @@ const TagSelectScreen: React.FC<Props> = ({
       <ConfirmSleepTimeModal
         visible={showingModal}
         sleepLog={sleepLog}
+        description={errorMessage}
         onRequestClose={() => setShowingModal((prevState) => !prevState)}
         onFix={onFixSleepLog}
         onProceed={onFormSubmitWithNotesAndTags}

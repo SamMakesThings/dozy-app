@@ -3,7 +3,6 @@ import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
 import { NavigationProp } from '@react-navigation/native';
-import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -22,6 +21,9 @@ import Rule2Illustration from '../assets/images/Rule2Illustration.svg';
 import Rule3Illustration from '../assets/images/Rule3Illustration.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
+import { ErrorObj } from '../types/error';
+import Feedback from '../utilities/feedback.service';
+import Auth from '../utilities/auth.service';
 
 // Use a local state object instead of GLOBAL for GSES score, next checkin time
 interface Global {
@@ -34,12 +36,13 @@ interface Global {
   GSES7: number;
   GSESScore: number;
   nextCheckinTime: Date;
-  treatmentPlan: Array<{ started: boolean; module: string }>;
+  treatmentPlan: Array<{ started: boolean; module: string; estDate?: Date }>;
   targetBedTime: Date;
   targetWakeTime: Date;
   targetTimeInBed: number;
 }
-const GLOBAL: Global = GLOBALRAW; // Create a local copy of global app state, typed with above
+
+const GLOBAL: Partial<Global> = GLOBALRAW; // Create a local copy of global app state, typed with above
 
 // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
@@ -101,8 +104,8 @@ export const GSES1: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES1 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        GLOBAL.GSES1 = value as number;
         navigation.navigate('GSES2', { progressBarPercent: 0.43 });
       }}
       questionLabel="I put too much effort into sleeping when it should come naturally."
@@ -121,8 +124,8 @@ export const GSES2: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES2 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        GLOBAL.GSES2 = value as number;
         navigation.navigate('GSES3', { progressBarPercent: 0.48 });
       }}
       questionLabel="I feel I should be able to control my sleep."
@@ -141,8 +144,8 @@ export const GSES3: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES3 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        GLOBAL.GSES3 = value as number;
         navigation.navigate('GSES4', { progressBarPercent: 0.52 });
       }}
       questionLabel="I put off going to bed at night for fear of not being able to sleep."
@@ -161,8 +164,8 @@ export const GSES4: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES4 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        GLOBAL.GSES4 = value as number;
         navigation.navigate('GSES5', { progressBarPercent: 0.57 });
       }}
       questionLabel="I worry about not sleeping if I cannot sleep."
@@ -181,8 +184,8 @@ export const GSES5: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES5 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        GLOBAL.GSES5 = value as number;
         navigation.navigate('GSES6', { progressBarPercent: 0.61 });
       }}
       questionLabel="I am no good at sleeping."
@@ -201,8 +204,8 @@ export const GSES6: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES6 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        GLOBAL.GSES6 = value as number;
         navigation.navigate('GSES7', { progressBarPercent: 0.65 });
       }}
       questionLabel="I get anxious about sleeping before I go to bed."
@@ -221,8 +224,8 @@ export const GSES7: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        GLOBAL.GSES7 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        GLOBAL.GSES7 = value as number;
         navigation.navigate('GSESResult', { progressBarPercent: 0.7 });
       }}
       questionLabel="I worry about the consequences of not sleeping."
@@ -238,13 +241,13 @@ export const GSES7: React.FC<Props> = ({ navigation }) => {
 
 export const GSESResult: React.FC<Props> = ({ navigation }) => {
   const GSESScore =
-    GLOBAL.GSES1 +
-    GLOBAL.GSES2 +
-    GLOBAL.GSES3 +
-    GLOBAL.GSES4 +
-    GLOBAL.GSES5 +
-    GLOBAL.GSES6 +
-    GLOBAL.GSES7;
+    (GLOBAL.GSES1 as number) +
+    (GLOBAL.GSES2 as number) +
+    (GLOBAL.GSES3 as number) +
+    (GLOBAL.GSES4 as number) +
+    (GLOBAL.GSES5 as number) +
+    (GLOBAL.GSES6 as number) +
+    (GLOBAL.GSES7 as number);
   GLOBAL.GSESScore = GSESScore;
 
   return (
@@ -389,7 +392,7 @@ export const PITReview: React.FC<Props> = ({ navigation }) => {
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(res: string) => {
+      onQuestionSubmit={(res?: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
             module: 'PIT',
@@ -461,11 +464,11 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
           new Date().getTime() + 86400000 * 7,
         ) /* Default date of 7 days from today */
       }
-      onQuestionSubmit={(value: Date) => {
-        GLOBAL.nextCheckinTime = value;
+      onQuestionSubmit={(value: Date | boolean) => {
+        GLOBAL.nextCheckinTime = value as Date;
         navigation.navigate('PITEnd', { progressBarPercent: 1 });
       }}
-      validInputChecker={(val: Date) => {
+      validInputChecker={(val: Date): ErrorObj | boolean => {
         // Make sure the selected date is 7+ days from today
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
@@ -492,7 +495,8 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const PITEnd: React.FC<Props> = ({ navigation }) => {
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin
   const reminderObject = {
@@ -500,7 +504,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
     title: 'Next checkin is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
-    time: GLOBAL.nextCheckinTime,
+    time: GLOBAL.nextCheckinTime as Date,
     enabled: true,
   };
 
@@ -514,7 +518,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
         submitCheckinData({
           userId: state.userId,
           checkinPostponed: false,
-          nextCheckinDatetime: GLOBAL.nextCheckinTime,
+          nextCheckinDatetime: GLOBAL.nextCheckinTime as Date,
           lastCheckinDatetime: new Date(),
           nextCheckinModule: GLOBALRAW.treatmentPlan.filter(
             (v: { started: boolean; module: string }) =>
@@ -538,6 +542,7 @@ export const PITEnd: React.FC<Props> = ({ navigation }) => {
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
+        setShowingFeedbackWidget(true);
       }}
       textLabel="Weekly check-in completed!"
       buttonLabel="Finish"

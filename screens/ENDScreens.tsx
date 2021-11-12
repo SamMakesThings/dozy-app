@@ -1,7 +1,6 @@
 import React from 'react';
 import { useWindowDimensions, Text, StyleSheet } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -20,6 +19,8 @@ import BarChart from '../assets/images/BarChart.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
 import { Navigation } from '../types/custom';
+import Feedback from '../utilities/feedback.service';
+import Auth from '../utilities/auth.service';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -112,13 +113,13 @@ export const TreatmentPlan: React.FC<{ navigation: Navigation }> = ({
 // ISI RETEST SCREENS
 //
 
-export const ISI1 = ({ navigation }: Props) => {
+export const ISI1: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        ENDState.ISI1 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        ENDState.ISI1 = value as number;
         navigation.navigate('ISI2', { progressBarPercent: 0.33 });
       }}
       buttonValues={[
@@ -133,13 +134,13 @@ export const ISI1 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI2 = ({ navigation }: Props) => {
+export const ISI2: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        ENDState.ISI2 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        ENDState.ISI2 = value as number;
         navigation.navigate('ISI3', { progressBarPercent: 0.37 });
       }}
       buttonValues={[
@@ -154,13 +155,13 @@ export const ISI2 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI3 = ({ navigation }: Props) => {
+export const ISI3: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        ENDState.ISI3 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        ENDState.ISI3 = value as number;
         navigation.navigate('ISI4', { progressBarPercent: 0.4 });
       }}
       buttonValues={[
@@ -179,13 +180,13 @@ export const ISI3 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI4 = ({ navigation }: Props) => {
+export const ISI4: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        ENDState.ISI4 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        ENDState.ISI4 = value as number;
         navigation.navigate('ISI5', { progressBarPercent: 0.43 });
       }}
       buttonValues={[
@@ -204,13 +205,13 @@ export const ISI4 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI5 = ({ navigation }: Props) => {
+export const ISI5: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        ENDState.ISI5 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        ENDState.ISI5 = value as number;
         navigation.navigate('ISI6', { progressBarPercent: 0.47 });
       }}
       buttonValues={[
@@ -225,13 +226,13 @@ export const ISI5 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI6 = ({ navigation }: Props) => {
+export const ISI6: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        ENDState.ISI6 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        ENDState.ISI6 = value as number;
         navigation.navigate('ISI7', { progressBarPercent: 0.5 });
       }}
       buttonValues={[
@@ -246,14 +247,14 @@ export const ISI6 = ({ navigation }: Props) => {
   );
 };
 
-export const ISI7 = ({ navigation }: Props) => {
+export const ISI7: React.FC<Props> = ({ navigation }) => {
   return (
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
+      onQuestionSubmit={(value?: string | number | boolean) => {
         // Sum ISI scores, store value & navigate accordingly
-        ENDState.ISI7 = value;
+        ENDState.ISI7 = value as number;
         ENDState.ISITotal =
           ENDState.ISI1 +
           ENDState.ISI2 +
@@ -261,7 +262,7 @@ export const ISI7 = ({ navigation }: Props) => {
           ENDState.ISI4 +
           ENDState.ISI5 +
           ENDState.ISI6 +
-          value;
+          (value as number);
         navigation.navigate('ISIProcessing', { progressBarPercent: 0.53 });
       }}
       buttonValues={[
@@ -276,7 +277,7 @@ export const ISI7 = ({ navigation }: Props) => {
   );
 };
 
-export const ISIProcessing = ({ navigation }: Props) => {
+export const ISIProcessing: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -296,8 +297,8 @@ export const ISIProcessing = ({ navigation }: Props) => {
 
 // TODO: Handle (unlikely but possible) worse sleep numbers with different flow
 
-export const ISIResults = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
+export const ISIResults: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
 
   // Get % improvement in ISI score, format it nicely
   const prevISITotal = state.userData.baselineInfo.isiTotal;
@@ -340,8 +341,8 @@ export const ISIResults = ({ navigation }: Props) => {
   );
 };
 
-export const ISICategoryChange = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
+export const ISICategoryChange: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
 
   const prevISITotal = state.userData.baselineInfo.isiTotal;
   const currentISITotal = ENDState.ISITotal;
@@ -365,7 +366,7 @@ export const ISICategoryChange = ({ navigation }: Props) => {
   );
 };
 
-export const ISIEnd = ({ navigation }: Props) => (
+export const ISIEnd: React.FC<Props> = ({ navigation }) => (
   <WizardContentScreen
     theme={theme}
     bottomBackButton={() => navigation.goBack()}
@@ -381,9 +382,7 @@ export const ISIEnd = ({ navigation }: Props) => (
   </WizardContentScreen>
 );
 
-export const EducationStart: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
+export const EducationStart: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -404,9 +403,7 @@ export const EducationStart: React.FC<{ navigation: Navigation }> = ({
   );
 };
 
-export const RulesPhaseOut: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
+export const RulesPhaseOut: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -425,9 +422,7 @@ export const RulesPhaseOut: React.FC<{ navigation: Navigation }> = ({
   );
 };
 
-export const WhatToKeepOverview: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
+export const WhatToKeepOverview: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -447,9 +442,7 @@ export const WhatToKeepOverview: React.FC<{ navigation: Navigation }> = ({
   );
 };
 
-export const ConsistentSchedule: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
+export const ConsistentSchedule: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -471,9 +464,7 @@ export const ConsistentSchedule: React.FC<{ navigation: Navigation }> = ({
   );
 };
 
-export const MaintainSCT: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
+export const MaintainSCT: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -495,9 +486,7 @@ export const MaintainSCT: React.FC<{ navigation: Navigation }> = ({
   );
 };
 
-export const DoNotCompensate: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
+export const DoNotCompensate: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -519,9 +508,7 @@ export const DoNotCompensate: React.FC<{ navigation: Navigation }> = ({
   );
 };
 
-export const IfStopSleeping: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
+export const IfStopSleeping: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -542,9 +529,7 @@ export const IfStopSleeping: React.FC<{ navigation: Navigation }> = ({
   );
 };
 
-export const IfSCTNotWork: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
+export const IfSCTNotWork: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -566,9 +551,7 @@ export const IfSCTNotWork: React.FC<{ navigation: Navigation }> = ({
   );
 };
 
-export const SummarizeLearnings: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
+export const SummarizeLearnings: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
@@ -590,14 +573,12 @@ export const SummarizeLearnings: React.FC<{ navigation: Navigation }> = ({
   );
 };
 
-export const AccessAndFAQ: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
+export const AccessAndFAQ: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(res: string) => {
+      onQuestionSubmit={(res?: string) => {
         if (res === 'I have questions') {
           navigation.navigate('TreatmentReview', {
             module: 'END',
@@ -620,16 +601,14 @@ export const AccessAndFAQ: React.FC<{ navigation: Navigation }> = ({
   );
 };
 
-export const ENDEnd: React.FC<{ navigation: Navigation }> = ({
-  navigation,
-}) => {
-  const { state, dispatch } = React.useContext(AuthContext);
+export const ENDEnd: React.FC<Props> = ({ navigation }) => {
+  const { state, dispatch } = Auth.useAuth();
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         // Submit checkin data, refresh app state
         if (!state.userId) throw new Error();
@@ -659,6 +638,7 @@ export const ENDEnd: React.FC<{ navigation: Navigation }> = ({
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
+        setShowingFeedbackWidget(true);
       }}
       textLabel={`You're done! Press "finish" to mark this check-in as completed.`}
       buttonLabel="Finish"

@@ -10,6 +10,7 @@ import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
 import { Theme } from '../../types/theme';
+import { ErrorObj } from '../../types/error';
 
 interface Props {
   questionLabel: string;
@@ -20,7 +21,7 @@ interface Props {
   onQuestionSubmit: (value: string) => void;
   optional?: boolean;
   bottomBackButton?: () => void;
-  validInputChecker?: (value: string) => boolean;
+  validInputChecker?: (value: string) => ErrorObj | boolean;
   theme: Theme;
 }
 
@@ -47,10 +48,6 @@ const TextInputScreen: React.FC<Props> = (props) => {
     // If invalid, function should return an error object, with a severity prop and a message prop.
     // Severity can be either "WARNING" or "ERROR"
 
-    interface ErrorObj {
-      severity: string;
-      errorMsg: string;
-    }
     const validationResult: ErrorObj | boolean | undefined =
       props.validInputChecker ? props.validInputChecker(val) : undefined;
 

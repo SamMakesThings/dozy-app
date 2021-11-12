@@ -2823,21 +2823,21 @@
   dependencies:
     "@date-io/core" "^1.3.13"
 
-"@draftbit/react-theme-provider@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@draftbit/react-theme-provider/-/react-theme-provider-2.1.1.tgz#8ae9d097d1d3c8a08fe04c583d4f020764e24f72"
-  integrity sha512-3LZeOaNik9QHox4bhqyMGZFYsuGP7ErTh075uuh5uwWfLgS1S19kqCL5vi/LcxdBEVcX8MOwn9GktYFD7Y6QYQ==
+"@draftbit/react-theme-provider@npm:@fancydevpro/react-theme-provider@2.1.1-type-patch-1":
+  version "2.1.1-type-patch-1"
+  resolved "https://registry.yarnpkg.com/@fancydevpro/react-theme-provider/-/react-theme-provider-2.1.1-type-patch-1.tgz#f7d71462c7d85f30018e777956b5009f827c3736"
+  integrity sha512-BWAab330eSfIR6bDHeXTxpctar+v1xwcMv5AVRISdBlDDkenUoU5cV465T4/49yiSdoc5R6pRxgC5YeQQ4GGNg==
   dependencies:
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-date-picker-3":
-  version "39.7.1-patch-date-picker-3"
-  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-date-picker-3.tgz#b59f94871326e6cf88976ca99a41e22760cbd7bb"
-  integrity sha512-WVvtdqEUdhroo0ZZoxObUmsKYBfJLCbIfVZhh9QpKcTUA3Yk6XPVMKzYkGcODJc3HEtEKQegEQUfY1LdI1TfuA==
+"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-container-prop-type":
+  version "39.7.1-patch-container-prop-type"
+  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-container-prop-type.tgz#f6a5c0d37bb515881f476c8b829bf1e5d08fec4a"
+  integrity sha512-FM9lDartaXZEGW2sdnpzFkT3lEQgRdv80opW2/EY+Wnw8+vpbHp8bVwCim2E8ZXyBzrdVhP9PrmSSKqXAv1Nsg==
   dependencies:
     "@date-io/date-fns" "^1.3.13"
-    "@draftbit/react-theme-provider" "^2.1.1"
+    "@draftbit/react-theme-provider" "npm:@fancydevpro/react-theme-provider@2.1.1-type-patch-1"
     "@material-ui/core" "^4.11.0"
     "@material-ui/pickers" "^3.2.10"
     "@react-native-community/slider" "~3.0.3"
@@ -4313,6 +4313,11 @@
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/remote-config/-/remote-config-12.1.0.tgz#91678af45dfc1789730e3637c304db6aefaea614"
   integrity sha512-h8R2z7spIjlkFx1nCJ/mD6Ycaj7xBigb85dRDc6/9DRDqWm39RsQXELEQOLvijOudI3+CvbOBbC3lmNdWM12Gw==
+
+"@react-native-firebase/storage@^12.1.0":
+  version "12.9.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-12.9.1.tgz#b5f29f766c9b2374dbad29dc9d2000f1ea826475"
+  integrity sha512-wR5lP1kdxB0F3R1GymKwmqShF4FKEbvk7wN1t3y+6P6Chdiw3beFQzarQzl7pNHMBlf+D16mNVm/NP+xiESu3w==
 
 "@react-native-google-signin/google-signin@^6.0.1":
   version "6.0.1"
@@ -14673,6 +14678,18 @@ mockdate@^3.0.2:
   resolved "https://registry.yarnpkg.com/mockdate/-/mockdate-3.0.5.tgz#789be686deb3149e7df2b663d2bc4392bc3284fb"
   integrity sha512-iniQP4rj1FhBdBYS/+eQv7j1tadJ9lJtdzgOpvsOHng/GbcDh2Fhdeq+ZRldrPYdXvCyfFUmFeEwEGXZB5I/AQ==
 
+moment-timezone@^0.5.33:
+  version "0.5.33"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.33.tgz#b252fd6bb57f341c9b59a5ab61a8e51a73bbd22c"
+  integrity sha512-PTc2vcT8K9J5/9rDEPe5czSIKgLoGsH8UNpA4qZTVw0Vd/Uz19geE9abbIOQKaAQFcnQ3v5YEXrbSc5BpshH+w==
+  dependencies:
+    moment ">= 2.9.0"
+
+"moment@>= 2.9.0":
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+
 moment@^2.27.0:
   version "2.27.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.27.0.tgz#8bff4e3e26a236220dfe3e36de756b6ebaa0105d"
@@ -17045,6 +17062,13 @@ react-native-pager-view@^5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.4.1.tgz#88641ff083ca4379497dc03891fdc2d5b6f82263"
   integrity sha512-P/aGuJqRe/HaocYd8o6TsO9YQMFPQrVnkjph9vZ+yg3HCCF/7XLRlntOLEs24Vmg4M+02MjpH557WACpBADi/A==
+
+react-native-ratings@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-8.1.0.tgz#3fa9ad29128dc3a88e59518ba151e61c59dd0647"
+  integrity sha512-+QOJ4G3NjVkI1D+tk4EGx1dCvVfbD2nQdkrj9cXrcAoEiwmbep4z4bZbCKmWMpQ5h2dqbxABU8/eBnbDmvAc3g==
+  dependencies:
+    lodash "^4.17.15"
 
 react-native-reanimated@~2.1.0:
   version "2.1.0"

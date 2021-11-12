@@ -22,15 +22,18 @@ import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { dozy_theme } from '../config/Themes';
 import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { Navigation, SleepLog } from '../types/custom';
+import { Theme } from '../types/theme';
 import fetchTasks from '../utilities/fetchTasks';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
+import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
-import { AuthContext } from '../context/AuthContext';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
   require('intl/locale-data/jsonp/tr-TR');
   require('date-time-format-timezone');
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   Intl.__disableRegExpRestore(); /*For syntaxerror invalid regular expression unmatched parentheses*/
 }
 
@@ -41,7 +44,7 @@ const SleepLogsView = (props: {
   navigation: Navigation;
 }) => {
   const theme = dozy_theme;
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
   let loggedToday = false;
   let selectedSleepLogs: Array<SleepLog> = [];
 
@@ -167,9 +170,11 @@ const SleepLogsView = (props: {
   }
 };
 
-const SleepLogsScreen: React.FC<{ navigation: Navigation }> = (props) => {
+const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
+  props,
+) => {
   // Get global state & dispatch
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
 
   // Set local state for loading/not loading
   const [logsLoading, setLogsLoading] = React.useState(true);

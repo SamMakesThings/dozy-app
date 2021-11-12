@@ -5,7 +5,9 @@ import { cloneDeep, pick } from 'lodash';
 
 import SleepConstants from '../constants/Sleep';
 import { SleepLog } from '../types/custom';
+import { ErrorObj } from '../types/error';
 import { encodeLocalTime } from './time';
+import Notification from './notification.service';
 
 interface LogState {
   logId?: string;
@@ -58,6 +60,18 @@ export default async function submitSleepDiaryData(
     sleepLogsRef.add(logDataForDoc).catch(function (error) {
       console.error('Error pushing sleep log data:', error);
     });
+    // Update the app icon's badge
+    if (
+      moment(logDataForDoc.upTime.toDate()).isSameOrAfter(
+        moment().startOf('date'),
+      )
+    ) {
+      Notification.calculateBadgeNumber(userId!, false, true, true).then(
+        (badgeNumber) => {
+          Notification.setBadgeNumber(badgeNumber);
+        },
+      );
+    }
   }
 
   // Make sure userStatus is "active" in Firebase
@@ -88,6 +102,16 @@ export function normalizeSleepLog(
     (logState.isZeroSleep ? logState.upTime : logState.wakeTime)
   ) {
     newLogState.bedTime = moment(logState.bedTime).subtract(1, 'days').toDate();
+  } else if (
+    !logState.isZeroSleep &&
+    logState.upTime < logState.bedTime &&
+    logState.bedTime < logState.wakeTime &&
+    logState.upTime < logState.wakeTime
+  ) {
+    newLogState.bedTime = moment(logState.bedTime).subtract(1, 'days').toDate();
+    newLogState.wakeTime = moment(logState.wakeTime)
+      .subtract(1, 'days')
+      .toDate();
   }
   if (logState.isZeroSleep) {
     newLogState.wakeTime = newLogState.bedTime;
@@ -187,6 +211,7 @@ export function normalizeSleepLog(
       isChangeTimezone ? upTimeUTCData.value : newLogState.upTime,
     ),
     version: bedTimeUTCData.version,
+    timezone: bedTimeUTCData.timezone,
     sleepEfficiency,
     sleepDuration,
     minsInBedTotal,
@@ -195,9 +220,7 @@ export function normalizeSleepLog(
   };
 }
 
-export function validateSleepLog(logState: LogState): boolean {
-  let isValid = true;
-
+export function validateSleepLog(logState: LogState): ErrorObj | boolean {
   const bedTime = moment(logState.bedTime).isAfter(
     logState.isZeroSleep ? logState.upTime : logState.wakeTime,
   )
@@ -210,22 +233,38 @@ export function validateSleepLog(logState: LogState): boolean {
     )
   ) {
     // If bed time is the same as wake time
-    isValid = false;
+    return {
+      severity: 'ERROR',
+      errorMsg:
+        'The times you selected say you woke up before you went to sleep! Please double check your bedtime and/or wake time.',
+    };
   } else if (
     !logState.isZeroSleep &&
     moment(logState.upTime).isBefore(logState.wakeTime)
   ) {
     // If get up time is before wake up time
-    isValid = false;
+    return {
+      severity: 'ERROR',
+      errorMsg:
+        'The times you selected suggest you got up before you woke up! Please double check your wake time and/or up time.',
+    };
   } else if (
     moment(logState.upTime).diff(bedTime) / 60000 >
     SleepConstants.maxMinsInBedTotal
   ) {
     // If bed time period exceeds the maxium time
-    isValid = false;
+    return {
+      severity: 'WARNING',
+      errorMsg: `You were in a bed for more than ${Math.round(
+        SleepConstants.maxMinsInBedTotal / 60,
+      )} hours. If not, please check your bed or getup time.`,
+    };
   } else if (logState.minsToFallAsleep > SleepConstants.maxMinsToFallAsleep) {
     // If fall asleep time exceeds the maxium time
-    isValid = false;
+    return {
+      severity: 'WARNING',
+      errorMsg: `You fell asleep more than ${SleepConstants.maxMinsToFallAsleep} minutes later. If not, please check it again.`,
+    };
   } else if (
     !logState.isZeroSleep &&
     bedTime
@@ -233,7 +272,11 @@ export function validateSleepLog(logState: LogState): boolean {
       .isSameOrAfter(logState.wakeTime)
   ) {
     // If fall asleep time is same or after wake up time
-    isValid = false;
+    return {
+      severity: 'ERROR',
+      errorMsg:
+        'Your fall asleep time is after the time you woke up! Please double check your bedtime, fall aleep time, or wake time.',
+    };
   } else if (
     !logState.isZeroSleep &&
     logState.nightMinsAwake >=
@@ -241,14 +284,22 @@ export function validateSleepLog(logState: LogState): boolean {
         logState.minsToFallAsleep
   ) {
     // If night awake time is same or exceeds sleep time
-    isValid = false;
+    return {
+      severity: 'ERROR',
+      errorMsg:
+        'The time you recorded as awake exceeds your total time in bed last night. Please check your bed time, wake time, fall asleep time or awake duration.',
+    };
   } else if (
     (!logState.isZeroSleep && logState.minsToFallAsleep < 0) ||
     logState.nightMinsAwake < 0
   ) {
     // Invalid values
-    isValid = false;
+    return {
+      severity: 'ERROR',
+      errorMsg:
+        'The time it took you to fall asleep, or minutes awake, was recorded as negaive?? Please check those values again.',
+    };
   }
 
-  return isValid;
+  return true;
 }

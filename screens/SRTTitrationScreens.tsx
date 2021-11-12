@@ -8,13 +8,13 @@ import {
   VictoryAxis,
   VictoryScatter,
 } from 'victory-native';
-import { AuthContext } from '../context/AuthContext';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import ThumbsUp from '../assets/images/ThumbsUp.svg';
 import AlarmClock from '../assets/images/AlarmClock.svg';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
+import Auth from '../utilities/auth.service';
 import { Navigation, SleepLog } from '../types/custom';
 
 interface Props {
@@ -58,8 +58,8 @@ const chartStyles = {
   },
 };
 
-export const SRTTitrationStart = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
+export const SRTTitrationStart: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
   const imgSize = imgSizePercent * useWindowDimensions().width;
   // Trim sleepLogs to only show most recent 7
   recentSleepLogs = state.sleepLogs.slice(0, 7);
@@ -98,8 +98,8 @@ export const SRTTitrationStart = ({ navigation }: Props) => {
   );
 };
 
-export const SleepEfficiency = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
+export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -115,7 +115,11 @@ export const SleepEfficiency = ({ navigation }: Props) => {
     state.userData.baselineInfo.sleepEfficiencyAvg;
 
   function getLabel(sleepEffiencyAvg: number) {
-    if (sleepEffiencyAvg < 80) {
+    if (sleepEfficiencyAvg < sleepEfficiencyAvgBaseline) {
+      return sleepEfficiencyAvg < 85
+        ? `Your sleep efficiency is ok, but with an average of ${sleepEffiencyAvg}% (previously ${sleepEfficiencyAvgBaseline}%) it's not quite where we need it to be yet.`
+        : `Your sleep efficiency was slightly lower ${sleepEffiencyAvg} than your baseline of ${sleepEfficiencyAvgBaseline}%), but it's still plenty high - nothing to worry about.`;
+    } else if (sleepEffiencyAvg < 80) {
       return `Your sleep efficiency is ok, but with an average of ${sleepEffiencyAvg}% (previously ${sleepEfficiencyAvgBaseline}%) it's not quite where we need it to be yet.`;
     } else if (sleepEffiencyAvg >= 80 && sleepEffiencyAvg < 87) {
       return `Your sleep is starting to show signs of improvement. You previously had an average sleep efficiency of ${sleepEfficiencyAvgBaseline}%, and it has since been around ${sleepEfficiencyAvg}%! You're making progress!`;
@@ -177,8 +181,8 @@ export const SleepEfficiency = ({ navigation }: Props) => {
   );
 };
 
-export const SRTTitration = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
+export const SRTTitration: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
 
   const imgSize = imgSizePercent * useWindowDimensions().width;
 
@@ -236,8 +240,8 @@ export const SRTTitration = ({ navigation }: Props) => {
   );
 };
 
-export const SleepOnset = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
+export const SleepOnset: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
 
   // Calculate recent sleep onset average & fetch baseline for comparison
   const sleepOnsetAvg = Number(
@@ -314,8 +318,8 @@ export const SleepOnset = ({ navigation }: Props) => {
   );
 };
 
-export const SleepMaintenance = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
+export const SleepMaintenance: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
 
   // Calculate recent night mins awake average & fetch baseline for comparison
   const nightMinsAwakeAvg = Number(
@@ -393,8 +397,8 @@ export const SleepMaintenance = ({ navigation }: Props) => {
   );
 };
 
-export const SleepDuration = ({ navigation }: Props) => {
-  const { state } = React.useContext(AuthContext);
+export const SleepDuration: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
 
   // Calculate recent night mins awake average & fetch baseline for comparison
   const sleepDurationAvg = Number(

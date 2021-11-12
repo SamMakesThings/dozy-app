@@ -3,7 +3,7 @@ import React, {
   useState,
   createContext,
   useCallback,
-  useContext
+  useContext,
 } from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
 import Onboarding, { OnboardingMeta } from '../constants/Onboarding';
@@ -14,8 +14,8 @@ export interface ABTestingContextValue {
   initABTesting: () => Promise<void>;
 }
 
-export class ABTesting {
-  static Context: React.Context<ABTestingContextValue> = createContext(null);
+export default class ABTesting {
+  static Context = createContext<ABTestingContextValue | null>(null);
 
   static onboardingSteps: OnboardingMeta = Onboarding.defaultSteps;
 
@@ -36,16 +36,18 @@ export class ABTesting {
       (): ABTestingContextValue => ({
         isLoading,
         setLoading,
-        initABTesting
+        initABTesting,
       }),
-      [isLoading, initABTesting]
+      [isLoading, initABTesting],
     );
 
     return abTestingContextValue;
   }
 
   static useABTesting(): ABTestingContextValue {
-    return useContext<ABTestingContextValue>(ABTesting.Context);
+    return useContext<ABTestingContextValue>(
+      ABTesting.Context as React.Context<ABTestingContextValue>,
+    );
   }
 
   private static async initABTesting(): Promise<OnboardingMeta> {
@@ -53,8 +55,8 @@ export class ABTesting {
     await remoteConfig().setDefaults({
       onboardingSteps: JSON.stringify({
         version: 'A',
-        data: Onboarding.defaultSteps
-      })
+        data: Onboarding.defaultSteps,
+      }),
     });
 
     await remoteConfig().fetchAndActivate();

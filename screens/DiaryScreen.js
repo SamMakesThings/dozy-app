@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,18 +11,21 @@ import { withTheme } from '@draftbit/ui';
 import { Entypo } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import firestore from '@react-native-firebase/firestore';
+import momentTZ from 'moment-timezone';
 import DiaryEntriesScreen from './DiaryEntriesScreen';
 import { DiaryStatsScreen } from './DiaryStatsScreen';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../context/AuthContext';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import Auth from '../utilities/auth.service';
+import { decodeUTCTime, encodeLocalTime } from '../utilities/time';
 
 // Create tab nav for switching between entries and stats
 const Tab = createMaterialTopTabNavigator();
 
 function DiaryScreen() {
   const theme = dozy_theme;
-  const { dispatch, state } = React.useContext(AuthContext);
+  const { dispatch, state } = Auth.useAuth();
 
   // Set date value from selected month
   const selectedDate = new Date();
@@ -33,6 +36,56 @@ function DiaryScreen() {
     month: 'long',
     year: 'numeric',
   });
+
+  useEffect(() => {
+    const maybeUpdateReminderTimezone = async () => {
+      const notifications = await firestore()
+        .collection('users')
+        .doc(state.userId)
+        .collection('notifications')
+        .get();
+      const currentTimezone = momentTZ.tz.guess(true);
+
+      notifications.docs.forEach((querySnapshot) => {
+        const notificationData = querySnapshot.data();
+        const localDate = decodeUTCTime({
+          version: notificationData.version,
+          value: notificationData.time.toDate(),
+          timezone: notificationData.timezone,
+        });
+
+        if (
+          (notificationData.version === '0.3' &&
+            notificationData.timezone !== currentTimezone) ||
+          notificationData.version === '0.2'
+        ) {
+          const encodedTimeData = encodeLocalTime(localDate);
+          firestore()
+            .collection('users')
+            .doc(state.userId)
+            .collection('notifications')
+            .doc(querySnapshot.id)
+            .update(encodedTimeData);
+
+          if (querySnapshot.id === state.userData.logReminderId) {
+            firestore()
+              .collection('users')
+              .doc(state.userId)
+              .update({
+                reminders: {
+                  sleepDiaryReminder: {
+                    diaryReminderTime: encodedTimeData.value,
+                    version: encodedTimeData.version,
+                  },
+                },
+              });
+          }
+        }
+      });
+    };
+
+    maybeUpdateReminderTimezone();
+  }, []);
 
   return (
     <SafeAreaView style={styles.ScreenContainer} edges={['top']}>

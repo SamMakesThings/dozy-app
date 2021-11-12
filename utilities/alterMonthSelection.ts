@@ -1,5 +1,8 @@
 // A utility function to always return a valid date number given a starting date and a delta
-export default function alterMonthSelection(prevDate, changeBy) {
+export default function alterMonthSelection(
+  prevDate: { month: number; year: number },
+  changeBy: number,
+): { month: number; year: number } {
   let { month, year } = prevDate;
   const adjustedMonth = month + changeBy;
 

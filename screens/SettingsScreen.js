@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import {
   withTheme,
@@ -14,19 +14,16 @@ import * as SecureStore from 'expo-secure-store';
 import { scale } from 'react-native-size-matters';
 import ExpoConstants from 'expo-constants';
 import { dozy_theme } from '../config/Themes';
-import { AuthContext } from '../context/AuthContext';
-import { Analytics } from '../utilities/analytics.service';
-import {
-  isNotificationEnabled,
-  askNotificationPermission,
-} from '../utilities/pushNotifications';
-import { encodeLocalTime, decodeUTCTime } from '../utilities/time';
+import Analytics from '../utilities/analytics.service';
+import { encodeLocalTime, decodeServerTime } from '../utilities/time';
+import Auth from '../utilities/auth.service';
+import Notification from '../utilities/notification.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function SettingsScreen() {
   // Pass along the signOut function from the context provider
-  const { state, signOut } = React.useContext(AuthContext);
+  const { state, signOut } = Auth.useAuth();
 
   // Get theme object
   const theme = dozy_theme;
@@ -43,33 +40,6 @@ export function SettingsScreen() {
     notifLogReminderRef = notifColRef.doc(state.userData.logReminderId);
 
     var notifFbQuery = notifColRef.where('type', '==', 'DAILY_LOG');
-  }
-
-  // Add function to pull existing settings from Firebase, update state with them
-  function getSettings() {
-    if (notifFbQuery === undefined) {
-      return 'ERROR: Firebase not loading correctly';
-    }
-
-    notifFbQuery
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((notif) => {
-          const notifData = notif.data();
-          dispatch({
-            type: 'SET_LOG_REMINDER_TIME',
-            time: decodeUTCTime(notifData.time.toDate(), notifData.version),
-          });
-          dispatch({
-            type: 'TOGGLE_LOG_NOTIFS',
-            enabledStatus: notifData.enabled,
-          });
-          // setNotifsEnabled(notifData.enabled);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }
 
   // Add function to update notification in Firebase based on local state
@@ -97,6 +67,7 @@ export function SettingsScreen() {
           updateFbLogNotification({
             time: encodedTimeData.value,
             version: encodedTimeData.version,
+            timezone: encodedTimeData.timezone,
           });
           return {
             ...prevState,
@@ -110,8 +81,45 @@ export function SettingsScreen() {
     },
   );
 
+  const maybeAskNotificationPermission = useCallback(async () => {
+    if (!(await Notification.isNotificationEnabled())) {
+      const expoPushToken =
+        await Notification.registerForPushNotificationsAsync(false, true);
+      if (expoPushToken) {
+        Notification.updateExpoPushToken(expoPushToken, state.userId);
+      }
+    }
+  }, [state.userId]);
+
   // Make sure the screen uses updated state once it loads for the first time.
   React.useEffect(() => {
+    // Add function to pull existing settings from Firebase, update state with them
+    const getSettings = async () => {
+      if (notifFbQuery === undefined) {
+        return 'ERROR: Firebase not loading correctly';
+      }
+
+      const dailyLogNotificationDocs = await notifFbQuery.get();
+      dailyLogNotificationDocs.forEach((querySnapshot) => {
+        querySnapshot.ref.onSnapshot((notif) => {
+          if (notif) {
+            const notifData = notif.data();
+            dispatch({
+              type: 'SET_LOG_REMINDER_TIME',
+              time: decodeServerTime({
+                version: notifData.version,
+                value: notifData.time.toDate(),
+                timezone: notifData.timezone,
+              }),
+            });
+            dispatch({
+              type: 'TOGGLE_LOG_NOTIFS',
+              enabledStatus: notifData.enabled,
+            });
+          }
+        });
+      });
+    };
     getSettings();
   }, []);
 
@@ -229,8 +237,8 @@ export function SettingsScreen() {
               Analytics.logEvent(AnalyticsEvents.switchSleepLogReminders, {
                 enabled: value,
               });
-              if (value && !(await isNotificationEnabled())) {
-                await askNotificationPermission(true);
+              if (value) {
+                maybeAskNotificationPermission();
               }
             }}
           />
@@ -264,6 +272,7 @@ export function SettingsScreen() {
             onDateChange={(result) => {
               dispatch({ type: 'SET_LOG_REMINDER_TIME', time: result });
               Analytics.logEvent(AnalyticsEvents.editReminderTime);
+              maybeAskNotificationPermission();
             }}
           />
         </Container>

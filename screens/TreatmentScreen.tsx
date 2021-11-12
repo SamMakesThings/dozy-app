@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,12 +6,12 @@ import {
   ActivityIndicator,
   Platform,
   TouchableOpacity,
+  LayoutAnimation,
 } from 'react-native';
 import { ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
-import { AuthContext } from '../context/AuthContext';
 import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
 import TasksCard from '../components/TasksCard';
@@ -19,18 +19,35 @@ import { CardContainer } from '../components/CardContainer';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
 import { TreatmentPlanCard } from '../components/TreatmentPlanCard';
+import FeedbackWidget from '../components/FeedbackWidget';
 import { dozy_theme } from '../config/Themes';
 import treatments from '../constants/Treatments';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import planTreatmentModules from '../utilities/planTreatmentModules';
 import GLOBAL from '../utilities/global';
+import Feedback from '../utilities/feedback.service';
+import submitFeedback from '../utilities/submitFeedback';
+import Auth from '../utilities/auth.service';
 import { Navigation } from '../types/custom';
 
 export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
   const theme = dozy_theme;
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
+  const { showingFeedbackWidget, isFeedbackSubmitted, setFeedbackSubmitted } =
+    Feedback.useFeedback();
+  const [rate, setRate] = useState(0);
+  const [feedback, setFeedback] = useState('');
+
+  const onSubmitFeedback = useCallback((): void => {
+    submitFeedback(rate, feedback);
+    LayoutAnimation.configureNext({
+      ...LayoutAnimation.Presets.easeInEaseOut,
+      duration: 100,
+    });
+    setFeedbackSubmitted(true);
+  }, [rate, feedback]);
 
   // If state is available, show screen. Otherwise, show loading indicator.
   if (state.sleepLogs && state.userData?.currentTreatments) {
@@ -102,6 +119,16 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
                 }
               />
             )}
+          {showingFeedbackWidget && (
+            <FeedbackWidget
+              style={styles.FeedbackWidget}
+              rate={rate}
+              submitted={isFeedbackSubmitted}
+              onRateChange={setRate}
+              onFeedbackChange={setFeedback}
+              onSubmit={onSubmitFeedback}
+            />
+          )}
           <CurrentTreatmentsCard
             progressPercent={progressPercent}
             linkTitle={treatments[currentModule].title}
@@ -252,6 +279,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     paddingHorizontal: scale(10),
+  },
+  FeedbackWidget: {
+    marginBottom: scale(15),
   },
   View_CardHeaderContainer: {
     flexDirection: 'column',

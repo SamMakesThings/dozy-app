@@ -3,14 +3,16 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { MaterialIcons } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
-import { Analytics } from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
-export const TodoItem = (props: {
+export interface TodoItemProps {
   label: string;
   completed: boolean;
-  disabled: boolean;
-}) => {
+  disabled?: boolean;
+}
+
+export const TodoItem: React.FC<TodoItemProps> = (props) => {
   const theme = dozy_theme;
 
   const [checked, setChecked] = React.useState(false);

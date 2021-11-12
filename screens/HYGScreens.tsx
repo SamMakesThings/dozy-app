@@ -2,7 +2,6 @@ import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import moment from 'moment';
 import { NavigationProp } from '@react-navigation/native';
-import { AuthContext } from '../context/AuthContext';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -17,6 +16,9 @@ import Clipboard from '../assets/images/Clipboard.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import submitCheckinData from '../utilities/submitCheckinData';
 import refreshUserData from '../utilities/refreshUserData';
+import { ErrorObj } from '../types/error';
+import Feedback from '../utilities/feedback.service';
+import Auth from '../utilities/auth.service';
 
 const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
@@ -69,7 +71,7 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
 // Screen it targets for return navigation is 'TreatmentPlan'
 
 export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
-  const { state } = React.useContext(AuthContext);
+  const { state } = Auth.useAuth();
 
   // Trim sleepLogs to only show most recent 12
   const recentSleepLogs = state.sleepLogs.slice(0, 12);
@@ -186,8 +188,8 @@ export const SHI1: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        HYGState.SHI1 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        HYGState.SHI1 = value as number;
         navigation.navigate('SHI2', { progressBarPercent: 0.56 });
       }}
       questionLabel="I think, plan, or worry when I am in bed."
@@ -208,8 +210,8 @@ export const SHI2: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        HYGState.SHI2 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        HYGState.SHI2 = value as number;
         navigation.navigate('SHI3', { progressBarPercent: 0.6 });
       }}
       questionLabel="I exercise to the point of sweating within 1 hr of going to bed."
@@ -230,8 +232,8 @@ export const SHI3: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        HYGState.SHI3 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        HYGState.SHI3 = value as number;
         navigation.navigate('SHI4', { progressBarPercent: 0.64 });
       }}
       questionLabel="I stay in bed longer than I should two or three times a week."
@@ -252,9 +254,9 @@ export const SHI4: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        HYGState.SHI4 = value;
-        if (value >= 2) {
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        HYGState.SHI4 = value as number;
+        if ((value as number) >= 2) {
           // If uses substance more than rarely, ask which
           navigation.navigate('SHI4a', { progressBarPercent: 0.68 });
         } else {
@@ -280,8 +282,8 @@ export const SHI4a: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: string) => {
-        HYGState.SHI4a = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        HYGState.SHI4a = value as string;
         navigation.navigate('SHI5', { progressBarPercent: 0.72 });
       }}
       questionLabel="Which would you say you use most often before going to bed?"
@@ -300,8 +302,8 @@ export const SHI5: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        HYGState.SHI5 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        HYGState.SHI5 = value as number;
         navigation.navigate('SHI6', { progressBarPercent: 0.76 });
       }}
       questionLabel="I do something that may wake me up before bedtime."
@@ -322,8 +324,8 @@ export const SHI6: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        HYGState.SHI6 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        HYGState.SHI6 = value as number;
         navigation.navigate('SHI7', { progressBarPercent: 0.8 });
       }}
       questionLabel="I go to bed feeling stressed, angry, upset, or nervous."
@@ -344,8 +346,8 @@ export const SHI7: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        HYGState.SHI7 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        HYGState.SHI7 = value as number;
         navigation.navigate('SHI8', { progressBarPercent: 0.84 });
       }}
       questionLabel="I sleep on an uncomfortable bed."
@@ -366,8 +368,8 @@ export const SHI8: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        HYGState.SHI8 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        HYGState.SHI8 = value as number;
         navigation.navigate('SHI9', { progressBarPercent: 0.88 });
       }}
       questionLabel="I sleep in an uncomfortable bedroom."
@@ -388,8 +390,8 @@ export const SHI9: React.FC<Props> = ({ navigation }) => {
     <MultiButtonScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(value: number) => {
-        HYGState.SHI9 = value;
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        HYGState.SHI9 = value as number;
         navigation.navigate('SHIResult', { progressBarPercent: 0.92 });
       }}
       questionLabel="I do important work before bedtime."
@@ -442,7 +444,7 @@ export const HYGReview: React.FC<Props> = ({ navigation }) => {
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(res: string) => {
+      onQuestionSubmit={(res?: string) => {
         if (res === 'Wait, I have questions') {
           navigation.navigate('TreatmentReview', {
             module: 'HYG',
@@ -474,11 +476,11 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
           new Date().getTime() + 86400000 * 7,
         ) /* Default date of 7 days from today */
       }
-      onQuestionSubmit={(value: Date) => {
-        HYGState.nextCheckinTime = value;
+      onQuestionSubmit={(value: Date | boolean) => {
+        HYGState.nextCheckinTime = value as Date;
         navigation.navigate('HYGEnd', { progressBarPercent: 1 });
       }}
-      validInputChecker={(val: Date) => {
+      validInputChecker={(val: Date): ErrorObj | boolean => {
         // Make sure the selected date is 7+ days from today
         // Make sure it's within 14 days
         // Otherwise, mark it valid by returning true
@@ -505,7 +507,8 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const HYGEnd: React.FC<Props> = ({ navigation }) => {
-  const { state, dispatch } = React.useContext(AuthContext);
+  const { state, dispatch } = Auth.useAuth();
+  const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin
   const reminderObject = {
@@ -554,6 +557,7 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
         });
         navigation.navigate('App');
         refreshUserData(dispatch);
+        setShowingFeedbackWidget(true);
       }}
       textLabel="Well done! You've taken one more step towards sleeping through the night."
       buttonLabel="Finish"

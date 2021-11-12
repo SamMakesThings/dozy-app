@@ -1,30 +1,29 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { dozy_theme } from '../config/Themes';
-import { Chat } from '../types/custom';
 
-export function ChatMessage(item: Chat, index: number): React.ReactElement {
+export interface ChatMessageProps {
+  message: string;
+  time: Date;
+  sentByUser: boolean;
+  coach: string;
+}
+export const ChatMessage: React.FC<ChatMessageProps> = ({
+  message,
+  time,
+  sentByUser,
+  coach,
+}) => {
   const theme = dozy_theme;
-
-  // Shorten type check to be able to handle fb timestamps or JS dates
-  const firebaseTime = item.time as FirebaseFirestoreTypes.Timestamp;
 
   return (
     <View
-      style={[
-        styles.View_MsgContainer,
-        item.sentByUser && styles.sentContainer,
-      ]}
-      key={index}
+      style={[styles.View_MsgContainer, sentByUser && styles.sentContainer]}
     >
       <Text style={styles.Text_MetaMsg}>
-        {!item.sentByUser && item.sender}{' '}
-        {(firebaseTime.toDate != undefined
-          ? firebaseTime.toDate()
-          : (item.time as Date)
-        ).toLocaleString('en-US', {
+        {!sentByUser && coach}{' '}
+        {time.toLocaleString('en-US', {
           month: 'short',
           day: 'numeric',
           hour: 'numeric',
@@ -34,16 +33,16 @@ export function ChatMessage(item: Chat, index: number): React.ReactElement {
       <View
         style={Object.assign(
           { ...styles.View_MsgBubble },
-          item.sentByUser ? styles.SentMsg : styles.ReceivedMsg,
+          sentByUser ? styles.SentMsg : styles.ReceivedMsg,
         )}
       >
         <Text style={{ ...theme.typography.body2, ...styles.Text_Msg }}>
-          {item.message}
+          {message}
         </Text>
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   View_MsgContainer: {
