@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import {
   withTheme,
@@ -36,7 +36,10 @@ enum States {
 }
 
 // A unified date, time, and datetime picker screen. Has a label and input.
-const DateTimePickerScreen: React.FC<Props> = (props) => {
+const DateTimePickerScreen = (
+  props: Props,
+  ref: React.Ref<any>,
+): React.ReactElement => {
   // Create state to manage input value(s)
   const [selectedTime, setSelectedTime] = React.useState(
     props.defaultValue || new Date(),
@@ -71,6 +74,15 @@ const DateTimePickerScreen: React.FC<Props> = (props) => {
       console.error('Validation function did something unexpected');
     }
   };
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getValue: () => selectedTime,
+      setValue: setSelectedTime,
+    }),
+    [selectedTime],
+  );
 
   React.useEffect(() => {
     checkDataValidity(selectedTime);
@@ -246,4 +258,4 @@ const styles = StyleSheet.create({
   questionLabel: { flex: 4, justifyContent: 'center' },
 });
 
-export default withTheme(DateTimePickerScreen);
+export default withTheme(forwardRef(DateTimePickerScreen));

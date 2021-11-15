@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import {
   useWindowDimensions,
   Text,
@@ -7,6 +7,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  AppState,
+  AppStateStatus,
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
@@ -1000,7 +1002,29 @@ export const DiaryReminder: React.FC<Props> = ({ navigation }) => {
 };
 
 export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
-  useEffect((): void => {
+  const timePickerRef =
+    useRef<{ getValue: () => Date; setValue: (date: Date) => void }>(null);
+
+  const validateInput = useCallback((val: Date): ErrorObj | boolean => {
+    // Make sure the selected date is 7+ days from today
+    // Make sure it's within 14 days
+    // Otherwise, mark it valid by returning true
+    if (moment().add(7, 'days').startOf('date').isAfter(val)) {
+      return {
+        severity: 'ERROR',
+        errorMsg: 'Please select a day 7 or more days from today',
+      };
+    } else if (moment().add(15, 'days').startOf('date').isSameOrBefore(val)) {
+      return {
+        severity: 'WARNING',
+        errorMsg: 'Please select a day within 14 days of today',
+      };
+    } else {
+      return true;
+    }
+  }, []);
+
+  useEffect(() => {
     Analytics.logEvent(AnalyticsEvents.onboardingCheckinScheduling);
 
     // Ask push notification permission if user didn't allow to set a reminder
@@ -1013,10 +1037,30 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         },
       );
     }
+
+    // Update the default checkin time in case of user left the app in background and returns again
+    const handleAppStateChange = (state: AppStateStatus): void => {
+      if (state === 'active' && timePickerRef.current?.getValue()) {
+        const validationResult = validateInput(
+          timePickerRef.current?.getValue(),
+        );
+        if (
+          validationResult !== true &&
+          (validationResult as ErrorObj).severity === 'ERROR'
+        ) {
+          timePickerRef.current.setValue(moment().add(1, 'weeks').toDate());
+        }
+      }
+    };
+
+    AppState.addEventListener('change', handleAppStateChange);
+
+    return () => AppState.removeEventListener('change', handleAppStateChange);
   }, []);
 
   return (
     <DateTimePickerScreen
+      ref={timePickerRef}
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().add(1, 'weeks').toDate()}
@@ -1025,24 +1069,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         navigation.navigate('SendFirstChat', { progressBarPercent: 0.8 });
         submitDiaryReminderAndCheckinData(onboardingState);
       }}
-      validInputChecker={(val: Date): ErrorObj | boolean => {
-        // Make sure the selected date is 7+ days from today
-        // Make sure it's within 14 days
-        // Otherwise, mark it valid by returning true
-        if (moment().add(7, 'days').hour(0).toDate() > val) {
-          return {
-            severity: 'ERROR',
-            errorMsg: 'Please select a day 7 or more days from today',
-          };
-        } else if (moment().add(14, 'days').hour(0).toDate() < val) {
-          return {
-            severity: 'WARNING',
-            errorMsg: 'Please select a day within 14 days of today',
-          };
-        } else {
-          return true;
-        }
-      }}
+      validInputChecker={validateInput}
       questionLabel="When would you like to schedule your first weekly check-in?"
       questionSubtitle="Check-ins take 5-10 minutes and introduce you to new sleep improvement techniques based on your sleep patterns."
       buttonLabel="I've picked a date 7+ days from today"
