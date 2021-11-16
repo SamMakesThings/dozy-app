@@ -7,7 +7,7 @@ import { encodeLocalTime } from './time';
 
 export interface OnboardingState {
   pills: string;
-  snoring: boolean;
+  snoring: boolean | string; // true, false, 'unknown'
   rls: boolean;
   parasomnias: boolean;
   otherCondition: boolean;
