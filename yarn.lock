@@ -2831,10 +2831,10 @@
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-button-label":
-  version "39.7.1-patch-button-label"
-  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-button-label.tgz#15674e23fd35e0b6eb4095c75dcc34fd44792409"
-  integrity sha512-JoderUMqdp79NCd6p+pW3eYxQWTFZ8SuA0gYSn/Tm8o4fXyCmiorsJJ+9ND/QL9CZIDivEIB8dyVfTH5OJxwZA==
+"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-button-label-2":
+  version "39.7.1-patch-button-label-2"
+  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-button-label-2.tgz#9b5c4eacdb6990f34c06098bffc8921b929ed9cf"
+  integrity sha512-dWpKqcTC/nr49W8dC6iqY6aO+GmxtOFgtI4o1SNcNLqTzKNcG3Lsy7IwHJqbRBZNT5h0BVXDLPfbmm0fShgoiQ==
   dependencies:
     "@date-io/date-fns" "^1.3.13"
     "@draftbit/react-theme-provider" "npm:@fancydevpro/react-theme-provider@2.1.1-type-patch-1"
