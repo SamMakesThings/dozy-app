@@ -9927,11 +9927,6 @@ expo-image-loader@~2.1.1:
   resolved "https://registry.yarnpkg.com/expo-image-loader/-/expo-image-loader-2.1.1.tgz#028ae58f7c7a33ca9a406716c2b31969216d016f"
   integrity sha512-EeItNIsmw4g+FIb9S9AHE7FAWQkuiIguFMua/RQ2mFHKFZYa/BU32MGagY+e4LzasBVbDKWgd3NHO+EYC6XeEA==
 
-expo-in-app-purchases@~10.1.1:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/expo-in-app-purchases/-/expo-in-app-purchases-10.1.1.tgz#c02783ff898d7dfa92bce4fabae557ab10adde04"
-  integrity sha512-nm2pO3+GZoGxuvGFx1pHIQvcsaAWMFgwbRPPELWMlfxvDKb66mMG0CFvMoNvv9QdgfFXPFzhXMmyPOrF+Jcw6g==
-
 expo-intent-launcher@~8.4.0:
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/expo-intent-launcher/-/expo-intent-launcher-8.4.0.tgz#c413a3aca06db2a02f3f7b0e40f5ffebc9ff63ed"

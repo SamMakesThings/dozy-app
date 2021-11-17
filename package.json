@@ -61,7 +61,6 @@
     "expo-constants": "~10.1.3",
     "expo-crypto": "~8.4.0",
     "expo-font": "~9.1.0",
-    "expo-in-app-purchases": "~10.1.1",
     "expo-intent-launcher": "~8.4.0",
     "expo-notifications": "~0.11.6",
     "expo-random": "~11.1.2",
