@@ -244,43 +244,47 @@ export async function submitFirstChatMessage(
       ? firestore().collection('users').doc(userId)
       : firestore().collection('users').doc('ERRORDELETEME');
 
-  // Add initial support chat messages to chat collection
-  const chatColRef = userDocRef.collection('supportMessages');
-  chatColRef.add({
-    sender: coachId,
-    message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
-    time: sub(new Date(), { minutes: 4 }),
-    sentByUser: false,
-  });
-  chatColRef.add({
-    sender: coachId,
-    message: 'Why do you want to improve your sleep?',
-    time: sub(new Date(), { minutes: 3 }),
-    sentByUser: false,
-  });
-  chatColRef.add({
-    sender: displayName ?? 'You',
-    message: firstChatMessageContent,
-    time: sub(new Date(), { minutes: 2 }),
-    sentByUser: true,
-  });
-  const lastChat = {
-    sender: coachId,
-    message:
-      "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
-    time: new Date(),
-    sentByUser: false,
-  };
-  chatColRef.add(lastChat);
-
-  // Also store reminder info & next check-in datetime
-  userDocRef
-    .update({
-      lastChat,
-      lastSupportNotifSent: lastChat.time,
-      livechatUnreadMsg: false,
-    })
-    .catch(function (error) {
-      console.error('Error adding health history data: ', error);
+  // Check user already initialized a chat
+  const userData = await userDocRef.get();
+  if (!userData.data()?.lastSupportNotifSent) {
+    // Add initial support chat messages to chat collection
+    const chatColRef = userDocRef.collection('supportMessages');
+    chatColRef.add({
+      sender: coachId,
+      message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
+      time: sub(new Date(), { minutes: 4 }),
+      sentByUser: false,
     });
+    chatColRef.add({
+      sender: coachId,
+      message: 'Why do you want to improve your sleep?',
+      time: sub(new Date(), { minutes: 3 }),
+      sentByUser: false,
+    });
+    chatColRef.add({
+      sender: displayName ?? 'You',
+      message: firstChatMessageContent,
+      time: sub(new Date(), { minutes: 2 }),
+      sentByUser: true,
+    });
+    const lastChat = {
+      sender: coachId,
+      message:
+        "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
+      time: new Date(),
+      sentByUser: false,
+    };
+    chatColRef.add(lastChat);
+
+    // Also store reminder info & next check-in datetime
+    userDocRef
+      .update({
+        lastChat,
+        lastSupportNotifSent: lastChat.time,
+        livechatUnreadMsg: false,
+      })
+      .catch(function (error) {
+        console.error('Error adding health history data: ', error);
+      });
+  }
 }
