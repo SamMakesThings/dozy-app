@@ -26,12 +26,14 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     >
       <Text style={styles.Text_MetaMsg}>
         {!sentByUser && coach}{' '}
-        {time.toLocaleString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric',
-        })}
+        {sentByUser && pending
+          ? 'Sending...'
+          : time.toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+            })}
       </Text>
       <View
         style={Object.assign(
@@ -42,7 +44,6 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         <Text style={{ ...theme.typography.body2, ...styles.Text_Msg }}>
           {message}
         </Text>
-        {sentByUser && <Text style={styles.tick}>{pending ? '🕓' : '✓'}</Text>}
       </View>
     </View>
   );
@@ -76,11 +77,6 @@ const styles = StyleSheet.create({
   },
   sentContainer: {
     alignItems: 'flex-end',
-  },
-  tick: {
-    alignSelf: 'flex-end',
-    fontSize: scale(10),
-    color: dozy_theme.colors.secondary,
   },
 });
 
