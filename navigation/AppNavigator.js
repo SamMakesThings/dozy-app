@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PropTypes from 'prop-types';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import * as SecureStore from 'expo-secure-store';
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
@@ -121,6 +122,7 @@ const AppNavigator = () => {
     const subscriber = auth().onAuthStateChanged(async (user) => {
       if (user) {
         console.log('user id: ', user.uid);
+        await SecureStore.setItemAsync('userId', user.uid);
         refreshUserData(dispatch);
         initABTesting();
       } else {
