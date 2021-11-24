@@ -11,7 +11,7 @@ interface Props {
   image: React.ReactElement;
   textLabel: string | React.ReactElement<TextProps>;
   longText?: boolean;
-  onQuestionSubmit: (value?: string | number | boolean) => void;
+  onQuestionSubmit?: (value?: string | number | boolean) => void;
   buttonLabel?: string;
   bottomGreyButtonLabel?: string;
   bottomBackButton?: () => void;
