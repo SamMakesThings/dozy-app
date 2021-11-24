@@ -1,7 +1,8 @@
 import * as SecureStore from 'expo-secure-store';
 import firestore from '@react-native-firebase/firestore';
-import refreshUserData from './refreshUserData';
 import { sub } from 'date-fns';
+import { take } from 'lodash';
+import refreshUserData from './refreshUserData';
 import { ACTION } from './mainAppReducer';
 import { encodeLocalTime } from './time';
 
@@ -168,8 +169,17 @@ export async function submitDiaryReminderAndCheckinData(
       enabled: !!diaryAndCheckinData.diaryReminderTime,
     };
     if (querySnapshot.docs.length) {
-      logReminderDocId = querySnapshot.docs[0].id;
-      notificationsCollection.doc(logReminderDocId).update(newDailyLog);
+      const logReminderDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+      logReminderDocId = logReminderDoc.id;
+      logReminderDoc.ref.update(newDailyLog);
+      // Delete notification docs except the latest one
+      if (querySnapshot.docs.length > 1) {
+        take(querySnapshot.docs, querySnapshot.docs.length - 1).forEach(
+          (it) => {
+            it.ref.delete();
+          },
+        );
+      }
     } else {
       const logReminderDoc = await notificationsCollection.add(newDailyLog);
       logReminderDocId = logReminderDoc.id;
