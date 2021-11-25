@@ -18,7 +18,7 @@ export interface Theme {
     button: number;
   };
   buttonLayout: {
-    height: number;
+    minHeight: number;
     justifyContent: ViewStyle['justifyContent'];
   };
   typography: {
