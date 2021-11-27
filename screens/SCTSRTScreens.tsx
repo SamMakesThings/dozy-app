@@ -15,9 +15,11 @@ import {
   VictoryScatter,
 } from 'victory-native';
 import moment from 'moment';
+import { find } from 'lodash';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
+import AnswerScreen from '../components/screens/AnswerScreen';
 import FAQs from '../components/FAQs';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
@@ -42,6 +44,8 @@ import { Navigation, SleepLog } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import Feedback from '../utilities/feedback.service';
 import Auth from '../utilities/auth.service';
+import FAQ from '../utilities/faq.service';
+import { FAQData } from '../types/faq';
 
 interface Props {
   navigation: Navigation;
@@ -882,46 +886,18 @@ export const AddressingConcerns: React.FC<Props> = ({ navigation }) => {
 };
 
 export const FAQList: React.FC<Props> = ({ navigation }) => {
-  const QAs = useMemo(
-    () => [
-      {
-        question:
-          "I'll be like a yo-yo in and out of bed. Is that to be expected?",
-        answer:
-          "Yes, Especially at first, you'll probably be getting in and out of bed quite a lot. Stick with it though! By doing this, you're rewiring how your brain deals with sleep. Think of it as an investment in your future without insomnia.",
-      },
-      {
-        question:
-          'How long will it take for me to see improvements in my sleep?',
-        answer: 'No answer yet ¯\\_(ツ)_/¯',
-      },
-      {
-        question: 'Why maintain the sleep restricted schedule?',
-        answer:
-          'By temporarily depriving your body of sleep, your sleep efficiency will climb over 90% on its own. This, combined with the other 3 rules, trains your brain to sleep more effectively and on command.',
-      },
-      {
-        question: 'Why get out of bed after 15 minutes?',
-        answer:
-          "Because lying awake in bed for long stretches trains your brain to be awake in bed. By removing that stimulus, we're training your brain to fall asleep faster.\n\nAt first, you'll be yo-yo-ing in and out of bed. Don't worry-you'll start falling asleep faster pretty quickly.",
-      },
-      {
-        question:
-          "Why can't I read/be on my phone/do things in bed? And why can't I take naps?",
-        answer:
-          "Those activities associate the bed with things other than sleep, which weakens your brain's ability to sleep in bed. By reserving the bed for nightly sleep, we strengthen that association and make it easier to sleep when you need to.\n\nNaps, meanwhile, will reduce your ability to sleep the next night-reversing any gains you've made.\n\n(Sex is allowed though. 🙈)",
-      },
-    ],
-    [],
+  const { faqs } = FAQ.useFAQ();
+
+  const questions = useMemo(
+    () => faqs.map((it) => ({ id: it.id, question: it.question })),
+    [faqs],
   );
 
-  const questions = useMemo(() => QAs.map((it) => it.question), [QAs]);
-
   const onQuestionClick = useCallback(
-    (questionIndex: number) => {
-      navigation.navigate('Answer', QAs[questionIndex]);
+    (faqId: string) => {
+      navigation.navigate('Answer', { faqId });
     },
-    [navigation, QAs],
+    [navigation],
   );
 
   return (
@@ -953,18 +929,23 @@ export const FAQList: React.FC<Props> = ({ navigation }) => {
 };
 
 export const Answer: React.FC<
-  Props & { route: { params: { question: string; answer: string } } }
-> = ({ navigation, route }) => (
-  <WizardContentScreen
-    theme={theme}
-    bottomBackButton={() => navigation.goBack()}
-    titleLabel={route.params.question}
-    textLabel={route.params.answer}
-    bottomBackButtonLabel="Back"
-    flexibleLayout
-    onlyBackButton
-  />
-);
+  Props & { route: { params: { faqId: string } } }
+> = ({ navigation, route }) => {
+  const { faqs, setFAQAsRead } = FAQ.useFAQ();
+
+  const faq = useMemo(
+    () => find(faqs, { id: route.params.faqId }) as FAQData,
+    [faqs, route.params.faqId],
+  );
+
+  useEffect((): void => {
+    setFAQAsRead(route.params.faqId);
+  }, [route.params.faqId, setFAQAsRead]);
+
+  return (
+    <AnswerScreen faq={faq} bottomBackButton={() => navigation.goBack()} />
+  );
+};
 
 export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
   return (
