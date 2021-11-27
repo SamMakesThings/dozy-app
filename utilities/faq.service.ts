@@ -67,16 +67,18 @@ class FAQ {
   }
 
   static async increaseFAQViewCount(faqId: string): Promise<void> {
-    functions().useFunctionsEmulator(
-      'http://localhost:5001/slumber-app/us-central1/increaseFAQViewCount',
-    );
+    // Uncomment for local firebase functions testing
+    // functions().useFunctionsEmulator(
+    //   'http://localhost:5001/slumber-app/us-central1/increaseFAQViewCount',
+    // );
     try {
-      const response = await functions().httpsCallable('increaseFAQViewCount')({
+      await functions().httpsCallable('increaseFAQViewCount')({
         faqId,
       });
-      console.log('increaseFAQViewCount response ************** ', response);
     } catch (error) {
-      console.log('error: ', { error });
+      if (__DEV__) {
+        console.log('error: ', { error });
+      }
     }
   }
 
