@@ -4309,6 +4309,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-12.1.0.tgz#079d1c01ec72b2f3602eacdaace4da5b285a6c26"
   integrity sha512-SyiqRAQRS0C0Gh5gOZBp9UM0FFOF555uqJK+3NzO2GHGYM7ofLONyhnhZEJGWk9iDog/TnRjlAHC3C1zsDe+1w==
 
+"@react-native-firebase/functions@12.1.0":
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/functions/-/functions-12.1.0.tgz#2212f1c2e756adde15bca5bc782427a2b94212a4"
+  integrity sha512-AJdWA5StrkuTIgmD8syqPaVbd2ATaX+EUemw9IKY0G9uIoSVAKx4vTw4ByjxWQaJuVpuksqi3mOvVHWG0QRQ9A==
+
 "@react-native-firebase/remote-config@12.1.0":
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/remote-config/-/remote-config-12.1.0.tgz#91678af45dfc1789730e3637c304db6aefaea614"

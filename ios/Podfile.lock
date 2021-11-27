@@ -295,6 +295,9 @@ PODS:
   - Firebase/Firestore (8.1.1):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 8.1.0)
+  - Firebase/Functions (8.1.1):
+    - Firebase/CoreOnly
+    - FirebaseFunctions (~> 8.1.0)
   - Firebase/RemoteConfig (8.1.1):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 8.1.0)
@@ -353,6 +356,9 @@ PODS:
     - "gRPC-C++ (~> 1.28.0)"
     - leveldb-library (~> 1.22)
     - nanopb (~> 2.30908.0)
+  - FirebaseFunctions (8.1.0):
+    - FirebaseCore (~> 8.0)
+    - GTMSessionFetcher/Core (~> 1.5)
   - FirebaseInstallations (8.5.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
@@ -702,6 +708,10 @@ PODS:
     - Firebase/Firestore (= 8.1.1)
     - React-Core
     - RNFBApp
+  - RNFBFunctions (12.1.0):
+    - Firebase/Functions (= 8.1.1)
+    - React-Core
+    - RNFBApp
   - RNFBRemoteConfig (12.1.0):
     - Firebase/RemoteConfig (= 8.1.1)
     - React-Core
@@ -832,6 +842,7 @@ DEPENDENCIES:
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
+  - "RNFBFunctions (from `../node_modules/@react-native-firebase/functions`)"
   - "RNFBRemoteConfig (from `../node_modules/@react-native-firebase/remote-config`)"
   - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -869,6 +880,7 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseCrashlytics
     - FirebaseFirestore
+    - FirebaseFunctions
     - FirebaseInstallations
     - FirebaseRemoteConfig
     - FirebaseStorage
@@ -993,6 +1005,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/crashlytics"
   RNFBFirestore:
     :path: "../node_modules/@react-native-firebase/firestore"
+  RNFBFunctions:
+    :path: "../node_modules/@react-native-firebase/functions"
   RNFBRemoteConfig:
     :path: "../node_modules/@react-native-firebase/remote-config"
   RNFBStorage:
@@ -1072,6 +1086,7 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: 7bf55d386f9fc690d971b70a582142321a390eb8
   FirebaseCrashlytics: 1b55b3a718f9e20d59d96db46a4652d95a8ba1d2
   FirebaseFirestore: c4be8314e9fa156f44b54025f7a98ecbff6971a6
+  FirebaseFunctions: 2cdcb06c0edbceac807eaf52014b8676c8a66d13
   FirebaseInstallations: f2bc590b291d25fb40a9a05b8281c02a881b5117
   FirebaseRemoteConfig: eef8513f6d368ba5c6ed6d1cb267b4d949cf65bf
   FirebaseStorage: 5b5958efaf84fb991568ad36f157f60c76bdcd80
@@ -1119,6 +1134,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 638d012551135969cfd12d122def3ee40c05974d
   RNFBCrashlytics: 963a2757f6a52e37ae50adab5832162a7d81f98f
   RNFBFirestore: b96f258a3f5d6a901ff96cd64306e3a2d221ad08
+  RNFBFunctions: a172927d5bb663db720910b77279f1e469e378da
   RNFBRemoteConfig: c8546356d2879524e712022629a8ce981a7da099
   RNFBStorage: 6b775f59b7036070e212612a92e60463f3b9a36c
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
