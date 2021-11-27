@@ -18,7 +18,7 @@ import { DiaryStatsScreen } from './DiaryStatsScreen';
 import { dozy_theme } from '../config/Themes';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Auth from '../utilities/auth.service';
-import { decodeUTCTime, encodeLocalTime } from '../utilities/time';
+import { decodeServerTime, encodeLocalTime } from '../utilities/time';
 
 // Create tab nav for switching between entries and stats
 const Tab = createMaterialTopTabNavigator();
@@ -48,7 +48,7 @@ function DiaryScreen() {
 
       notifications.docs.forEach((querySnapshot) => {
         const notificationData = querySnapshot.data();
-        const localDate = decodeUTCTime({
+        const localDate = decodeServerTime({
           version: notificationData.version,
           value: notificationData.time.toDate(),
           timezone: notificationData.timezone,

@@ -16,7 +16,7 @@ export const dozy_theme: Theme = {
     button: 36,
   },
   buttonLayout: {
-    height: scale(47),
+    minHeight: scale(47),
     justifyContent: 'center',
   },
   typography: {
