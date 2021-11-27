@@ -25,6 +25,7 @@ import ABTesting from '../utilities/abTesting.service';
 import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
 import { getCoachAssignedToUser } from '../utilities/coach';
+import FAQ from '../utilities/faq.service';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -115,6 +116,7 @@ const AppNavigator = () => {
   Crashlytics.useCrashlytics(state.userId);
   Notification.useNotificationService(state.userId);
   const { initABTesting } = ABTesting.useABTestingService();
+  const faqContextValue = FAQ.useFAQService();
 
   React.useEffect(() => {
     // Update user data from storage and Firebase, update state w/dispatch
@@ -161,12 +163,14 @@ const AppNavigator = () => {
       onStateChange={onStateChange}
       theme={DozyNavTheme}
     >
-      <View style={styles.container}>
-        <InitialAuthNavigator
-          userId={state.userId}
-          onboardingComplete={state.onboardingComplete}
-        />
-      </View>
+      <FAQ.Context.Provider value={faqContextValue}>
+        <View style={styles.container}>
+          <InitialAuthNavigator
+            userId={state.userId}
+            onboardingComplete={state.onboardingComplete}
+          />
+        </View>
+      </FAQ.Context.Provider>
     </NavigationContainer>
   );
 };
