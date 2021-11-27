@@ -12,21 +12,22 @@ import {
 import { withTheme } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { Theme } from '../types/theme';
+import { FAQContent } from '../types/faq';
 
 interface QuestionProps extends TouchableOpacityProps {
-  text: string;
+  content: string;
   theme: Theme;
 }
 
 const Question: React.FC<QuestionProps> = ({
-  text,
+  content,
   theme,
   style,
   ...props
 }) => (
   <TouchableOpacity style={[styles.questionContainer, style]} {...props}>
     <Text style={[theme.typography.body1, { color: theme.colors.surface }]}>
-      {text}
+      {content}
     </Text>
   </TouchableOpacity>
 );
@@ -34,8 +35,8 @@ const Question: React.FC<QuestionProps> = ({
 export interface FAQsProps extends ViewProps {
   theme: Theme;
   title: string;
-  questions: string[];
-  onQuestionClick: (questionIndex: number) => void;
+  questions: { id: string; question: FAQContent }[];
+  onQuestionClick: (questionId: string) => void;
 }
 
 export const FAQs: React.FC<FAQsProps> = ({
@@ -47,11 +48,11 @@ export const FAQs: React.FC<FAQsProps> = ({
   ...props
 }) => {
   const renderItem = useCallback(
-    ({ item, index }: ListRenderItemInfo<string>) => (
+    ({ item }: ListRenderItemInfo<{ id: string; question: FAQContent }>) => (
       <Question
-        text={item}
+        content={item.question.content}
         theme={theme}
-        onPress={() => onQuestionClick(index)}
+        onPress={() => onQuestionClick(item.id)}
       />
     ),
     [theme, onQuestionClick],
@@ -74,7 +75,7 @@ export const FAQs: React.FC<FAQsProps> = ({
         style={styles.list}
         data={questions}
         renderItem={renderItem}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
     </View>
