@@ -225,6 +225,7 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
         mode="time"
         questionLabel="What time did you go to bed last night?"
         inputLabel="Bedtime"
+        nextDisabled={!isValidDate}
       />
       <View
         style={[
@@ -269,8 +270,8 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
             ]}
           >
             {isDateChanged
-              ? 'You already logged sleep that day! Please select another day.'
-              : 'Selet the day you want to log sleep.'}
+              ? "You already logged sleep that day! Please select another day or go back and delete that day's previous log"
+              : "Select the date you're logging sleep for"}
           </Text>
         )}
       </View>
