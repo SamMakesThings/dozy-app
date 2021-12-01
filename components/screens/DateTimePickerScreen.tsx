@@ -24,6 +24,7 @@ interface Props {
   bottomGreyButtonLabel?: string;
   mode: string;
   theme: Theme;
+  nextDisabled?: boolean;
   validInputChecker?: (value: Date) => ErrorObj | boolean;
 }
 
@@ -215,7 +216,7 @@ const DateTimePickerScreen = (
         bottomBackButton={props.bottomBackButton}
         bottomGreyButtonLabel={props.bottomGreyButtonLabel}
         buttonLabel={props.buttonLabel}
-        disabled={screenState === States.Invalid}
+        disabled={props.nextDisabled || screenState === States.Invalid}
       />
     </ScreenContainer>
   );

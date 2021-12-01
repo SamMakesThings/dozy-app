@@ -11,8 +11,8 @@ exports[`FeedbackPopupModal should match the snapshot 1`] = `
         "global": 6,
       },
       "buttonLayout": Object {
-        "height": 100.71428571428571,
         "justifyContent": "center",
+        "minHeight": 100.71428571428571,
       },
       "colors": Object {
         "background": "rgba(35, 43, 63, 1)",

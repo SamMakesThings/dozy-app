@@ -25,11 +25,7 @@ export const BaselineProgressCard: React.FC<Props> = (props) => {
 
   return (
     <CardContainer style={styles.container}>
-      <TouchableOpacity
-        style={styles.content}
-        onPress={props.onPress}
-        disabled={!props.onPress}
-      >
+      <TouchableOpacity onPress={props.onPress} disabled={!props.onPress}>
         <View style={styles.View_CardHeaderContainer}>
           <View style={styles.cardHeaderContent}>
             <Text style={[theme.typography.cardTitle, styles.Text_CardTitle]}>
@@ -105,7 +101,6 @@ const styles = StyleSheet.create({
     width: scale(200),
   },
   container: { marginBottom: 0 },
-  content: { flex: 1 },
   cardHeaderContent: { justifyContent: 'space-between' },
   hidden: { display: 'none' },
   highlightedText: { maxWidth: '22%' },
