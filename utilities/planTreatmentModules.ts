@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { omit } from 'lodash';
 import treatments from '../constants/Treatments';
 import { SleepLog } from '../types/custom';
 
@@ -69,7 +70,7 @@ function planTreatmentModules({ sleepLogs, currentTreatments }: Args): {
       : null;
   });
 
-  const defaultTreatmentOrder = Object.keys(treatments);
+  const defaultTreatmentOrder = Object.keys(omit(treatments, 'COG2'));
 
   // Define a priority order based on the above tags
   // Duplicates are filtered out so shouldn't matter
