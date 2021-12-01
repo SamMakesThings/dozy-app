@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useEffect, useState } from 'react';
-import { Platform, StyleSheet, View, Text } from 'react-native';
+import { Alert, Platform, StyleSheet, View, Text } from 'react-native';
 import { DatePicker } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -750,7 +750,14 @@ export const TagsNotesInput: React.FC<Props> = ({ navigation }) => {
         logState.tags = res.tags;
 
         // Submit data to Firebase thru helper function
-        submitSleepDiaryData(logState);
+        try {
+          submitSleepDiaryData(logState);
+        } catch (error: any) {
+          Alert.alert(
+            logState.logId ? 'Update failed' : 'Log failed',
+            error.message,
+          );
+        }
 
         Analytics.logEvent(
           logState.logId
