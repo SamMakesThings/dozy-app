@@ -3,7 +3,6 @@ import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PropTypes from 'prop-types';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import * as SecureStore from 'expo-secure-store';
 import BottomTabs from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
@@ -125,11 +124,6 @@ const AppNavigator = () => {
         await SecureStore.setItemAsync('userId', user.uid);
         refreshUserData(dispatch);
         initABTesting();
-      } else {
-        dispatch({ type: 'SIGN_OUT' });
-        await auth().signOut();
-        await GoogleSignin.revokeAccess();
-        await GoogleSignin.signOut();
       }
     });
     return subscriber;
@@ -143,8 +137,19 @@ const AppNavigator = () => {
           coach,
         });
       });
+      Notification.registerForPushNotificationsAsync(false)
+        .then((expoPushToken) => {
+          if (expoPushToken) {
+            Notification.updateExpoPushToken(expoPushToken, state.userId);
+          }
+        })
+        .catch((error) => {
+          if (__DEV__) {
+            console.log('Error when registering push notification: ', error);
+          }
+        });
     }
-  }, [state.onboardingComplete]);
+  }, [state.onboardingComplete, state.userId]);
 
   const DozyNavTheme = {
     dark: true,
