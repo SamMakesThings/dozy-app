@@ -136,8 +136,8 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
         style={
           Array [
             Object {
-              "height": 100.71428571428571,
               "justifyContent": "center",
+              "minHeight": 100.71428571428571,
             },
             Object {
               "marginTop": 53.57142857142857,

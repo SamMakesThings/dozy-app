@@ -35,7 +35,7 @@ export const TodoItem: React.FC<TodoItemProps> = (props) => {
         size={scale(21)}
         color={theme.colors.secondary}
       />
-      <Text style={{ ...theme.typography.body2, ...styles.Text_TodoItem }}>
+      <Text style={[theme.typography.body2, styles.Text_TodoItem]}>
         {props.label}
       </Text>
     </TouchableOpacity>
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   Text_TodoItem: {
+    flex: 1,
     color: dozy_theme.colors.secondary,
     marginLeft: scale(8),
   },
