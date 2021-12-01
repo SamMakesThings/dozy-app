@@ -2,7 +2,7 @@ import React from 'react';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { Button, ScreenContainer, Container, Touchable } from '@draftbit/ui';
 import { StyleSheet, Text, ImageBackground, Platform } from 'react-native';
-import { scale, verticalScale } from 'react-native-size-matters';
+import { scale, moderateScale } from 'react-native-size-matters';
 import Auth from '../utilities/auth.service';
 import { dozy_theme } from '../config/Themes';
 import WordmarkTrans from '../assets/images/WordmarkTrans.svg';
@@ -44,7 +44,7 @@ const LoginScreen: React.FC = () => {
         >
           <UndrawBed
             width={scale(200)}
-            height={verticalScale(200)}
+            height={moderateScale(160, 2)}
             style={styles.Image_FeaturedBed}
           />
           <Text
@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '60%',
     justifyContent: 'space-between',
-    paddingBottom: Platform.OS === 'ios' ? scale(20) : 0,
   },
   View_LogoContainer: {
     height: '15%',
@@ -141,7 +140,6 @@ const styles = StyleSheet.create({
   Image_FeaturedBed: {
     width: '60%',
     alignSelf: 'center',
-    height: verticalScale(200),
   },
   Image_Wordmark: {
     alignSelf: 'flex-start',
@@ -150,19 +148,19 @@ const styles = StyleSheet.create({
     height: '120%',
   },
   View_HeroLogoText: {
-    height: '65%',
+    flex: 1,
     justifyContent: 'flex-end',
   },
   Touchable_BackButton: {
     paddingTop: scale(25),
-    paddingBottom: scale(25),
+    paddingBottom: scale(20),
   },
   Text_Hero1: {
     textAlign: 'center',
   },
   Text_Hero2: {
     textAlign: 'center',
-    marginBottom: verticalScale(40),
+    marginBottom: moderateScale(30, 2),
   },
   View_ButtonsContainer: {
     justifyContent: 'flex-end',

@@ -2831,10 +2831,10 @@
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-datepicker-label":
-  version "39.7.1-patch-datepicker-label"
-  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-datepicker-label.tgz#6d44d319906c2c926986464f455949fb4f4019a1"
-  integrity sha512-JGMf8UfgydH3fImHfYM3dfe3Wu7y3l01ht+zaYawZvEiHGhVB/x2nbYKLJQslX8lBppxB+npXNcsJJdWwswpeQ==
+"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-button-label-2":
+  version "39.7.1-patch-button-label-2"
+  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-button-label-2.tgz#9b5c4eacdb6990f34c06098bffc8921b929ed9cf"
+  integrity sha512-dWpKqcTC/nr49W8dC6iqY6aO+GmxtOFgtI4o1SNcNLqTzKNcG3Lsy7IwHJqbRBZNT5h0BVXDLPfbmm0fShgoiQ==
   dependencies:
     "@date-io/date-fns" "^1.3.13"
     "@draftbit/react-theme-provider" "npm:@fancydevpro/react-theme-provider@2.1.1-type-patch-1"
@@ -9926,11 +9926,6 @@ expo-image-loader@~2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/expo-image-loader/-/expo-image-loader-2.1.1.tgz#028ae58f7c7a33ca9a406716c2b31969216d016f"
   integrity sha512-EeItNIsmw4g+FIb9S9AHE7FAWQkuiIguFMua/RQ2mFHKFZYa/BU32MGagY+e4LzasBVbDKWgd3NHO+EYC6XeEA==
-
-expo-in-app-purchases@~10.1.1:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/expo-in-app-purchases/-/expo-in-app-purchases-10.1.1.tgz#c02783ff898d7dfa92bce4fabae557ab10adde04"
-  integrity sha512-nm2pO3+GZoGxuvGFx1pHIQvcsaAWMFgwbRPPELWMlfxvDKb66mMG0CFvMoNvv9QdgfFXPFzhXMmyPOrF+Jcw6g==
 
 expo-intent-launcher@~8.4.0:
   version "8.4.0"

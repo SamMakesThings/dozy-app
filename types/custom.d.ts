@@ -36,6 +36,7 @@ export type Chat = {
   message: string;
   time: FirebaseFirestoreTypes.Timestamp | Date;
   sentByUser: boolean;
+  pending?: boolean; // Only useful in front end
 };
 
 export type Task = {

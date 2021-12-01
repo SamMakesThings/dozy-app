@@ -8,12 +8,15 @@ export interface ChatMessageProps {
   time: Date;
   sentByUser: boolean;
   coach: string;
+  pending?: boolean;
 }
+new Date().getTime();
 export const ChatMessage: React.FC<ChatMessageProps> = ({
   message,
   time,
   sentByUser,
   coach,
+  pending = false,
 }) => {
   const theme = dozy_theme;
 
@@ -23,12 +26,14 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     >
       <Text style={styles.Text_MetaMsg}>
         {!sentByUser && coach}{' '}
-        {time.toLocaleString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric',
-        })}
+        {sentByUser && pending
+          ? 'Sending...'
+          : time.toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+            })}
       </Text>
       <View
         style={Object.assign(

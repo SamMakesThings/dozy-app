@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import {
   useWindowDimensions,
   Text,
@@ -7,10 +7,17 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  FlatList,
+  AppState,
+  AppStateStatus,
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
+import firestore, {
+  FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
+import { findLast } from 'lodash';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -36,12 +43,13 @@ import submitOnboardingData, {
   submitFirstChatMessage,
   OnboardingState,
 } from '../utilities/submitOnboardingData';
-import { Navigation } from '../types/custom';
 import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import { getOnboardingCoach } from '../utilities/coach';
 import Notification from '../utilities/notification.service';
+import fetchChats from '../utilities/fetchChats';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
+import { Navigation, Chat } from '../types/custom';
 import { ErrorObj } from '../types/error';
 
 // Define the theme for the file globally
@@ -76,6 +84,8 @@ const onboardingState: OnboardingState = {
   firstCheckinTime: null,
   firstChatMessageContent: 'Hi',
 };
+
+let chatSubscriber: (() => void) | undefined;
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   const { dispatch } = Auth.useAuth();
@@ -672,7 +682,7 @@ export const SafetySnoring: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value?: string | number | boolean) => {
-        onboardingState.snoring = value as boolean;
+        onboardingState.snoring = value as boolean | string;
         navigation.navigate(!value ? 'SafetyLegs' : 'SafetyIllnessWarning', {
           warnAbout: 'sleep apneas',
           nextScreen: 'SafetyLegs',
@@ -680,11 +690,12 @@ export const SafetySnoring: React.FC<Props> = ({ navigation }) => {
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetySnoring, {
           answer: value,
         });
-        submitHealthHistoryData({ snoring: value as boolean });
+        submitHealthHistoryData({ snoring: value as boolean | string });
       }}
       buttonValues={[
         { label: 'Yes', value: true, solidColor: true },
         { label: 'No', value: false, solidColor: true },
+        { label: "I don't know", value: 'unknown', solidColor: true },
       ]}
       questionLabel="Do you snore heavily? Has anyone witnessed prolonged pauses in breathing (apneas)?"
     />
@@ -1000,7 +1011,29 @@ export const DiaryReminder: React.FC<Props> = ({ navigation }) => {
 };
 
 export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
-  useEffect((): void => {
+  const timePickerRef =
+    useRef<{ getValue: () => Date; setValue: (date: Date) => void }>(null);
+
+  const validateInput = useCallback((val: Date): ErrorObj | boolean => {
+    // Make sure the selected date is 7+ days from today
+    // Make sure it's within 14 days
+    // Otherwise, mark it valid by returning true
+    if (moment().add(7, 'days').startOf('date').isAfter(val)) {
+      return {
+        severity: 'ERROR',
+        errorMsg: 'Please select a day 7 or more days from today',
+      };
+    } else if (moment().add(15, 'days').startOf('date').isSameOrBefore(val)) {
+      return {
+        severity: 'WARNING',
+        errorMsg: 'Please select a day within 14 days of today',
+      };
+    } else {
+      return true;
+    }
+  }, []);
+
+  useEffect(() => {
     Analytics.logEvent(AnalyticsEvents.onboardingCheckinScheduling);
 
     // Ask push notification permission if user didn't allow to set a reminder
@@ -1013,10 +1046,30 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         },
       );
     }
+
+    // Update the default checkin time in case of user left the app in background and returns again
+    const handleAppStateChange = (state: AppStateStatus): void => {
+      if (state === 'active' && timePickerRef.current?.getValue()) {
+        const validationResult = validateInput(
+          timePickerRef.current?.getValue(),
+        );
+        if (
+          validationResult !== true &&
+          (validationResult as ErrorObj).severity === 'ERROR'
+        ) {
+          timePickerRef.current.setValue(moment().add(1, 'weeks').toDate());
+        }
+      }
+    };
+
+    AppState.addEventListener('change', handleAppStateChange);
+
+    return () => AppState.removeEventListener('change', handleAppStateChange);
   }, []);
 
   return (
     <DateTimePickerScreen
+      ref={timePickerRef}
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().add(1, 'weeks').toDate()}
@@ -1025,24 +1078,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
         navigation.navigate('SendFirstChat', { progressBarPercent: 0.8 });
         submitDiaryReminderAndCheckinData(onboardingState);
       }}
-      validInputChecker={(val: Date): ErrorObj | boolean => {
-        // Make sure the selected date is 7+ days from today
-        // Make sure it's within 14 days
-        // Otherwise, mark it valid by returning true
-        if (moment().add(7, 'days').hour(0).toDate() > val) {
-          return {
-            severity: 'ERROR',
-            errorMsg: 'Please select a day 7 or more days from today',
-          };
-        } else if (moment().add(14, 'days').hour(0).toDate() < val) {
-          return {
-            severity: 'WARNING',
-            errorMsg: 'Please select a day within 14 days of today',
-          };
-        } else {
-          return true;
-        }
-      }}
+      validInputChecker={validateInput}
       questionLabel="When would you like to schedule your first weekly check-in?"
       questionSubtitle="Check-ins take 5-10 minutes and introduce you to new sleep improvement techniques based on your sleep patterns."
       buttonLabel="I've picked a date 7+ days from today"
@@ -1052,10 +1088,37 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const { state, dispatch } = Auth.useAuth();
 
   useEffect((): void => {
+    chatSubscriber = undefined;
     Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChat);
+
+    if (state.userId) {
+      const fetchSupportMessages = () => {
+        fetchChats(firestore(), state.userId!)
+          .then((chats: Array<Chat>) => {
+            // Check that theres >1 entry. If no, set state accordingly
+            if (chats.length === 0) {
+              dispatch({ type: 'SET_CHATS', chats: [] });
+            } else {
+              dispatch({ type: 'SET_CHATS', chats: chats });
+            }
+            console.log('set chats: ', chats);
+
+            return;
+          })
+          .catch(function (error) {
+            console.log('Error getting chats:', error);
+          });
+      };
+
+      chatSubscriber = firestore()
+        .collection('users')
+        .doc(state.userId)
+        .collection('supportMessages')
+        .onSnapshot(fetchSupportMessages);
+    }
   }, []);
 
   const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
@@ -1092,20 +1155,24 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
   const { state } = Auth.useAuth();
   const displayName = state.userData.userInfo.displayName;
   const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
+  const coach = `${state.coach.firstName} ${state.coach.lastName}`;
 
   const [message, setMessage] = React.useState('');
   const [replyVisible, makeReplyVisible] = React.useState(false);
 
-  const messageSent = message != '';
-
-  if (messageSent) {
-    // Send message after a delay to simulate actual reply
-    setTimeout(() => makeReplyVisible(true), 1500);
-  }
+  const messageSent = message?.trim().length > 0;
 
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChatContd);
   }, []);
+
+  useEffect((): void => {
+    const lastUserMessage = findLast(state.chats, { sentByUser: true });
+    if (lastUserMessage?.message) {
+      setMessage(lastUserMessage.message);
+      makeReplyVisible(true);
+    }
+  }, [state.chats]);
 
   return (
     <WizardContentScreen
@@ -1124,41 +1191,66 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
         style={styles.keyboardAvoidingView}
       >
         <View style={styles.spacer6} />
-        <ChatMessage
-          coach={senderName}
-          message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
-          time={new Date()}
-          sentByUser={false}
-        />
-        <ChatMessage
-          coach={senderName}
-          message="Why do you want to improve your sleep?"
-          time={new Date()}
-          sentByUser={false}
-        />
-        <View style={!messageSent && styles.none}>
-          <ChatMessage
-            coach="You"
-            message={message}
-            time={new Date()}
-            sentByUser={true}
+        {state.chats.length ? (
+          <FlatList
+            contentContainerStyle={styles.View_ContentContainer}
+            renderItem={({ item }) => (
+              <ChatMessage
+                message={item.message}
+                time={(item.time as FirebaseFirestoreTypes.Timestamp).toDate()}
+                sentByUser={item.sentByUser}
+                coach={coach}
+              />
+            )}
+            keyExtractor={(item, index) => `${item.message}${index}`}
+            inverted={true}
+            data={state.chats}
           />
-        </View>
-        <View style={!replyVisible && styles.none}>
-          <ChatMessage
-            coach={senderName}
-            message="Thanks for sending! We usually reply within 24 hours. You can find our conversation in the Support tab of the app at any time. :)"
-            time={new Date()}
-            sentByUser={false}
-          />
-        </View>
+        ) : (
+          <>
+            <ChatMessage
+              coach={senderName}
+              message="Welcome to Dozy! I'm Sam, I'll be your sleep coach."
+              time={new Date()}
+              sentByUser={false}
+            />
+            <ChatMessage
+              coach={senderName}
+              message="Why do you want to improve your sleep?"
+              time={new Date()}
+              sentByUser={false}
+            />
+            <View style={!messageSent && styles.none}>
+              <ChatMessage
+                coach="You"
+                message={message}
+                time={new Date()}
+                sentByUser={true}
+                pending={!replyVisible}
+              />
+            </View>
+            <View style={!replyVisible && styles.none}>
+              <ChatMessage
+                coach={senderName}
+                message="Thanks for sending! We usually reply within 24 hours. You can find our conversation in the Support tab of the app at any time. :)"
+                time={new Date()}
+                sentByUser={false}
+              />
+            </View>
+          </>
+        )}
         <View style={styles.spacer} />
         <ChatTextInput
           onSend={(typedMsg: string) => {
-            onboardingState.firstChatMessageContent = typedMsg;
-            setMessage(typedMsg);
-            Keyboard.dismiss();
-            submitFirstChatMessage(typedMsg, state.coach.id, displayName);
+            if (typedMsg?.trim().length) {
+              onboardingState.firstChatMessageContent = typedMsg;
+              setMessage(typedMsg);
+              Keyboard.dismiss();
+              submitFirstChatMessage(typedMsg, state.coach.id, displayName);
+              setTimeout(() => {
+                makeReplyVisible(true);
+              }, 1000);
+            }
           }}
           viewStyle={!!messageSent && styles.none}
         />
@@ -1181,6 +1273,9 @@ export const OnboardingEnd: React.FC<Props> = ({ navigation }) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         submitOnboardingData(onboardingState, dispatch);
+        if (chatSubscriber) {
+          chatSubscriber();
+        }
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
       buttonLabel="Continue"
@@ -1200,4 +1295,10 @@ const styles = StyleSheet.create({
   spacer6: { flex: 0.6 },
   spacer: { flex: 1 },
   none: { display: 'none' },
+  View_ContentContainer: {
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    paddingHorizontal: scale(10),
+    paddingVertical: scale(40),
+  },
 });
