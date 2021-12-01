@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useEffect } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useCallback, useMemo, useEffect, useState } from 'react';
+import { Platform, StyleSheet, View, Text } from 'react-native';
 import { DatePicker } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -120,10 +120,11 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
   // If there is a sleep log recorded, use the most recent
   // bedtime value as a default.
   // Also use hook to set globalState value for the file
+  const { state } = Auth.useAuth();
   const safeInsets = useSafeAreaInsets();
+
   globalState =
-    (pick(Auth.useAuth().state, ['userData', 'sleepLogs']) as GlobalState) ||
-    globalState;
+    (pick(state, ['userData', 'sleepLogs']) as GlobalState) || globalState;
   let defaultDate = moment().hour(22).minute(0).toDate();
   if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
     defaultDate = moment()
@@ -132,10 +133,20 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
       .toDate();
   }
 
-  let initialDateVal = new Date(); // Declare variable for the initial selectedState value
   const baseSleepLog: SleepLog | undefined = globalState.sleepLogs.find(
     (sleepLog) => sleepLog.logId === route.params?.logId,
   );
+  let initialDateVal = baseSleepLog ? baseSleepLog.upTime.toDate() : new Date(); // Declare variable for the initial selectedState value
+
+  const validateDate = useCallback((date: Date): boolean => {
+    const sleepLogsToCompare: SleepLog[] = baseSleepLog
+      ? state.sleepLogs.filter((it) => it.logId !== baseSleepLog.logId)
+      : state.sleepLogs;
+
+    return !sleepLogsToCompare.find((it) =>
+      moment(it.upTime.toDate()).isSame(date, 'day'),
+    );
+  }, []);
 
   useEffect((): void => {
     // If editing existing sleep log, set defaults from that. Otherwise, use normal defaults
@@ -170,6 +181,8 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
 
   // Create state to display selected log date
   const [selectedDate, setSelectedDate] = React.useState(initialDateVal);
+  const [isValidDate, setDateValidity] = useState(validateDate(initialDateVal));
+  const [isDateChanged, setDateChanged] = useState(false);
 
   return (
     <>
@@ -212,32 +225,56 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
         mode="time"
         questionLabel="What time did you go to bed last night?"
         inputLabel="Bedtime"
+        nextDisabled={!isValidDate}
       />
-      <DatePicker
+      <View
         style={[
-          styles.datePicker,
+          styles.dateHeader,
           {
             marginTop: (Platform.OS === 'ios' ? safeInsets.top : 0) + scale(29),
           },
         ]}
-        mode={'date'}
-        type="underline"
-        disabled={false}
-        leftIconMode="inset"
-        format={'dddd, mmmm dS'}
-        date={selectedDate}
-        onDateChange={(selectedDay: Date) => {
-          let dateSetting = selectedDay; // why do dates have to be mutable like this
-          dateSetting.setHours(new Date().getHours());
-          dateSetting.setMinutes(new Date().getMinutes() - 7); // TODO: Make this less hacky
-          logState.logDate = dateSetting;
-          if (moment(selectedDay).diff(new Date(), 'days') >= 1) {
-            // Make sure it's not a future date
-            dateSetting = new Date();
-          }
-          setSelectedDate(dateSetting);
-        }}
-      />
+      >
+        <DatePicker
+          style={styles.datePicker}
+          mode={'date'}
+          type="underline"
+          disabled={false}
+          leftIconMode="inset"
+          format={'dddd, mmmm dS'}
+          date={selectedDate}
+          onDateChange={(selectedDay: Date) => {
+            let dateSetting = selectedDay; // why do dates have to be mutable like this
+            dateSetting.setHours(new Date().getHours());
+            dateSetting.setMinutes(new Date().getMinutes() - 7); // TODO: Make this less hacky
+            logState.logDate = dateSetting;
+            if (moment(selectedDay).diff(new Date(), 'days') >= 1) {
+              // Make sure it's not a future date
+              dateSetting = new Date();
+            }
+            setDateChanged(true);
+            setDateValidity(validateDate(dateSetting));
+            setSelectedDate(dateSetting);
+          }}
+        />
+        {!isValidDate && (
+          <Text
+            style={[
+              styles.datePickerMessage,
+              theme.typography.body1,
+              {
+                color: isDateChanged
+                  ? theme.colors.error
+                  : theme.colors.secondary,
+              },
+            ]}
+          >
+            {isDateChanged
+              ? "You already logged sleep that day! Please select another day or go back and delete that day's previous log"
+              : "Select the date you're logging sleep for"}
+          </Text>
+        )}
+      </View>
     </>
   );
 };
@@ -731,9 +768,23 @@ export const TagsNotesInput: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  datePicker: {
+  dateHeader: {
     position: 'absolute',
-    alignSelf: 'center',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  datePicker: {
     opacity: 0.35,
+    alignSelf: 'center',
+  },
+  datePickerMessage: {
+    position: 'absolute',
+    top: 68,
+    left: 16,
+    right: 16,
+    textAlign: 'center',
+    opacity: 0.7,
   },
 });
