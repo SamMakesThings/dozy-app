@@ -17,6 +17,7 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { findLast } from 'lodash';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -49,7 +50,7 @@ import { getOnboardingCoach } from '../utilities/coach';
 import Notification from '../utilities/notification.service';
 import fetchChats from '../utilities/fetchChats';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
-import { Navigation, Chat } from '../types/custom';
+import { Chat } from '../types/custom';
 import { ErrorObj } from '../types/error';
 
 // Define the theme for the file globally
@@ -60,7 +61,7 @@ const imgSizePercent = 0.4;
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 interface Props {
-  navigation: Navigation;
+  navigation: StackNavigationProp<any>;
   route: { params: { nextScreen: string; warnAbout: string } };
 }
 
@@ -602,13 +603,15 @@ export const SafetyPillsStop: React.FC<Props> = ({ navigation }) => {
       image={<Stop width={imgSize} height={imgSize} />}
       onQuestionSubmit={(result?: string | number | boolean) => {
         navigation.navigate(
-          result === 'Continue anyway' ? 'SafetySnoring' : 'SafetyPillsBye',
+          result === "I'll continue with sleeping pills"
+            ? 'SafetySnoring'
+            : 'SafetyPillsBye',
           {
             progressBarPercent: null,
           },
         );
         Analytics.logEvent(
-          result === 'Continue anyway'
+          result === "I'll continue with sleeping pills"
             ? AnalyticsEvents.onboardingSafetyPillsStopContinue
             : AnalyticsEvents.onboardingSafetyPillsStopContactDoctor,
         );
@@ -657,11 +660,6 @@ export const SafetyPillsBye: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<WaveHello width={imgSize} height={imgSize} />}
-      onQuestionSubmit={() => {
-        navigation.navigate('SafetySnoring', {
-          progressBarPercent: null,
-        });
-      }}
       textLabel={
         onboardingState.otherCondition
           ? "Finding a human provider can be a bit challenging, and options vary per country. For some (free) help, email us at info@dozy.health. Or, if you'd like to continue with the app regardless, you can navigate back and select 'I understand the risks'."
@@ -683,10 +681,14 @@ export const SafetySnoring: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value?: string | number | boolean) => {
         onboardingState.snoring = value as boolean | string;
-        navigation.navigate(!value ? 'SafetyLegs' : 'SafetyIllnessWarning', {
-          warnAbout: 'sleep apneas',
-          nextScreen: 'SafetyLegs',
-        });
+        if (value) {
+          navigation.navigate('SafetyIllnessWarning', {
+            warnAbout: 'sleep apneas',
+            nextScreen: 'SafetyLegs',
+          });
+        } else {
+          navigation.navigate('SafetyLegs');
+        }
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetySnoring, {
           answer: value,
         });
@@ -713,10 +715,14 @@ export const SafetyLegs: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value?: string | number | boolean) => {
         onboardingState.rls = value as boolean;
-        navigation.navigate(!value ? 'SafetyParas' : 'SafetyIllnessWarning', {
-          warnAbout: 'Restless Leg Syndrome',
-          nextScreen: 'SafetyParas',
-        });
+        if (value) {
+          navigation.push('SafetyIllnessWarning', {
+            warnAbout: 'Restless Leg Syndrome',
+            nextScreen: 'SafetyParas',
+          });
+        } else {
+          navigation.navigate('SafetyParas');
+        }
         Analytics.logEvent(AnalyticsEvents.onboardingSafetyLegs, {
           answer: value,
         });
@@ -743,10 +749,14 @@ export const SafetyParas: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value?: string | number | boolean) => {
         onboardingState.parasomnias = value as boolean;
-        navigation.navigate(
-          !value ? 'SafetyCatchall' : 'SafetyIllnessWarning',
-          { warnAbout: 'parasomnias', nextScreen: 'SafetyCatchall' },
-        );
+        if (value) {
+          navigation.push('SafetyIllnessWarning', {
+            warnAbout: 'parasomnias',
+            nextScreen: 'SafetyCatchall',
+          });
+        } else {
+          navigation.navigate('SafetyCatchall');
+        }
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyParas, {
           answer: value,
         });
@@ -772,10 +782,14 @@ export const SafetyCatchall: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value?: string | number | boolean) => {
         onboardingState.otherCondition = value as boolean;
-        navigation.navigate(!value ? 'BaselineIntro' : 'SafetyIllnessWarning', {
-          warnAbout: 'such conditions',
-          nextScreen: 'BaselineIntro',
-        });
+        if (value) {
+          navigation.push('SafetyIllnessWarning', {
+            warnAbout: 'such conditions',
+            nextScreen: 'BaselineIntro',
+          });
+        } else {
+          navigation.navigate('BaselineIntro');
+        }
         Analytics.logEvent(AnalyticsEvents.onboardingQuestionSafetyCatchall, {
           answer: value,
         });
@@ -804,14 +818,15 @@ export const SafetyIllnessWarning: React.FC<Props> = ({
       bottomBackButton={() => navigation.goBack()}
       image={<TiredFace width={imgSize} height={imgSize} />}
       onQuestionSubmit={(result?: string | number | boolean) => {
-        navigation.navigate(
-          result === 'I understand the risks, continue anyway'
-            ? route.params.nextScreen
-            : 'SafetyPillsBye',
-          {
+        if (result === 'I understand the risks, continue anyway') {
+          navigation.navigate(route.params.nextScreen, {
             progressBarPercent: null,
-          },
-        );
+          });
+        } else {
+          navigation.push('SafetyPillsBye', {
+            progressBarPercent: null,
+          });
+        }
         Analytics.logEvent(
           result === 'I understand the risks, continue anyway'
             ? AnalyticsEvents.onboardingSafetyIllnessWarningSkipFinding
@@ -906,11 +921,6 @@ export const BaselineBye: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       image={<WaveHello width={imgSize} height={imgSize} />}
-      onQuestionSubmit={() => {
-        navigation.navigate('SafetySnoring', {
-          progressBarPercent: null,
-        });
-      }}
       textLabel="No worries! We’ll follow up with you in a week. If you’re ready to start before that, come back anytime and we’ll pick up where we left off."
       onlyBackButton
     />
