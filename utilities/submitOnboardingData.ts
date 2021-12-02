@@ -264,12 +264,14 @@ export async function submitFirstChatMessage(
       message: "Welcome to Dozy! I'm Sam, I'll be your sleep coach.",
       time: sub(new Date(), { minutes: 4 }),
       sentByUser: false,
+      dontSendNotification: true,
     });
     chatColRef.add({
       sender: coachId,
       message: 'Why do you want to improve your sleep?',
       time: sub(new Date(), { minutes: 3 }),
       sentByUser: false,
+      dontSendNotification: true,
     });
     chatColRef.add({
       sender: displayName ?? 'You',
@@ -283,6 +285,7 @@ export async function submitFirstChatMessage(
         "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
       time: new Date(),
       sentByUser: false,
+      dontSendNotification: true,
     };
     chatColRef.add(lastChat);
 
