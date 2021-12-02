@@ -13,7 +13,7 @@ interface Props {
     value: string | number | boolean;
     solidColor?: boolean;
   }>;
-  onPress: (value?: string | number | boolean) => void;
+  onPress?: (value?: string | number | boolean) => void;
   onlyBackButton?: boolean;
   disabled?: boolean;
   buttonLabel?: string;
@@ -59,7 +59,9 @@ const BottomNavButtons: React.FC<Props> = (props) => {
               loading={false}
               disabled={false}
               onPress={() => {
-                props.onPress(value);
+                if (props.onPress) {
+                  props.onPress(value);
+                }
                 submitUserProgress();
               }}
             >
@@ -75,7 +77,9 @@ const BottomNavButtons: React.FC<Props> = (props) => {
         ]}
         type="solid"
         onPress={() => {
-          props.onPress();
+          if (props.onPress) {
+            props.onPress();
+          }
           submitUserProgress();
         }}
         color={theme.colors.primary}
@@ -92,7 +96,9 @@ const BottomNavButtons: React.FC<Props> = (props) => {
           ]}
           type="solid"
           onPress={() => {
-            props.onPress(props.bottomGreyButtonLabel);
+            if (props.onPress) {
+              props.onPress(props.bottomGreyButtonLabel);
+            }
             submitUserProgress();
           }}
           color={theme.colors.medium}

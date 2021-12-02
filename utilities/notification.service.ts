@@ -145,22 +145,22 @@ export default class Notification {
   ): Promise<void> {
     const userDocRef = firestore().collection('users').doc(userId);
 
-    const notificationsCollection = userDocRef.collection('notifications');
-    notificationsCollection.get().then((data) => {
-      if (data.docs.length) {
-        data.docs.forEach((doc) => {
-          notificationsCollection.doc(doc.id).update({
-            expoPushToken,
-          });
-        });
-      }
-    });
-
     userDocRef.update({
       reminders: {
         expoPushToken,
       },
     });
+
+    const notificationsCollection = await userDocRef
+      .collection('notifications')
+      .get();
+    if (notificationsCollection.docs.length) {
+      notificationsCollection.docs.forEach((doc) => {
+        if (doc.data()?.expoPushToken !== expoPushToken) {
+          doc.ref.update({ expoPushToken });
+        }
+      });
+    }
   }
 
   static async setBadgeNumber(badgeCount: number): Promise<boolean> {

@@ -3,40 +3,48 @@ import {
   Text,
   View,
   TouchableOpacity,
-  GestureResponderEvent,
   StyleSheet,
+  TouchableOpacityProps,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { scale } from 'react-native-size-matters';
 import { dozy_theme } from '../config/Themes';
 
-interface Props {
+interface Props extends TouchableOpacityProps {
   titleLabel: string;
   subtitleLabel: string;
   backgroundColor?: string;
   icon?: React.ReactElement;
   badge?: boolean;
-  onPress?: ((event: GestureResponderEvent) => void) | undefined;
 }
 
-const IconTitleSubtitleButton: React.FC<Props> = (props) => {
+const IconTitleSubtitleButton: React.FC<Props> = ({
+  titleLabel,
+  subtitleLabel,
+  backgroundColor,
+  icon,
+  badge,
+  style,
+  ...props
+}) => {
   const theme = dozy_theme;
   return (
     <TouchableOpacity
-      style={{
-        ...styles.Touchable_ButtonContainer,
-        backgroundColor: props.backgroundColor || theme.colors.medium,
-      }}
-      onPress={props.onPress}
+      style={[
+        styles.Touchable_ButtonContainer,
+        { backgroundColor: backgroundColor || theme.colors.medium },
+        style,
+      ]}
+      {...props}
     >
-      {props.icon || ( // Use custom icon if passed
+      {icon || ( // Use custom icon if passed
         <Ionicons
           name="ios-add-circle"
           size={scale(35)}
           color={theme.colors.secondary}
         />
       )}
-      {props.badge && ( // Add red circle badge if "badge" passed
+      {badge && ( // Add red circle badge if "badge" passed
         <View style={styles.View_BadgeContainer}>
           <Text
             style={{
@@ -54,7 +62,7 @@ const IconTitleSubtitleButton: React.FC<Props> = (props) => {
         <Text
           style={{ ...theme.typography.body1, color: theme.colors.secondary }}
         >
-          {props.titleLabel}
+          {titleLabel}
         </Text>
         <Text
           style={[
@@ -63,7 +71,7 @@ const IconTitleSubtitleButton: React.FC<Props> = (props) => {
             { color: theme.colors.secondary },
           ]}
         >
-          {props.subtitleLabel}
+          {subtitleLabel}
         </Text>
       </View>
     </TouchableOpacity>

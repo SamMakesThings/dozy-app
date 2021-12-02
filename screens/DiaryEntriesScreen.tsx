@@ -136,9 +136,14 @@ const SleepLogsView = (props: {
   } else {
     // Otherwise load sleep logs
     return (
-      <ScrollView horizontal={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainer}
+      >
         <IconTitleSubtitleButton
-          onPress={() => props.logEntryRedirect()}
+          onPress={props.logEntryRedirect}
+          onPressIn={props.logEntryRedirect}
+          delayPressIn={0}
           backgroundColor={
             !loggedToday ? theme.colors.primary : theme.colors.medium
           }
@@ -246,9 +251,13 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
     <ScreenContainer
       style={styles.sleepLogsScreenContainer}
       hasSafeArea={true}
-      scrollable={true}
+      scrollable={false}
     >
-      <Container elevation={0} useThemeGutterPadding={true}>
+      <Container
+        elevation={0}
+        useThemeGutterPadding={true}
+        style={styles.container}
+      >
         <SleepLogsView
           isLoading={logsLoading}
           sleepLogs={state.sleepLogs || []}
@@ -273,6 +282,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   container: { flex: 1 },
+  contentContainer: {
+    flex: 1,
+    paddingBottom: scale(15),
+  },
   emptyLogContainer: {
     height: scale(325),
     justifyContent: 'center',
@@ -285,7 +298,10 @@ const styles = StyleSheet.create({
     marginTop: scale(17),
   },
   // eslint-disable-next-line react-native/no-color-literals
-  sleepLogsScreenContainer: { backgroundColor: '#232B3F' },
+  sleepLogsScreenContainer: {
+    flex: 1,
+    backgroundColor: '#232B3F',
+  },
 });
 
 export default withTheme(SleepLogsScreen);

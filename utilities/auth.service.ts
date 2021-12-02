@@ -107,26 +107,6 @@ export default class Auth {
               }
             });
 
-          if (onboardingComplete) {
-            try {
-              const expoPushToken =
-                await Notification.registerForPushNotificationsAsync(false);
-              if (expoPushToken) {
-                Notification.updateExpoPushToken(
-                  expoPushToken,
-                  result.user.uid,
-                );
-              }
-            } catch (error) {
-              if (__DEV__) {
-                console.log(
-                  'Error when registering push notification: ',
-                  error,
-                );
-              }
-            }
-          }
-
           // Update app state accordingly thru context hook function
           dispatch({
             type: 'SIGN_IN',
@@ -201,6 +181,15 @@ export default class Auth {
     }, [dispatch, processFbLogin]);
 
     const signOut = useCallback(async () => {
+      const userId = auth().currentUser?.uid;
+      if (userId) {
+        try {
+          await Notification.updateExpoPushToken(
+            'No push token provided',
+            userId,
+          );
+        } catch {}
+      }
       SecureStore.deleteItemAsync('userId');
       dispatch({ type: 'SIGN_OUT' });
       await auth().signOut();
