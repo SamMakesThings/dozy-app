@@ -15,7 +15,8 @@
       "extends": "base",
       "releaseChannel": "prod-0",
       "android": {
-        "buildType": "app-bundle"
+        "gradleCommand": ":app:assembleRelease",
+        "buildType": "apk"
       },
       "ios": {
         "buildConfiguration": "Release"

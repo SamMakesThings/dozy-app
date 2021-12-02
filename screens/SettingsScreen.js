@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import {
   withTheme,
@@ -13,6 +13,7 @@ import firestore from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
 import { scale } from 'react-native-size-matters';
 import ExpoConstants from 'expo-constants';
+import { take } from 'lodash';
 import { dozy_theme } from '../config/Themes';
 import Analytics from '../utilities/analytics.service';
 import { encodeLocalTime, decodeServerTime } from '../utilities/time';
@@ -24,28 +25,23 @@ import AnalyticsEvents from '../constants/AnalyticsEvents';
 export function SettingsScreen() {
   // Pass along the signOut function from the context provider
   const { state, signOut } = Auth.useAuth();
-
-  // Get theme object
+  const logReminderIdRef = useRef();
   const theme = dozy_theme;
 
-  let notifLogReminderRef;
-
-  // Get various Firebase refs for keeping settings updated
-  if (state.userId !== null && state.userData?.logReminderId !== undefined) {
-    const notifColRef = firestore()
-      .collection('users')
-      .doc(state.userId)
-      .collection('notifications');
-
-    notifLogReminderRef = notifColRef.doc(state.userData.logReminderId);
-
-    var notifFbQuery = notifColRef.where('type', '==', 'DAILY_LOG');
-  }
-
   // Add function to update notification in Firebase based on local state
-  function updateFbLogNotification(update) {
-    notifLogReminderRef.update(update);
-  }
+  const updateFbLogNotification = useCallback(
+    (update) => {
+      if (logReminderIdRef.current) {
+        firestore()
+          .collection('users')
+          .doc(state.userId)
+          .collection('notifications')
+          .doc(logReminderIdRef.current)
+          .update(update);
+      }
+    },
+    [state.userId],
+  );
 
   // Set up a reducer to manage settings state & keep Firebase updated
   // TODO: Have enabling notifs recheck permissions / Expo token
@@ -95,13 +91,25 @@ export function SettingsScreen() {
   React.useEffect(() => {
     // Add function to pull existing settings from Firebase, update state with them
     const getSettings = async () => {
+      const notifFbQuery = firestore()
+        .collection('users')
+        .doc(state.userId)
+        .collection('notifications')
+        .where('type', '==', 'DAILY_LOG');
+
       if (notifFbQuery === undefined) {
         return 'ERROR: Firebase not loading correctly';
       }
 
       const dailyLogNotificationDocs = await notifFbQuery.get();
-      dailyLogNotificationDocs.forEach((querySnapshot) => {
-        querySnapshot.ref.onSnapshot((notif) => {
+
+      if (dailyLogNotificationDocs.docs.length) {
+        const latestNotificationDoc =
+          dailyLogNotificationDocs.docs[
+            dailyLogNotificationDocs.docs.length - 1
+          ];
+        logReminderIdRef.current = latestNotificationDoc.id;
+        latestNotificationDoc.ref.onSnapshot((notif) => {
           if (notif) {
             const notifData = notif.data();
             dispatch({
@@ -118,7 +126,20 @@ export function SettingsScreen() {
             });
           }
         });
-      });
+        // Delete notification docs except the latest one
+        if (dailyLogNotificationDocs.docs.length > 1) {
+          take(
+            dailyLogNotificationDocs.docs,
+            dailyLogNotificationDocs.docs.length - 1,
+          ).forEach((it) => {
+            it.ref.delete();
+          });
+          // Update logReminderId in user data
+          firestore().collection('users').doc(state.userId).update({
+            logReminderId: logReminderIdRef.current,
+          });
+        }
+      }
     };
     getSettings();
   }, []);

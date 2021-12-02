@@ -33,8 +33,14 @@ interface LogState {
 export default async function submitSleepDiaryData(
   logState: LogState,
 ): Promise<void> {
+  let submitError: Error | undefined;
+
   // Initialize relevant Firebase values
   const userId = await SecureStore.getItemAsync('userId');
+
+  if (!userId) {
+    submitError = new Error('User ID does not exist!');
+  }
   // If userId is a string, set Firebase ref. If not, mark an error
   const sleepLogsRef =
     typeof userId === 'string'
@@ -49,28 +55,41 @@ export default async function submitSleepDiaryData(
 
   // If entry is an edit, update existing log document in Firebase
   // Otherwise, create a new document
-  if (logState.logId) {
-    sleepLogsRef
-      .doc(logState.logId)
-      .update(logDataForDoc)
-      .catch(function (error) {
-        console.error('Error pushing sleep log data:', error);
-      });
-  } else {
-    sleepLogsRef.add(logDataForDoc).catch(function (error) {
-      console.error('Error pushing sleep log data:', error);
-    });
-    // Update the app icon's badge
-    if (
-      moment(logDataForDoc.upTime.toDate()).isSameOrAfter(
-        moment().startOf('date'),
-      )
-    ) {
-      Notification.calculateBadgeNumber(userId!, false, true, true).then(
-        (badgeNumber) => {
-          Notification.setBadgeNumber(badgeNumber);
-        },
+  try {
+    if (logState.logId) {
+      await sleepLogsRef.doc(logState.logId).update(logDataForDoc);
+    } else {
+      await sleepLogsRef.add(logDataForDoc);
+      // Update the app icon's badge
+      if (
+        moment(logDataForDoc.upTime.toDate()).isSameOrAfter(
+          moment().startOf('date'),
+        )
+      ) {
+        Notification.calculateBadgeNumber(userId!, false, true, true).then(
+          (badgeNumber) => {
+            Notification.setBadgeNumber(badgeNumber);
+          },
+        );
+      }
+    }
+  } catch (error) {
+    if (__DEV__) {
+      console.error(
+        logState.logId
+          ? 'Error pushing sleep log data:'
+          : 'Error pushing sleep log data:',
+        error,
       );
+    }
+    if (!submitError) {
+      if (logState.logId) {
+        submitError = new Error(
+          `Failed to update the sleep log (ID: ${logState.logId})!`,
+        );
+      } else {
+        submitError = new Error('Failed to add the sleep log!');
+      }
     }
   }
 
@@ -79,9 +98,23 @@ export default async function submitSleepDiaryData(
     typeof userId === 'string'
       ? firestore().collection('users').doc(userId)
       : firestore().collection('users').doc('ERRORDELETEME');
-  userDocRef
-    .update({ userStatus: 'active' })
-    .catch((error) => console.error('Error marking user as active:', error));
+
+  try {
+    await userDocRef.update({ userStatus: 'active' });
+  } catch (error) {
+    if (__DEV__) {
+      console.error('Error marking user as active:', error);
+    }
+    if (!submitError) {
+      submitError = new Error(
+        'Failed to update the user status after submitting a sleep log!',
+      );
+    }
+  }
+
+  if (submitError) {
+    throw submitError;
+  }
 }
 
 /**
