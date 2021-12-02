@@ -6,6 +6,7 @@ import {
   View,
   ViewStyle,
   useWindowDimensions,
+  ActivityIndicator,
 } from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
@@ -74,7 +75,21 @@ const AnswerScreen: React.FC<AnswerScreenProps> = ({
           <WebView
             originWhitelist={['*']}
             source={{ html: faq.answer?.content as string }}
-            style={{ width: dimensions.width * 0.9 }}
+            startInLoadingState
+            style={[
+              styles.webView,
+              {
+                width: dimensions.width * 0.9,
+                backgroundColor: theme.colors.background,
+              },
+            ]}
+            renderLoading={() => (
+              <ActivityIndicator
+                size="large"
+                color={theme.colors.primary}
+                style={styles.webViewLoader}
+              />
+            )}
           />
         )}
       </Container>
@@ -106,6 +121,14 @@ const styles = StyleSheet.create({
   },
   textLabel: {
     marginBottom: 10,
+  },
+  webView: {
+    flex: 1,
+  },
+  webViewLoader: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
   },
 });
 
