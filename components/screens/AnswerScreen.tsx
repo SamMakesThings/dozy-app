@@ -22,14 +22,14 @@ export interface AnswerScreenProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const AnswerScreen: React.FC<AnswerScreenProps> = ({
+export const AnswerScreen: React.FC<AnswerScreenProps> = ({
   faq,
   theme,
   bottomBackButton,
   style,
 }) => {
   const dimensions = useWindowDimensions();
-  console.log('faq: ', faq);
+
   return (
     <ScreenContainer hasSafeArea={true} scrollable={false} style={style}>
       <Container

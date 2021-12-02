@@ -77,7 +77,7 @@ class FAQ {
       });
     } catch (error) {
       if (__DEV__) {
-        console.log('error: ', { error });
+        console.log('Error in increaseFAQViewCount: ', { error });
       }
     }
   }

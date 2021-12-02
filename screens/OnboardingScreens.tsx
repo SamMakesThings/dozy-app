@@ -1106,21 +1106,16 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
 
     if (state.userId) {
       const fetchSupportMessages = () => {
-        fetchChats(firestore(), state.userId!)
-          .then((chats: Array<Chat>) => {
-            // Check that theres >1 entry. If no, set state accordingly
-            if (chats.length === 0) {
-              dispatch({ type: 'SET_CHATS', chats: [] });
-            } else {
-              dispatch({ type: 'SET_CHATS', chats: chats });
-            }
-            console.log('set chats: ', chats);
+        fetchChats(firestore(), state.userId!).then((chats: Array<Chat>) => {
+          // Check that theres >1 entry. If no, set state accordingly
+          if (chats.length === 0) {
+            dispatch({ type: 'SET_CHATS', chats: [] });
+          } else {
+            dispatch({ type: 'SET_CHATS', chats: chats });
+          }
 
-            return;
-          })
-          .catch(function (error) {
-            console.log('Error getting chats:', error);
-          });
+          return;
+        });
       };
 
       chatSubscriber = firestore()
