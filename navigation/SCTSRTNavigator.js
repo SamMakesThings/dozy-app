@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Screens from '../screens/SCTSRTScreens';
 import HeaderProgressBar from '../components/HeaderProgressBar';
 import { TreatmentReviewScreen } from '../screens/TreatmentReviewScreen';
+import FAQScreen from '../screens/FAQScreen';
+import AnswerScreen from '../screens/AnswerScreen';
 
 // Init and define the authentication flow for diary entry
 const SCTSRTStack = createStackNavigator();
@@ -21,6 +23,21 @@ const animConfig = {
 
 // Create a stack screen for each component defined in DiaryEntryScreens
 export default function SCTSRTNavigator() {
+  const header = useCallback(
+    ({ scene, navigation }) => (
+      <HeaderProgressBar
+        progressBarPercent={
+          scene.route.params !== undefined
+            ? scene.route.params.progressBarPercent
+            : null
+        }
+        navigation={navigation}
+        backButtonDisabled
+      />
+    ),
+    [],
+  );
+
   return (
     <SCTSRTStack.Navigator
       initialRouteName="Welcome"
@@ -39,19 +56,7 @@ export default function SCTSRTNavigator() {
               title: screen,
               // Use a custom header component with a progressbar
               // eslint-disable-next-line react/display-name
-              header: ({ scene, navigation }) => {
-                return (
-                  <HeaderProgressBar
-                    progressBarPercent={
-                      scene.route.params !== undefined
-                        ? scene.route.params.progressBarPercent
-                        : null
-                    }
-                    navigation={navigation}
-                    backButtonDisabled
-                  />
-                );
-              },
+              header,
               animationEnabled: true,
               headerTransparent: true,
               transitionSpec: {
@@ -73,6 +78,36 @@ export default function SCTSRTNavigator() {
           },
           animationEnabled: true,
           headerTransparent: true,
+        })}
+      />
+      <SCTSRTStack.Screen
+        name="FAQ"
+        component={FAQScreen}
+        options={() => ({
+          // Use a custom header component with a progressbar
+          // eslint-disable-next-line react/display-name
+          header,
+          animationEnabled: true,
+          headerTransparent: true,
+          transitionSpec: {
+            open: animConfig,
+            close: animConfig,
+          },
+        })}
+      />
+      <SCTSRTStack.Screen
+        name="Answer"
+        component={AnswerScreen}
+        options={() => ({
+          // Use a custom header component with a progressbar
+          // eslint-disable-next-line react/display-name
+          header,
+          animationEnabled: true,
+          headerTransparent: true,
+          transitionSpec: {
+            open: animConfig,
+            close: animConfig,
+          },
         })}
       />
     </SCTSRTStack.Navigator>

@@ -1,11 +1,5 @@
-import React, { useMemo, useCallback, useEffect } from 'react';
-import {
-  useWindowDimensions,
-  Text,
-  StyleSheet,
-  View,
-  Dimensions,
-} from 'react-native';
+import React, { useEffect } from 'react';
+import { useWindowDimensions, Text, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import {
   VictoryChart,
@@ -15,16 +9,12 @@ import {
   VictoryScatter,
 } from 'victory-native';
 import moment from 'moment';
-import { find } from 'lodash';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
-import AnswerScreen from '../components/screens/AnswerScreen';
-import FAQs from '../components/FAQs';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
 import FemaleDoctor from '../assets/images/FemaleDoctor.svg';
-import ThinkingFace from '../assets/images/ThinkingFace.svg';
 import Clipboard from '../assets/images/Clipboard.svg';
 import RaisedHands from '../assets/images/RaisedHands.svg';
 import SCTSRTTreatmentPlan from '../assets/images/SCTSRTTreatmentPlan.svg';
@@ -44,8 +34,6 @@ import { Navigation, SleepLog } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import Feedback from '../utilities/feedback.service';
 import Auth from '../utilities/auth.service';
-import FAQ from '../utilities/faq.service';
-import { FAQData } from '../types/faq';
 
 interface Props {
   navigation: Navigation;
@@ -870,7 +858,7 @@ export const AddressingConcerns: React.FC<Props> = ({ navigation }) => {
             progressBarPercent: 0.88,
           });
         } else {
-          navigation.navigate('FAQList');
+          navigation.navigate('FAQ');
         }
       }}
       titleLabel="What's up?"
@@ -882,68 +870,6 @@ export const AddressingConcerns: React.FC<Props> = ({ navigation }) => {
     >
       <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
-  );
-};
-
-export const FAQList: React.FC<Props> = ({ navigation }) => {
-  const { faqs } = FAQ.useFAQ();
-
-  const questions = useMemo(
-    () => faqs.map((it) => ({ id: it.id, question: it.question })),
-    [faqs],
-  );
-
-  const onQuestionClick = useCallback(
-    (faqId: string) => {
-      navigation.navigate('Answer', { faqId });
-    },
-    [navigation],
-  );
-
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={(val?: string) => {
-        if (val !== "My question isn't here...") {
-          navigation.goBack();
-        } else {
-          navigation.goBack();
-        }
-      }}
-      buttonLabel="Ok, I think that answers my questions"
-      bottomGreyButtonLabel="My question isn't here..."
-      bottomBackButtonLabel="Back"
-      flexibleLayout
-      contentContainerStyle={styles.faqListContentContainer}
-    >
-      <ThinkingFace width={imgSize} height={imgSize} />
-      <FAQs
-        style={styles.faqs}
-        questions={questions}
-        title="What would you like to know?"
-        onQuestionClick={onQuestionClick}
-      />
-    </WizardContentScreen>
-  );
-};
-
-export const Answer: React.FC<
-  Props & { route: { params: { faqId: string } } }
-> = ({ navigation, route }) => {
-  const { faqs, setFAQAsRead } = FAQ.useFAQ();
-
-  const faq = useMemo(
-    () => find(faqs, { id: route.params.faqId }) as FAQData,
-    [faqs, route.params.faqId],
-  );
-
-  useEffect((): void => {
-    setFAQAsRead(route.params.faqId);
-  }, [route.params.faqId, setFAQAsRead]);
-
-  return (
-    <AnswerScreen faq={faq} bottomBackButton={() => navigation.goBack()} />
   );
 };
 
@@ -1085,13 +1011,5 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     alignItems: 'center',
-  },
-  faqListContentContainer: {
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  faqs: {
-    marginTop: scale(40),
-    maxHeight: Dimensions.get('window').height * 0.37,
   },
 });
