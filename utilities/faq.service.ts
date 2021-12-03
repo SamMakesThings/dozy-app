@@ -59,7 +59,19 @@ class FAQ {
     faqsCollection.forEach((doc) => {
       const data = doc.data() as FAQData;
       if (data.id && data.question) {
-        faqs.push(data);
+        faqs.push({
+          ...data,
+          question: {
+            ...data.question,
+            content: (data.question.content || '').replace(/\\n/g, '\n'),
+          },
+          answer: data.answer
+            ? {
+                ...data.answer,
+                content: (data.answer.content || '').replace(/\\n/g, '\n'),
+              }
+            : undefined,
+        });
       }
     });
 
