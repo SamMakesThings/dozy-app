@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FAQs should match the snapshot 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignSelf": "stretch",
+        "marginHorizontal": -6,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "padding": 6,
+        },
+        Object {
+          "fontFamily": "RubikMedium",
+          "fontSize": 47.14285714285714,
+          "lineHeight": 55.714285714285715,
+        },
+        Object {
+          "color": "rgba(219, 237, 243, 1)",
+        },
+      ]
+    }
+  >
+    What would you like to know?
+  </Text>
+  <FlatList
+    ItemSeparatorComponent={[Function]}
+    data={
+      Array [
+        Object {
+          "answer": "answer 1",
+          "question": "question 1",
+        },
+        Object {
+          "answer": "answer 2",
+          "question": "question 2",
+        },
+        Object {
+          "answer": "answer 3",
+          "question": "question 3",
+        },
+        Object {
+          "answer": "answer 4",
+          "question": "question 4",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onEndReachedThreshold={2}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
+    style={
+      Object {
+        "flex": 1,
+        "marginTop": 42.857142857142854,
+      }
+    }
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  />
+</View>
+`;

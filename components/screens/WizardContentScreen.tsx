@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextProps } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+  TextProps,
+} from 'react-native';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import BottomNavButtons from '../BottomNavButtons';
@@ -10,13 +17,15 @@ interface Props {
   flexibleLayout?: boolean;
   textLabel?: string | React.ReactElement<TextProps>;
   titleLabel?: string;
-  onQuestionSubmit: (value?: string) => void;
+  onQuestionSubmit?: (value?: string) => void;
   buttonLabel?: string;
   bottomBackButtonLabel?: string;
   bottomGreyButtonLabel?: string;
   bottomBackButton?: () => void;
   bbbDisabled?: boolean;
   onlyBackButton?: boolean;
+  style?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
 // General use wizard screen layout. Pass images, charts, etc as a child
@@ -26,7 +35,7 @@ const WizardContentScreen: React.FC<Props> = (props) => {
   const { theme } = props;
 
   return (
-    <ScreenContainer hasSafeArea={true} scrollable={false}>
+    <ScreenContainer hasSafeArea={true} scrollable={false} style={props.style}>
       <Container
         style={[
           styles.View_ContentContainer,
@@ -44,43 +53,46 @@ const WizardContentScreen: React.FC<Props> = (props) => {
           style={[
             styles.View_HeroContainer,
             !props.flexibleLayout && styles.heroContainer,
+            props.contentContainerStyle,
           ]}
         >
           {props.children}
         </View>
-        <View
-          style={[
-            styles.View_TextContainer,
-            !props.flexibleLayout && styles.textContainer,
-          ]}
-        >
-          {props.titleLabel && (
+        {!!(props.titleLabel || props.textLabel) && (
+          <View
+            style={[
+              styles.View_TextContainer,
+              !props.flexibleLayout && styles.textContainer,
+            ]}
+          >
+            {!!props.titleLabel && (
+              <Text
+                style={[
+                  styles.Text_Explainer,
+                  theme.typography.headline5,
+                  {
+                    color: theme.colors.secondary,
+                    marginBottom: scale(10),
+                  },
+                ]}
+              >
+                {props.titleLabel}
+              </Text>
+            )}
             <Text
               style={[
                 styles.Text_Explainer,
-                theme.typography.headline5,
+                styles.textLabel,
+                theme.typography.body1,
                 {
                   color: theme.colors.secondary,
-                  marginBottom: scale(10),
                 },
               ]}
             >
-              {props.titleLabel}
+              {props.textLabel}
             </Text>
-          )}
-          <Text
-            style={[
-              styles.Text_Explainer,
-              styles.textLabel,
-              theme.typography.body1,
-              {
-                color: theme.colors.secondary,
-              },
-            ]}
-          >
-            {props.textLabel}
-          </Text>
-        </View>
+          </View>
+        )}
       </Container>
       <BottomNavButtons
         onPress={
