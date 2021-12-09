@@ -19,6 +19,8 @@ import { dozy_theme } from '../config/Themes';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Auth from '../utilities/auth.service';
 import { decodeServerTime, encodeLocalTime } from '../utilities/time';
+import Notification from '../utilities/notification.service';
+import Navigation from '../utilities/navigation.service';
 
 // Create tab nav for switching between entries and stats
 const Tab = createMaterialTopTabNavigator();
@@ -84,7 +86,17 @@ function DiaryScreen() {
       });
     };
 
+    Navigation.setIsInTabNavigator(true);
+
     maybeUpdateReminderTimezone();
+
+    setTimeout(() => {
+      if (Notification.notificationTray.length) {
+        Notification.processNotification(Notification.notificationTray[0]);
+      }
+    }, 500);
+
+    return () => Navigation.setIsInTabNavigator(false);
   }, []);
 
   return (
