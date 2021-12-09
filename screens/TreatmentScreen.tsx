@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,7 @@ import { ScreenContainer, Icon } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
+import moment from 'moment';
 import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
 import TasksCard from '../components/TasksCard';
@@ -28,6 +29,7 @@ import GLOBAL from '../utilities/global';
 import Feedback from '../utilities/feedback.service';
 import submitFeedback from '../utilities/submitFeedback';
 import Auth from '../utilities/auth.service';
+import Notification from '../utilities/notification.service';
 import { Navigation } from '../types/custom';
 
 export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
@@ -85,9 +87,18 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
       parseFloat((modulesCompleted / treatmentPlan.length).toFixed(2)) * 1; // Parsefloat added to make TS happy
 
     // Strip time from next checkin datetime to determine whether to show checkin button
-    const nextCheckinDate =
-      state.userData?.currentTreatments.nextCheckinDatetime.toDate();
-    nextCheckinDate.setHours(0);
+    const isNeededCheckin = moment(
+      state.userData?.currentTreatments.nextCheckinDatetime.toDate(),
+    )
+      .startOf('date')
+      .isSameOrBefore(new Date());
+
+    // Maybe remove CHECKIN_REMINDER push notification
+    useEffect(() => {
+      if (!isNeededCheckin) {
+        Notification.removeNotificationsFromTrayByType('CHECKIN_REMINDER');
+      }
+    }, [isNeededCheckin]);
 
     return (
       <ScreenContainer hasSafeArea={true} scrollable={true} style={styles.Root}>
@@ -98,7 +109,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             size={scale(80)}
             color={theme.colors.primary}
           />
-          {nextCheckinDate < new Date() &&
+          {isNeededCheckin &&
             treatments[state.userData.nextCheckin.treatmentModule].ready && (
               <IconTitleSubtitleButton
                 titleLabel="Check in now!"
