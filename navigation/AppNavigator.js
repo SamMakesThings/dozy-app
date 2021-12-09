@@ -25,6 +25,7 @@ import ABTesting from '../utilities/abTesting.service';
 import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
 import { getCoachAssignedToUser } from '../utilities/coach';
+import Navigation from '../utilities/navigation.service';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -111,9 +112,13 @@ InitialAuthNavigator.propTypes = {
 
 const AppNavigator = () => {
   const { state, dispatch } = Auth.useAuth();
-  const { navigationRef, onStateChange } = Analytics.useAnalytics(state.userId);
+  Analytics.useAnalytics(state.userId);
   Crashlytics.useCrashlytics(state.userId);
   Notification.useNotificationService(state.userId);
+  const { onStateChange } = Navigation.useNavigationService(
+    [Analytics.logScreenChange],
+    [Analytics.logScreenChange],
+  );
   const { initABTesting } = ABTesting.useABTestingService();
 
   React.useEffect(() => {
@@ -164,7 +169,7 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer
-      ref={navigationRef}
+      ref={Navigation.rootNavigator}
       onStateChange={onStateChange}
       theme={DozyNavTheme}
     >
