@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -45,7 +45,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   }
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       // If LiveChat has a msg marked as unread, mark it as read in Firebase
       if (state.userData?.livechatUnreadMsg) {
         firestore().collection('users').doc(state.userId).update({
@@ -91,8 +91,10 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   }
 
   // Set chats once upon loading
-  React.useEffect(() => {
+  useEffect(() => {
     setChats();
+    // Maybe remove CHAT_MESSAGE push notification
+    Notification.removeNotificationsFromTrayByType('CHAT_MESSAGE');
   }, []);
 
   const theme = dozy_theme;
