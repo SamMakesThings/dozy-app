@@ -87,7 +87,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
       parseFloat((modulesCompleted / treatmentPlan.length).toFixed(2)) * 1; // Parsefloat added to make TS happy
 
     // Strip time from next checkin datetime to determine whether to show checkin button
-    const isNeededCheckin = moment(
+    const isCheckinDue = moment(
       state.userData?.currentTreatments.nextCheckinDatetime.toDate(),
     )
       .startOf('date')
@@ -95,10 +95,10 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
 
     // Maybe remove CHECKIN_REMINDER push notification
     useEffect(() => {
-      if (!isNeededCheckin) {
+      if (!isCheckinDue) {
         Notification.removeNotificationsFromTrayByType('CHECKIN_REMINDER');
       }
-    }, [isNeededCheckin]);
+    }, [isCheckinDue]);
 
     return (
       <ScreenContainer hasSafeArea={true} scrollable={true} style={styles.Root}>
@@ -109,7 +109,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             size={scale(80)}
             color={theme.colors.primary}
           />
-          {isNeededCheckin &&
+          {isCheckinDue &&
             treatments[state.userData.nextCheckin.treatmentModule].ready && (
               <IconTitleSubtitleButton
                 titleLabel="Check in now!"
