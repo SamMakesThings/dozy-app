@@ -1,11 +1,7 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
-import {
-  withTheme,
-  ScreenContainer,
-  Container,
-  DatePicker,
-} from '@draftbit/ui';
+import { withTheme, Container, DatePicker } from '@draftbit/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavButtons from '../BottomNavButtons';
 import RichText from '../RichText';
 import { Theme } from '../../types/theme';
@@ -94,10 +90,11 @@ const DateTimePickerScreen = (
     screenState === States.Invalid || screenState === States.Warning;
 
   return (
-    <ScreenContainer
-      style={{ backgroundColor: theme.colors.background }}
-      hasSafeArea
-      scrollable={false}
+    <SafeAreaView
+      style={[
+        styles.SafeAreaView_Container,
+        { backgroundColor: theme.colors.background },
+      ]}
     >
       <Container
         style={styles.View_HeaderContainer}
@@ -185,23 +182,26 @@ const DateTimePickerScreen = (
             />
           </View>
         ) : (
-          <DatePicker
-            style={styles.DatePicker}
-            mode={props.mode as 'time' | 'datetime' | 'date' | undefined}
-            type="underline"
-            error={displayErrorMsg}
-            label={props.inputLabel}
-            disabled={false}
-            leftIconMode="inset"
-            format={
-              props.mode === 'datetime' ? 'dddd, mmmm dS, h:MM TT' : 'h:MM TT'
-            }
-            date={selectedTime}
-            onDateChange={(time: Date) => {
-              setSelectedTime(time);
-              checkDataValidity(time);
-            }}
-          />
+          <View style={styles.View_DatePicker_Container}>
+            <DatePicker
+              style={styles.DatePicker}
+              mode={props.mode as 'time' | 'datetime' | 'date' | undefined}
+              type="underline"
+              error={displayErrorMsg}
+              label={props.inputLabel}
+              disabled={false}
+              leftIconMode="inset"
+              format={
+                props.mode === 'datetime' ? 'dddd, mmmm dS, h:MM TT' : 'h:MM TT'
+              }
+              hitSlop={{ left: 60, top: 40, right: 60, bottom: 40 }}
+              date={selectedTime}
+              onDateChange={(time: Date) => {
+                setSelectedTime(time);
+                checkDataValidity(time);
+              }}
+            />
+          </View>
         )}
       </Container>
       <BottomNavButtons
@@ -218,15 +218,22 @@ const DateTimePickerScreen = (
         buttonLabel={props.buttonLabel}
         disabled={props.nextDisabled || screenState === States.Invalid}
       />
-    </ScreenContainer>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  DatePicker: {
+  SafeAreaView_Container: {
+    flex: 1,
+  },
+  View_DatePicker_Container: {
     flex: 2,
+    marginTop: -100,
+  },
+  DatePicker: {
     alignItems: 'center',
-    marginTop: -60,
+    maxHeight: 190,
+    paddingVertical: 40,
   },
   DatePickerHalf: {
     margin: 15,
