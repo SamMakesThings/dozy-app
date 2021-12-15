@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   LayoutAnimation,
 } from 'react-native';
-import { ScreenContainer, Icon } from '@draftbit/ui';
+import { ScreenContainer } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
 import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
@@ -31,6 +31,7 @@ import submitFeedback from '../utilities/submitFeedback';
 import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
 import { Navigation } from '../types/custom';
+import Clipboard from '../assets/images/Clipboard.svg';
 
 export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
@@ -103,12 +104,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
     return (
       <ScreenContainer hasSafeArea={true} scrollable={true} style={styles.Root}>
         <View style={styles.View_ContentContainer}>
-          <Icon
-            style={styles.Icon_Clipboard}
-            name="Ionicons/ios-clipboard"
-            size={scale(80)}
-            color={theme.colors.primary}
-          />
+          <Clipboard style={styles.Icon_Clipboard} width={159} height={159} />
           {isCheckinDue &&
             treatments[state.userData.nextCheckin.treatmentModule].ready && (
               <IconTitleSubtitleButton
