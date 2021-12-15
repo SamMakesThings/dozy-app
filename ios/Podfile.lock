@@ -704,7 +704,7 @@ PODS:
     - Firebase/RemoteConfig (= 8.1.1)
     - React-Core
     - RNFBApp
-  - RNFBStorage (12.9.1):
+  - RNFBStorage (12.1.0):
     - Firebase/Storage (= 8.1.1)
     - React-Core
     - RNFBApp
@@ -1114,7 +1114,7 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: 963a2757f6a52e37ae50adab5832162a7d81f98f
   RNFBFirestore: b96f258a3f5d6a901ff96cd64306e3a2d221ad08
   RNFBRemoteConfig: c8546356d2879524e712022629a8ce981a7da099
-  RNFBStorage: 6b775f59b7036070e212612a92e60463f3b9a36c
+  RNFBStorage: c326632c37e247af7a0986ad3d9c12d682e90962
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: e64616a4080cf7d83f4b292fad82d174587444e2
   RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
