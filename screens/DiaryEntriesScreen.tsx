@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -16,6 +16,8 @@ import firestore, {
 import { Entypo } from '@expo/vector-icons';
 import Intl from 'intl';
 import { scale } from 'react-native-size-matters';
+import { get } from 'lodash';
+import moment from 'moment';
 import SleepLogEntryCard from '../components/SleepLogEntryCard';
 import { BaselineProgressCard } from '../components/BaselineProgressCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
@@ -27,6 +29,7 @@ import fetchTasks from '../utilities/fetchTasks';
 import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
+import Notification from '../utilities/notification.service';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -182,7 +185,7 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
   const { state, dispatch } = Auth.useAuth();
 
   // Set local state for loading/not loading
-  const [logsLoading, setLogsLoading] = React.useState(true);
+  const [logsLoading, setLogsLoading] = useState(true);
 
   let colRef: FirebaseFirestoreTypes.CollectionReference;
   let db: FirebaseFirestoreTypes.Module;
@@ -243,9 +246,20 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
   }, [props.navigation]);
 
   // Set sleep logs once upon loading
-  React.useEffect(() => {
+  useEffect(() => {
     setSleepLogs();
   }, []);
+
+  // Maybe remove DAILY_LOG push notification
+  const loggedToday =
+    get(state.sleepLogs, 'length', 0) > 0 &&
+    moment(state.sleepLogs[0].upTime.toDate()).isSame(new Date(), 'day');
+
+  useEffect(() => {
+    if (loggedToday) {
+      Notification.removeNotificationsFromTrayByType('DAILY_LOG');
+    }
+  }, [loggedToday]);
 
   return (
     <ScreenContainer
