@@ -22,6 +22,8 @@ export default class Notification {
 
   static treatmentModule: string | undefined;
 
+  static isCheckinDue = false;
+
   static useNotificationService(userId?: string): void {
     const notificationEnabledRef = useRef(false);
     const notificationReceivedListener = useRef<any>(null);
@@ -84,7 +86,16 @@ export default class Notification {
     useEffect(() => {
       Notification.treatmentModule =
         state.userData.nextCheckin?.treatmentModule;
-    }, [userId, state.userData.nextCheckin?.treatmentModule]);
+      Notification.isCheckinDue =
+        moment(state.userData?.currentTreatments.nextCheckinDatetime.toDate())
+          .startOf('date')
+          .isSameOrBefore(new Date()) && state.sleepLogs.length >= 7;
+    }, [
+      userId,
+      state.userData.nextCheckin?.treatmentModule,
+      state.userData?.currentTreatments.nextCheckinDatetime,
+      state.sleepLogs,
+    ]);
   }
 
   static async getExpoPushToken(): Promise<string | undefined> {
@@ -494,7 +505,7 @@ export default class Notification {
       notificationData.type === 'CHECKIN_REMINDER' &&
       Notification.canProcessCheckinReminderNotification()
     ) {
-      if (Notification.treatmentModule) {
+      if (Notification.treatmentModule && Notification.isCheckinDue) {
         Navigation.push(Notification.treatmentModule);
       }
     } else if (

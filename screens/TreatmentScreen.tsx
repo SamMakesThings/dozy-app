@@ -89,11 +89,10 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
       parseFloat((modulesCompleted / treatmentPlan.length).toFixed(2)) * 1; // Parsefloat added to make TS happy
 
     // Strip time from next checkin datetime to determine whether to show checkin button
-    const isCheckinDue = moment(
-      state.userData?.currentTreatments.nextCheckinDatetime.toDate(),
-    )
-      .startOf('date')
-      .isSameOrBefore(new Date());
+    const isCheckinDue =
+      moment(state.userData?.currentTreatments.nextCheckinDatetime.toDate())
+        .startOf('date')
+        .isSameOrBefore(new Date()) && state.sleepLogs.length >= 7;
 
     // Maybe remove CHECKIN_REMINDER push notification
     useEffect(() => {
