@@ -85,15 +85,15 @@ export default class Notification {
 
     useEffect(() => {
       Notification.treatmentModule =
-        state.userData.nextCheckin?.treatmentModule;
+        state.userData?.nextCheckin?.treatmentModule;
       Notification.isCheckinDue =
-        moment(state.userData?.currentTreatments.nextCheckinDatetime.toDate())
+        moment(state.userData?.currentTreatments?.nextCheckinDatetime.toDate())
           .startOf('date')
           .isSameOrBefore(new Date()) && state.sleepLogs.length >= 7;
     }, [
       userId,
-      state.userData.nextCheckin?.treatmentModule,
-      state.userData?.currentTreatments.nextCheckinDatetime,
+      state.userData?.nextCheckin?.treatmentModule,
+      state.userData?.currentTreatments?.nextCheckinDatetime,
       state.sleepLogs,
     ]);
   }
