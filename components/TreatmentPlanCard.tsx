@@ -80,7 +80,9 @@ export const TreatmentPlanCard: React.FC<Props> = (props) => {
               />
             </View>
             <HighlightedText
-              label={props.completionPercentProgress * 100 + '% done'}
+              label={
+                Math.round(props.completionPercentProgress * 100) + '% done'
+              }
               textColor={theme.colors.primary}
               bgColor={theme.colors.secondary}
               style={styles.highlightedText}
