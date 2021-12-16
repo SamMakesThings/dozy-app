@@ -71,12 +71,14 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
     const lastCheckinTime = state.userData.currentTreatments.lastCheckinDatetime
       .toDate()
       .getTime();
-    let progressPercent = ~~(
-      (100 *
-        (nextCheckinTime - lastCheckinTime - (nextCheckinTime - Date.now()))) /
-      (nextCheckinTime - lastCheckinTime)
-    );
-    progressPercent = progressPercent > 100 ? 100 : progressPercent;
+    let progressPercent = ~~(nextCheckinTime > lastCheckinTime
+      ? (100 *
+          (nextCheckinTime -
+            lastCheckinTime -
+            (nextCheckinTime - Date.now()))) /
+        (nextCheckinTime - lastCheckinTime)
+      : 100);
+    progressPercent = Math.min(100, progressPercent);
 
     // Estimate treatment completion date & % progress based on treatmentPlan
     // const estCompletionDate = treatmentPlan[treatmentPlan.length - 1].estDate;
