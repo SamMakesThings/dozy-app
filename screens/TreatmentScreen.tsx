@@ -5,7 +5,6 @@ import {
   View,
   ActivityIndicator,
   Platform,
-  TouchableOpacity,
   LayoutAnimation,
 } from 'react-native';
 import { ScreenContainer, Icon } from '@draftbit/ui';
@@ -15,7 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import { LinkCard } from '../components/LinkCard';
 import CurrentTreatmentsCard from '../components/CurrentTreatmentsCard';
-import TasksCard from '../components/TasksCard';
+// import TasksCard from '../components/TasksCard';
 import { CardContainer } from '../components/CardContainer';
 import { TargetSleepScheduleCard } from '../components/TargetSleepScheduleCard';
 import IconTitleSubtitleButton from '../components/IconTitleSubtitleButton';
@@ -159,12 +158,12 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             }}
           />
           {/* Add new todo card */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             disabled={currentModule !== 'BSL'}
             onPress={() => navigation.navigate('SleepDiaryEntry')}
           >
             <TasksCard todosArray={treatments[currentModule].todos} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {
             // Display target sleep schedule card if defined in backend
             state.userData.currentTreatments.targetBedTime && (
