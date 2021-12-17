@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   },
   container: { flex: 1 },
   contentContainer: {
-    flex: 1,
+    flexGrow: 1,
     paddingBottom: scale(15),
   },
   emptyLogContainer: {
