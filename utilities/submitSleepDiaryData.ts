@@ -150,22 +150,6 @@ export function normalizeSleepLog(
     newLogState.wakeTime = newLogState.bedTime;
   }
 
-  // If log isn't for today, adjust all date values accordingly
-  const dateToCompare = newLogState.logId ? newLogState.upTime : new Date();
-  let daysDiff = moment(newLogState.logDate).diff(dateToCompare, 'days');
-  daysDiff = newLogState.logDate > dateToCompare ? daysDiff + 1 : daysDiff; // Add 1 if set date is larger than today. To make sure it catches diff accurately
-  if (daysDiff !== 0) {
-    newLogState.bedTime = moment(newLogState.bedTime)
-      .add(daysDiff, 'days')
-      .toDate();
-    newLogState.wakeTime = moment(newLogState.wakeTime)
-      .add(daysDiff, 'days')
-      .toDate();
-    newLogState.upTime = moment(newLogState.upTime)
-      .add(daysDiff, 'days')
-      .toDate();
-  }
-
   // calculate total time in bed, time between waking & getting up, and time awake in bed
   const minsInBedTotal = Math.floor(
     (newLogState.upTime.getTime() - newLogState.bedTime.getTime()) / 1000 / 60,
