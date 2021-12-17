@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import PropTypes from 'prop-types';
@@ -146,7 +146,6 @@ const AppNavigator = () => {
         .then((expoPushToken) => {
           if (expoPushToken) {
             Notification.updateExpoPushToken(expoPushToken, state.userId);
-            Alert.alert('expoPushToken: ', expoPushToken);
           }
         })
         .catch((error) => {
