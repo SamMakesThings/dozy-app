@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "713165282203-vhsnv4ghgloa2kbn3vkucor8sn25asva.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dozyhealth.dozy",
+            "certificate_hash": "d83e70ee220f023a6b0e6e1d29a6ab804a701d60"
+          }
+        },
+        {
           "client_id": "713165282203-jjc54if1n7krahda9gvkio0siqltq57t.apps.googleusercontent.com",
           "client_type": 3
         }
