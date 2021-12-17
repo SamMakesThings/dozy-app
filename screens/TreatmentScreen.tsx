@@ -316,9 +316,8 @@ const styles = StyleSheet.create({
     marginBottom: scale(12),
   },
   Icon_Clipboard: {
-    alignSelf: 'center',
     margin: scale(20),
-    marginBottom: scale(40),
+    alignSelf: 'center',
   },
   webView: {
     width: '100%',
