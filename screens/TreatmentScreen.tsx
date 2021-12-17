@@ -104,7 +104,11 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
     return (
       <ScreenContainer hasSafeArea={true} scrollable={true} style={styles.Root}>
         <View style={styles.View_ContentContainer}>
-          <Clipboard style={styles.Icon_Clipboard} width={159} height={159} />
+          <Clipboard
+            style={styles.Icon_Clipboard}
+            width={scale(80)}
+            height={scale(80)}
+          />
           {isCheckinDue &&
             treatments[state.userData.nextCheckin.treatmentModule].ready && (
               <IconTitleSubtitleButton
@@ -312,8 +316,9 @@ const styles = StyleSheet.create({
     marginBottom: scale(12),
   },
   Icon_Clipboard: {
-    margin: scale(20),
     alignSelf: 'center',
+    margin: scale(20),
+    marginBottom: scale(40),
   },
   webView: {
     width: '100%',
