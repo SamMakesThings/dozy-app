@@ -41,7 +41,8 @@
         }
       },
       "permissions": [],
-      "googleServicesFile": "./android/app/google-services.json"
+      "googleServicesFile": "./android/app/google-services.json",
+      "useNextNotificationsApi": true
     },
     "packagerOpts": {
       "config": "metro.config.js",
