@@ -76,7 +76,7 @@
         {
           "mode": "production",
           "icon": "./assets/images/android-notification-icon.png",
-          "color": "#00818A"
+          "color": "#ff0000"
         }
       ]
     ]
