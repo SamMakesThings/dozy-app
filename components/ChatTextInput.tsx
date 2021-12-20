@@ -15,30 +15,42 @@ import { dozy_theme } from '../config/Themes';
 
 export interface ChatTextInputProps {
   viewStyle?: StyleProp<ViewStyle>;
+  defaultMessage?: string;
   onSend: (value: string) => void;
 }
 
-export const ChatTextInput: React.FC<ChatTextInputProps> = (props) => {
+export const ChatTextInput: React.FC<ChatTextInputProps> = ({
+  viewStyle,
+  defaultMessage = '',
+  onSend,
+}) => {
   const theme = dozy_theme;
 
   // Set up local state for chat message
-  const [typedMsg, setTypedMsg] = React.useState('');
+  const [typedMsg, setTypedMsg] = React.useState(defaultMessage);
+  const [isEditStarted, setEditStarted] = React.useState(false);
 
-  const setTrimmedMessage = useCallback((msg: string): void => {
-    if (msg[msg.length - 1] === '\n') {
-      setTypedMsg(msg.slice(0, msg.length - 1));
-    } else {
-      setTypedMsg(msg);
-    }
-  }, []);
+  const onChangeText = useCallback(
+    (msg: string): void => {
+      if (!isEditStarted && msg && msg !== '\n') {
+        setEditStarted(true);
+      }
+      if (msg[msg.length - 1] === '\n') {
+        setTypedMsg(msg.slice(0, msg.length - 1));
+      } else {
+        setTypedMsg(msg);
+      }
+    },
+    [isEditStarted],
+  );
 
   return (
-    <View style={[styles.View_ChatInput, props.viewStyle]}>
+    <View style={[styles.View_ChatInput, viewStyle]}>
       <TextInput
         style={{ ...theme.typography.body2, ...styles.TextInput }}
         placeholder={'Ask a question...'}
         value={typedMsg}
-        onChangeText={setTrimmedMessage}
+        onChangeText={onChangeText}
         multiline
         returnKeyType={'done'}
         onKeyPress={(event) => {
@@ -46,10 +58,20 @@ export const ChatTextInput: React.FC<ChatTextInputProps> = (props) => {
             Keyboard.dismiss();
           }
         }}
+        onFocus={() => {
+          if (!isEditStarted) {
+            setTypedMsg('');
+          }
+        }}
+        onBlur={() => {
+          if (!isEditStarted) {
+            setTypedMsg(defaultMessage);
+          }
+        }}
       />
       <TouchableOpacity
         onPress={() => {
-          props.onSend(typedMsg);
+          onSend(typedMsg);
           setTypedMsg('');
         }}
       >

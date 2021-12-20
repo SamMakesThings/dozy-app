@@ -1263,6 +1263,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
             }
           }}
           viewStyle={!!messageSent && styles.none}
+          defaultMessage="To feel more rested"
         />
       </KeyboardAvoidingView>
     </WizardContentScreen>
