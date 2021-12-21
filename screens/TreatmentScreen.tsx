@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import {
   StyleSheet,
   Text,
@@ -71,14 +71,33 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
     const lastCheckinTime = state.userData.currentTreatments.lastCheckinDatetime
       .toDate()
       .getTime();
-    let progressPercent = ~~(nextCheckinTime > lastCheckinTime
-      ? (100 *
-          (nextCheckinTime -
-            lastCheckinTime -
-            (nextCheckinTime - Date.now()))) /
-        (nextCheckinTime - lastCheckinTime)
-      : 100);
+    const countOfLogsInCurrentCheckin = state.sleepLogs.filter((it) =>
+      moment(lastCheckinTime).isSameOrBefore(it.upTime.toDate()),
+    ).length;
+    let progressPercent =
+      currentModule === 'BSL'
+        ? Math.round((countOfLogsInCurrentCheckin / 7) * 100)
+        : ~~(nextCheckinTime > lastCheckinTime
+            ? (100 *
+                (nextCheckinTime -
+                  lastCheckinTime -
+                  (nextCheckinTime - Date.now()))) /
+              (nextCheckinTime - lastCheckinTime)
+            : 100);
     progressPercent = Math.min(100, progressPercent);
+
+    const todos = useMemo(
+      () =>
+        treatments[currentModule].todos.map((it) => ({
+          name: it,
+          completed:
+            it === 'Record 7 nights of sleep in your sleep diary' &&
+            countOfLogsInCurrentCheckin >= 7
+              ? true
+              : false,
+        })),
+      [currentModule, countOfLogsInCurrentCheckin],
+    );
 
     // Estimate treatment completion date & % progress based on treatmentPlan
     // const estCompletionDate = treatmentPlan[treatmentPlan.length - 1].estDate;
@@ -145,7 +164,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             linkTitle={treatments[currentModule].title}
             linkSubtitle={treatments[currentModule].subTitle}
             linkImage={treatments[currentModule].image}
-            todosArray={treatments[currentModule].todos}
+            todosArray={todos}
             onPress={() => {
               if (currentModule == 'BSL') {
                 // If user is collecting baseline, go to log entry instead of FAQ
