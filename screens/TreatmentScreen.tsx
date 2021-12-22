@@ -88,10 +88,10 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
 
     const todos = useMemo(
       () =>
-        treatments[currentModule].todos.map((it) => ({
-          name: it,
+        treatments[currentModule].todos.map((task) => ({
+          name: task,
           completed:
-            it === 'Record 7 nights of sleep in your sleep diary' &&
+            task === 'Record 7 nights of sleep in your sleep diary' &&
             countOfLogsInCurrentCheckin >= 7
               ? true
               : false,
