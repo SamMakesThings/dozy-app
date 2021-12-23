@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -8,14 +8,14 @@ import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 export interface TodoItemProps {
   label: string;
-  completed: boolean;
+  completed?: boolean;
   disabled?: boolean;
 }
 
 export const TodoItem: React.FC<TodoItemProps> = (props) => {
   const theme = dozy_theme;
 
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(props.completed);
 
   const onPress = useCallback((): void => {
     setChecked(!checked);
@@ -23,6 +23,10 @@ export const TodoItem: React.FC<TodoItemProps> = (props) => {
       completed: !checked,
     });
   }, [checked]);
+
+  useEffect(() => {
+    setChecked(props.completed);
+  }, [props.completed]);
 
   return (
     <TouchableOpacity
