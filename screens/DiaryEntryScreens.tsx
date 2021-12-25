@@ -223,7 +223,7 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
               };
         }}
         mode="time"
-        questionLabel="What time did you go to bed last night?"
+        questionLabel="What time did you go to bed?"
         inputLabel="Bedtime"
         nextDisabled={!isValidDate}
       />
@@ -282,7 +282,7 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
 export const MinsToFallAsleepInput: React.FC<Props> = ({ navigation }) => {
   const subTitle = useMemo(
     (): RichTextData => [
-      { text: "Or, if you couldn't sleep at all last night, " },
+      { text: "Or, if you couldn't sleep at all, " },
       {
         text: 'click here',
         onPress: () => {
@@ -702,7 +702,7 @@ export const SleepRatingInput: React.FC<Props> = ({ navigation }) => {
         { label: '4', value: 4 },
         { label: '5', value: 5 },
       ]}
-      questionLabel="On a scale of 1-5, how would you rate the quality of your sleep last night?"
+      questionLabel="On a scale of 1-5, how would you rate the quality of your sleep?"
       questionSubtitle="Where 1 is terrible and 5 is great"
     />
   );
@@ -768,7 +768,7 @@ export const TagsNotesInput: React.FC<Props> = ({ navigation }) => {
         // Navigate back to the main app
         navigation.navigate('App');
       }}
-      questionLabel="What, if anything, disturbed your sleep last night?"
+      questionLabel="What, if anything, disturbed your sleep?"
       inputLabel="Anything else of note?"
     />
   );
