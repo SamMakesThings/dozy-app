@@ -2,7 +2,8 @@
   "build": {
     "base": {
       "ios": {
-        "image": "macos-big-sur-11.4-xcode-12.5"
+        "image": "macos-big-sur-11.4-xcode-12.5",
+        "cocoapods": "1.10.2"
       }
     },
     "special:": {
@@ -33,7 +34,7 @@
     },
     "alpha": {
       "extends": "base",
-      "releaseChannel": "bugfix-chat-conversation-issue",
+      "releaseChannel": "alpha-0",
       "distribution": "internal",
       "android": {
         "gradleCommand": ":app:assembleRelease"
@@ -43,5 +44,8 @@
         "credentialsSource": "local"
       }
     }
+  },
+  "cli": {
+    "version": ">= 0.42.4"
   }
 }
