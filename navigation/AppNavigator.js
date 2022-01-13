@@ -26,6 +26,7 @@ import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
 import { getCoachAssignedToUser } from '../utilities/coach';
 import Navigation from '../utilities/navigation.service';
+import HealthDevice from '../utilities/healthDevice.service';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -120,6 +121,9 @@ const AppNavigator = () => {
     [Analytics.logScreenChange],
   );
   const { initABTesting } = ABTesting.useABTestingService();
+  const healthDeviceContextValue = HealthDevice.useHealthDeviceService(
+    state.userId,
+  );
 
   React.useEffect(() => {
     // Update user data from storage and Firebase, update state w/dispatch
@@ -168,18 +172,20 @@ const AppNavigator = () => {
   };
 
   return (
-    <NavigationContainer
-      ref={Navigation.rootNavigator}
-      onStateChange={onStateChange}
-      theme={DozyNavTheme}
-    >
-      <View style={styles.container}>
-        <InitialAuthNavigator
-          userId={state.userId}
-          onboardingComplete={state.onboardingComplete}
-        />
-      </View>
-    </NavigationContainer>
+    <HealthDevice.Context.Provider value={healthDeviceContextValue}>
+      <NavigationContainer
+        ref={Navigation.rootNavigator}
+        onStateChange={onStateChange}
+        theme={DozyNavTheme}
+      >
+        <View style={styles.container}>
+          <InitialAuthNavigator
+            userId={state.userId}
+            onboardingComplete={state.onboardingComplete}
+          />
+        </View>
+      </NavigationContainer>
+    </HealthDevice.Context.Provider>
   );
 };
 
