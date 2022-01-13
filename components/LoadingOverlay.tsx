@@ -4,10 +4,14 @@ import { dozy_theme } from '../config/Themes';
 
 export interface LoadingOverlayProps {
   title?: string;
+  opacity?: number;
 }
 
-const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ title }) => (
-  <View style={styles.container}>
+const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
+  title,
+  opacity = 1,
+}) => (
+  <View style={[styles.container, Number.isFinite(opacity) && { opacity }]}>
     <ActivityIndicator size="large" color={dozy_theme.colors.primary} />
     {!!title && <Text style={styles.title}>{title}</Text>}
   </View>
