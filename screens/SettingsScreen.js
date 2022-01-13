@@ -1,5 +1,17 @@
-import React, { useCallback, useRef } from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, {
+  useCallback,
+  useRef,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {
   withTheme,
   ScreenContainer,
@@ -14,19 +26,28 @@ import * as SecureStore from 'expo-secure-store';
 import { scale } from 'react-native-size-matters';
 import ExpoConstants from 'expo-constants';
 import { take } from 'lodash';
+import LoadingOverlay from '../components/LoadingOverlay';
 import { dozy_theme } from '../config/Themes';
 import Analytics from '../utilities/analytics.service';
 import { encodeLocalTime, decodeServerTime } from '../utilities/time';
 import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
+import HealthDevice from '../utilities/healthDevice.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function SettingsScreen() {
   // Pass along the signOut function from the context provider
   const { state, signOut } = Auth.useAuth();
+  const { devices } = HealthDevice.useHealthDevice();
   const logReminderIdRef = useRef();
   const theme = dozy_theme;
+  const [isTogglingOuraConnection, setTogglingOuraConnection] = useState(false);
+
+  const isOuraConnected = useMemo(
+    () => HealthDevice.isDeviceConnected(devices, 'oura'),
+    [devices],
+  );
 
   // Add function to update notification in Firebase based on local state
   const updateFbLogNotification = useCallback(
@@ -87,8 +108,28 @@ export function SettingsScreen() {
     }
   }, [state.userId]);
 
+  const toggleOuraConnection = useCallback(async () => {
+    if (isTogglingOuraConnection) {
+      return;
+    }
+
+    setTogglingOuraConnection(true);
+
+    try {
+      if (isOuraConnected) {
+        await HealthDevice.disconnectFromTerra(state.userId, 'oura');
+      } else {
+        await HealthDevice.connectToTerra(state.userId, 'oura');
+      }
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
+
+    setTogglingOuraConnection(false);
+  }, [isTogglingOuraConnection, isOuraConnected]);
+
   // Make sure the screen uses updated state once it loads for the first time.
-  React.useEffect(() => {
+  useEffect(() => {
     // Add function to pull existing settings from Firebase, update state with them
     const getSettings = async () => {
       const notifFbQuery = firestore()
@@ -230,6 +271,30 @@ export function SettingsScreen() {
           </Container>
         </Touchable>
         <Container
+          style={[styles.Container_ni, styles.Container_oura]}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
+          <Text
+            style={[
+              styles.Text_nv,
+              theme.typography.smallLabel,
+              {
+                color: theme.colors.strong,
+              },
+            ]}
+          >
+            Connect to Oura
+          </Text>
+          <Switch
+            style={styles.Switch_n9}
+            color={theme.colors.primary}
+            value={isOuraConnected}
+            onValueChange={toggleOuraConnection}
+            disabled={isTogglingOuraConnection}
+          />
+        </Container>
+        <Container
           style={styles.Container_ni}
           elevation={0}
           useThemeGutterPadding={true}
@@ -298,6 +363,7 @@ export function SettingsScreen() {
           />
         </Container>
       </Container>
+      {isTogglingOuraConnection && <LoadingOverlay opacity={0.5} />}
     </ScreenContainer>
   );
 }
@@ -309,6 +375,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingBottom: 15,
+  },
+  Container_oura: {
+    paddingBottom: 30,
   },
   Container_ni: {
     minWidth: 0,
