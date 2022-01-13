@@ -129,7 +129,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             height={scale(80)}
           />
           {isCheckinDue &&
-            treatments[state.userData.nextCheckin.treatmentModule].ready && (
+            treatments[state.userData.nextCheckin.treatmentModule]?.ready && (
               <IconTitleSubtitleButton
                 titleLabel="Check in now!"
                 subtitleLabel="Press here to begin the next module"
