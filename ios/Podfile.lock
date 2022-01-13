@@ -421,6 +421,9 @@ PODS:
   - Firebase/Firestore (8.10.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 8.10.0)
+  - Firebase/Functions (8.10.0):
+    - Firebase/CoreOnly
+    - FirebaseFunctions (~> 8.10.0)
   - Firebase/RemoteConfig (8.10.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 8.10.0)
@@ -472,6 +475,9 @@ PODS:
     - "gRPC-C++ (~> 1.28.0)"
     - leveldb-library (~> 1.22)
     - nanopb (~> 2.30908.0)
+  - FirebaseFunctions (8.10.0):
+    - FirebaseCore (~> 8.0)
+    - GTMSessionFetcher/Core (~> 1.5)
   - FirebaseInstallations (8.10.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.6)
@@ -819,6 +825,10 @@ PODS:
     - Firebase/Firestore (= 8.10.0)
     - React-Core
     - RNFBApp
+  - RNFBFunctions (14.1.0):
+    - Firebase/Functions (= 8.10.0)
+    - React-Core
+    - RNFBApp
   - RNFBRemoteConfig (14.1.0):
     - Firebase/RemoteConfig (= 8.10.0)
     - React-Core
@@ -831,6 +841,8 @@ PODS:
     - React-Core
   - RNGoogleSignin (6.0.1):
     - GoogleSignIn (~> 5.0.0)
+    - React-Core
+  - RNInAppBrowser (3.6.3):
     - React-Core
   - RNReanimated (2.1.0):
     - DoubleConversion
@@ -948,10 +960,12 @@ DEPENDENCIES:
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
+  - "RNFBFunctions (from `../node_modules/@react-native-firebase/functions`)"
   - "RNFBRemoteConfig (from `../node_modules/@react-native-firebase/remote-config`)"
   - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
+  - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -985,6 +999,7 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseCrashlytics
     - FirebaseFirestore
+    - FirebaseFunctions
     - FirebaseInstallations
     - FirebaseRemoteConfig
     - FirebaseStorage
@@ -1107,6 +1122,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/crashlytics"
   RNFBFirestore:
     :path: "../node_modules/@react-native-firebase/firestore"
+  RNFBFunctions:
+    :path: "../node_modules/@react-native-firebase/functions"
   RNFBRemoteConfig:
     :path: "../node_modules/@react-native-firebase/remote-config"
   RNFBStorage:
@@ -1115,6 +1132,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
     :path: "../node_modules/@react-native-google-signin/google-signin"
+  RNInAppBrowser:
+    :path: "../node_modules/react-native-inappbrowser-reborn"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -1186,6 +1205,7 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: 56fb7216d87e0e6ec2feddefa9d8a392fe8b2c18
   FirebaseCrashlytics: 3b7f17cdf5bf1ae6ad5956696a6c26edeb39cca7
   FirebaseFirestore: 0e7321a508cc9de54316ec45400caba6b5719beb
+  FirebaseFunctions: 9c406f9b2deb72719437565c106ca4a439d2a661
   FirebaseInstallations: 830327b45345ffc859eaa9c17bcd5ae893fd5425
   FirebaseRemoteConfig: 84d3397887d95587f0ee7a0a3989b2756dc2bbf9
   FirebaseStorage: 815410224b548172c578f02554a86bbc8f817f50
@@ -1232,10 +1252,12 @@ SPEC CHECKSUMS:
   RNFBAuth: fd6cbf93302641dbe20045a44e64c1fa3d4eff02
   RNFBCrashlytics: 996f65bff28906dce4fb6af64d9e6fd366d489c2
   RNFBFirestore: 335dcbdb91786a892dd76831373f9794ac947e3b
+  RNFBFunctions: 8d98326f2148ef40ec39139914675c19a11ccc30
   RNFBRemoteConfig: d058fe741b72483718a5091c189389a1f5d6c4ab
   RNFBStorage: 77eafd785a3a2d4e4ceaac707ebc1abe57537773
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: e64616a4080cf7d83f4b292fad82d174587444e2
+  RNInAppBrowser: 3ff3a3b8f458aaf25aaee879d057352862edf357
   RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
   RNScreens: e8e8dd0588b5da0ab57dcca76ab9b2d8987757e0
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
