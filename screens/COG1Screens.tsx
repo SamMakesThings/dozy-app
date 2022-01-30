@@ -607,7 +607,7 @@ export const COG1End: React.FC<Props> = ({ navigation }) => {
   // Create reminder object for next checkin
   const reminderObject = {
     expoPushToken: state.userData.reminders.expoPushToken,
-    title: 'Next checkin is ready',
+    title: 'Next check-in is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
     time: COG1State.nextCheckinTime,
