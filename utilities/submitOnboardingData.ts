@@ -200,7 +200,7 @@ export async function submitDiaryReminderAndCheckinData(
       const newCheckinReminder = {
         expoPushToken:
           onboardingState.expoPushToken || 'No push token provided',
-        title: 'Next checkin is ready',
+        title: 'Next check-in is ready',
         body: 'Open the app now to get started',
         type: 'CHECKIN_REMINDER',
         time: onboardingState.firstCheckinTime,

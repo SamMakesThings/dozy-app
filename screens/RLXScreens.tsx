@@ -407,7 +407,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
   const reminderArray = [
     {
       expoPushToken: state.userData.reminders.expoPushToken,
-      title: 'Next checkin is ready',
+      title: 'Next check-in is ready',
       body: 'Open the app now to get started',
       type: 'CHECKIN_REMINDER',
       time: RLXState.nextCheckinTime,

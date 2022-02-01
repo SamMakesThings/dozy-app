@@ -161,8 +161,9 @@ const DateTimePickerScreen = (
               format="dddd, mmmm dS"
               date={selectedTime}
               onDateChange={(time: Date) => {
-                setSelectedTime(time);
-                checkDataValidity(time);
+                const newTime = time || selectedTime || new Date();
+                setSelectedTime(newTime);
+                checkDataValidity(newTime);
               }}
             />
             <DatePicker
@@ -176,8 +177,9 @@ const DateTimePickerScreen = (
               format="h:MM TT"
               date={selectedTime}
               onDateChange={(time: Date) => {
-                setSelectedTime(time);
-                checkDataValidity(time);
+                const newTime = time || selectedTime || new Date();
+                setSelectedTime(newTime);
+                checkDataValidity(newTime);
               }}
             />
           </View>
@@ -197,8 +199,9 @@ const DateTimePickerScreen = (
               hitSlop={{ left: 60, top: 40, right: 60, bottom: 40 }}
               date={selectedTime}
               onDateChange={(time: Date) => {
-                setSelectedTime(time);
-                checkDataValidity(time);
+                const newTime = time || selectedTime || new Date();
+                setSelectedTime(newTime);
+                checkDataValidity(newTime);
               }}
             />
           </View>
