@@ -15,6 +15,8 @@ interface Props {
   buttonLabel?: string;
   bottomGreyButtonLabel?: string;
   bottomBackButton?: () => void;
+  loading?: boolean;
+  bottomGreyDisabled?: boolean;
   bbbDisabled?: boolean;
   onlyBackButton?: boolean;
 }
@@ -65,6 +67,8 @@ const IconExplainScreen: React.FC<Props> = (props) => {
         buttonLabel={props.buttonLabel}
         bottomGreyButtonLabel={props.bottomGreyButtonLabel}
         bottomBackButton={props.bottomBackButton}
+        loading={props.loading}
+        grayDisabled={props.bottomGreyDisabled}
         bbbDisabled={props.bbbDisabled}
         onlyBackButton={props.onlyBackButton}
         theme={theme}
