@@ -24,7 +24,7 @@ export interface HealthDeviceContextValue {
 }
 
 export default class HealthDevice {
-  static Context = createContext<HealthDeviceContextValue | null>(null);
+  static Context = createContext<HealthDeviceContextValue>({ devices: [] });
 
   static TerraAuthResolver: Deffered | undefined;
 
@@ -59,7 +59,6 @@ export default class HealthDevice {
 
     useEffect(() => {
       const handleDeepLink = (event: { url: string }): void => {
-        console.log('event url ===== ', event.url);
         if (event.url.includes('com.dozyhealth.dozy://terra')) {
           InAppBrowser.close();
           if (HealthDevice.TerraAuthResolver?.resolve) {
@@ -296,8 +295,6 @@ export default class HealthDevice {
   }
 
   static useHealthDevice(): HealthDeviceContextValue {
-    return useContext<HealthDeviceContextValue>(
-      HealthDevice.Context as React.Context<HealthDeviceContextValue>,
-    );
+    return useContext<HealthDeviceContextValue>(HealthDevice.Context);
   }
 }
