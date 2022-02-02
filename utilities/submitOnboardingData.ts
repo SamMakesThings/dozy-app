@@ -2,6 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 import firestore from '@react-native-firebase/firestore';
 import { sub } from 'date-fns';
 import { take } from 'lodash';
+import { SleepLog } from '../types/custom';
 import refreshUserData from './refreshUserData';
 import { ACTION } from './mainAppReducer';
 import { encodeLocalTime } from './time';
@@ -25,6 +26,10 @@ export interface OnboardingState {
   ISI7: number;
   ISITotal: number;
   firstChatMessageContent: string;
+  ouraConnected?: boolean;
+  lastSleepRaiting?: number;
+  lastSleepTags?: string[];
+  lastSleepLogs?: SleepLog[];
 }
 
 export default async function submitOnboardingData(
@@ -127,15 +132,16 @@ export async function submitHealthHistoryData(
 }
 
 export async function submitDiaryReminderAndCheckinData(
-  diaryAndCheckinData: NonNullable<
-    Pick<
-      OnboardingState,
-      | 'diaryReminderTime'
-      | 'diaryHabitTrigger'
-      | 'firstCheckinTime'
-      | 'expoPushToken'
-    >
-  >,
+  onboardingState: OnboardingState &
+    NonNullable<
+      Pick<
+        OnboardingState,
+        | 'diaryReminderTime'
+        | 'diaryHabitTrigger'
+        | 'firstCheckinTime'
+        | 'expoPushToken'
+      >
+    >,
 ): Promise<void> {
   // Initialize relevant Firebase values
   const userId = await SecureStore.getItemAsync('userId');
@@ -149,7 +155,7 @@ export async function submitDiaryReminderAndCheckinData(
   const notificationsCollection = userDocRef.collection('notifications');
   let logReminderDocId: string | undefined = undefined;
   const diaryReminderTimeDataAsUTC = encodeLocalTime(
-    diaryAndCheckinData.diaryReminderTime ?? new Date(),
+    onboardingState.diaryReminderTime ?? new Date(),
   );
 
   try {
@@ -158,15 +164,14 @@ export async function submitDiaryReminderAndCheckinData(
       .get();
 
     const newDailyLog = {
-      expoPushToken:
-        diaryAndCheckinData.expoPushToken || 'No push token provided',
+      expoPushToken: onboardingState.expoPushToken || 'No push token provided',
       title: 'How did you sleep?',
       body: "Add last night's entry now",
       type: 'DAILY_LOG',
       time: diaryReminderTimeDataAsUTC.value,
       version: diaryReminderTimeDataAsUTC.version,
       timezone: diaryReminderTimeDataAsUTC.timezone,
-      enabled: !!diaryAndCheckinData.diaryReminderTime,
+      enabled: !!onboardingState.diaryReminderTime,
     };
     if (querySnapshot.docs.length) {
       const logReminderDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
@@ -194,11 +199,11 @@ export async function submitDiaryReminderAndCheckinData(
     .then((querySnapshot) => {
       const newCheckinReminder = {
         expoPushToken:
-          diaryAndCheckinData.expoPushToken || 'No push token provided',
+          onboardingState.expoPushToken || 'No push token provided',
         title: 'Next checkin is ready',
         body: 'Open the app now to get started',
         type: 'CHECKIN_REMINDER',
-        time: diaryAndCheckinData.firstCheckinTime,
+        time: onboardingState.firstCheckinTime,
         enabled: true,
       };
       if (querySnapshot.docs.length) {
@@ -210,29 +215,41 @@ export async function submitDiaryReminderAndCheckinData(
       }
     });
 
+  // Save sleep logs if Oura connected
+  if (userId && onboardingState.lastSleepLogs?.length) {
+    const lastSleepLogs = onboardingState.lastSleepLogs.slice().reverse();
+    lastSleepLogs.forEach((it) => {
+      firestore()
+        .collection('users')
+        .doc(userId)
+        .collection('sleepLogs')
+        .add(it);
+    });
+  }
+
   // Also store reminder info & next check-in datetime
   userDocRef
     .update({
-      reminders: diaryAndCheckinData.diaryReminderTime
+      reminders: onboardingState.diaryReminderTime
         ? {
             sleepDiaryReminder: {
-              diaryHabitTrigger: diaryAndCheckinData.diaryHabitTrigger,
+              diaryHabitTrigger: onboardingState.diaryHabitTrigger,
               diaryReminderTime: diaryReminderTimeDataAsUTC.value,
               version: diaryReminderTimeDataAsUTC.version,
             },
             expoPushToken:
-              diaryAndCheckinData.expoPushToken || 'No push token provided',
+              onboardingState.expoPushToken || 'No push token provided',
           }
         : {},
       nextCheckin: {
-        nextCheckinDatetime: diaryAndCheckinData.firstCheckinTime,
+        nextCheckinDatetime: onboardingState.firstCheckinTime,
         treatmentModule: 'SCTSRT',
       },
       currentTreatments: {
         BSL: new Date(),
         currentModule: 'BSL',
         lastCheckinDatetime: new Date(),
-        nextCheckinDatetime: diaryAndCheckinData.firstCheckinTime,
+        nextCheckinDatetime: onboardingState.firstCheckinTime,
         nextTreatmentModule: 'SCTSRT',
       },
       logReminderId: logReminderDocId,
