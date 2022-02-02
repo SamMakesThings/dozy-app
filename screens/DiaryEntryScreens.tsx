@@ -1,15 +1,20 @@
-import React, { useCallback, useMemo, useEffect, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Alert, Platform, StyleSheet, View, Text } from 'react-native';
-import { DatePicker } from '@draftbit/ui';
+import { DatePicker, Button, Container } from '@draftbit/ui';
 import { scale } from 'react-native-size-matters';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  useSafeAreaInsets,
+  SafeAreaView,
+} from 'react-native-safe-area-context';
 import moment from 'moment';
-import { pick } from 'lodash';
+import { omit } from 'lodash';
+import firestore from '@react-native-firebase/firestore';
 import NumInputScreen from '../components/screens/NumInputScreen';
 import TextInputScreen from '../components/screens/TextInputScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import TagSelectScreen from '../components/screens/TagSelectScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
+import SleepLogSummaryCard from '../components/SleepLogSummaryCard';
 import submitSleepDiaryData, {
   validateSleepLog,
   normalizeSleepLog,
@@ -19,6 +24,8 @@ import { Navigation, SleepLog } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
+import HealthDevice from '../utilities/healthDevice.service';
+import DiaryEntryFlow from '../utilities/diaryEntryFlow.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { RichTextData } from '../types/RichTextData';
 
@@ -34,155 +41,185 @@ interface Props {
   };
 }
 
-interface GlobalState {
-  sleepLogs: SleepLog[];
-  userData: {
-    currentTreatments: {
-      RLX?: Date;
-      PIT?: Date;
-      SCTSRT?: Date;
-    };
-  };
-}
+export const TrackerStart: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
+  const { logState, updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
 
-let globalState: GlobalState = {
-  sleepLogs: [] as SleepLog[],
-  userData: {
-    currentTreatments: {
-      RLX: undefined as undefined | Date,
-      PIT: undefined as undefined | Date,
-      SCTSRT: undefined as undefined | Date,
-    },
-  },
-};
+  const [fetchingFromDevice, setFetchingFromDevice] = useState(false);
 
-// Architecture: pass an optional prop logId, which if defined, signals it's an edit.
-// TODO: Update screens to use these values as defaults
-const logState = {
-  logId: undefined as undefined | string,
-  logDate: new Date(),
-  bedTime: new Date(),
-  minsToFallAsleep: 0,
-  isZeroSleep: false,
-  PMRPractice: undefined as undefined | string,
-  PITPractice: undefined as undefined | boolean,
-  wakeCount: 0,
-  SCTUpCount: undefined as undefined | number,
-  SCTAnythingNonSleepInBed: undefined as undefined | boolean,
-  nightMinsAwake: 0,
-  SCTNonSleepActivities: undefined as undefined | string,
-  SCTDaytimeNaps: undefined as undefined | boolean,
-  wakeTime: new Date(),
-  upTime: new Date(),
-  sleepRating: 0,
-  notes: '',
-  tags: [] as string[],
-};
-
-const goToNextFromWakeCountInput = (
-  navigation: Props['navigation'],
-  minsToFallAsleep: number,
-  wakeCount: number,
-) => {
-  logState.wakeCount = wakeCount;
-  if (
-    globalState.userData?.currentTreatments?.SCTSRT &&
-    (minsToFallAsleep >= 20 || wakeCount >= 1)
-  ) {
-    // If SCTSRT has started AND user woke 1+ times or took 20+ mins to sleep, navigate to SCT questions
-    navigation.navigate('SCTUpCountInput', { progressBarPercent: 0.44 });
-  } else if (globalState.userData?.currentTreatments?.SCTSRT) {
-    // If user started SCTSRT but slept quickly, skip to asking about daytime naps
-    // & set SCT values appropriately
-    logState.SCTUpCount = 0;
-    logState.SCTAnythingNonSleepInBed = false;
-    navigation.navigate('SCTDaytimeNapsInput', {
-      progressBarPercent: 0.5,
-    });
-  } else if (wakeCount === 0) {
-    // If user didn't wake in the night, skip asking how long they were awake
-    logState.nightMinsAwake = 0;
-    if (logState.isZeroSleep) {
-      // If zero sleep, skip WakeTimeInput step
-      navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
+  const onOura = useCallback(async () => {
+    if (logState) {
+      const nextStepData = updateFlow(
+        {
+          isDraft: true,
+        },
+        'TrackerStart',
+      );
+      navigation.navigate(nextStepData.screen, {
+        progressBarPercent: nextStepData.progress,
+      });
     } else {
-      navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
+      if (fetchingFromDevice) {
+        return;
+      }
+
+      setFetchingFromDevice(true);
+
+      try {
+        // Get sleep samples for the past day
+        const sleepSamples = await HealthDevice.getSleepSamples(
+          'oura',
+          moment().subtract(1, 'days').format('YYYY-MM-DD'),
+          moment().format('YYYY-MM-DD'),
+        );
+        const sleepLogs = sleepSamples.map((it) =>
+          HealthDevice.mapTerraSleepDataToSleepLog(it, 'oura'),
+        );
+        sleepLogs.sort(
+          (a, b) => b.upTime.toDate().valueOf() - a.upTime.toDate().valueOf(),
+        );
+        if (
+          sleepLogs[0] &&
+          (!state.sleepLogs[0] ||
+            moment(sleepLogs[0].upTime.toDate()).isAfter(
+              state.sleepLogs[0].upTime.toDate(),
+            ))
+        ) {
+          const newSleepLogRef = await firestore()
+            .collection('users')
+            .doc(state.userId)
+            .collection('sleepLogs')
+            .add(sleepLogs[0]);
+          updateFlow(
+            {
+              ...omit(sleepLogs[0], [
+                'bedTime',
+                'fallAsleepTime',
+                'wakeTime',
+                'upTime',
+              ]),
+              logId: newSleepLogRef.id,
+              bedTime: sleepLogs[0].bedTime.toDate(),
+              fallAsleepTime: sleepLogs[0].fallAsleepTime.toDate(),
+              wakeTime: sleepLogs[0].wakeTime.toDate(),
+              upTime: sleepLogs[0].upTime.toDate(),
+              logDate: sleepLogs[0].upTime.toDate(),
+              isZeroSleep: false,
+            },
+            'TrackerStart',
+            false,
+          );
+        }
+      } catch {}
+
+      setFetchingFromDevice(false);
     }
-  } else {
-    // Otherwise, ask how long they were awake
-    navigation.navigate('NightMinsAwakeInput', {
-      progressBarPercent: 0.5,
+  }, [navigation, fetchingFromDevice, logState, state.sleepLogs, updateFlow]);
+
+  const onManual = useCallback(() => {
+    const nextStepData = updateFlow({ isDraft: false }, 'TrackerStart');
+    navigation.navigate(nextStepData.screen, {
+      progressBarPercent: nextStepData.progress,
     });
-  }
+  }, [navigation, updateFlow]);
+
+  return (
+    <SafeAreaView style={styles.trackerStartContainer}>
+      <Container
+        style={styles.trackerStartHeaderContainer}
+        elevation={0}
+        useThemeGutterPadding={true}
+      />
+      <Container
+        style={styles.trackerStartContentContainer}
+        elevation={0}
+        useThemeGutterPadding={true}
+      >
+        <SleepLogSummaryCard sleepLog={logState} />
+        <View style={styles.trackerStartDescriptionContainer}>
+          <Text
+            style={[
+              theme.typography.headline5,
+              {
+                color: theme.colors.secondary,
+                marginBottom: scale(10),
+              },
+            ]}
+          >
+            {logState
+              ? 'Is this info accurate?'
+              : 'Your tracker is missing data'}
+          </Text>
+          <Text
+            style={[
+              theme.typography.body1,
+              {
+                color: theme.colors.secondary,
+              },
+            ]}
+          >
+            {logState
+              ? 'Your Oura ring recorded this data. Please check that it matches your experience. If not, you can adjust individual answers above, or answer everything manually.'
+              : "You use an Oura Ring, but we don't have data from it for last night. Have you synced your night with the Oura app yet?"}
+          </Text>
+        </View>
+        <Button
+          style={[theme.buttonLayout, styles.ouraStepBottomButton]}
+          type="solid"
+          color={theme.colors.primary}
+          loading={fetchingFromDevice}
+          onPress={onOura}
+        >
+          {logState ? 'Seems right' : 'Open the Oura app'}
+        </Button>
+        <Button
+          style={[theme.buttonLayout, styles.ouraStepTopButton]}
+          type="solid"
+          color={theme.colors.medium}
+          disabled={fetchingFromDevice}
+          onPress={onManual}
+        >
+          {logState
+            ? "It's off - enter night's info manually"
+            : "Enter night's info manually"}
+        </Button>
+      </Container>
+    </SafeAreaView>
+  );
 };
 
-export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
+export const BedTimeInput: React.FC<Props> = ({ navigation }) => {
   // If there is a sleep log recorded, use the most recent
   // bedtime value as a default.
   // Also use hook to set globalState value for the file
   const { state } = Auth.useAuth();
+  const { logState, updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
   const safeInsets = useSafeAreaInsets();
 
-  globalState =
-    (pick(state, ['userData', 'sleepLogs']) as GlobalState) || globalState;
-  let defaultDate = moment().hour(22).minute(0).toDate();
-  if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
-    defaultDate = moment()
-      .hour(globalState.sleepLogs[0].bedTime.toDate().getHours())
-      .minute(globalState.sleepLogs[0].bedTime.toDate().getMinutes())
-      .toDate();
-  }
-
-  const baseSleepLog: SleepLog | undefined = globalState.sleepLogs.find(
-    (sleepLog) => sleepLog.logId === route.params?.logId,
-  );
-  let initialDateVal = baseSleepLog ? baseSleepLog.upTime.toDate() : new Date(); // Declare variable for the initial selectedState value
-
-  const validateDate = useCallback((date: Date): boolean => {
-    const sleepLogsToCompare: SleepLog[] = baseSleepLog
-      ? state.sleepLogs.filter((it) => it.logId !== baseSleepLog.logId)
-      : state.sleepLogs;
-
-    return !sleepLogsToCompare.find((it) =>
-      moment(it.upTime.toDate()).isSame(date, 'day'),
-    );
-  }, []);
-
-  useEffect((): void => {
-    // If editing existing sleep log, set defaults from that. Otherwise, use normal defaults
-    if (route.params?.logId) {
-      if (baseSleepLog) {
-        initialDateVal = baseSleepLog.upTime.toDate(); // If editing, use upTime as initial logDate value
-
-        logState.logId = route.params.logId;
-        logState.minsToFallAsleep = baseSleepLog.minsToFallAsleep;
-        logState.wakeCount = baseSleepLog.wakeCount;
-        logState.nightMinsAwake = baseSleepLog.nightMinsAwake;
-        logState.SCTNonSleepActivities = baseSleepLog.SCTNonSleepActivities;
-        logState.wakeTime = moment(initialDateVal)
-          .hour(baseSleepLog.wakeTime.toDate().getHours())
-          .minute(baseSleepLog.wakeTime.toDate().getMinutes())
-          .startOf('minute')
-          .toDate();
-        logState.upTime = moment(baseSleepLog.upTime.toDate())
-          .startOf('minute')
-          .toDate();
-        logState.notes = baseSleepLog.notes;
-        logState.tags = baseSleepLog.tags;
-      } else {
-        console.error("Attempted to edit sleep log that doesn't exist!");
-      }
-    } else {
-      logState.logId = undefined;
-    }
-  }, [route.params?.logId]);
-
-  const prevBedtime = baseSleepLog?.bedTime?.toDate();
-
-  // Create state to display selected log date
-  const [selectedDate, setSelectedDate] = React.useState(initialDateVal);
-  const [isValidDate, setDateValidity] = useState(validateDate(initialDateVal));
   const [isDateChanged, setDateChanged] = useState(false);
+
+  const logDate = useMemo(
+    () => (logState ? logState.logDate : new Date()),
+    [logState?.logDate],
+  ); // Declare variable for the initial selectedState value
+
+  const validateDate = useCallback(
+    (date: Date): boolean => {
+      const sleepLogsToCompare: SleepLog[] = logState
+        ? state.sleepLogs.filter((it) => it.logId !== logState.logId)
+        : state.sleepLogs;
+
+      return !sleepLogsToCompare.find((it) =>
+        moment(it.upTime.toDate()).isSame(date, 'day'),
+      );
+    },
+    [state.sleepLogs, logState],
+  );
+
+  const isValidDate = useMemo(
+    () => validateDate(logDate),
+    [logDate, validateDate],
+  );
 
   return (
     <>
@@ -190,24 +227,28 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
         theme={theme}
         defaultValue={
           // Sets the bedtime's date as the log date
-          prevBedtime
-            ? moment(selectedDate)
-                .hours(prevBedtime.getHours())
-                .minutes(prevBedtime.getMinutes())
+          logState?.bedTime
+            ? moment(logDate)
+                .hours(logState.bedTime.getHours())
+                .minutes(logState.bedTime.getMinutes())
                 .startOf('minute')
                 .toDate()
-            : defaultDate
+            : moment().hour(22).minute(0).toDate()
         }
         onQuestionSubmit={(value: Date | boolean) => {
-          logState.bedTime = moment(selectedDate)
-            .hour((value as Date).getHours())
-            .minute((value as Date).getMinutes())
-            .startOf('minute')
-            .toDate();
-          logState.logDate = selectedDate; // Make sure this is set even if user doesn't change it
+          const nextStepData = updateFlow(
+            {
+              bedTime: moment(logDate)
+                .hour((value as Date).getHours())
+                .minute((value as Date).getMinutes())
+                .startOf('minute')
+                .toDate(),
+            },
+            'BedTimeInput',
+          );
           navigation.setParams({ progressBarPercent: 0.13 });
-          navigation.navigate('MinsToFallAsleepInput', {
-            progressBarPercent: 0.26,
+          navigation.navigate(nextStepData.screen, {
+            progressBarPercent: nextStepData.progress,
           });
         }}
         validInputChecker={(val: Date): ErrorObj | boolean => {
@@ -242,19 +283,20 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
           disabled={false}
           leftIconMode="inset"
           format={'dddd, mmmm dS'}
-          date={selectedDate}
+          date={logDate}
           onDateChange={(selectedDay: Date) => {
-            let dateSetting = selectedDay; // why do dates have to be mutable like this
-            dateSetting.setHours(new Date().getHours());
-            dateSetting.setMinutes(new Date().getMinutes() - 7); // TODO: Make this less hacky
-            logState.logDate = dateSetting;
-            if (moment(selectedDay).diff(new Date(), 'days') >= 1) {
-              // Make sure it's not a future date
+            let dateSetting = selectedDay;
+            // Make sure it's not a future date
+            if (
+              moment(selectedDay)
+                .startOf('day')
+                .isAfter(moment().startOf('day'))
+            ) {
               dateSetting = new Date();
             }
+
             setDateChanged(true);
-            setDateValidity(validateDate(dateSetting));
-            setSelectedDate(dateSetting);
+            updateFlow({ logDate: dateSetting }, 'BedTimeInput', false);
           }}
         />
         {!isValidDate && (
@@ -280,43 +322,39 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
 };
 
 export const MinsToFallAsleepInput: React.FC<Props> = ({ navigation }) => {
+  const { logState, updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   const subTitle = useMemo(
     (): RichTextData => [
       { text: "Or, if you couldn't sleep at all, " },
       {
         text: 'click here',
         onPress: () => {
-          logState.isZeroSleep = true;
-          // If RLX (PMR) started, navigate to RLX. If PIT but no RLX, then PIT.
-          // Otherwise go to WakeCountInput or skip WakeCountInput in case of zero sleep
-          if (globalState.userData?.currentTreatments?.RLX) {
-            navigation.navigate('PMRAsk', { progressBarPercent: 0.3 });
-          } else if (globalState.userData?.currentTreatments?.PIT) {
-            navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
-          } else {
-            logState.wakeCount = 0;
-            goToNextFromWakeCountInput(navigation, Number.MAX_SAFE_INTEGER, 0);
-          }
+          const nextStepData = updateFlow(
+            { isZeroSleep: true },
+            'MinsToFallAsleepInput',
+          );
+          navigation.navigate(nextStepData.screen, {
+            progressBarPercent: nextStepData.progress,
+          });
         },
       },
     ],
-    [navigation],
+    [navigation, updateFlow],
   );
 
   return (
     <NumInputScreen
       theme={theme}
-      defaultValue={logState.logId ? logState.minsToFallAsleep : undefined}
+      defaultValue={logState?.minsToFallAsleep}
       onQuestionSubmit={(value: number) => {
-        logState.minsToFallAsleep = value;
-        // If RLX (PMR) started, navigate to RLX. If PIT but no RLX, then PIT. Otherwise wakeCount
-        if (globalState.userData?.currentTreatments?.RLX) {
-          navigation.navigate('PMRAsk', { progressBarPercent: 0.3 });
-        } else if (globalState.userData?.currentTreatments?.PIT) {
-          navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
-        } else {
-          navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
-        }
+        const nextStepData = updateFlow(
+          { minsToFallAsleep: value },
+          'MinsToFallAsleepInput',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
+        });
       }}
       validInputChecker={(val: number) => {
         if (val < 0) {
@@ -341,19 +379,19 @@ export const MinsToFallAsleepInput: React.FC<Props> = ({ navigation }) => {
 };
 
 export const PMRAsk: React.FC<Props> = ({ navigation }) => {
+  const { updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   return (
     <MultiButtonScreen
       theme={theme}
       onQuestionSubmit={(value?: string | number | boolean) => {
-        logState.PMRPractice = value as string;
-        // If PIT started, navigate to PIT. Otherwise navigate to WakeCountInput
-        if (globalState.userData?.currentTreatments?.PIT) {
-          navigation.navigate('PITAsk', { progressBarPercent: 0.33 });
-        } else if (logState.isZeroSleep) {
-          goToNextFromWakeCountInput(navigation, Number.MAX_SAFE_INTEGER, 0);
-        } else {
-          navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
-        }
+        const nextStepData = updateFlow(
+          { PMRPractice: value as string },
+          'PMRAsk',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
+        });
       }}
       buttonValues={[
         {
@@ -370,16 +408,19 @@ export const PMRAsk: React.FC<Props> = ({ navigation }) => {
 };
 
 export const PITAsk: React.FC<Props> = ({ navigation }) => {
+  const { updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   return (
     <MultiButtonScreen
       theme={theme}
       onQuestionSubmit={(value?: string | number | boolean) => {
-        logState.PITPractice = value as boolean;
-        if (logState.isZeroSleep) {
-          goToNextFromWakeCountInput(navigation, Number.MAX_SAFE_INTEGER, 0);
-        } else {
-          navigation.navigate('WakeCountInput', { progressBarPercent: 0.38 });
-        }
+        const nextStepData = updateFlow(
+          { PITPractice: value as boolean },
+          'PITAsk',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
+        });
       }}
       buttonValues={[
         { label: 'Yes', value: true },
@@ -391,16 +432,19 @@ export const PITAsk: React.FC<Props> = ({ navigation }) => {
 };
 
 export const WakeCountInput: React.FC<Props> = ({ navigation }) => {
+  const { updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   return (
     <MultiButtonScreen
       theme={theme}
       onQuestionSubmit={(value?: string | number | boolean) => {
-        logState.wakeCount = value as number;
-        goToNextFromWakeCountInput(
-          navigation,
-          logState.minsToFallAsleep,
-          value as number,
+        const nextStepData = updateFlow(
+          { wakeCount: value as number },
+          'WakeCountInput',
         );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
+        });
       }}
       buttonValues={[
         { label: "0 (didn't wake up)", value: 0 },
@@ -417,13 +461,18 @@ export const WakeCountInput: React.FC<Props> = ({ navigation }) => {
 
 // If SCTSRT started, show SCT question screens
 export const SCTUpCountInput: React.FC<Props> = ({ navigation }) => {
+  const { updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   return (
     <MultiButtonScreen
       theme={theme}
       onQuestionSubmit={(value?: string | number | boolean) => {
-        logState.SCTUpCount = value as number;
-        navigation.navigate('SCTAnythingNonSleepInBedInput', {
-          progressBarPercent: 0.55,
+        const nextStepData = updateFlow(
+          { SCTUpCount: value as number },
+          'SCTUpCountInput',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
         });
       }}
       buttonValues={[
@@ -442,21 +491,19 @@ export const SCTUpCountInput: React.FC<Props> = ({ navigation }) => {
 export const SCTAnythingNonSleepInBedInput: React.FC<Props> = ({
   navigation,
 }) => {
+  const { updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   return (
     <MultiButtonScreen
       theme={theme}
       onQuestionSubmit={(value?: string | number | boolean) => {
-        logState.SCTAnythingNonSleepInBed = value === 1;
-        // If user says they did something not sleep in bed, ask what (text input)
-        if (value === 1) {
-          navigation.navigate('SCTNonSleepActivitiesInput', {
-            progressBarPercent: 0.6,
-          });
-        } else {
-          navigation.navigate('SCTDaytimeNapsInput', {
-            progressBarPercent: 0.6,
-          });
-        }
+        const nextStepData = updateFlow(
+          { SCTAnythingNonSleepInBed: value === 1 },
+          'SCTAnythingNonSleepInBedInput',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
+        });
       }}
       buttonValues={[
         { label: 'Yes', value: 1 },
@@ -468,14 +515,19 @@ export const SCTAnythingNonSleepInBedInput: React.FC<Props> = ({
 };
 
 export const SCTNonSleepActivitiesInput: React.FC<Props> = ({ navigation }) => {
+  const { logState, updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   return (
     <TextInputScreen
       theme={theme}
-      defaultValue={logState.logId ? logState.SCTNonSleepActivities : undefined}
+      defaultValue={logState!.SCTNonSleepActivities}
       onQuestionSubmit={(value: string) => {
-        logState.SCTNonSleepActivities = value;
-        navigation.navigate('SCTDaytimeNapsInput', {
-          progressBarPercent: 0.63,
+        const nextStepData = updateFlow(
+          { SCTNonSleepActivities: value },
+          'SCTNonSleepActivitiesInput',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
         });
       }}
       questionLabel="What were you doing besides sleeping?"
@@ -485,25 +537,19 @@ export const SCTNonSleepActivitiesInput: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SCTDaytimeNapsInput: React.FC<Props> = ({ navigation }) => {
+  const { updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   return (
     <MultiButtonScreen
       theme={theme}
       onQuestionSubmit={(value?: string | number | boolean) => {
-        logState.SCTDaytimeNaps = value === 1;
-        // If zero sleep, go to UpTimeInput step
-        if (logState.isZeroSleep) {
-          navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
-        } else {
-          // If user didn't wake in the night, skip asking how long they were awake
-          if (logState.wakeCount === 0) {
-            navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
-            logState.nightMinsAwake = 0;
-          } else {
-            navigation.navigate('NightMinsAwakeInput', {
-              progressBarPercent: 0.61,
-            });
-          }
-        }
+        const nextStepData = updateFlow(
+          { SCTDaytimeNaps: value === 1 },
+          'SCTDaytimeNapsInput',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
+        });
       }}
       buttonValues={[
         { label: 'Yes', value: 1 },
@@ -515,13 +561,20 @@ export const SCTDaytimeNapsInput: React.FC<Props> = ({ navigation }) => {
 };
 
 export const NightMinsAwakeInput: React.FC<Props> = ({ navigation }) => {
+  const { logState, updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   return (
     <NumInputScreen
       theme={theme}
-      defaultValue={logState.logId ? logState.nightMinsAwake : undefined}
+      defaultValue={logState?.nightMinsAwake}
       onQuestionSubmit={(value: number) => {
-        logState.nightMinsAwake = value;
-        navigation.navigate('WakeTimeInput', { progressBarPercent: 0.63 });
+        const nextStepData = updateFlow(
+          { nightMinsAwake: value },
+          'NightMinsAwakeInput',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
+        });
       }}
       validInputChecker={(val: number) => {
         if (val < 0) {
@@ -546,36 +599,50 @@ export const NightMinsAwakeInput: React.FC<Props> = ({ navigation }) => {
 };
 
 export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
+  const { state } = Auth.useAuth();
+  const { logState, updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   // If there is a sleep log recorded, use the most recent
   // wake time value as a default
-  let defaultDate;
-  if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
-    const previousWakeTime = globalState.sleepLogs[0].wakeTime.toDate();
-    const correctedPrevWakeTime = moment(logState.logDate)
-      .hour(previousWakeTime.getHours())
-      .minute(previousWakeTime.getMinutes())
-      .startOf('minute');
-    defaultDate = moment().isAfter(correctedPrevWakeTime)
-      ? correctedPrevWakeTime.toDate()
-      : new Date();
-  } else {
-    defaultDate =
-      moment().hour() >= 9
-        ? moment().hour(9).startOf('hours').toDate()
+  const defaultWakeTime = useMemo((): Date => {
+    let newWakeTime: Date | undefined;
+    if (state.sleepLogs.length > 0) {
+      const previousWakeTime = state.sleepLogs[0].wakeTime.toDate();
+      const correctedPrevWakeTime = moment(logState!.logDate)
+        .hour(previousWakeTime.getHours())
+        .minute(previousWakeTime.getMinutes())
+        .startOf('minute');
+      newWakeTime = moment().isAfter(correctedPrevWakeTime)
+        ? correctedPrevWakeTime.toDate()
         : new Date();
-  }
+    } else {
+      newWakeTime =
+        moment().hour() >= 9
+          ? moment().hour(9).startOf('hours').toDate()
+          : new Date();
+    }
+
+    return newWakeTime;
+  }, [state.sleepLogs, logState?.logDate]);
 
   return (
     <DateTimePickerScreen
       theme={theme}
-      defaultValue={logState.logId ? logState.wakeTime : defaultDate}
+      defaultValue={logState?.wakeTime || defaultWakeTime}
       onQuestionSubmit={(value: Date | boolean) => {
-        logState.wakeTime = moment(logState.logDate)
-          .hour((value as Date).getHours())
-          .minute((value as Date).getMinutes())
-          .startOf('minute')
-          .toDate();
-        navigation.navigate('UpTimeInput', { progressBarPercent: 0.76 });
+        const nextStepData = updateFlow(
+          {
+            wakeTime: moment(logState!.logDate)
+              .hour((value as Date).getHours())
+              .minute((value as Date).getMinutes())
+              .startOf('minute')
+              .toDate(),
+          },
+          'WakeTimeInput',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
+        });
       }}
       validInputChecker={(val: Date): ErrorObj | boolean => {
         // Make sure the selected time is before 17:00, otherwise it's a likely sign of AM/PM mixup
@@ -587,8 +654,8 @@ export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
               'Did you set AM/PM correctly? Selected time is late for a wake time.',
           };
         } else if (
-          val.getHours() < logState.bedTime.getHours() &&
-          logState.bedTime.getHours() <= 17
+          val.getHours() < logState!.bedTime.getHours() &&
+          logState!.bedTime.getHours() <= 17
         ) {
           return {
             severity: 'ERROR',
@@ -596,7 +663,7 @@ export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
               'Did you set AM/PM correctly? Selected wake time is before your entered bed time.',
           };
         } else if (
-          moment(logState.logDate)
+          moment(logState!.logDate)
             .startOf('date')
             .isSameOrAfter(moment().startOf('date')) &&
           moment()
@@ -622,19 +689,28 @@ export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
 };
 
 export const UpTimeInput: React.FC<Props> = ({ navigation }) => {
+  const { logState, updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   return (
     <DateTimePickerScreen
       theme={theme}
       onQuestionSubmit={(value: Date | boolean) => {
-        logState.upTime = moment(logState.logDate)
-          .hour((value as Date).getHours())
-          .minute((value as Date).getMinutes())
-          .startOf('minute')
-          .toDate();
-        navigation.navigate('SleepRatingInput', { progressBarPercent: 0.87 });
+        const nextStepData = updateFlow(
+          {
+            upTime: moment(logState!.logDate)
+              .hour((value as Date).getHours())
+              .minute((value as Date).getMinutes())
+              .startOf('minute')
+              .toDate(),
+          },
+          'UpTimeInput',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
+        });
       }}
       validInputChecker={(val: Date): ErrorObj | boolean => {
-        const upTime = moment(logState.logDate)
+        const upTime = moment(logState!.logDate)
           .hour(val.getHours())
           .minute(val.getMinutes())
           .startOf('minute');
@@ -648,16 +724,16 @@ export const UpTimeInput: React.FC<Props> = ({ navigation }) => {
               'Did you set AM/PM correctly? Selected time is late for a wake time.',
           };
         } else if (
-          !logState.isZeroSleep &&
-          ((moment(logState.bedTime).isBefore(upTime) &&
-            upTime.isBefore(logState.wakeTime) &&
-            moment(logState.bedTime).isBefore(logState.wakeTime)) ||
-            (moment(logState.wakeTime).isBefore(logState.bedTime) &&
-              moment(logState.bedTime).isBefore(upTime) &&
-              moment(logState.wakeTime).isBefore(upTime)) ||
-            (upTime.isBefore(logState.wakeTime) &&
-              moment(logState.wakeTime).isBefore(logState.bedTime) &&
-              upTime.isBefore(logState.bedTime)))
+          !logState!.isZeroSleep &&
+          ((moment(logState!.bedTime).isBefore(upTime) &&
+            upTime.isBefore(logState!.wakeTime) &&
+            moment(logState!.bedTime).isBefore(logState!.wakeTime)) ||
+            (moment(logState!.wakeTime).isBefore(logState!.bedTime) &&
+              moment(logState!.bedTime).isBefore(upTime) &&
+              moment(logState!.wakeTime).isBefore(upTime)) ||
+            (upTime.isBefore(logState!.wakeTime) &&
+              moment(logState!.wakeTime).isBefore(logState!.bedTime) &&
+              upTime.isBefore(logState!.bedTime)))
         ) {
           return {
             severity: 'ERROR',
@@ -665,7 +741,7 @@ export const UpTimeInput: React.FC<Props> = ({ navigation }) => {
               'Selected up time is earlier than selected wake time. Did you set AM/PM correctly?',
           };
         } else if (
-          moment(logState.logDate)
+          moment(logState!.logDate)
             .startOf('date')
             .isSameOrAfter(moment().startOf('date')) &&
           moment(val).isAfter(new Date(), 'minute')
@@ -680,7 +756,7 @@ export const UpTimeInput: React.FC<Props> = ({ navigation }) => {
         }
       }}
       mode="time"
-      defaultValue={logState.logId ? logState.upTime : logState.wakeTime}
+      defaultValue={logState!.upTime || logState!.wakeTime}
       questionLabel="What time did you get up?"
       inputLabel="The time you got out of bed"
     />
@@ -688,12 +764,19 @@ export const UpTimeInput: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepRatingInput: React.FC<Props> = ({ navigation }) => {
+  const { updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   return (
     <MultiButtonScreen
       theme={theme}
       onQuestionSubmit={(value?: string | number | boolean) => {
-        logState.sleepRating = value as number;
-        navigation.navigate('TagsNotesInput', { progressBarPercent: 0.95 });
+        const nextStepData = updateFlow(
+          { sleepRating: value as number },
+          'SleepRatingInput',
+        );
+        navigation.navigate(nextStepData.screen, {
+          progressBarPercent: nextStepData.progress,
+        });
       }}
       buttonValues={[
         { label: '1', value: 1 },
@@ -709,18 +792,23 @@ export const SleepRatingInput: React.FC<Props> = ({ navigation }) => {
 };
 
 export const TagsNotesInput: React.FC<Props> = ({ navigation }) => {
+  const { logState, updateFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
   const onInvalidForm = useCallback((): void => {
     navigation.navigate('BedTimeInput');
   }, [navigation.navigate]);
 
-  const validateLog = useCallback(() => validateSleepLog(logState), []);
+  const validateLog = useCallback(
+    () => (logState!.isDraft ? true : validateSleepLog(logState!)),
+    [logState],
+  );
 
   return (
     <TagSelectScreen
       theme={theme}
-      defaultTags={logState.logId ? logState.tags : undefined}
-      defaultNotes={logState.logId ? logState.notes : undefined}
-      sleepLog={normalizeSleepLog(logState)}
+      defaultTags={logState?.tags}
+      defaultNotes={logState?.notes}
+      sleepLog={normalizeSleepLog(logState!, false, logState!.isDraft)}
       touchableTags={[
         { label: 'nothing', icon: 'emoji-happy' },
         { label: 'light', icon: 'light-bulb' },
@@ -745,22 +833,24 @@ export const TagsNotesInput: React.FC<Props> = ({ navigation }) => {
       validateSleepLog={validateLog}
       onInvalidForm={onInvalidForm}
       onFormSubmit={async (res: { notes: string; tags: string[] }) => {
-        // Update state with new values
-        logState.notes = res.notes;
-        logState.tags = res.tags;
+        const { logState: newLogState } = updateFlow(
+          { notes: res.notes, tags: res.tags },
+          'TagsNotesInput',
+          false,
+        );
 
         // Submit data to Firebase thru helper function
         try {
-          submitSleepDiaryData(logState);
+          submitSleepDiaryData(newLogState);
         } catch (error: any) {
           Alert.alert(
-            logState.logId ? 'Update failed' : 'Log failed',
+            newLogState.logId ? 'Update failed' : 'Log failed',
             error.message,
           );
         }
 
         Analytics.logEvent(
-          logState.logId
+          newLogState.logId
             ? AnalyticsEvents.updateSleepLog
             : AnalyticsEvents.submitSleepLog,
         );
@@ -768,6 +858,7 @@ export const TagsNotesInput: React.FC<Props> = ({ navigation }) => {
         // Navigate back to the main app
         navigation.navigate('App');
       }}
+      hasNotes
       questionLabel="What, if anything, disturbed your sleep?"
       inputLabel="Anything else of note?"
     />
@@ -793,5 +884,29 @@ const styles = StyleSheet.create({
     right: 16,
     textAlign: 'center',
     opacity: 0.7,
+  },
+  trackerStartContainer: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+  trackerStartHeaderContainer: {
+    width: '100%',
+    height: '10%',
+    marginTop: 0,
+  },
+  trackerStartContentContainer: {
+    flex: 1,
+    justifyContent: 'space-around',
+  },
+  trackerStartDescriptionContainer: {
+    flex: 1,
+    marginTop: scale(14),
+    paddingHorizontal: scale(10),
+  },
+  ouraStepTopButton: {
+    marginTop: scale(5),
+  },
+  ouraStepBottomButton: {
+    marginTop: scale(5),
   },
 });
