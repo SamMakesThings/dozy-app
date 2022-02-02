@@ -582,17 +582,13 @@ export const OuraIntro: React.FC<Props> = ({ navigation }) => {
               moment().subtract(7, 'days').format('YYYY-MM-DD'),
               moment().format('YYYY-MM-DD'),
             );
-            console.log('sleepSamples: ', sleepSamples);
+
             onboardingState.lastSleepLogs = sleepSamples.map((it) =>
               HealthDevice.mapTerraSleepDataToSleepLog(it, 'oura'),
             );
             onboardingState.lastSleepLogs.sort(
               (a, b) =>
                 b.upTime.toDate().valueOf() - a.upTime.toDate().valueOf(),
-            );
-            console.log(
-              'onboardingState.lastSleepLogs: ',
-              onboardingState.lastSleepLogs,
             );
 
             navigation.navigate(
@@ -1325,7 +1321,6 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
             } else {
               dispatch({ type: 'SET_CHATS', chats: chats });
             }
-            console.log('set chats: ', chats);
 
             return;
           })

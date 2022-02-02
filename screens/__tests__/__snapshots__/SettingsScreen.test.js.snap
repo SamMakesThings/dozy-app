@@ -26,7 +26,7 @@ exports[`SettingsScreen should match the snapshot 1`] = `
       useThemeGutterPadding={true}
     >
       <Icon
-        color="rgba(0, 129, 138, 1)"
+        color="#00818a"
         name="Ionicons/ios-person"
         size={200}
       />
@@ -127,13 +127,55 @@ exports[`SettingsScreen should match the snapshot 1`] = `
           Log out
         </Text>
         <Icon
-          color="rgba(0, 129, 138, 1)"
+          color="#00818a"
           name="Ionicons/md-mail"
           size={36}
           style={Object {}}
         />
       </withTheme(Container)>
     </_default>
+    <withTheme(Container)
+      elevation={0}
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "minWidth": 0,
+            "paddingBottom": 15,
+          },
+          Object {
+            "paddingBottom": 30,
+          },
+        ]
+      }
+      useThemeGutterPadding={true}
+    >
+      <Text
+        style={
+          Array [
+            undefined,
+            Object {
+              "fontFamily": "RubikRegular",
+              "fontSize": 34.285714285714285,
+              "lineHeight": 55.714285714285715,
+            },
+            Object {
+              "color": "rgba(255, 255, 255, 1)",
+            },
+          ]
+        }
+      >
+        Connect to Oura
+      </Text>
+      <withTheme(Switch)
+        color="#00818a"
+        disabled={false}
+        onValueChange={[Function]}
+        value={false}
+      />
+    </withTheme(Container)>
     <withTheme(Container)
       elevation={0}
       style={
@@ -165,7 +207,7 @@ exports[`SettingsScreen should match the snapshot 1`] = `
         Sleep log reminders
       </Text>
       <withTheme(Switch)
-        color="rgba(0, 129, 138, 1)"
+        color="#00818a"
         disabled={false}
         onValueChange={[Function]}
         value={false}

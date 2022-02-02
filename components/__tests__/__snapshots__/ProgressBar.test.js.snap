@@ -11,7 +11,7 @@ exports[`ProgressBar should match the snapshot 1`] = `
   <View
     style={
       Object {
-        "backgroundColor": "rgba(64, 75, 105, 1)",
+        "backgroundColor": "#404b69",
         "borderRadius": 100,
         "flex": 1,
         "flexDirection": "row",
@@ -21,7 +21,7 @@ exports[`ProgressBar should match the snapshot 1`] = `
     <View
       style={
         Object {
-          "backgroundColor": "rgba(0, 129, 138, 1)",
+          "backgroundColor": "#00818a",
           "borderRadius": 100,
           "flex": 0.1,
         }

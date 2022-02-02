@@ -24,7 +24,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
       <Text
         style={
           Object {
-            "color": "rgba(219, 237, 243, 1)",
+            "color": "#dbedf3",
             "fontFamily": "RubikMedium",
             "fontSize": 42.857142857142854,
             "lineHeight": 55.714285714285715,
@@ -36,7 +36,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
       <Text
         style={
           Object {
-            "color": "rgba(219, 237, 243, 1)",
+            "color": "#dbedf3",
             "fontFamily": "RubikRegular",
             "fontSize": 36.42857142857143,
             "lineHeight": 55.714285714285715,
@@ -50,7 +50,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
     <Text
       style={
         Object {
-          "color": "rgba(219, 237, 243, 1)",
+          "color": "#dbedf3",
           "fontFamily": "RubikRegular",
           "fontSize": 30,
           "lineHeight": 32.14285714285714,
@@ -79,7 +79,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
       ratingColor="#f1c40f"
       ratingCount={5}
       ratingImage={1}
-      ratingTextColor="rgba(219, 237, 243, 1)"
+      ratingTextColor="#dbedf3"
       readonly={false}
       showReadOnlyText={false}
       startingValue={0}
@@ -89,7 +89,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
           "paddingBottom": 49.285714285714285,
         }
       }
-      tintColor="rgba(64, 75, 105, 1)"
+      tintColor="#404b69"
       type="star"
     />
     <View
@@ -132,7 +132,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
         />
       </withTheme(Container)>
       <withTheme(Button)
-        color="rgba(0, 129, 138, 1)"
+        color="#00818a"
         style={
           Array [
             Object {
