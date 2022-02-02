@@ -92,3 +92,18 @@ export function extractParamsFromUrl(
 
   return obj;
 }
+
+/**
+ * Convert RGB hex color to RGBA macro with opacity
+ * @param {string!} hexColor original color to add opacity ex. #00ff66
+ * @param {number!} opacity opacity value from 0.0 to 1.0
+ * @returns {string} color that opacity added
+ */
+export function RGB2RGBA(hexColor: string, opacity: number): string {
+  hexColor = hexColor.replace('#', '');
+  const r = parseInt(hexColor.substring(0, 2), 16);
+  const g = parseInt(hexColor.substring(2, 4), 16);
+  const b = parseInt(hexColor.substring(4, 6), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
