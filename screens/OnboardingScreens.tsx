@@ -1,4 +1,10 @@
-import React, { useEffect, useCallback, useRef } from 'react';
+import React, {
+  useEffect,
+  useCallback,
+  useRef,
+  useState,
+  useMemo,
+} from 'react';
 import {
   useWindowDimensions,
   Text,
@@ -10,6 +16,8 @@ import {
   FlatList,
   AppState,
   AppStateStatus,
+  Image,
+  Alert,
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
@@ -23,7 +31,9 @@ import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
+import TagSelectScreen from '../components/screens/TagSelectScreen';
 import { dozy_theme } from '../config/Themes';
+import Images from '../config/Images';
 import WaveHello from '../assets/images/WaveHello.svg';
 import LabCoat from '../assets/images/LabCoat.svg';
 import Clipboard from '../assets/images/Clipboard.svg';
@@ -49,6 +59,7 @@ import Auth from '../utilities/auth.service';
 import { getOnboardingCoach } from '../utilities/coach';
 import Notification from '../utilities/notification.service';
 import fetchChats from '../utilities/fetchChats';
+import HealthDevice from '../utilities/healthDevice.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { Chat } from '../types/custom';
 import { ErrorObj } from '../types/error';
@@ -405,6 +416,8 @@ export const ISI7: React.FC<Props> = ({ navigation }) => {
 };
 
 export const ISIResults: React.FC<Props> = ({ navigation }) => {
+  imgSize = imgSizePercent * useWindowDimensions().width;
+
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingISIResults);
   }, []);
@@ -469,7 +482,7 @@ export const ISISignificant: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       image={<TiredFace width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        navigation.navigate('SafetyIntro', {
+        navigation.navigate('OuraIntro', {
           progressBarPercent: null,
         });
       }}
@@ -506,7 +519,7 @@ export const ISINoSignificant: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       image={<Expressionless width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
-        navigation.navigate('SafetyIntro', {
+        navigation.navigate('OuraIntro', {
           progressBarPercent: null,
         });
       }}
@@ -527,6 +540,188 @@ export const ISINoSignificant: React.FC<Props> = ({ navigation }) => {
         </>
       }
       buttonLabel="Whatever, I'll use it anyway"
+    />
+  );
+};
+
+export const OuraIntro: React.FC<Props> = ({ navigation }) => {
+  const logoWidth = useWindowDimensions().width * 0.9;
+  const { devices } = HealthDevice.useHealthDevice();
+  const { state } = Auth.useAuth();
+
+  const [connectingOura, setConectingOura] = useState(false);
+
+  const isOuraConnected = useMemo(
+    () => HealthDevice.isDeviceConnected(devices, 'oura'),
+    [devices],
+  );
+  onboardingState.ouraConnected = isOuraConnected;
+
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<Image width={logoWidth} source={Images.OuraLogo} />}
+      onQuestionSubmit={async (
+        value?: string | number | boolean,
+      ): Promise<void> => {
+        if (value === 'Skip') {
+          navigation.navigate('SafetyIntro');
+        } else {
+          setConectingOura(true);
+
+          try {
+            if (!onboardingState.ouraConnected) {
+              await HealthDevice.connectToTerra(state.userId!, 'oura');
+              onboardingState.ouraConnected = true;
+            }
+
+            // Get sleep samples for the past 7 days
+            const sleepSamples = await HealthDevice.getSleepSamples(
+              'oura',
+              moment().subtract(7, 'days').format('YYYY-MM-DD'),
+              moment().format('YYYY-MM-DD'),
+            );
+            console.log('sleepSamples: ', sleepSamples);
+            onboardingState.lastSleepLogs = sleepSamples.map((it) =>
+              HealthDevice.mapTerraSleepDataToSleepLog(it, 'oura'),
+            );
+            onboardingState.lastSleepLogs.sort(
+              (a, b) =>
+                b.upTime.toDate().valueOf() - a.upTime.toDate().valueOf(),
+            );
+            console.log(
+              'onboardingState.lastSleepLogs: ',
+              onboardingState.lastSleepLogs,
+            );
+
+            navigation.navigate(
+              onboardingState.lastSleepLogs.length
+                ? 'OuraMoreQuestions'
+                : 'OuraSuccess',
+            );
+          } catch (error: any) {
+            Alert.alert('Error', error.message);
+          }
+
+          setConectingOura(false);
+        }
+      }}
+      textLabel="Do you use an Oura ring? The ring would allow you to skip the baseline collection week and automatically log certain sleep metrics."
+      buttonLabel={
+        onboardingState.ouraConnected && !connectingOura
+          ? 'Already connected'
+          : 'Connect Oura ring'
+      }
+      bottomGreyButtonLabel="Skip"
+      loading={connectingOura}
+      bottomGreyDisabled={connectingOura}
+      bbbDisabled={connectingOura}
+    />
+  );
+};
+
+export const OuraMoreQuestions: React.FC<Props> = ({ navigation }) => {
+  const logoWidth = useWindowDimensions().width * 0.9;
+
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<Image width={logoWidth} source={Images.OuraLogo} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('TagSelect', {
+          progressBarPercent: null,
+        });
+      }}
+      textLabel="Almost done - two more questions to complete Oura setup."
+      buttonLabel="Continue"
+    />
+  );
+};
+
+export const TagSelect: React.FC<Props> = ({ navigation }) => {
+  return (
+    <TagSelectScreen
+      theme={theme}
+      touchableTags={[
+        { label: 'nothing', icon: 'emoji-happy' },
+        { label: 'light', icon: 'light-bulb' },
+        { label: 'noise', icon: 'sound' },
+        { label: 'pets', icon: 'baidu' },
+        { label: 'my partner', icon: 'user' },
+        { label: 'kids', icon: 'users' },
+        { label: 'heat', icon: 'adjust' },
+        { label: 'cold', icon: 'water' },
+        { label: 'hot flashes', icon: 'air' },
+        { label: 'bad bed', icon: 'bug' },
+        { label: 'worry', icon: 'emoji-sad' },
+        { label: 'stress', icon: 'new' },
+        { label: 'pain', icon: 'flash' },
+        { label: 'restroom', icon: 'warning' },
+        { label: 'phone & devices', icon: 'mobile' },
+        { label: 'eating', icon: 'bowl' },
+        { label: 'smoking', icon: 'cloud' },
+        { label: 'late caffeine', icon: 'drop' },
+        { label: 'late alcohol', icon: 'cup' },
+      ]}
+      onFormSubmit={async (res: { tags: string[] }) => {
+        onboardingState.lastSleepTags = res.tags;
+        if (onboardingState.lastSleepLogs?.[0]) {
+          onboardingState.lastSleepLogs[0].tags = res.tags;
+        }
+        navigation.navigate('SleepRatingInput');
+      }}
+      questionLabel="In the last week, which of the following disturbed your sleep on at least three nights?"
+      buttonLabel="Continue"
+      bottomBackButton={() => navigation.goBack()}
+    />
+  );
+};
+
+export const SleepRatingInput: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        onboardingState.lastSleepRaiting = value as number;
+        if (onboardingState.lastSleepLogs?.[0]) {
+          onboardingState.lastSleepLogs[0].sleepRating = value as number;
+          onboardingState.lastSleepLogs.forEach((it) => {
+            it.isDraft = false;
+          });
+        }
+        navigation.navigate('OuraSuccess');
+      }}
+      buttonValues={[
+        { label: '1', value: 1 },
+        { label: '2', value: 2 },
+        { label: '3', value: 3 },
+        { label: '4', value: 4 },
+        { label: '5', value: 5 },
+      ]}
+      questionLabel="How would you rate your typical night of sleep, on a scale of 1-5? (in the last week)"
+      questionSubtitle="Where 1 is terrible and 5 is great (in the last week)"
+      bottomBackButton={() => navigation.goBack()}
+    />
+  );
+};
+
+export const OuraSuccess: React.FC<Props> = ({ navigation }) => {
+  const logoWidth = useWindowDimensions().width * 0.9;
+
+  return (
+    <IconExplainScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      image={<Image width={logoWidth} source={Images.OuraLogo} />}
+      onQuestionSubmit={() => {
+        navigation.navigate('SafetyIntro', {
+          progressBarPercent: null,
+        });
+      }}
+      textLabel="Your Oura integration is good to go! You’ll now have a faster experience recording sleep information each morning. However, there aren’t enough nights recorded to skip the baseline period, so we’ll still need to record a week of sleep before starting the main program."
+      buttonLabel="Continue"
     />
   );
 };
@@ -1024,6 +1219,22 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
   const timePickerRef =
     useRef<{ getValue: () => Date; setValue: (date: Date) => void }>(null);
 
+  const defaultCheckinTime = useMemo((): Date => {
+    let estimatedTime = moment().add(1, 'week').toDate();
+    // Count the number of sleep logs from Oura
+    if (onboardingState.lastSleepLogs?.length) {
+      estimatedTime = moment()
+        .add(Math.max(0, 7 - onboardingState.lastSleepLogs.length), 'days')
+        .toDate();
+
+      if (moment().isAfter(estimatedTime)) {
+        estimatedTime = new Date();
+      }
+    }
+
+    return estimatedTime;
+  }, []);
+
   const validateInput = useCallback((val: Date): ErrorObj | boolean => {
     // Make sure the selected date is 7+ days from today
     // Make sure it's within 14 days
@@ -1082,7 +1293,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
       ref={timePickerRef}
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      defaultValue={moment().add(1, 'weeks').toDate()}
+      defaultValue={defaultCheckinTime}
       onQuestionSubmit={(value: Date | boolean) => {
         onboardingState.firstCheckinTime = value as Date;
         navigation.navigate('SendFirstChat', { progressBarPercent: 0.8 });
