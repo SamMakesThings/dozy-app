@@ -25,7 +25,7 @@ const ConfirmSleepTimeModalPropTypes = {
     fallAsleepTime: PropTypes.shape({}).isRequired,
     wakeTime: PropTypes.shape({}).isRequired,
     upTime: PropTypes.shape({}).isRequired,
-    sleepRating: PropTypes.number.isRequired,
+    sleepRating: PropTypes.number,
     sleepDuration: PropTypes.number.isRequired,
     sleepEfficiency: PropTypes.number.isRequired,
     nightMinsAwake: PropTypes.number.isRequired,
