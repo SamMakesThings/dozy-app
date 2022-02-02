@@ -6,7 +6,8 @@ import { Theme } from '../types/theme';
 
 interface Props {
   theme: Theme;
-  bottomBackButton?: () => void;
+  disabled?: boolean;
+  grayDisabled?: boolean;
   bbbDisabled?: boolean;
   buttonValues?: Array<{
     label: string;
@@ -14,17 +15,25 @@ interface Props {
     solidColor?: boolean;
   }>;
   onPress?: (value?: string | number | boolean) => void;
+  bottomBackButton?: () => void;
   onlyBackButton?: boolean;
-  disabled?: boolean;
   buttonLabel?: string;
   bottomGreyButtonLabel?: string;
   bottomBackButtonLabel?: string;
+  loading?: boolean;
 }
 
 // A catch-all component for buttons on the bottom of a screen.
 // TODO: Replace bottomGreyButton calls with buttonValues
 const BottomNavButtons: React.FC<Props> = (props) => {
-  const { theme, bottomBackButton, bbbDisabled } = props;
+  const {
+    theme,
+    bottomBackButton,
+    disabled,
+    bbbDisabled,
+    grayDisabled,
+    loading,
+  } = props;
 
   const submitUserProgress = () => {
     /* This Firebase write created crazy performance problems.
@@ -83,7 +92,8 @@ const BottomNavButtons: React.FC<Props> = (props) => {
           submitUserProgress();
         }}
         color={theme.colors.primary}
-        disabled={props.disabled}
+        disabled={disabled}
+        loading={loading}
       >
         {props.buttonLabel || 'Next'}
       </Button>
@@ -102,7 +112,7 @@ const BottomNavButtons: React.FC<Props> = (props) => {
             submitUserProgress();
           }}
           color={theme.colors.medium}
-          disabled={props.disabled}
+          disabled={grayDisabled}
         >
           {props.bottomGreyButtonLabel}
         </Button>
