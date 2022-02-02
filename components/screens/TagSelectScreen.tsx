@@ -38,11 +38,14 @@ interface Props {
   defaultTags?: string[];
   defaultNotes?: string;
   questionLabel: string;
-  inputLabel: string;
-  validateSleepLog: () => ErrorObj | boolean;
-  onInvalidForm: () => void;
+  hasNotes?: boolean;
+  inputLabel?: string;
+  buttonLabel?: string;
+  validateSleepLog?: () => ErrorObj | boolean;
+  onInvalidForm?: () => void;
   onFormSubmit: (value: { notes: string; tags: string[] }) => void;
-  sleepLog: SleepLog;
+  bottomBackButton?: () => void;
+  sleepLog?: SleepLog;
 }
 
 const TagSelectScreen: React.FC<Props> = ({
@@ -53,9 +56,12 @@ const TagSelectScreen: React.FC<Props> = ({
   questionLabel,
   inputLabel,
   sleepLog,
+  hasNotes,
+  buttonLabel = 'Finish',
   validateSleepLog,
   onInvalidForm,
   onFormSubmit,
+  bottomBackButton,
 }) => {
   // Set up component state for tags and note field
   const [selectedTags, updateTags] = React.useState(defaultTags || []) as any;
@@ -79,18 +85,24 @@ const TagSelectScreen: React.FC<Props> = ({
   }, [onFormSubmit, notes, selectedTags]);
 
   const onSubmit = useCallback((): void => {
-    const validationResult = validateSleepLog();
-    if (validationResult === true) {
-      onFormSubmitWithNotesAndTags();
+    if (validateSleepLog) {
+      const validationResult = validateSleepLog();
+      if (validationResult === true) {
+        onFormSubmitWithNotesAndTags();
+      } else {
+        setErrorMessage((validationResult as ErrorObj).errorMsg);
+        setShowingModal(true);
+      }
     } else {
-      setErrorMessage((validationResult as ErrorObj).errorMsg);
-      setShowingModal(true);
+      onFormSubmitWithNotesAndTags();
     }
   }, [validateSleepLog, onFormSubmitWithNotesAndTags]);
 
   const onFixSleepLog = useCallback((): void => {
     setShowingModal(false);
-    onInvalidForm();
+    if (onInvalidForm) {
+      onInvalidForm();
+    }
   }, [onInvalidForm]);
 
   return (
@@ -99,14 +111,16 @@ const TagSelectScreen: React.FC<Props> = ({
       scrollable={false}
       style={{ paddingTop: top, paddingBottom: bottom }}
     >
-      <ConfirmSleepTimeModal
-        visible={showingModal}
-        sleepLog={sleepLog}
-        description={errorMessage}
-        onRequestClose={() => setShowingModal((prevState) => !prevState)}
-        onFix={onFixSleepLog}
-        onProceed={onFormSubmitWithNotesAndTags}
-      />
+      {!!sleepLog && (
+        <ConfirmSleepTimeModal
+          visible={showingModal}
+          sleepLog={sleepLog}
+          description={errorMessage}
+          onRequestClose={() => setShowingModal((prevState) => !prevState)}
+          onFix={onFixSleepLog}
+          onProceed={onFormSubmitWithNotesAndTags}
+        />
+      )}
       <View
         style={[
           styles.overlay,
@@ -126,7 +140,7 @@ const TagSelectScreen: React.FC<Props> = ({
       />
       <ScrollView
         contentContainerStyle={styles.container}
-        scrollEnabled={false}
+        // scrollEnabled={false}
         ref={scrollViewRef}
         onLayout={Platform.OS === 'android' ? onAndroidLayout : undefined}
       >
@@ -185,31 +199,38 @@ const TagSelectScreen: React.FC<Props> = ({
                 );
               })}
             </View>
-            <View
-              style={[
-                styles.View_TextInputContainer,
-                {
-                  borderColor: theme.colors.medium,
-                  backgroundColor: theme.colors.background,
-                },
-              ]}
-            >
-              <TextInput
-                style={styles.notesInput}
-                placeholder={inputLabel}
-                placeholderTextColor={theme.colors.light}
-                defaultValue={defaultNotes}
-                keyboardType="default"
-                keyboardAppearance="dark"
-                returnKeyType="done"
-                enablesReturnKeyAutomatically={true}
-                onChangeText={(value) => setNotes(value)}
-              />
-            </View>
+            {!!hasNotes && (
+              <View
+                style={[
+                  styles.View_TextInputContainer,
+                  {
+                    borderColor: theme.colors.medium,
+                    backgroundColor: theme.colors.background,
+                  },
+                ]}
+              >
+                <TextInput
+                  style={styles.notesInput}
+                  placeholder={inputLabel}
+                  placeholderTextColor={theme.colors.light}
+                  defaultValue={defaultNotes}
+                  keyboardType="default"
+                  keyboardAppearance="dark"
+                  returnKeyType="done"
+                  enablesReturnKeyAutomatically={true}
+                  onChangeText={(value) => setNotes(value)}
+                />
+              </View>
+            )}
           </Container>
         </KeyboardAwareView>
       </ScrollView>
-      <BottomNavButtons theme={theme} onPress={onSubmit} buttonLabel="Finish" />
+      <BottomNavButtons
+        theme={theme}
+        onPress={onSubmit}
+        bottomBackButton={bottomBackButton}
+        buttonLabel={buttonLabel}
+      />
     </ScreenContainer>
   );
 };
