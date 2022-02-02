@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import {
   ScrollView,
   Text,
@@ -30,6 +30,8 @@ import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import Notification from '../utilities/notification.service';
+import HealthDevice from '../utilities/healthDevice.service';
+import DiaryEntryFlow from '../utilities/diaryEntryFlow.service';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -43,11 +45,17 @@ if (Platform.OS === 'android') {
 const SleepLogsView = (props: {
   isLoading: boolean;
   sleepLogs: Array<SleepLog>;
-  logEntryRedirect: () => void;
   navigation: Navigation;
 }) => {
   const theme = dozy_theme;
   const { state } = Auth.useAuth();
+  const { devices } = HealthDevice.useHealthDevice();
+  const { initFlow } = DiaryEntryFlow.useDiaryEntryFlow();
+
+  const isOuraConnected = useMemo(
+    () => HealthDevice.isDeviceConnected(devices, 'oura'),
+    [devices],
+  );
   let loggedToday = false;
   let selectedSleepLogs: Array<SleepLog> = [];
 
@@ -66,11 +74,25 @@ const SleepLogsView = (props: {
     });
   }
 
+  const addSleepLog = useCallback((): void => {
+    const initialStepData = initFlow();
+    props.navigation.navigate('SleepDiaryEntry', {
+      screen: initialStepData.screen,
+      params: {
+        progressBarPercent: initialStepData.progress,
+      },
+    });
+    Analytics.logEvent(AnalyticsEvents.addSleepLog);
+  }, [props.navigation, isOuraConnected]);
+
   const onEditLog = useCallback(
     (log: SleepLog): void => {
+      const initialStepData = initFlow(log);
       props.navigation.navigate('SleepDiaryEntry', {
-        screen: 'BedTimeInput',
-        params: { logId: log.logId },
+        screen: initialStepData.screen,
+        params: {
+          progressBarPercent: initialStepData.progress,
+        },
       });
       Analytics.logEvent(AnalyticsEvents.editSleepLog);
     },
@@ -82,7 +104,7 @@ const SleepLogsView = (props: {
     return (
       <View>
         <IconTitleSubtitleButton
-          onPress={() => props.logEntryRedirect()}
+          onPress={addSleepLog}
           backgroundColor={
             !loggedToday ? theme.colors.primary : theme.colors.medium
           }
@@ -110,7 +132,7 @@ const SleepLogsView = (props: {
       <View style={styles.container}>
         <View style={styles.container}>
           <IconTitleSubtitleButton
-            onPress={() => props.logEntryRedirect()}
+            onPress={addSleepLog}
             backgroundColor={
               !loggedToday ? theme.colors.primary : theme.colors.medium
             }
@@ -144,8 +166,8 @@ const SleepLogsView = (props: {
         contentContainerStyle={styles.contentContainer}
       >
         <IconTitleSubtitleButton
-          onPress={props.logEntryRedirect}
-          onPressIn={props.logEntryRedirect}
+          onPress={addSleepLog}
+          onPressIn={addSleepLog}
           delayPressIn={0}
           backgroundColor={
             !loggedToday ? theme.colors.primary : theme.colors.medium
@@ -240,11 +262,6 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
     });
   }
 
-  const addSleepLog = useCallback((): void => {
-    props.navigation.navigate('SleepDiaryEntry');
-    Analytics.logEvent(AnalyticsEvents.addSleepLog);
-  }, [props.navigation]);
-
   // Set sleep logs once upon loading
   useEffect(() => {
     setSleepLogs();
@@ -275,7 +292,6 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
         <SleepLogsView
           isLoading={logsLoading}
           sleepLogs={state.sleepLogs || []}
-          logEntryRedirect={addSleepLog}
           navigation={props.navigation}
         />
       </Container>
@@ -285,7 +301,6 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
 
 SleepLogsView.propTypes = {
   sleepLogs: PropTypes.array,
-  logEntryRedirect: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
