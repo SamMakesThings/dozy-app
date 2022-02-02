@@ -10,11 +10,12 @@ import {
 import { Container } from '@draftbit/ui';
 import firestore from '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 import { dozy_theme } from '../config/Themes';
 import HighlightedText from './HighlightedText';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import Auth from '../utilities/auth.service';
+import { RGB2RGBA } from '../utilities/common';
 import { SleepLog } from '../types/custom';
 
 interface Props {
@@ -80,12 +81,18 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
           })}
         </Text>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={onEdit}
-            style={[styles.editButton, !onEdit && styles.hidden]}
-          >
-            <Entypo name="pencil" size={scale(18)} color={theme.colors.light} />
-          </TouchableOpacity>
+          {!sleepLog.isDraft && (
+            <TouchableOpacity
+              onPress={onEdit}
+              style={[styles.editButton, !onEdit && styles.hidden]}
+            >
+              <Entypo
+                name="pencil"
+                size={scale(18)}
+                color={theme.colors.light}
+              />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity onPress={openDeleteSleepLogAlert}>
             <Entypo name="trash" size={scale(16)} color={theme.colors.light} />
           </TouchableOpacity>
@@ -244,6 +251,21 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
             sleep efficiency
           </Text>
         </Container>
+        {sleepLog.isDraft && (
+          <TouchableOpacity style={styles.overlay} onPress={onEdit}>
+            <Ionicons
+              name="ios-add-circle"
+              size={scale(35)}
+              color={theme.colors.secondary}
+            />
+            <View style={styles.overlayDescriptionContainer}>
+              <Text style={styles.overlayTitle}>Complete sleep log?</Text>
+              <Text style={styles.overlayDescription}>
+                Data imported from Oura
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
       </Container>
     </Container>
   );
@@ -253,8 +275,8 @@ export default SleepLogEntryCard;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    flex: 1,
     flexDirection: 'row',
+    justifyContent: 'flex-end',
     opacity: 0.3,
   },
   headerContainer: {
@@ -263,7 +285,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  upTimeText: { width: '85%' },
+  upTimeText: { flex: 1 },
   editButton: { marginRight: 8 },
   hidden: { display: 'none' },
   content: {
@@ -342,5 +364,23 @@ const styles = StyleSheet.create({
     width: '100%',
     bottom: 0,
     position: 'absolute',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: RGB2RGBA(dozy_theme.colors.primary, 0.7),
+  },
+  overlayTitle: {
+    fontSize: scale(16),
+    color: dozy_theme.colors.secondary,
+  },
+  overlayDescription: {
+    fontSize: scale(13),
+    color: RGB2RGBA(dozy_theme.colors.secondary, 0.7),
+  },
+  overlayDescriptionContainer: {
+    marginLeft: scale(14),
   },
 });
