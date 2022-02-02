@@ -217,6 +217,7 @@ const DateTimePickerScreen = (
         bottomGreyButtonLabel={props.bottomGreyButtonLabel}
         buttonLabel={props.buttonLabel}
         disabled={props.nextDisabled || screenState === States.Invalid}
+        grayDisabled={props.nextDisabled || screenState === States.Invalid}
       />
     </SafeAreaView>
   );
