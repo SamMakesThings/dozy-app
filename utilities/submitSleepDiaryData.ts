@@ -8,27 +8,7 @@ import { SleepLog } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import { encodeLocalTime } from './time';
 import Notification from './notification.service';
-
-interface LogState {
-  logId?: string;
-  logDate: Date;
-  bedTime: Date;
-  wakeTime: Date;
-  upTime: Date;
-  nightMinsAwake: number;
-  minsToFallAsleep: number;
-  wakeCount: number;
-  sleepRating: number;
-  notes: string;
-  tags: string[];
-  SCTUpCount: undefined | number;
-  SCTAnythingNonSleepInBed: undefined | boolean;
-  SCTNonSleepActivities: undefined | string | null;
-  SCTDaytimeNaps: undefined | boolean;
-  PMRPractice: undefined | string;
-  PITPractice: undefined | boolean;
-  isZeroSleep: boolean;
-}
+import { LogState } from './diaryEntryFlow.service';
 
 export default async function submitSleepDiaryData(
   logState: LogState,
@@ -51,15 +31,21 @@ export default async function submitSleepDiaryData(
           .collection('sleepLogs');
 
   // Prepare object for pushing to Firebase
-  const logDataForDoc = normalizeSleepLog(logState, true);
+  const logDataForDoc = normalizeSleepLog(logState, true, logState.isDraft);
 
   // If entry is an edit, update existing log document in Firebase
   // Otherwise, create a new document
   try {
     if (logState.logId) {
-      await sleepLogsRef.doc(logState.logId).update(logDataForDoc);
+      await sleepLogsRef.doc(logState.logId).update({
+        ...logDataForDoc,
+        isDraft: false,
+      });
     } else {
-      await sleepLogsRef.add(logDataForDoc);
+      await sleepLogsRef.add({
+        ...logDataForDoc,
+        isDraft: false,
+      });
       // Update the app icon's badge
       if (
         moment(logDataForDoc.upTime.toDate()).isSameOrAfter(
@@ -126,53 +112,66 @@ export default async function submitSleepDiaryData(
 export function normalizeSleepLog(
   logState: LogState,
   isChangeTimezone = false,
+  isDraft = false,
 ): SleepLog {
   const newLogState = cloneDeep(logState);
+  let minsInBedTotal = 0;
+  let minsAwakeInBedTotal = logState.minsAwakeInBedTotal;
+  let sleepEfficiency = logState.sleepEfficiency;
+  let sleepDuration = logState.sleepDuration;
 
   // If bedtime/sleeptime are in the evening, change them to be the day before
-  if (
-    logState.bedTime >
-    (logState.isZeroSleep ? logState.upTime : logState.wakeTime)
-  ) {
-    newLogState.bedTime = moment(logState.bedTime).subtract(1, 'days').toDate();
-  } else if (
-    !logState.isZeroSleep &&
-    logState.upTime < logState.bedTime &&
-    logState.bedTime < logState.wakeTime &&
-    logState.upTime < logState.wakeTime
-  ) {
-    newLogState.bedTime = moment(logState.bedTime).subtract(1, 'days').toDate();
-    newLogState.wakeTime = moment(logState.wakeTime)
-      .subtract(1, 'days')
-      .toDate();
-  }
-  if (logState.isZeroSleep) {
-    newLogState.wakeTime = newLogState.bedTime;
-  }
+  if (!isDraft) {
+    if (
+      logState.bedTime >
+      (logState.isZeroSleep ? logState.upTime : logState.wakeTime)
+    ) {
+      newLogState.bedTime = moment(logState.bedTime)
+        .subtract(1, 'days')
+        .toDate();
+    } else if (
+      !logState.isZeroSleep &&
+      logState.upTime < logState.bedTime &&
+      logState.bedTime < logState.wakeTime &&
+      logState.upTime < logState.wakeTime
+    ) {
+      newLogState.bedTime = moment(logState.bedTime)
+        .subtract(1, 'days')
+        .toDate();
+      newLogState.wakeTime = moment(logState.wakeTime)
+        .subtract(1, 'days')
+        .toDate();
+    }
+    if (logState.isZeroSleep) {
+      newLogState.wakeTime = newLogState.bedTime;
+    }
 
-  // calculate total time in bed, time between waking & getting up, and time awake in bed
-  const minsInBedTotal = Math.floor(
-    (newLogState.upTime.getTime() - newLogState.bedTime.getTime()) / 1000 / 60,
-  );
-  if (logState.isZeroSleep) {
-    newLogState.minsToFallAsleep = minsInBedTotal / 2;
-    newLogState.nightMinsAwake = minsInBedTotal / 2;
-  }
-  const minsInBedAfterWaking = logState.isZeroSleep
-    ? 0
-    : Math.floor(
-        (newLogState.upTime.getTime() - newLogState.wakeTime.getTime()) /
-          1000 /
-          60,
-      );
-  const minsAwakeInBedTotal =
-    newLogState.nightMinsAwake +
-    newLogState.minsToFallAsleep +
-    minsInBedAfterWaking;
+    // calculate total time in bed, time between waking & getting up, and time awake in bed
+    minsInBedTotal = Math.floor(
+      (newLogState.upTime.getTime() - newLogState.bedTime.getTime()) /
+        1000 /
+        60,
+    );
+    if (logState.isZeroSleep) {
+      newLogState.minsToFallAsleep = minsInBedTotal / 2;
+      newLogState.nightMinsAwake = minsInBedTotal / 2;
+    }
+    const minsInBedAfterWaking = logState.isZeroSleep
+      ? 0
+      : Math.floor(
+          (newLogState.upTime.getTime() - newLogState.wakeTime.getTime()) /
+            1000 /
+            60,
+        );
+    minsAwakeInBedTotal =
+      newLogState.nightMinsAwake +
+      newLogState.minsToFallAsleep +
+      minsInBedAfterWaking;
 
-  // calculate sleep duration & sleep efficiency
-  const sleepDuration = minsInBedTotal - minsAwakeInBedTotal;
-  const sleepEfficiency = +(sleepDuration / minsInBedTotal).toFixed(2);
+    // calculate sleep duration & sleep efficiency
+    sleepDuration = minsInBedTotal - minsAwakeInBedTotal;
+    sleepEfficiency = +(sleepDuration / minsInBedTotal).toFixed(2);
+  }
 
   // Create an object, add any additional treatment module data
   // Currently added: SCT, RLX (PMR), PIT
@@ -208,6 +207,7 @@ export function normalizeSleepLog(
   // Prepare object for pushing to Firebase
   return {
     ...pick(newLogState, [
+      'dataFromDevice',
       'minsToFallAsleep',
       'wakeCount',
       'nightMinsAwake',
