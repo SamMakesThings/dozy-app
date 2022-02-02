@@ -27,6 +27,7 @@ import Notification from '../utilities/notification.service';
 import { getCoachAssignedToUser } from '../utilities/coach';
 import Navigation from '../utilities/navigation.service';
 import HealthDevice from '../utilities/healthDevice.service';
+import DiaryEntryFlow from '../utilities/diaryEntryFlow.service';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
@@ -35,74 +36,80 @@ const TopStack = createStackNavigator();
 
 // Export the navigation components and screens, with if/then for auth state
 function InitialAuthNavigator({ userId, onboardingComplete }) {
+  const diaryEntryFlowContextValue = DiaryEntryFlow.useDiaryEntryFlowService();
+
   return (
-    <TopStack.Navigator
-      initialRouteName="Onboarding"
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      {userId != undefined ? (
-        <>
-          {onboardingComplete ? (
+    <DiaryEntryFlow.Context.Provider value={diaryEntryFlowContextValue}>
+      <TopStack.Navigator
+        initialRouteName="Onboarding"
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        {userId != undefined ? (
+          <>
+            {onboardingComplete ? (
+              <TopStack.Screen
+                name="App"
+                component={
+                  BottomTabs /* If logged in, go to the tab navigator */
+                }
+              />
+            ) : (
+              <TopStack.Screen
+                name="Onboarding"
+                component={OnboardingNavigator}
+              />
+            )}
             <TopStack.Screen
-              name="App"
-              component={BottomTabs /* If logged in, go to the tab navigator */}
+              name="TreatmentReview"
+              component={TreatmentReviewScreen}
+              options={() => ({
+                headerShown: true,
+                // eslint-disable-next-line react/display-name
+                header: ({ navigation }) => {
+                  return <HeaderProgressBar navigation={navigation} />;
+                },
+                animationEnabled: true,
+                headerTransparent: true,
+              })}
             />
-          ) : (
             <TopStack.Screen
-              name="Onboarding"
-              component={OnboardingNavigator}
+              name="TreatmentPlan"
+              component={TreatmentPlanScreen}
+              options={() => ({
+                headerShown: true,
+                // eslint-disable-next-line react/display-name
+                header: ({ navigation }) => {
+                  return <HeaderProgressBar navigation={navigation} />;
+                },
+                animationEnabled: true,
+                headerTransparent: true,
+              })}
             />
-          )}
+            <TopStack.Screen
+              name="SleepDiaryEntry"
+              component={DiaryEntryNavigator}
+            />
+            <TopStack.Screen name="SCTSRT" component={SCTSRTNavigator} />
+            <TopStack.Screen name="RLX" component={RLXNavigator} />
+            <TopStack.Screen name="PIT" component={PITNavigator} />
+            <TopStack.Screen name="HYG" component={HYGNavigator} />
+            <TopStack.Screen name="COG1" component={COG1Navigator} />
+            <TopStack.Screen name="END" component={ENDNavigator} />
+          </>
+        ) : (
           <TopStack.Screen
-            name="TreatmentReview"
-            component={TreatmentReviewScreen}
-            options={() => ({
-              headerShown: true,
-              // eslint-disable-next-line react/display-name
-              header: ({ navigation }) => {
-                return <HeaderProgressBar navigation={navigation} />;
-              },
-              animationEnabled: true,
-              headerTransparent: true,
-            })}
+            name="Auth"
+            component={LoginScreen}
+            options={{
+              // If not logged in, jump to the login screen
+              header: null,
+            }}
           />
-          <TopStack.Screen
-            name="TreatmentPlan"
-            component={TreatmentPlanScreen}
-            options={() => ({
-              headerShown: true,
-              // eslint-disable-next-line react/display-name
-              header: ({ navigation }) => {
-                return <HeaderProgressBar navigation={navigation} />;
-              },
-              animationEnabled: true,
-              headerTransparent: true,
-            })}
-          />
-          <TopStack.Screen
-            name="SleepDiaryEntry"
-            component={DiaryEntryNavigator}
-          />
-          <TopStack.Screen name="SCTSRT" component={SCTSRTNavigator} />
-          <TopStack.Screen name="RLX" component={RLXNavigator} />
-          <TopStack.Screen name="PIT" component={PITNavigator} />
-          <TopStack.Screen name="HYG" component={HYGNavigator} />
-          <TopStack.Screen name="COG1" component={COG1Navigator} />
-          <TopStack.Screen name="END" component={ENDNavigator} />
-        </>
-      ) : (
-        <TopStack.Screen
-          name="Auth"
-          component={LoginScreen}
-          options={{
-            // If not logged in, jump to the login screen
-            header: null,
-          }}
-        />
-      )}
-    </TopStack.Navigator>
+        )}
+      </TopStack.Navigator>
+    </DiaryEntryFlow.Context.Provider>
   );
 }
 
