@@ -177,6 +177,9 @@ const NumInputScreen: React.FC<Props> = (props) => {
         disabled={
           screenState === States.Empty || screenState === States.Invalid
         }
+        grayDisabled={
+          screenState === States.Empty || screenState === States.Invalid
+        }
       />
     </ScreenContainer>
   );
