@@ -1,16 +1,23 @@
 import { useState, useEffect, useContext, createContext, useMemo } from 'react';
 import { Linking } from 'react-native';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
-import firestore from '@react-native-firebase/firestore';
+import firestore, {
+  FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore';
 import functions from '@react-native-firebase/functions';
 import { find } from 'lodash';
+import moment from 'moment';
 import { dozy_theme } from '../config/Themes';
 import {
   HealthDeviceData,
   HealthDeviceProvider,
   SessionRequestResponse,
+  TerraRequestResponse,
+  TerraSleepData,
 } from '../types/healthDevice';
 import { Deffered, extractParamsFromUrl } from './common';
+import { encodeLocalTime } from './time';
+import { SleepLog } from '../types/custom';
 
 export interface HealthDeviceContextValue {
   devices: HealthDeviceData[];
@@ -86,20 +93,18 @@ export default class HealthDevice {
         await functions().httpsCallable('generateWidgetSession')({ provider })
       ).data as SessionRequestResponse;
 
-      console.log('generateWidgetSession result: ', response);
-
       if (response.success) {
         HealthDevice.TerraAuthResolver = new Deffered();
         const browserResponse = await HealthDevice.openWidget(
           response.widgetUrl!,
         );
-        console.log('browserResponse: ', browserResponse);
+
         if (browserResponse.type === 'cancel') {
           HealthDevice.TerraAuthResolver = undefined;
         } else {
           const authResponse = await HealthDevice.TerraAuthResolver.promise;
           HealthDevice.TerraAuthResolver = undefined;
-          console.log('authResponse: ', authResponse);
+
           if (authResponse.user_id) {
             const healthDeviceData: HealthDeviceData = {
               provider,
@@ -119,6 +124,8 @@ export default class HealthDevice {
             } else {
               await devicesCollection.add(healthDeviceData);
             }
+
+            // Register uid and terra user_id to the global table
             await firestore()
               .collection('terra-users')
               .doc(authResponse.user_id)
@@ -210,6 +217,82 @@ export default class HealthDevice {
       deviceData.widgetUrl &&
       deviceData.userId
     );
+  }
+
+  static async getSleepSamples(
+    provider: HealthDeviceProvider,
+    startDate: string,
+    endDate: string,
+  ): Promise<TerraSleepData[]> {
+    if (provider && startDate && endDate) {
+      const response = (
+        await functions().httpsCallable('getSleepSamples')({
+          provider,
+          startDate,
+          endDate,
+        })
+      ).data as TerraRequestResponse<TerraSleepData>;
+
+      if (response.success) {
+        return response.data!;
+      } else {
+        throw new Error(response.message);
+      }
+    } else {
+      throw new Error('provider, startDate and endDate are required!');
+    }
+  }
+
+  static mapTerraSleepDataToSleepLog(
+    data: TerraSleepData,
+    provider: HealthDeviceProvider,
+  ): SleepLog {
+    const bedTime = encodeLocalTime(moment(data.metadata.start_time).toDate());
+    const fallAsleepTime = moment(bedTime.value)
+      .add(data.sleep_durations_data.awake.duration_before_sleeping, 'minutes')
+      .toDate();
+    const upTime = encodeLocalTime(moment(data.metadata.end_time).toDate());
+    const wakeTime = moment(upTime.value)
+      .subtract(data.sleep_durations_data.awake.duration_after_wakeup)
+      .toDate();
+
+    return {
+      dataFromDevice: {
+        provider,
+        data,
+      },
+      isDraft: true,
+      bedTime: FirebaseFirestoreTypes.Timestamp.fromDate(bedTime.value),
+      fallAsleepTime: FirebaseFirestoreTypes.Timestamp.fromDate(fallAsleepTime),
+      wakeTime: FirebaseFirestoreTypes.Timestamp.fromDate(wakeTime),
+      upTime: FirebaseFirestoreTypes.Timestamp.fromDate(upTime.value),
+      sleepDuration: Math.round(
+        data.sleep_durations_data.asleep.duration_asleep_state,
+      ),
+      sleepEfficiency: +(data.metadata.sleep_efficiency / 100).toFixed(2),
+      nightMinsAwake: Math.round(
+        data.sleep_durations_data.awake.duration_awake_state,
+      ),
+      minsToFallAsleep: Math.round(
+        data.sleep_durations_data.awake.duration_before_sleeping,
+      ),
+      minsInBedTotal: Math.round(
+        moment(data.metadata.end_time).diff(
+          data.metadata.start_time,
+          'minutes',
+          true,
+        ),
+      ),
+      minsAwakeInBedTotal: Math.round(
+        data.sleep_durations_data.awake.duration_before_sleeping +
+          data.sleep_durations_data.awake.duration_awake_state +
+          data.sleep_durations_data.awake.duration_after_wakeup,
+      ),
+      wakeCount: data.sleep_durations_data.awake.num_wakeup_events,
+      tags: [],
+      version: bedTime.version,
+      timezone: bedTime.timezone,
+    };
   }
 
   static useHealthDevice(): HealthDeviceContextValue {
