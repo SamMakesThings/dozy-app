@@ -1,5 +1,6 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { NavigationProp } from '@react-navigation/native';
+import { HealthDeviceProvider, TerraSleepData } from './healthDevice';
 
 declare module '*.svg?inline' {
   const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
@@ -14,7 +15,7 @@ export interface SleepLog {
   fallAsleepTime: FirebaseFirestoreTypes.Timestamp;
   wakeTime: FirebaseFirestoreTypes.Timestamp;
   upTime: FirebaseFirestoreTypes.Timestamp;
-  sleepRating: number;
+  sleepRating?: number;
   sleepDuration: number;
   sleepEfficiency: number;
   nightMinsAwake: number;
@@ -24,10 +25,15 @@ export interface SleepLog {
   wakeCount: number;
   SCTAnythingNonSleepInBed?: boolean;
   SCTNonSleepActivities?: string;
-  notes: string;
+  notes?: string;
   tags: string[];
   version?: string;
   timezone?: string;
+  dataFromDevice?: {
+    provider: HealthDeviceProvider;
+    data: TerraSleepData;
+  };
+  isDraft?: boolean; // Indicate whether this sleep log is confirmed by user or not (true: this data is generated from a health device and not confirmed by user)
 }
 
 export type Chat = {
