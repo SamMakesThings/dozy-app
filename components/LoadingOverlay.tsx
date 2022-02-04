@@ -1,13 +1,23 @@
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  ViewProps,
+} from 'react-native';
 import { dozy_theme } from '../config/Themes';
 
-export interface LoadingOverlayProps {
+export interface LoadingOverlayProps extends ViewProps {
   title?: string;
 }
 
-const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ title }) => (
-  <View style={styles.container}>
+const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
+  title,
+  style,
+  ...props
+}) => (
+  <View {...props} style={[styles.container, style]}>
     <ActivityIndicator size="large" color={dozy_theme.colors.primary} />
     {!!title && <Text style={styles.title}>{title}</Text>}
   </View>
