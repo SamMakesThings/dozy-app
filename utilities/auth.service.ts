@@ -113,7 +113,6 @@ export default class Auth {
             token: result.user.uid,
             onboardingComplete: onboardingComplete,
             profileData,
-            isAuthLoading: false,
             userData: {
               displayName: result.user.displayName || displayName,
               email: result.user.email,
@@ -149,12 +148,15 @@ export default class Auth {
         forceCodeForRefreshToken: false,
       });
 
+      dispatch({ type: 'SET_SIGNINGIN', isSigningIn: true });
+
       try {
         await GoogleSignin.hasPlayServices({
           showPlayServicesUpdateDialog: true,
         });
         googleUserInfo = await GoogleSignin.signIn();
       } catch (error: any) {
+        dispatch({ type: 'SET_SIGNINGIN', isSigningIn: false });
         error.message =
           error.code === statusCodes.SIGN_IN_CANCELLED
             ? ''
@@ -171,13 +173,23 @@ export default class Auth {
         return;
       }
 
-      dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
-      // Pipe the result of Google login into Firebase auth
-      const { idToken } = googleUserInfo;
-      const credential = auth.GoogleAuthProvider.credential(idToken);
-      const fbSigninResult = await auth().signInWithCredential(credential);
+      dispatch({ type: 'SET_LOADING', isLoading: true });
 
-      return processFbLogin(fbSigninResult);
+      // Pipe the result of Google login into Firebase auth
+      try {
+        const { idToken } = googleUserInfo;
+        const credential = auth.GoogleAuthProvider.credential(idToken);
+        const fbSigninResult = await auth().signInWithCredential(credential);
+
+        await processFbLogin(fbSigninResult);
+      } catch (error) {
+        if (__DEV__) {
+          console.log('error in signIn: ', error);
+        }
+      } finally {
+        dispatch({ type: 'SET_LOADING', isLoading: false });
+        dispatch({ type: 'SET_SIGNINGIN', isSigningIn: false });
+      }
     }, [dispatch, processFbLogin]);
 
     const signOut = useCallback(async () => {
@@ -202,6 +214,8 @@ export default class Auth {
     const signInWithApple = useCallback(async (): Promise<void> => {
       let credential: AppleAuthentication.AppleAuthenticationCredential;
       let rawNonce: string | undefined;
+
+      dispatch({ type: 'SET_SIGNINGIN', isSigningIn: true });
 
       try {
         rawNonce = Math.random().toString(36).substring(2, 10);
@@ -250,6 +264,7 @@ export default class Auth {
           };
         }
       } catch (error: any) {
+        dispatch({ type: 'SET_SIGNINGIN', isSigningIn: false });
         if (error.code !== 'ERR_CANCELED') {
           Alert.alert('Signin failed', error.message);
         }
@@ -257,21 +272,31 @@ export default class Auth {
         return;
       }
 
-      dispatch({ type: 'AUTH_LOADING', isAuthLoading: true });
-      // Pipe the result of Sign in with Apple into Firebase auth
-      const { identityToken, fullName } = credential;
-      const appleAuthCredential = auth.AppleAuthProvider.credential(
-        identityToken!,
-        rawNonce,
-      );
-      const fbSigninResult = await auth().signInWithCredential(
-        appleAuthCredential,
-      );
+      dispatch({ type: 'SET_LOADING', isLoading: true });
 
-      return processFbLogin(
-        fbSigninResult,
-        `${fullName?.givenName} ${fullName?.familyName}`,
-      );
+      // Pipe the result of Sign in with Apple into Firebase auth
+      try {
+        const { identityToken, fullName } = credential;
+        const appleAuthCredential = auth.AppleAuthProvider.credential(
+          identityToken!,
+          rawNonce,
+        );
+        const fbSigninResult = await auth().signInWithCredential(
+          appleAuthCredential,
+        );
+
+        await processFbLogin(
+          fbSigninResult,
+          `${fullName?.givenName} ${fullName?.familyName}`,
+        );
+      } catch (error) {
+        if (__DEV__) {
+          console.log('error in signInWithApple: ', error);
+        }
+      } finally {
+        dispatch({ type: 'SET_LOADING', isLoading: false });
+        dispatch({ type: 'SET_SIGNINGIN', isSigningIn: false });
+      }
     }, [dispatch, processFbLogin]);
 
     const finishOnboarding = useCallback(async () => {
