@@ -2831,10 +2831,10 @@
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
-"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-datepicker-touchable-area":
-  version "39.7.1-patch-datepicker-touchable-area"
-  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-datepicker-touchable-area.tgz#74e8333385bbc4551f9af46ba4f2d3a479ed7061"
-  integrity sha512-hA8/yQF+hZZ2tvKjYorOhZCOjZplqDVEich6i37TN4Jw6cvvyKdf6DrVBxxS6njPHfjVIqdH85LtCXy02Pkf5Q==
+"@draftbit/ui@npm:@fancydevpro/draftbit-ui@39.7.1-patch-datepicker-text-android":
+  version "39.7.1-patch-datepicker-text-android"
+  resolved "https://registry.yarnpkg.com/@fancydevpro/draftbit-ui/-/draftbit-ui-39.7.1-patch-datepicker-text-android.tgz#43cf2e3c9ad32dba053dbf5e6dc380d9cc7f57b9"
+  integrity sha512-2ZjmGnlDP8EpCyb1GjH5yNl4yL50Dua64ozN8eeAyaxSWt17+farhgRGxY16o6EOk9PUfPS70x1PpZ/VgC4q8A==
   dependencies:
     "@date-io/date-fns" "^1.3.13"
     "@draftbit/react-theme-provider" "npm:@fancydevpro/react-theme-provider@2.1.1-type-patch-1"
