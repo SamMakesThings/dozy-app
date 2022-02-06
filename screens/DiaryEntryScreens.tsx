@@ -783,8 +783,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   datePicker: {
+    alignItems: 'center',
     opacity: 0.35,
-    alignSelf: 'center',
   },
   datePickerMessage: {
     position: 'absolute',
