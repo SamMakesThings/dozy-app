@@ -126,8 +126,8 @@ const TagSelectScreen: React.FC<Props> = ({
       />
       <ScrollView
         contentContainerStyle={styles.container}
-        scrollEnabled={false}
         ref={scrollViewRef}
+        keyboardDismissMode="on-drag"
         onLayout={Platform.OS === 'android' ? onAndroidLayout : undefined}
       >
         <KeyboardAwareView
@@ -227,13 +227,13 @@ const styles = StyleSheet.create({
   },
   View_TextInputContainer: {
     alignSelf: 'stretch',
-    marginTop: 0,
-    marginBottom: '7%',
+    marginTop: scale(12),
+    marginBottom: scale(15),
     borderBottomWidth: 1.5,
   },
   Container_nof: {
     width: '100%',
-    height: '10%',
+    height: '9%',
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: scale(17),
@@ -243,6 +243,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: scale(10),
   },
   Text_nqt: {
     textAlign: 'center',
@@ -257,10 +258,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignContent: 'center',
     alignItems: 'flex-start',
+    marginTop: scale(12),
   },
   // eslint-disable-next-line react-native/no-color-literals
   notesInput: {
-    height: scale(35),
+    height: scale(38),
     color: '#ffffff',
     fontSize: scale(17),
     paddingBottom: scale(10),
