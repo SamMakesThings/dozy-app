@@ -156,7 +156,7 @@ export default class Auth {
         googleUserInfo = await GoogleSignin.signIn();
       } catch (error: any) {
         error.message =
-          error.code === statusCodes.SIGN_IN_CANCELLED
+          error.code === statusCodes.SIGN_IN_CANCELLED || error.code === '8' // 8: INTERNAL_ERROR - An internal error occurred. Retrying should resolve the problem.
             ? ''
             : error.code === statusCodes.IN_PROGRESS
             ? 'Sign in is in progress already.'
@@ -165,7 +165,7 @@ export default class Auth {
             : 'Unknown error happened! Please try again later.';
 
         if (error.message) {
-          Alert.alert('Google Sigin Error', error.message);
+          Alert.alert('Google Signin Error', error.message);
         }
 
         return;
