@@ -23,24 +23,24 @@ jobs:
         with:
           ruby-version: 2.7
           bundler-cache: true
-      # - name: iOS Bundle Install
-      #   run: gem install bundler && bundle install
-      #   working-directory: ./ios
-      # - name: Bumping version and iOS build number in app.json and project.pbxproj
-      #   run: bundle exec fastlane increment_version_build_numbers
-      #   working-directory: ./ios
-      # - name: Update Release Channel in Expo.plist
-      #   run: bundle exec fastlane update_release_channel_prod
-      #   working-directory: ./ios
-      # - name: Android Bundle Install
-      #   run: bundle install
-      #   working-directory: ./android
-      # - name: Bumping Android version code in app.json and version name & code in app/build.gradle
-      #   run: bundle exec fastlane increment_version_build_numbers
-      #   working-directory: ./android
-      # - name: Update Release Channel in AndroidManifest.xml
-      #   run: bundle exec fastlane update_release_channel_prod
-      #   working-directory: ./android
+      - name: iOS Bundle Install
+        run: gem install bundler && bundle install
+        working-directory: ./ios
+      - name: Bumping version and iOS build number in app.json and project.pbxproj
+        run: bundle exec fastlane increment_version_build_numbers
+        working-directory: ./ios
+      - name: Update Release Channel in Expo.plist
+        run: bundle exec fastlane update_release_channel_prod
+        working-directory: ./ios
+      - name: Android Bundle Install
+        run: bundle install
+        working-directory: ./android
+      - name: Bumping Android version code in app.json and version name & code in app/build.gradle
+        run: bundle exec fastlane increment_version_build_numbers
+        working-directory: ./android
+      - name: Update Release Channel in AndroidManifest.xml
+        run: bundle exec fastlane update_release_channel_prod
+        working-directory: ./android
       - name: Setup Expo
         uses: expo/expo-github-action@v6
         with:
@@ -48,12 +48,12 @@ jobs:
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
       - run: yarn install
-      # - name: Commit iOS and Android Version and Gemfile Changes
-      #   uses: EndBug/add-and-commit@v7
-      #   with:
-      #     add: "['ios/', 'android/', app.json]"
-      #     default_author: github_actions
-      #     message: 'bumped js, ios, android version and build numbers, set the production channel'
-      # - run: eas build --platform all --profile release --non-interactive
+      - name: Commit iOS and Android Version and Gemfile Changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: "['ios/', 'android/', app.json]"
+          default_author: github_actions
+          message: 'bumped js, ios, android version and build numbers, set the production channel'
+      - run: eas build --platform all --profile release --non-interactive
       - name: Submit iOS app to Testflight
         run: eas submit -p ios --latest --profile release
