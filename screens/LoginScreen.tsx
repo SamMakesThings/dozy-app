@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { Button, ScreenContainer, Container, Touchable } from '@draftbit/ui';
 import { StyleSheet, Text, ImageBackground, Platform } from 'react-native';
@@ -7,15 +7,30 @@ import Auth from '../utilities/auth.service';
 import { dozy_theme } from '../config/Themes';
 import WordmarkTrans from '../assets/images/WordmarkTrans.svg';
 import UndrawBed from '../assets/images/UndrawBed.svg';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 const LoginScreen: React.FC = () => {
   // Pull the theme manually
   const theme = dozy_theme;
 
   // Get my auth functions from hook
-  const { signIn, signInWithApple } = Auth.useAuth();
+  const { state, signIn, signInWithApple } = Auth.useAuth();
+  const [isLoading, setLoading] = useState(state.isLoading);
+  const previousLoadingStateRef = useRef(isLoading);
 
-  return (
+  useEffect(() => {
+    if (!state.isLoading && previousLoadingStateRef.current) {
+      setTimeout(() => {
+        setLoading(state.isLoading);
+        previousLoadingStateRef.current = state.isLoading;
+      }, 800);
+    } else {
+      setLoading(state.isLoading);
+      previousLoadingStateRef.current = state.isLoading;
+    }
+  }, [state.isLoading]);
+
+  return state.isSigningIn || !isLoading ? (
     <ScreenContainer
       scrollable={false}
       hasSafeArea={true}
@@ -120,6 +135,8 @@ const LoginScreen: React.FC = () => {
         </Container>
       </ImageBackground>
     </ScreenContainer>
+  ) : (
+    <LoadingOverlay style={styles.loadingContainer} />
   );
 };
 
@@ -168,6 +185,10 @@ const styles = StyleSheet.create({
   background: { resizeMode: 'contain' },
   Button_Signin_iOS: {
     marginTop: scale(5),
+  },
+  loadingContainer: {
+    position: 'relative',
+    flex: 1,
   },
 });
 

@@ -35,6 +35,7 @@ export default async function refreshUserData(
           onboardingComplete:
             userData.exists && userData.data()?.onboardingComplete === true,
         });
+        dispatch({ type: 'SET_LOADING', isLoading: false });
       });
 
     // Add a listener so user doc state updates live
