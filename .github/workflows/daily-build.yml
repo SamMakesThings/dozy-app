@@ -12,6 +12,8 @@ jobs:
   build:
     name: Production Build (iOS Testflight and Android Apps using EAS build)
     runs-on: ubuntu-latest
+    env:
+      EXPO_APPLE_APP_SPECIFIC_PASSWORD: iveg-dshz-wgjd-usxx
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -53,6 +55,5 @@ jobs:
       #     default_author: github_actions
       #     message: 'bumped js, ios, android version and build numbers, set the production channel'
       # - run: eas build --platform all --profile release --non-interactive
-      - run: export EXPO_APPLE_APP_SPECIFIC_PASSWORD=iveg-dshz-wgjd-usxx
       - name: Submit iOS app to Testflight
         run: eas submit -p ios --latest --profile release
