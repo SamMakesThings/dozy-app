@@ -1,12 +1,8 @@
 name: Build Production iOS and Android Apps Daily
 
 on:
-  # schedule:
-  #   - cron: 0 22 * * *
-  push:
-    pull_request:
-      branches:
-        - develop
+  schedule:
+    - cron: 0 22 * * *
 
 jobs:
   build:
