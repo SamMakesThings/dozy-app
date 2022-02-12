@@ -248,11 +248,17 @@ export default class HealthDevice {
   ): SleepLog {
     const bedTime = encodeLocalTime(moment(data.metadata.start_time).toDate());
     const fallAsleepTime = moment(bedTime.value)
-      .add(data.sleep_durations_data.awake.duration_before_sleeping, 'minutes')
+      .add(
+        data.sleep_durations_data.awake.duration_before_sleeping ?? 0,
+        'seconds',
+      )
       .toDate();
     const upTime = encodeLocalTime(moment(data.metadata.end_time).toDate());
     const wakeTime = moment(upTime.value)
-      .subtract(data.sleep_durations_data.awake.duration_after_wakeup)
+      .subtract(
+        data.sleep_durations_data.awake.duration_after_wakeup ?? 0,
+        'seconds',
+      )
       .toDate();
 
     return {
@@ -266,14 +272,17 @@ export default class HealthDevice {
       wakeTime: FirebaseFirestoreTypes.Timestamp.fromDate(wakeTime),
       upTime: FirebaseFirestoreTypes.Timestamp.fromDate(upTime.value),
       sleepDuration: Math.round(
-        data.sleep_durations_data.asleep.duration_asleep_state,
+        (data.sleep_durations_data.asleep.duration_asleep_state ?? 0) / 60,
       ),
-      sleepEfficiency: +(data.metadata.sleep_efficiency / 100).toFixed(2),
+      sleepEfficiency: data.metadata.sleep_efficiency,
       nightMinsAwake: Math.round(
-        data.sleep_durations_data.awake.duration_awake_state,
+        ((data.sleep_durations_data.awake.duration_awake_state ?? 0) -
+          (data.sleep_durations_data.awake.duration_before_sleeping ?? 0) -
+          (data.sleep_durations_data.awake.duration_after_wakeup ?? 0)) /
+          60,
       ),
       minsToFallAsleep: Math.round(
-        data.sleep_durations_data.awake.duration_before_sleeping,
+        (data.sleep_durations_data.awake.duration_before_sleeping ?? 0) / 60,
       ),
       minsInBedTotal: Math.round(
         moment(data.metadata.end_time).diff(
@@ -283,15 +292,67 @@ export default class HealthDevice {
         ),
       ),
       minsAwakeInBedTotal: Math.round(
-        data.sleep_durations_data.awake.duration_before_sleeping +
-          data.sleep_durations_data.awake.duration_awake_state +
-          data.sleep_durations_data.awake.duration_after_wakeup,
+        (data.sleep_durations_data.awake.duration_awake_state ?? 0) / 60,
       ),
       wakeCount: data.sleep_durations_data.awake.num_wakeup_events,
       tags: [],
       version: bedTime.version,
       timezone: bedTime.timezone,
     };
+  }
+
+  static async maybeUpdateSleepLog(
+    userId: string,
+    newSleepLog: SleepLog,
+  ): Promise<string | undefined> {
+    let relatedDocs = (
+      await firestore()
+        .collection('users')
+        .doc(userId)
+        .collection('sleepLogs')
+        .where(
+          'bedTime',
+          '>=',
+          moment(newSleepLog.bedTime.toDate()).subtract(1, 'day').toDate(),
+        )
+        .orderBy('bedTime', 'desc')
+        .get()
+    ).docs as FirebaseFirestoreTypes.QueryDocumentSnapshot<SleepLog>[];
+
+    relatedDocs = relatedDocs.filter((it) => {
+      const bedTime = it.data().bedTime.toDate();
+      const upTime = it.data().upTime.toDate();
+      const newBedTime = newSleepLog.bedTime.toDate();
+      const newUpTime = newSleepLog.upTime.toDate();
+
+      return (
+        (moment(bedTime).isSameOrAfter(newBedTime) &&
+          moment(bedTime).isBefore(newUpTime)) ||
+        (moment(upTime).isAfter(newBedTime) &&
+          moment(upTime).isSameOrBefore(newUpTime)) ||
+        (moment(newBedTime).isSameOrAfter(bedTime) &&
+          moment(newUpTime).isSameOrBefore(upTime))
+      );
+    });
+
+    if (relatedDocs.find((it) => !it.data().isDraft)) {
+      return undefined;
+    } else if (relatedDocs.length) {
+      for (let i = 1; i < relatedDocs.length; i++) {
+        await relatedDocs[i].ref.delete();
+      }
+      await relatedDocs[0].ref.set(newSleepLog);
+
+      return relatedDocs[0].id;
+    }
+
+    const newDoc = await firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('sleepLogs')
+      .add(newSleepLog);
+
+    return newDoc.id;
   }
 
   static useHealthDevice(): HealthDeviceContextValue {
