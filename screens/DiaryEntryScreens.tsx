@@ -8,7 +8,6 @@ import {
 } from 'react-native-safe-area-context';
 import moment from 'moment';
 import { omit } from 'lodash';
-import firestore from '@react-native-firebase/firestore';
 import NumInputScreen from '../components/screens/NumInputScreen';
 import TextInputScreen from '../components/screens/TextInputScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
@@ -69,7 +68,10 @@ export const TrackerStart: React.FC<Props> = ({ navigation }) => {
         // Get sleep samples for the past day
         const sleepSamples = await HealthDevice.getSleepSamples(
           'oura',
-          moment().subtract(1, 'days').format('YYYY-MM-DD'),
+          (state.sleepLogs[0]
+            ? moment(state.sleepLogs[0]?.upTime.toDate())
+            : moment().subtract(1, 'days')
+          ).format('YYYY-MM-DD'),
           moment().format('YYYY-MM-DD'),
         );
         const sleepLogs = sleepSamples.map((it) =>
@@ -78,43 +80,51 @@ export const TrackerStart: React.FC<Props> = ({ navigation }) => {
         sleepLogs.sort(
           (a, b) => b.upTime.toDate().valueOf() - a.upTime.toDate().valueOf(),
         );
-        if (
-          sleepLogs[0] &&
-          (!state.sleepLogs[0] ||
-            moment(sleepLogs[0].upTime.toDate()).isAfter(
-              state.sleepLogs[0].upTime.toDate(),
-            ))
-        ) {
-          const newSleepLogRef = await firestore()
-            .collection('users')
-            .doc(state.userId)
-            .collection('sleepLogs')
-            .add(sleepLogs[0]);
-          updateFlow(
-            {
-              ...omit(sleepLogs[0], [
-                'bedTime',
-                'fallAsleepTime',
-                'wakeTime',
-                'upTime',
-              ]),
-              logId: newSleepLogRef.id,
-              bedTime: sleepLogs[0].bedTime.toDate(),
-              fallAsleepTime: sleepLogs[0].fallAsleepTime.toDate(),
-              wakeTime: sleepLogs[0].wakeTime.toDate(),
-              upTime: sleepLogs[0].upTime.toDate(),
-              logDate: sleepLogs[0].upTime.toDate(),
-              isZeroSleep: false,
-            },
-            'TrackerStart',
-            false,
+        for (let i = 0; i < sleepLogs.length; i++) {
+          const newDocId = await HealthDevice.maybeUpdateSleepLog(
+            state.userId!,
+            sleepLogs[i],
           );
+          if (
+            i === 0 &&
+            newDocId &&
+            moment(sleepLogs[0].upTime.toDate()).isSameOrAfter(
+              moment().startOf('date'),
+            )
+          ) {
+            updateFlow(
+              {
+                ...omit(sleepLogs[0], [
+                  'bedTime',
+                  'fallAsleepTime',
+                  'wakeTime',
+                  'upTime',
+                ]),
+                logId: newDocId,
+                bedTime: sleepLogs[0].bedTime.toDate(),
+                fallAsleepTime: sleepLogs[0].fallAsleepTime.toDate(),
+                wakeTime: sleepLogs[0].wakeTime.toDate(),
+                upTime: sleepLogs[0].upTime.toDate(),
+                logDate: sleepLogs[0].upTime.toDate(),
+                isZeroSleep: false,
+              },
+              'TrackerStart',
+              false,
+            );
+          }
         }
       } catch {}
 
       setFetchingFromDevice(false);
     }
-  }, [navigation, fetchingFromDevice, logState, state.sleepLogs, updateFlow]);
+  }, [
+    navigation,
+    fetchingFromDevice,
+    logState,
+    state.sleepLogs,
+    state.userId,
+    updateFlow,
+  ]);
 
   const onManual = useCallback(() => {
     const nextStepData = updateFlow({ isDraft: false }, 'TrackerStart');
