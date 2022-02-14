@@ -1,8 +1,14 @@
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  ViewProps,
+} from 'react-native';
 import { dozy_theme } from '../config/Themes';
 
-export interface LoadingOverlayProps {
+export interface LoadingOverlayProps extends ViewProps {
   title?: string;
   opacity?: number;
 }
@@ -10,8 +16,13 @@ export interface LoadingOverlayProps {
 const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
   title,
   opacity = 1,
+  style,
+  ...props
 }) => (
-  <View style={[styles.container, Number.isFinite(opacity) && { opacity }]}>
+  <View
+    {...props}
+    style={[styles.container, Number.isFinite(opacity) && { opacity }, style]}
+  >
     <ActivityIndicator size="large" color={dozy_theme.colors.primary} />
     {!!title && <Text style={styles.title}>{title}</Text>}
   </View>

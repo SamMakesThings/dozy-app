@@ -6,6 +6,7 @@ import { Coach } from '../types/coach';
 
 export type AppState = {
   isLoading: boolean;
+  isSigningIn: boolean;
   isSignout: boolean;
   userId: string | undefined;
   userData: Record<string, any>;
@@ -20,7 +21,8 @@ export type AppState = {
 };
 
 export const initialState: AppState = {
-  isLoading: true,
+  isLoading: false,
+  isSigningIn: false,
   isSignout: false,
   userId: undefined,
   userData: {},
@@ -55,7 +57,6 @@ export type ACTION =
       type: 'SIGN_IN';
       token: string;
       onboardingComplete: boolean;
-      isAuthLoading: boolean;
       profileData: Record<string, any>;
       userData: Record<string, any>;
     }
@@ -69,8 +70,8 @@ export type ACTION =
   | { type: 'SET_CHATS'; chats: Chat[] | [] }
   | { type: 'SET_TASKS'; tasks: Task[] }
   | { type: 'CHANGE_SELECTED_MONTH'; changeMonthBy: any }
-  | { type: 'AUTH_LOADING'; isAuthLoading: boolean }
-  | { type: 'FINISH_LOADING' }
+  | { type: 'SET_LOADING'; isLoading: boolean }
+  | { type: 'SET_SIGNINGIN'; isSigningIn: boolean }
   | { type: 'FINISH_ONBOARDING' }
   | { type: 'SET_COACH'; coach: Coach };
 
@@ -88,7 +89,6 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
         isSignout: false,
         userId: action.token,
         onboardingComplete: action.onboardingComplete,
-        authLoading: action.isAuthLoading,
         profileData: action.profileData,
         userData: action.userData,
       };
@@ -128,16 +128,17 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
           action.changeMonthBy,
         ),
       };
-    case 'AUTH_LOADING':
+    case 'SET_LOADING':
       return {
         ...prevState,
-        authLoading: action.isAuthLoading,
+        isLoading: action.isLoading,
       };
-    case 'FINISH_LOADING':
+    case 'SET_SIGNINGIN': {
       return {
         ...prevState,
-        isLoading: false,
+        isSigningIn: action.isSigningIn,
       };
+    }
     case 'FINISH_ONBOARDING':
       return {
         ...prevState,

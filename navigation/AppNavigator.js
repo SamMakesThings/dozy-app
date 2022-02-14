@@ -35,7 +35,8 @@ import DiaryEntryFlow from '../utilities/diaryEntryFlow.service';
 const TopStack = createStackNavigator();
 
 // Export the navigation components and screens, with if/then for auth state
-function InitialAuthNavigator({ userId, onboardingComplete }) {
+function InitialAuthNavigator() {
+  const { state } = Auth.useAuth();
   const diaryEntryFlowContextValue = DiaryEntryFlow.useDiaryEntryFlowService();
 
   return (
@@ -46,15 +47,10 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
           headerShown: false,
         }}
       >
-        {userId != undefined ? (
+        {state.userId && !state.isLoading ? (
           <>
-            {onboardingComplete ? (
-              <TopStack.Screen
-                name="App"
-                component={
-                  BottomTabs /* If logged in, go to the tab navigator */
-                }
-              />
+            {state.onboardingComplete ? (
+              <TopStack.Screen name="App" component={BottomTabs} />
             ) : (
               <TopStack.Screen
                 name="Onboarding"
@@ -67,9 +63,9 @@ function InitialAuthNavigator({ userId, onboardingComplete }) {
               options={() => ({
                 headerShown: true,
                 // eslint-disable-next-line react/display-name
-                header: ({ navigation }) => {
-                  return <HeaderProgressBar navigation={navigation} />;
-                },
+                header: ({ navigation }) => (
+                  <HeaderProgressBar navigation={navigation} />
+                ),
                 animationEnabled: true,
                 headerTransparent: true,
               })}
@@ -137,9 +133,14 @@ const AppNavigator = () => {
     const subscriber = auth().onAuthStateChanged(async (user) => {
       if (user) {
         console.log('user id: ', user.uid);
+
+        dispatch({ type: 'SET_LOADING', isLoading: true });
         await SecureStore.setItemAsync('userId', user.uid);
         refreshUserData(dispatch);
+
         initABTesting();
+      } else {
+        dispatch({ type: 'SET_LOADING', isLoading: false });
       }
     });
     return subscriber;
@@ -186,10 +187,7 @@ const AppNavigator = () => {
         theme={DozyNavTheme}
       >
         <View style={styles.container}>
-          <InitialAuthNavigator
-            userId={state.userId}
-            onboardingComplete={state.onboardingComplete}
-          />
+          <InitialAuthNavigator />
         </View>
       </NavigationContainer>
     </HealthDevice.Context.Provider>

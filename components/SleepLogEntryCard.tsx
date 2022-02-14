@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -11,6 +11,7 @@ import { Container } from '@draftbit/ui';
 import firestore from '@react-native-firebase/firestore';
 import { scale } from 'react-native-size-matters';
 import { Entypo, Ionicons } from '@expo/vector-icons';
+import moment from 'moment';
 import { dozy_theme } from '../config/Themes';
 import HighlightedText from './HighlightedText';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
@@ -27,6 +28,12 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
   const theme = dozy_theme;
   const { state } = Auth.useAuth();
   const userId = state.userId;
+
+  const isZeroSleepLog = useMemo(
+    () => moment(sleepLog.bedTime.toDate()).isSame(sleepLog.wakeTime.toDate()),
+    [sleepLog],
+  );
+
   const openDeleteSleepLogAlert = () =>
     Alert.alert(
       'Delete sleep diary entry?',
@@ -40,6 +47,7 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
         { text: 'OK', onPress: handleDeleteSleepLog },
       ],
     );
+
   const handleDeleteSleepLog = () => {
     const sleepLogId = sleepLog.logId;
 
@@ -127,10 +135,15 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
               },
             ]}
           >
-            {sleepLog.fallAsleepTime
-              .toDate()
-              .toLocaleString('en-US', { hour: 'numeric', minute: 'numeric' })
-              .slice(0, -3)}
+            {isZeroSleepLog
+              ? 'N/A'
+              : sleepLog.fallAsleepTime
+                  .toDate()
+                  .toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })
+                  .slice(0, -3)}
           </Text>
           <Text
             style={[
@@ -140,10 +153,15 @@ const SleepLogEntryCard: React.FC<Props> = ({ sleepLog, onEdit }) => {
               },
             ]}
           >
-            {sleepLog.wakeTime
-              .toDate()
-              .toLocaleString('en-US', { hour: 'numeric', minute: 'numeric' })
-              .slice(0, -3)}
+            {isZeroSleepLog
+              ? 'N/A'
+              : sleepLog.wakeTime
+                  .toDate()
+                  .toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })
+                  .slice(0, -3)}
           </Text>
           <HighlightedText
             textColor={theme.colors.primary}

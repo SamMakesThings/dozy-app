@@ -110,6 +110,19 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
         coach,
       });
     });
+
+    Notification.registerForPushNotificationsAsync().then(
+      async (expoPushToken) => {
+        if (expoPushToken) {
+          onboardingState.expoPushToken = expoPushToken;
+          const userId = await SecureStore.getItemAsync('userId');
+          if (userId) {
+            Notification.updateExpoPushToken(expoPushToken, userId);
+          }
+        }
+      },
+    );
+
     Analytics.logEvent(AnalyticsEvents.onboardingWelcome);
   }, []);
 
@@ -830,20 +843,6 @@ export const SafetyPillsStop: React.FC<Props> = ({ navigation }) => {
 export const SafetyPillsBye: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingSafetyPillsBye);
-
-    if (onboardingState.expoPushToken === 'No push token provided') {
-      Notification.registerForPushNotificationsAsync().then(
-        async (expoPushToken) => {
-          if (expoPushToken) {
-            onboardingState.expoPushToken = expoPushToken;
-            const userId = await SecureStore.getItemAsync('userId');
-            if (userId) {
-              Notification.updateExpoPushToken(expoPushToken, userId);
-            }
-          }
-        },
-      );
-    }
   }, []);
 
   return (
@@ -1091,20 +1090,6 @@ export const BaselineIntro: React.FC<Props> = ({ navigation }) => {
 export const BaselineBye: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
     Analytics.logEvent(AnalyticsEvents.onboardingBaselineBye);
-
-    if (onboardingState.expoPushToken === 'No push token provided') {
-      Notification.registerForPushNotificationsAsync().then(
-        async (expoPushToken) => {
-          if (expoPushToken) {
-            onboardingState.expoPushToken = expoPushToken;
-            const userId = await SecureStore.getItemAsync('userId');
-            if (userId) {
-              Notification.updateExpoPushToken(expoPushToken, userId);
-            }
-          }
-        },
-      );
-    }
   }, []);
 
   return (
@@ -1185,18 +1170,8 @@ export const DiaryReminder: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       defaultValue={moment().hour(9).minute(0).toDate()}
       onQuestionSubmit={(value: Date | boolean) => {
-        // TODO: Can I just make the arrow function async instead of below
-        async function setPushToken() {
-          // TODO: Make less dumb
-          const pushToken =
-            await Notification.registerForPushNotificationsAsync();
-          if (pushToken) {
-            onboardingState.expoPushToken = pushToken;
-          }
-        }
         if (typeof value != 'boolean') {
           onboardingState.diaryReminderTime = value;
-          setPushToken();
           Analytics.logEvent(AnalyticsEvents.onboardingDiaryReminderSet);
         } else {
           Analytics.logEvent(AnalyticsEvents.onboardingDiaryReminderUnset);
@@ -1252,17 +1227,6 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
     Analytics.logEvent(AnalyticsEvents.onboardingCheckinScheduling);
-
-    // Ask push notification permission if user didn't allow to set a reminder
-    if (onboardingState.expoPushToken === 'No push token provided') {
-      Notification.registerForPushNotificationsAsync().then(
-        async (expoPushToken) => {
-          if (expoPushToken) {
-            onboardingState.expoPushToken = expoPushToken;
-          }
-        },
-      );
-    }
 
     // Update the default checkin time in case of user left the app in background and returns again
     const handleAppStateChange = (state: AppStateStatus): void => {
