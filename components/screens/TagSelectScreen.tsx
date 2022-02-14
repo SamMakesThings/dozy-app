@@ -5,9 +5,8 @@ import {
   Platform,
   View,
   TextInput,
-  useWindowDimensions,
   ScrollView,
-  InteractionManager,
+  Dimensions,
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { withTheme, ScreenContainer, Container } from '@draftbit/ui';
@@ -27,6 +26,8 @@ if (Platform.OS === 'android') {
   require('date-time-format-timezone');
   // ntl.__disableRegExpRestore(); /*For syntaxerror invalid regular expression unmatched parentheses*/
 }
+
+const windowHeight = Dimensions.get('window').height;
 
 interface Props {
   theme: Theme;
@@ -63,16 +64,7 @@ const TagSelectScreen: React.FC<Props> = ({
   const [showingModal, setShowingModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
   const { top, bottom } = useSafeAreaInsets();
-  const { height } = useWindowDimensions();
   const scrollViewRef = React.useRef<ScrollView>(null);
-
-  const onAndroidLayout = useCallback((): void => {
-    InteractionManager.runAfterInteractions(() => {
-      if (scrollViewRef.current) {
-        scrollViewRef.current.scrollToEnd({ animated: false });
-      }
-    });
-  }, []);
 
   const onFormSubmitWithNotesAndTags = useCallback((): void => {
     onFormSubmit({ notes, tags: selectedTags });
@@ -112,23 +104,25 @@ const TagSelectScreen: React.FC<Props> = ({
           styles.overlay,
           {
             backgroundColor: theme.colors.background,
-            height: top + height * 0.1,
+            height: top + windowHeight * 0.1,
           },
         ]}
       />
       <Container
         style={[
           styles.Container_nof,
-          { backgroundColor: theme.colors.background },
+          {
+            backgroundColor: theme.colors.background,
+          },
         ]}
         elevation={0}
         useThemeGutterPadding={true}
       />
       <ScrollView
         contentContainerStyle={styles.container}
+        style={styles.scrollView}
         ref={scrollViewRef}
         keyboardDismissMode="on-drag"
-        onLayout={Platform.OS === 'android' ? onAndroidLayout : undefined}
       >
         <KeyboardAwareView
           style={styles.container}
@@ -185,27 +179,22 @@ const TagSelectScreen: React.FC<Props> = ({
                 );
               })}
             </View>
-            <View
+            <TextInput
               style={[
-                styles.View_TextInputContainer,
+                styles.notesInput,
                 {
                   borderColor: theme.colors.medium,
-                  backgroundColor: theme.colors.background,
                 },
               ]}
-            >
-              <TextInput
-                style={styles.notesInput}
-                placeholder={inputLabel}
-                placeholderTextColor={theme.colors.light}
-                defaultValue={defaultNotes}
-                keyboardType="default"
-                keyboardAppearance="dark"
-                returnKeyType="done"
-                enablesReturnKeyAutomatically={true}
-                onChangeText={(value) => setNotes(value)}
-              />
-            </View>
+              placeholder={inputLabel}
+              placeholderTextColor={theme.colors.light}
+              defaultValue={defaultNotes}
+              keyboardType="default"
+              keyboardAppearance="dark"
+              returnKeyType="done"
+              enablesReturnKeyAutomatically={true}
+              onChangeText={(value) => setNotes(value)}
+            />
           </Container>
         </KeyboardAwareView>
       </ScrollView>
@@ -225,15 +214,12 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
   },
-  View_TextInputContainer: {
-    alignSelf: 'stretch',
-    marginTop: scale(12),
+  scrollView: {
     marginBottom: scale(15),
-    borderBottomWidth: 1.5,
   },
   Container_nof: {
     width: '100%',
-    height: '9%',
+    height: windowHeight * 0.09,
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: scale(17),
@@ -262,10 +248,13 @@ const styles = StyleSheet.create({
   },
   // eslint-disable-next-line react-native/no-color-literals
   notesInput: {
+    alignSelf: 'stretch',
     height: scale(38),
     color: '#ffffff',
     fontSize: scale(17),
     paddingBottom: scale(10),
+    marginTop: scale(12),
+    borderBottomWidth: 1.5,
   },
 });
 
