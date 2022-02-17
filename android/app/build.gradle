@@ -137,8 +137,8 @@ android {
         applicationId 'com.dozyhealth.dozy'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 172
-        versionName "0.7.157"
+        versionCode 173
+        versionName "0.7.158"
         manifestPlaceholders = [
             appAuthRedirectScheme: 'com.dozyhealth.dozy'
         ]
