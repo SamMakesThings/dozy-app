@@ -9,7 +9,6 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {
   GoogleSignin,
-  statusCodes,
   User as GoogleUserInfo,
 } from '@react-native-google-signin/google-signin';
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -158,11 +157,11 @@ export default class Auth {
       } catch (error: any) {
         dispatch({ type: 'SET_SIGNINGIN', isSigningIn: false });
         error.message =
-          error.code === statusCodes.SIGN_IN_CANCELLED || error.code === '8' // 8: INTERNAL_ERROR - An internal error occurred. Retrying should resolve the problem.
+          error.code === 'SIGN_IN_CANCELLED' || error.code === '8' // 8: INTERNAL_ERROR - An internal error occurred. Retrying should resolve the problem.
             ? ''
-            : error.code === statusCodes.IN_PROGRESS
+            : error.code === 'IN_PROGRESS'
             ? 'Sign in is in progress already.'
-            : error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+            : error.code === 'PLAY_SERVICES_NOT_AVAILABLE'
             ? 'Google play services are not available or outdated.'
             : 'Unknown error happened! Please try again later.';
 

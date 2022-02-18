@@ -2,15 +2,11 @@
   "expo": {
     "name": "Dozy",
     "slug": "dozy_app",
-    "owner": "startupsam",
+    "owner": "ibadsiddiqui_techlabs",
     "privacy": "public",
-    "sdkVersion": "41.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "primaryColor": "#00818A",
-    "version": "0.7.158",
+    "version": "0.7.154",
     "orientation": "portrait",
     "icon": "./assets/images/appleIcon.png",
     "splash": {
@@ -21,14 +17,12 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
       "icon": "./assets/images/appleIcon.png",
       "bundleIdentifier": "com.dozyhealth.dozy",
-      "buildNumber": "173",
+      "buildNumber": "169",
       "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf"
@@ -38,17 +32,15 @@
     "android": {
       "package": "com.dozyhealth.dozy",
       "icon": "./assets/images/appleIcon.png",
-      "versionCode": 173,
+      "versionCode": 169,
       "config": {
         "googleSignIn": {
           "certificateHash": "380B249EE454F973C64F8BE38A1604F5FF1A6B81",
           "apiKey": "AIzaSyC0GREVi9E3rPHvX35XHmk7y3lsccH2zPA"
         }
       },
-      "permissions": [
-
-      ],
-      "googleServicesFile": "./android/app/google-services.json",
+      "permissions": [],
+      "googleServicesFile": "./google-services.json",
       "useNextNotificationsApi": true
     },
     "packagerOpts": {

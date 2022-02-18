@@ -10,6 +10,6 @@ module.exports = function (api) {
 
   return {
     presets: ['@babel/react', 'babel-preset-expo'],
-    plugins
+    plugins,
   };
 };

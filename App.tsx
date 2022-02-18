@@ -86,24 +86,23 @@ export default function App(): React.ReactElement {
         onFinish={_handleFinishLoading}
       />
     );
-  } else {
-    return (
-      <Auth.Context.Provider value={authContextValue}>
-        <Feedback.Context.Provider value={feedbackContextValue}>
-          <ThemeProvider theme={dozy_theme}>
-            <StatusBar
-              barStyle="light-content"
-              backgroundColor={dozy_theme.colors.background}
-            />
-            <AppNavigator />
-            {(isCheckingUpdate || isCheckingOnboarding) && (
-              <LoadingOverlay
-                title={isCheckingUpdate ? 'Downloading updates...' : ''}
-              />
-            )}
-          </ThemeProvider>
-        </Feedback.Context.Provider>
-      </Auth.Context.Provider>
-    );
   }
+  return (
+    <Auth.Context.Provider value={authContextValue}>
+      <Feedback.Context.Provider value={feedbackContextValue}>
+        <ThemeProvider theme={dozy_theme}>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor={dozy_theme.colors.background}
+          />
+          <AppNavigator />
+          {(isCheckingUpdate || isCheckingOnboarding) && (
+            <LoadingOverlay
+              title={isCheckingUpdate ? 'Downloading updates...' : ''}
+            />
+          )}
+        </ThemeProvider>
+      </Feedback.Context.Provider>
+    </Auth.Context.Provider>
+  );
 }

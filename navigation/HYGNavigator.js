@@ -16,8 +16,8 @@ const animConfig = {
     mass: 3,
     overshootClamping: true,
     restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01
-  }
+    restSpeedThreshold: 0.01,
+  },
 };
 
 const Screens = { ...TreatmentScreens, ...SRTTitrationScreens };
@@ -29,7 +29,7 @@ export default function HYGNavigator() {
       initialRouteName="Welcome"
       screenOptions={{
         headerShown: true,
-        animationEnabled: true
+        animationEnabled: true,
       }}
     >
       {Object.keys(Screens).map((screen) => {
@@ -59,8 +59,8 @@ export default function HYGNavigator() {
               headerTransparent: true,
               transitionSpec: {
                 open: animConfig,
-                close: animConfig
-              }
+                close: animConfig,
+              },
             })}
           />
         );
@@ -75,7 +75,7 @@ export default function HYGNavigator() {
             return <HeaderProgressBar navigation={navigation} />;
           },
           animationEnabled: true,
-          headerTransparent: true
+          headerTransparent: true,
         })}
       />
     </HYGStack.Navigator>

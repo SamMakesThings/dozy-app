@@ -4,8 +4,9 @@ export function convertAnalyticsEventName(originalName: string): string {
     .trim()
     .replace(/\s+_*|_+\s*/g, '_');
 
-  return (/^[0-9]/.test(strWithUnderscore)
-    ? `Event_${strWithUnderscore}`
-    : strWithUnderscore
+  return (
+    /^[0-9]/.test(strWithUnderscore)
+      ? `Event_${strWithUnderscore}`
+      : strWithUnderscore
   ).substr(0, 40);
 }

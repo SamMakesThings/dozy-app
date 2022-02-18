@@ -1,5 +1,7 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { scale } from 'react-native-size-matters';
 import firestore from '@react-native-firebase/firestore';
 import { WebView } from 'react-native-webview';

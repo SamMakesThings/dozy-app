@@ -1,4 +1,4 @@
 export default {
   maxMinsToFallAsleep: 240,
-  maxMinsInBedTotal: 720
+  maxMinsInBedTotal: 720,
 };

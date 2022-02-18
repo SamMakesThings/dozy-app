@@ -6,8 +6,8 @@ export interface OnboardingMeta {
 const onboarding: { defaultSteps: OnboardingMeta } = {
   defaultSteps: {
     version: 'A',
-    steps: ['']
-  }
+    steps: [''],
+  },
 };
 
 export default onboarding;
