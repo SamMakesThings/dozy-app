@@ -1,13 +1,19 @@
 import React, { useCallback, useRef } from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   withTheme,
   ScreenContainer,
   Container,
   Icon,
-  // Switch,
-  // Touchable,
-  // DatePicker,
+  Switch,
+  Touchable,
+  DatePicker,
 } from '@draftbit/ui';
 import firestore from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
@@ -15,17 +21,16 @@ import { scale } from 'react-native-size-matters';
 import ExpoConstants from 'expo-constants';
 import { take } from 'lodash';
 import { dozy_theme } from '../config/Themes';
-// import Analytics from '../utilities/analytics.service';
+import Analytics from '../utilities/analytics.service';
 import { encodeLocalTime, decodeServerTime } from '../utilities/time';
 import Auth from '../utilities/auth.service';
-// import Notification from '../utilities/notification.service';
-// import AnalyticsEvents from '../constants/AnalyticsEvents';
+import Notification from '../utilities/notification.service';
+import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function SettingsScreen() {
   // Pass along the signOut function from the context provider
-  // const { state, signOut } = Auth.useAuth();
-  const { state } = Auth.useAuth();
+  const { state, signOut } = Auth.useAuth();
   const logReminderIdRef = useRef();
   const theme = dozy_theme;
 
@@ -78,15 +83,15 @@ export function SettingsScreen() {
     },
   );
 
-  // const maybeAskNotificationPermission = useCallback(async () => {
-  //   if (!(await Notification.isNotificationEnabled())) {
-  //     const expoPushToken =
-  //       await Notification.registerForPushNotificationsAsync(false, true);
-  //     if (expoPushToken) {
-  //       Notification.updateExpoPushToken(expoPushToken, state.userId);
-  //     }
-  //   }
-  // }, [state.userId]);
+  const maybeAskNotificationPermission = useCallback(async () => {
+    if (!(await Notification.isNotificationEnabled())) {
+      const expoPushToken =
+        await Notification.registerForPushNotificationsAsync(false, true);
+      if (expoPushToken) {
+        Notification.updateExpoPushToken(expoPushToken, state.userId);
+      }
+    }
+  }, [state.userId]);
 
   // Make sure the screen uses updated state once it loads for the first time.
   React.useEffect(() => {
@@ -202,49 +207,17 @@ export function SettingsScreen() {
         </Container>
       </TouchableOpacity>
       <Container
-        style={styles.Container_ns}
+        style={styles.optionsWrapper}
         elevation={0}
         useThemeGutterPadding={true}
       >
-        {/* <Touchable style={styles.Touchable_n0} onPress={signOut}>
-          <Container
-            style={styles.Container_nf}
-            elevation={0}
-            useThemeGutterPadding={true}
-          >
-            <Text
-              style={[
-                styles.Text_nl,
-                theme.typography.smallLabel,
-                styles.logOutButtonText,
-                { color: theme.colors.strong },
-              ]}
-            >
-              Log out
-            </Text>
-            <Icon
-              style={styles.Icon_nf}
-              name="Ionicons/md-mail"
-              size={36}
-              color={theme.colors.primary}
-            />
-          </Container>
-        </Touchable>
         <Container
-          style={styles.Container_ni}
+          style={styles.optionsItem}
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Text
-            style={[
-              styles.Text_nv,
-              theme.typography.smallLabel,
-              {
-                color: theme.colors.strong,
-              },
-            ]}
-          >
-            Sleep log reminders
+          <Text style={styles.optionsItemText}>
+            Sleep log & check-in reminders
           </Text>
           <Switch
             style={styles.Switch_n9}
@@ -265,21 +238,22 @@ export function SettingsScreen() {
             }}
           />
         </Container>
+        <View style={styles.horizontalRule} />
         <Container
-          style={styles.Container_nw}
+          style={styles.optionsItem}
           elevation={0}
           useThemeGutterPadding={true}
         >
           <Text
             style={[
-              styles.Text_nb,
+              styles.optionsItemText,
               theme.typography.smallLabel,
               {
                 color: theme.colors.strong,
               },
             ]}
           >
-            Reminder time
+            Sleep log reminder time
           </Text>
           <DatePicker
             style={styles.DatePicker_nl}
@@ -297,40 +271,45 @@ export function SettingsScreen() {
               maybeAskNotificationPermission();
             }}
           />
-        </Container> */}
+        </Container>
+        <View style={styles.horizontalRule} />
+        <Touchable style={styles.touchableItemWrapper} onPress={signOut}>
+          <Container
+            style={styles.optionsItem}
+            elevation={0}
+            useThemeGutterPadding={true}
+          >
+            <Text
+              style={[styles.optionsItemText, { color: theme.colors.error }]}
+            >
+              Log out of Dozy
+            </Text>
+            <Icon
+              name="Ionicons/md-mail"
+              size={30}
+              color={theme.colors.error}
+            />
+          </Container>
+        </Touchable>
       </Container>
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  // Container_nf: {
-  //   minWidth: 0,
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   flexDirection: 'row',
-  //   paddingBottom: 15,
-  // },
-  // Container_ni: {
-  //   minWidth: 0,
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   flexDirection: 'row',
-  //   paddingBottom: 15,
-  // },
-  // Container_ns: {
-  //   alignItems: 'flex-start',
-  //   backgroundColor: 'red',
-  //   height: 200,
-  //   width: '100%',
-  //   backgroundColor: dozy_theme.colors.medium,
-  //   paddingVertical: 20,
-  // },
-  // Container_nw: {
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   flexDirection: 'row',
-  // },
+  optionsItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    paddingVertical: 10,
+    justifyContent: 'space-between',
+  },
+  optionsWrapper: {
+    alignItems: 'flex-start',
+    width: '100%',
+    backgroundColor: dozy_theme.colors.medium,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
   Container_nz: {
     alignItems: 'center',
     marginTop: scale(
@@ -340,11 +319,9 @@ const styles = StyleSheet.create({
       }),
     ),
   },
-  // DatePicker_nl: {
-  //   minWidth: 100,
-  //   paddingLeft: 0,
-  //   marginLeft: 0,
-  // },
+  DatePicker_nl: {
+    minWidth: 100,
+  },
   Root_nd: {
     justifyContent: 'space-around',
     backgroundColor: dozy_theme.colors.background,
@@ -354,21 +331,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '100%',
   },
-  // Text_nl: {
-  //   textAlign: 'center',
-  //   width: '100%',
-  // },
-  // Text_nc: {
-  //   textAlign: 'center',
-  //   width: '100%',
-  // },
-  // Touchable_n0: {
-  //   paddingBottom: 15,
-  // },
-  // Icon_nf: {},
-  // logOutButtonText: {
-  //   textAlign: 'left',
-  // },
+  Text_nc: {
+    textAlign: 'center',
+    width: '100%',
+  },
+  horizontalRule: {
+    height: StyleSheet.hairlineWidth,
+    width: '95%',
+    backgroundColor: dozy_theme.colors.mediumInverse,
+    alignSelf: 'flex-end',
+    marginVertical: 10,
+  },
+  optionsItemText: {
+    ...dozy_theme.typography.smallLabel,
+    color: dozy_theme.colors.mediumInverse,
+    flexWrap: 'wrap',
+    maxWidth: 200,
+  },
+  touchableItemWrapper: {
+    width: '100%',
+  },
 });
 
 export default withTheme(SettingsScreen);
