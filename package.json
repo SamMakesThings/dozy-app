@@ -29,7 +29,8 @@
     }
   },
   "resolutions": {
-    "react-native-safe-area-context": "3.2.0"
+    "react-native-safe-area-context": "3.2.0",
+    "electron": "^11.0.1"
   },
   "dependencies": {
     "@draftbit/ui": "npm:@fancydevpro/draftbit-ui@39.7.1-patch-datepicker-text-android",

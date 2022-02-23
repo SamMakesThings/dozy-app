@@ -5,9 +5,9 @@ import {
   ScreenContainer,
   Container,
   Icon,
-  Switch,
-  Touchable,
-  DatePicker,
+  // Switch,
+  // Touchable,
+  // DatePicker,
 } from '@draftbit/ui';
 import firestore from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
@@ -15,16 +15,17 @@ import { scale } from 'react-native-size-matters';
 import ExpoConstants from 'expo-constants';
 import { take } from 'lodash';
 import { dozy_theme } from '../config/Themes';
-import Analytics from '../utilities/analytics.service';
+// import Analytics from '../utilities/analytics.service';
 import { encodeLocalTime, decodeServerTime } from '../utilities/time';
 import Auth from '../utilities/auth.service';
-import Notification from '../utilities/notification.service';
-import AnalyticsEvents from '../constants/AnalyticsEvents';
+// import Notification from '../utilities/notification.service';
+// import AnalyticsEvents from '../constants/AnalyticsEvents';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function SettingsScreen() {
   // Pass along the signOut function from the context provider
-  const { state, signOut } = Auth.useAuth();
+  // const { state, signOut } = Auth.useAuth();
+  const { state } = Auth.useAuth();
   const logReminderIdRef = useRef();
   const theme = dozy_theme;
 
@@ -77,15 +78,15 @@ export function SettingsScreen() {
     },
   );
 
-  const maybeAskNotificationPermission = useCallback(async () => {
-    if (!(await Notification.isNotificationEnabled())) {
-      const expoPushToken =
-        await Notification.registerForPushNotificationsAsync(false, true);
-      if (expoPushToken) {
-        Notification.updateExpoPushToken(expoPushToken, state.userId);
-      }
-    }
-  }, [state.userId]);
+  // const maybeAskNotificationPermission = useCallback(async () => {
+  //   if (!(await Notification.isNotificationEnabled())) {
+  //     const expoPushToken =
+  //       await Notification.registerForPushNotificationsAsync(false, true);
+  //     if (expoPushToken) {
+  //       Notification.updateExpoPushToken(expoPushToken, state.userId);
+  //     }
+  //   }
+  // }, [state.userId]);
 
   // Make sure the screen uses updated state once it loads for the first time.
   React.useEffect(() => {
@@ -205,7 +206,7 @@ export function SettingsScreen() {
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <Touchable style={styles.Touchable_n0} onPress={signOut}>
+        {/* <Touchable style={styles.Touchable_n0} onPress={signOut}>
           <Container
             style={styles.Container_nf}
             elevation={0}
@@ -296,35 +297,40 @@ export function SettingsScreen() {
               maybeAskNotificationPermission();
             }}
           />
-        </Container>
+        </Container> */}
       </Container>
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  Container_nf: {
-    minWidth: 0,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingBottom: 15,
-  },
-  Container_ni: {
-    minWidth: 0,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingBottom: 15,
-  },
-  Container_ns: {
-    alignItems: 'flex-start',
-  },
-  Container_nw: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
+  // Container_nf: {
+  //   minWidth: 0,
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   flexDirection: 'row',
+  //   paddingBottom: 15,
+  // },
+  // Container_ni: {
+  //   minWidth: 0,
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   flexDirection: 'row',
+  //   paddingBottom: 15,
+  // },
+  // Container_ns: {
+  //   alignItems: 'flex-start',
+  //   backgroundColor: 'red',
+  //   height: 200,
+  //   width: '100%',
+  //   backgroundColor: dozy_theme.colors.medium,
+  //   paddingVertical: 20,
+  // },
+  // Container_nw: {
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   flexDirection: 'row',
+  // },
   Container_nz: {
     alignItems: 'center',
     marginTop: scale(
@@ -334,34 +340,35 @@ const styles = StyleSheet.create({
       }),
     ),
   },
-  DatePicker_nl: {
-    minWidth: 100,
-    paddingLeft: 0,
-    marginLeft: 0,
-  },
+  // DatePicker_nl: {
+  //   minWidth: 100,
+  //   paddingLeft: 0,
+  //   marginLeft: 0,
+  // },
   Root_nd: {
     justifyContent: 'space-around',
     backgroundColor: dozy_theme.colors.background,
+    paddingHorizontal: 20,
   },
   Text_n1: {
     textAlign: 'center',
     width: '100%',
   },
-  Text_nl: {
-    textAlign: 'center',
-    width: '100%',
-  },
-  Text_nc: {
-    textAlign: 'center',
-    width: '100%',
-  },
-  Touchable_n0: {
-    paddingBottom: 15,
-  },
-  Icon_nf: {},
-  logOutButtonText: {
-    textAlign: 'left',
-  },
+  // Text_nl: {
+  //   textAlign: 'center',
+  //   width: '100%',
+  // },
+  // Text_nc: {
+  //   textAlign: 'center',
+  //   width: '100%',
+  // },
+  // Touchable_n0: {
+  //   paddingBottom: 15,
+  // },
+  // Icon_nf: {},
+  // logOutButtonText: {
+  //   textAlign: 'left',
+  // },
 });
 
 export default withTheme(SettingsScreen);
