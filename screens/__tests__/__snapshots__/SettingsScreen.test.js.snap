@@ -74,6 +74,19 @@ exports[`SettingsScreen should match the snapshot 1`] = `
       </Text>
     </withTheme(Container)>
   </ForwardRef>
+  <Text
+    style={
+      Object {
+        "bottom": -20,
+        "color": "rgba(255, 255, 255, 1)",
+        "fontFamily": "RubikMedium",
+        "fontSize": 34.285714285714285,
+        "lineHeight": 51.42857142857143,
+      }
+    }
+  >
+    Settings
+  </Text>
   <withTheme(Container)
     elevation={0}
     style={

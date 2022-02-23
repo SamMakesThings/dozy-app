@@ -206,6 +206,7 @@ export function SettingsScreen() {
           </Text>
         </Container>
       </TouchableOpacity>
+      <Text style={styles.optionsHeader}>Settings</Text>
       <Container
         style={styles.optionsWrapper}
         elevation={0}
@@ -350,6 +351,11 @@ const styles = StyleSheet.create({
   },
   touchableItemWrapper: {
     width: '100%',
+  },
+  optionsHeader: {
+    ...dozy_theme.typography.headline6,
+    color: dozy_theme.colors.strong,
+    bottom: -20,
   },
 });
 
