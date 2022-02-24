@@ -206,14 +206,13 @@ export function SettingsScreen() {
           </Text>
         </Container>
       </TouchableOpacity>
-      <Text style={styles.optionsHeader}>Settings</Text>
       <Container
         style={styles.optionsWrapper}
         elevation={0}
         useThemeGutterPadding={true}
       >
         <Container
-          style={styles.optionsItem}
+          style={[styles.optionsItem, styles.rowAlign]}
           elevation={0}
           useThemeGutterPadding={true}
         >
@@ -245,23 +244,13 @@ export function SettingsScreen() {
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Text
-            style={[
-              styles.optionsItemText,
-              theme.typography.smallLabel,
-              {
-                color: theme.colors.strong,
-              },
-            ]}
-          >
-            Sleep log reminder time
-          </Text>
+          <Text style={styles.optionsItemText}>Sleep log reminder time</Text>
           <DatePicker
-            style={styles.DatePicker_nl}
+            style={styles.datePicker}
             mode="time"
-            type="solid"
-            error={false}
             label="Time"
+            type="underline"
+            error={false}
             disabled={false}
             leftIconMode="inset"
             format="h:MM TT"
@@ -283,13 +272,8 @@ export function SettingsScreen() {
             <Text
               style={[styles.optionsItemText, { color: theme.colors.error }]}
             >
-              Log out of Dozy
+              Sign out of Dozy
             </Text>
-            <Icon
-              name="Ionicons/md-mail"
-              size={30}
-              color={theme.colors.error}
-            />
           </Container>
         </Touchable>
       </Container>
@@ -310,6 +294,8 @@ const styles = StyleSheet.create({
     backgroundColor: dozy_theme.colors.medium,
     paddingVertical: 10,
     borderRadius: 10,
+    paddingLeft: 5,
+    paddingRight: 0,
   },
   Container_nz: {
     alignItems: 'center',
@@ -320,8 +306,13 @@ const styles = StyleSheet.create({
       }),
     ),
   },
-  DatePicker_nl: {
+  datePicker: {
+    padding: 0,
     minWidth: 100,
+    paddingVertical: 0,
+    position: 'absolute',
+    right: 0,
+    top: -24,
   },
   Root_nd: {
     justifyContent: 'space-around',
@@ -344,18 +335,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   optionsItemText: {
-    ...dozy_theme.typography.smallLabel,
-    color: dozy_theme.colors.mediumInverse,
-    flexWrap: 'wrap',
-    maxWidth: 200,
+    ...dozy_theme.typography.subtitle2,
+    color: dozy_theme.colors.strong,
   },
   touchableItemWrapper: {
     width: '100%',
   },
-  optionsHeader: {
-    ...dozy_theme.typography.headline6,
-    color: dozy_theme.colors.strong,
-    bottom: -20,
+  rowAlign: {
+    alignItems: 'center',
   },
 });
 

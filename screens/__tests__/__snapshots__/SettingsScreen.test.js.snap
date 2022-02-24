@@ -74,19 +74,6 @@ exports[`SettingsScreen should match the snapshot 1`] = `
       </Text>
     </withTheme(Container)>
   </ForwardRef>
-  <Text
-    style={
-      Object {
-        "bottom": -20,
-        "color": "rgba(255, 255, 255, 1)",
-        "fontFamily": "RubikMedium",
-        "fontSize": 34.285714285714285,
-        "lineHeight": 51.42857142857143,
-      }
-    }
-  >
-    Settings
-  </Text>
   <withTheme(Container)
     elevation={0}
     style={
@@ -94,6 +81,8 @@ exports[`SettingsScreen should match the snapshot 1`] = `
         "alignItems": "flex-start",
         "backgroundColor": "rgba(64, 75, 105, 1)",
         "borderRadius": 10,
+        "paddingLeft": 5,
+        "paddingRight": 0,
         "paddingVertical": 10,
         "width": "100%",
       }
@@ -103,24 +92,27 @@ exports[`SettingsScreen should match the snapshot 1`] = `
     <withTheme(Container)
       elevation={0}
       style={
-        Object {
-          "alignItems": "flex-start",
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-          "paddingVertical": 10,
-        }
+        Array [
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingVertical": 10,
+          },
+          Object {
+            "alignItems": "center",
+          },
+        ]
       }
       useThemeGutterPadding={true}
     >
       <Text
         style={
           Object {
-            "color": "rgba(255, 255, 255, 0.87)",
-            "flexWrap": "wrap",
+            "color": "rgba(255, 255, 255, 1)",
             "fontFamily": "RubikRegular",
-            "fontSize": 34.285714285714285,
-            "lineHeight": 55.714285714285715,
-            "maxWidth": 200,
+            "fontSize": 30,
+            "lineHeight": 47.14285714285714,
           }
         }
       >
@@ -158,24 +150,12 @@ exports[`SettingsScreen should match the snapshot 1`] = `
     >
       <Text
         style={
-          Array [
-            Object {
-              "color": "rgba(255, 255, 255, 0.87)",
-              "flexWrap": "wrap",
-              "fontFamily": "RubikRegular",
-              "fontSize": 34.285714285714285,
-              "lineHeight": 55.714285714285715,
-              "maxWidth": 200,
-            },
-            Object {
-              "fontFamily": "RubikRegular",
-              "fontSize": 34.285714285714285,
-              "lineHeight": 55.714285714285715,
-            },
-            Object {
-              "color": "rgba(255, 255, 255, 1)",
-            },
-          ]
+          Object {
+            "color": "rgba(255, 255, 255, 1)",
+            "fontFamily": "RubikRegular",
+            "fontSize": 30,
+            "lineHeight": 47.14285714285714,
+          }
         }
       >
         Sleep log reminder time
@@ -192,9 +172,14 @@ exports[`SettingsScreen should match the snapshot 1`] = `
         style={
           Object {
             "minWidth": 100,
+            "padding": 0,
+            "paddingVertical": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": -24,
           }
         }
-        type="solid"
+        type="underline"
       />
     </withTheme(Container)>
     <View
@@ -232,12 +217,10 @@ exports[`SettingsScreen should match the snapshot 1`] = `
           style={
             Array [
               Object {
-                "color": "rgba(255, 255, 255, 0.87)",
-                "flexWrap": "wrap",
+                "color": "rgba(255, 255, 255, 1)",
                 "fontFamily": "RubikRegular",
-                "fontSize": 34.285714285714285,
-                "lineHeight": 55.714285714285715,
-                "maxWidth": 200,
+                "fontSize": 30,
+                "lineHeight": 47.14285714285714,
               },
               Object {
                 "color": "rgba(255, 69, 100, 1)",
@@ -245,13 +228,8 @@ exports[`SettingsScreen should match the snapshot 1`] = `
             ]
           }
         >
-          Log out of Dozy
+          Sign out of Dozy
         </Text>
-        <Icon
-          color="rgba(255, 69, 100, 1)"
-          name="Ionicons/md-mail"
-          size={30}
-        />
       </withTheme(Container)>
     </_default>
   </withTheme(Container)>
