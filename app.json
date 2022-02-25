@@ -40,7 +40,7 @@
         }
       },
       "permissions": [],
-      "googleServicesFile": "./android/app/google-services.json",
+      "googleServicesFile": "./google-services.json",
       "useNextNotificationsApi": true
     },
     "packagerOpts": {
