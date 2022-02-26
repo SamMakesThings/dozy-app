@@ -64,6 +64,8 @@ const BottomNavButtons: React.FC<Props> = (props) => {
                 }
                 submitUserProgress();
               }}
+              accessibilityTraits={undefined}
+              accessibilityComponentType={undefined}
             >
               {label}
             </Button>
@@ -84,6 +86,8 @@ const BottomNavButtons: React.FC<Props> = (props) => {
         }}
         color={theme.colors.primary}
         disabled={props.disabled}
+        accessibilityTraits={undefined}
+        accessibilityComponentType={undefined}
       >
         {props.buttonLabel || 'Next'}
       </Button>
@@ -103,6 +107,8 @@ const BottomNavButtons: React.FC<Props> = (props) => {
           }}
           color={theme.colors.medium}
           disabled={props.disabled}
+          accessibilityTraits={undefined}
+          accessibilityComponentType={undefined}
         >
           {props.bottomGreyButtonLabel}
         </Button>

@@ -256,6 +256,10 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
             setDateValidity(validateDate(dateSetting));
             setSelectedDate(dateSetting);
           }}
+          accessibilityComponentType={undefined}
+          accessibilityTraits={undefined}
+          focusable={undefined}
+          showSoftInputOnFocus={undefined}
         />
         {!isValidDate && (
           <Text

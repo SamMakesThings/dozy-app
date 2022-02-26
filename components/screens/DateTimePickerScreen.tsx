@@ -165,6 +165,10 @@ const DateTimePickerScreen = (
                 setSelectedTime(newTime);
                 checkDataValidity(newTime);
               }}
+              accessibilityComponentType={undefined}
+              accessibilityTraits={undefined}
+              focusable={undefined}
+              showSoftInputOnFocus={undefined}
             />
             <DatePicker
               style={styles.DatePickerHalf}
@@ -181,6 +185,10 @@ const DateTimePickerScreen = (
                 setSelectedTime(newTime);
                 checkDataValidity(newTime);
               }}
+              accessibilityComponentType={undefined}
+              accessibilityTraits={undefined}
+              focusable={undefined}
+              showSoftInputOnFocus={undefined}
             />
           </View>
         ) : (
@@ -203,6 +211,10 @@ const DateTimePickerScreen = (
                 setSelectedTime(newTime);
                 checkDataValidity(newTime);
               }}
+              accessibilityComponentType={undefined}
+              accessibilityTraits={undefined}
+              focusable={undefined}
+              showSoftInputOnFocus={undefined}
             />
           </View>
         )}

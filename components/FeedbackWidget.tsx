@@ -139,6 +139,8 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
                 type="solid"
                 onPress={onSubmit}
                 color={theme.colors.primary}
+                accessibilityTraits={undefined}
+                accessibilityComponentType={undefined}
               >
                 Submit feedback
               </Button>
