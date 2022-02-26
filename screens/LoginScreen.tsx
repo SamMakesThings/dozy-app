@@ -99,10 +99,6 @@ const LoginScreen: React.FC = () => {
                 AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
               }
               cornerRadius={theme.borderRadius.button}
-              style={[
-                theme.buttonLayout,
-                { borderRadius: theme.borderRadius.button },
-              ]}
               onPress={signInWithApple}
             />
           )}
@@ -118,6 +114,8 @@ const LoginScreen: React.FC = () => {
               Platform.OS === 'ios' && styles.Button_Signin_iOS,
             ]}
             onPress={signIn}
+            accessibilityTraits={undefined}
+            accessibilityComponentType={undefined}
           >
             {Platform.OS === 'ios' ? 'Continue with Google' : 'Get started'}
           </Button>
