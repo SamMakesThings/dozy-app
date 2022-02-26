@@ -116,7 +116,7 @@
     "@types/jest": "^26.0.13",
     "@types/lodash": "^4.14.172",
     "@types/react": "~17.0.21",
-    "@types/react-native": "0.62.2",
+    "@types/react-native": "^0.63.25",
     "@types/react-test-renderer": "^16.9.3",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "@typescript-eslint/parser": "^4.30.0",
