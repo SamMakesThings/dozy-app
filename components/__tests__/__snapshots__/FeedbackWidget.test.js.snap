@@ -111,7 +111,7 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
           }
         }
       >
-        <Component
+        <TextInput
           allowFontScaling={true}
           enablesReturnKeyAutomatically={true}
           keyboardAppearance="dark"
