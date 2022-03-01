@@ -87,6 +87,7 @@ export default class Auth {
                       email: result.user.email,
                       uid: result.user.uid,
                       photoURL: result.user.photoURL ?? '',
+                      signUpDate: firestore.FieldValue.serverTimestamp(),
                     },
                     onboardingComplete: false,
                     lastChat: {
