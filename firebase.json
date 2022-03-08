@@ -3,5 +3,8 @@
     "crashlytics_auto_collection_enabled": true,
     "crashlytics_debug_enabled": false,
     "crashlytics_ndk_enabled": true
+  },
+  "functions": {
+    "predeploy": "npm --prefix \"$RESOURCE_DIR\" run build"
   }
 }
