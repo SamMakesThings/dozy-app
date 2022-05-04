@@ -8,6 +8,7 @@ exports[`SettingsScreen should match the snapshot 1`] = `
     Object {
       "backgroundColor": "rgba(35, 43, 63, 1)",
       "justifyContent": "space-around",
+      "paddingHorizontal": 20,
     }
   }
 >
@@ -78,72 +79,25 @@ exports[`SettingsScreen should match the snapshot 1`] = `
     style={
       Object {
         "alignItems": "flex-start",
+        "backgroundColor": "#404b69",
+        "borderRadius": 10,
+        "paddingLeft": 5,
+        "paddingRight": 0,
+        "paddingVertical": 10,
+        "width": "100%",
       }
     }
     useThemeGutterPadding={true}
   >
-    <_default
-      onPress={[Function]}
-      style={
-        Object {
-          "paddingBottom": 15,
-        }
-      }
-    >
-      <withTheme(Container)
-        elevation={0}
-        style={
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-            "minWidth": 0,
-            "paddingBottom": 15,
-          }
-        }
-        useThemeGutterPadding={true}
-      >
-        <Text
-          style={
-            Array [
-              Object {
-                "textAlign": "center",
-                "width": "100%",
-              },
-              Object {
-                "fontFamily": "RubikRegular",
-                "fontSize": 34.285714285714285,
-                "lineHeight": 55.714285714285715,
-              },
-              Object {
-                "textAlign": "left",
-              },
-              Object {
-                "color": "rgba(255, 255, 255, 1)",
-              },
-            ]
-          }
-        >
-          Log out
-        </Text>
-        <Icon
-          color="#00818a"
-          name="Ionicons/md-mail"
-          size={36}
-          style={Object {}}
-        />
-      </withTheme(Container)>
-    </_default>
     <withTheme(Container)
       elevation={0}
       style={
         Array [
           Object {
-            "alignItems": "center",
-            "flexDirection": "row",
+            "alignItems": "flex-start",
             "justifyContent": "space-between",
             "minWidth": 0,
-            "paddingBottom": 15,
+            "paddingVertical": 10,
           },
           Object {
             "paddingBottom": 30,
@@ -179,32 +133,29 @@ exports[`SettingsScreen should match the snapshot 1`] = `
     <withTheme(Container)
       elevation={0}
       style={
-        Object {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-          "minWidth": 0,
-          "paddingBottom": 15,
-        }
+        Array [
+          Object {
+            "flexDirection": "row",
+            "paddingBottom": 15,
+          },
+          Object {
+            "alignItems": "center",
+          },
+        ]
       }
       useThemeGutterPadding={true}
     >
       <Text
         style={
-          Array [
-            undefined,
-            Object {
-              "fontFamily": "RubikRegular",
-              "fontSize": 34.285714285714285,
-              "lineHeight": 55.714285714285715,
-            },
-            Object {
-              "color": "rgba(255, 255, 255, 1)",
-            },
-          ]
+          Object {
+            "color": "rgba(255, 255, 255, 1)",
+            "fontFamily": "RubikRegular",
+            "fontSize": 30,
+            "lineHeight": 47.14285714285714,
+          }
         }
       >
-        Sleep log reminders
+        Sleep log & check-in reminders
       </Text>
       <withTheme(Switch)
         color="#00818a"
@@ -213,33 +164,38 @@ exports[`SettingsScreen should match the snapshot 1`] = `
         value={false}
       />
     </withTheme(Container)>
+    <View
+      style={
+        Object {
+          "alignSelf": "flex-end",
+          "backgroundColor": "rgba(255, 255, 255, 0.87)",
+          "height": 0.5,
+          "marginVertical": 10,
+          "width": "95%",
+        }
+      }
+    />
     <withTheme(Container)
       elevation={0}
       style={
         Object {
-          "alignItems": "center",
           "flexDirection": "row",
-          "justifyContent": "space-between",
+          "paddingBottom": 15,
         }
       }
       useThemeGutterPadding={true}
     >
       <Text
         style={
-          Array [
-            undefined,
-            Object {
-              "fontFamily": "RubikRegular",
-              "fontSize": 34.285714285714285,
-              "lineHeight": 55.714285714285715,
-            },
-            Object {
-              "color": "rgba(255, 255, 255, 1)",
-            },
-          ]
+          Object {
+            "color": "rgba(255, 255, 255, 1)",
+            "fontFamily": "RubikRegular",
+            "fontSize": 30,
+            "lineHeight": 47.14285714285714,
+          }
         }
       >
-        Reminder time
+        Sleep log reminder time
       </Text>
       <withTheme(DatePicker)
         date={2021-01-01T00:00:00.000Z}
@@ -252,14 +208,65 @@ exports[`SettingsScreen should match the snapshot 1`] = `
         onDateChange={[Function]}
         style={
           Object {
-            "marginLeft": 0,
             "minWidth": 100,
-            "paddingLeft": 0,
+            "padding": 0,
+            "paddingVertical": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": -24,
           }
         }
-        type="solid"
+        type="underline"
       />
     </withTheme(Container)>
+    <View
+      style={
+        Object {
+          "alignSelf": "flex-end",
+          "backgroundColor": "rgba(255, 255, 255, 0.87)",
+          "height": 0.5,
+          "marginVertical": 10,
+          "width": "95%",
+        }
+      }
+    />
+    <_default
+      onPress={[Function]}
+      style={
+        Object {
+          "width": "100%",
+        }
+      }
+    >
+      <withTheme(Container)
+        elevation={0}
+        style={
+          Object {
+            "flexDirection": "row",
+            "paddingBottom": 15,
+          }
+        }
+        useThemeGutterPadding={true}
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "rgba(255, 255, 255, 1)",
+                "fontFamily": "RubikRegular",
+                "fontSize": 30,
+                "lineHeight": 47.14285714285714,
+              },
+              Object {
+                "color": "rgba(255, 69, 100, 1)",
+              },
+            ]
+          }
+        >
+          Sign out of Dozy
+        </Text>
+      </withTheme(Container)>
+    </_default>
   </withTheme(Container)>
 </withTheme(ScreenContainer)>
 `;

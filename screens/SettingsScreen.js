@@ -11,6 +11,7 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  View,
 } from 'react-native';
 import {
   withTheme,
@@ -242,34 +243,10 @@ export function SettingsScreen() {
         </Container>
       </TouchableOpacity>
       <Container
-        style={styles.Container_ns}
+        style={styles.optionsWrapper}
         elevation={0}
         useThemeGutterPadding={true}
       >
-        <Touchable style={styles.Touchable_n0} onPress={signOut}>
-          <Container
-            style={styles.Container_nf}
-            elevation={0}
-            useThemeGutterPadding={true}
-          >
-            <Text
-              style={[
-                styles.Text_nl,
-                theme.typography.smallLabel,
-                styles.logOutButtonText,
-                { color: theme.colors.strong },
-              ]}
-            >
-              Log out
-            </Text>
-            <Icon
-              style={styles.Icon_nf}
-              name="Ionicons/md-mail"
-              size={36}
-              color={theme.colors.primary}
-            />
-          </Container>
-        </Touchable>
         <Container
           style={[styles.Container_ni, styles.Container_oura]}
           elevation={0}
@@ -295,20 +272,12 @@ export function SettingsScreen() {
           />
         </Container>
         <Container
-          style={styles.Container_ni}
+          style={[styles.optionsItem, styles.rowAlign]}
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Text
-            style={[
-              styles.Text_nv,
-              theme.typography.smallLabel,
-              {
-                color: theme.colors.strong,
-              },
-            ]}
-          >
-            Sleep log reminders
+          <Text style={styles.optionsItemText}>
+            Sleep log & check-in reminders
           </Text>
           <Switch
             style={styles.Switch_n9}
@@ -329,28 +298,19 @@ export function SettingsScreen() {
             }}
           />
         </Container>
+        <View style={styles.horizontalRule} />
         <Container
-          style={styles.Container_nw}
+          style={styles.optionsItem}
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Text
-            style={[
-              styles.Text_nb,
-              theme.typography.smallLabel,
-              {
-                color: theme.colors.strong,
-              },
-            ]}
-          >
-            Reminder time
-          </Text>
+          <Text style={styles.optionsItemText}>Sleep log reminder time</Text>
           <DatePicker
-            style={styles.DatePicker_nl}
+            style={styles.datePicker}
             mode="time"
-            type="solid"
-            error={false}
             label="Time"
+            type="underline"
+            error={false}
             disabled={false}
             leftIconMode="inset"
             format="h:MM TT"
@@ -362,6 +322,20 @@ export function SettingsScreen() {
             }}
           />
         </Container>
+        <View style={styles.horizontalRule} />
+        <Touchable style={styles.touchableItemWrapper} onPress={signOut}>
+          <Container
+            style={styles.optionsItem}
+            elevation={0}
+            useThemeGutterPadding={true}
+          >
+            <Text
+              style={[styles.optionsItemText, { color: theme.colors.error }]}
+            >
+              Sign out of Dozy
+            </Text>
+          </Container>
+        </Touchable>
       </Container>
       {isTogglingOuraConnection && <LoadingOverlay opacity={0.5} />}
     </ScreenContainer>
@@ -369,10 +343,7 @@ export function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  Container_nf: {
-    minWidth: 0,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  optionsItem: {
     flexDirection: 'row',
     paddingBottom: 15,
   },
@@ -381,18 +352,18 @@ const styles = StyleSheet.create({
   },
   Container_ni: {
     minWidth: 0,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingBottom: 15,
-  },
-  Container_ns: {
     alignItems: 'flex-start',
-  },
-  Container_nw: {
+    paddingVertical: 10,
     justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
+  },
+  optionsWrapper: {
+    alignItems: 'flex-start',
+    width: '100%',
+    backgroundColor: dozy_theme.colors.medium,
+    paddingVertical: 10,
+    borderRadius: 10,
+    paddingLeft: 5,
+    paddingRight: 0,
   },
   Container_nz: {
     alignItems: 'center',
@@ -403,20 +374,20 @@ const styles = StyleSheet.create({
       }),
     ),
   },
-  DatePicker_nl: {
+  datePicker: {
+    padding: 0,
     minWidth: 100,
-    paddingLeft: 0,
-    marginLeft: 0,
+    paddingVertical: 0,
+    position: 'absolute',
+    right: 0,
+    top: -24,
   },
   Root_nd: {
     justifyContent: 'space-around',
     backgroundColor: dozy_theme.colors.background,
+    paddingHorizontal: 20,
   },
   Text_n1: {
-    textAlign: 'center',
-    width: '100%',
-  },
-  Text_nl: {
     textAlign: 'center',
     width: '100%',
   },
@@ -424,12 +395,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '100%',
   },
-  Touchable_n0: {
-    paddingBottom: 15,
+  horizontalRule: {
+    height: StyleSheet.hairlineWidth,
+    width: '95%',
+    backgroundColor: dozy_theme.colors.mediumInverse,
+    alignSelf: 'flex-end',
+    marginVertical: 10,
   },
-  Icon_nf: {},
-  logOutButtonText: {
-    textAlign: 'left',
+  optionsItemText: {
+    ...dozy_theme.typography.subtitle2,
+    color: dozy_theme.colors.strong,
+  },
+  touchableItemWrapper: {
+    width: '100%',
+  },
+  rowAlign: {
+    alignItems: 'center',
   },
 });
 
