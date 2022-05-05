@@ -79,4 +79,7 @@ android/fastlane/README.md
 .expo/*
 web-build/
 
+# Environment files
+.env
+
 # @end expo-cli
