@@ -94,13 +94,13 @@ exports[`SettingsScreen should match the snapshot 1`] = `
       style={
         Array [
           Object {
-            "alignItems": "flex-start",
+            "alignItems": "center",
             "justifyContent": "space-between",
-            "minWidth": 0,
-            "paddingVertical": 10,
+            "paddingTop": 15,
           },
           Object {
-            "paddingBottom": 30,
+            "flexDirection": "row",
+            "paddingBottom": 15,
           },
         ]
       }
@@ -130,6 +130,17 @@ exports[`SettingsScreen should match the snapshot 1`] = `
         value={false}
       />
     </withTheme(Container)>
+    <View
+      style={
+        Object {
+          "alignSelf": "flex-end",
+          "backgroundColor": "rgba(255, 255, 255, 0.87)",
+          "height": 0.5,
+          "marginVertical": 10,
+          "width": "95%",
+        }
+      }
+    />
     <withTheme(Container)
       elevation={0}
       style={
