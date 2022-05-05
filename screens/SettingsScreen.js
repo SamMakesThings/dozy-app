@@ -248,7 +248,7 @@ export function SettingsScreen() {
         useThemeGutterPadding={true}
       >
         <Container
-          style={[styles.Container_ni, styles.Container_oura]}
+          style={[styles.Container_ni, styles.optionsItem]}
           elevation={0}
           useThemeGutterPadding={true}
         >
@@ -271,6 +271,7 @@ export function SettingsScreen() {
             disabled={isTogglingOuraConnection}
           />
         </Container>
+        <View style={styles.horizontalRule} />
         <Container
           style={[styles.optionsItem, styles.rowAlign]}
           elevation={0}
@@ -347,14 +348,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingBottom: 15,
   },
-  Container_oura: {
-    paddingBottom: 30,
-  },
   Container_ni: {
-    minWidth: 0,
-    alignItems: 'flex-start',
-    paddingVertical: 10,
     justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 15,
   },
   optionsWrapper: {
     alignItems: 'flex-start',
