@@ -13,6 +13,8 @@ target 'Dozy' do
   pod 'GoogleSignIn', '~> 5.0.2'
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
+  pod 'UMPermissionsInterface', :path => "../node_modules/unimodules-permissions-interface/ios"
+
   # Uncomment the code below to enable Flipper.
   #
   # You should not install Flipper in CI environments when creating release

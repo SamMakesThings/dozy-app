@@ -101,7 +101,7 @@ export default class Notification {
   static async getExpoPushToken(): Promise<string | undefined> {
     return (
       await Notifications.getExpoPushTokenAsync({
-        experienceId: `@startupsam/${Constants.manifest.slug}`,
+        experienceId: `@startupsam/${Constants.manifest?.slug}`,
       })
     )?.data;
   }
