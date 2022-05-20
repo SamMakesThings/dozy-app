@@ -1,16 +1,15 @@
 name: Build Prodution iOS and Android Apps
 
-on: workflow_dispatch
-# on:
-#   push:
-#     branches:
-#       - master
-#     paths-ignore:
-#       - README.md
-#       - .eslintrc.json
-#       - .eslintignore
-#       - .gitignore
-#       - .prettierrc.json
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - README.md
+      - .eslintrc.json
+      - .eslintignore
+      - .gitignore
+      - .prettierrc.json
 
 jobs:
   build:
