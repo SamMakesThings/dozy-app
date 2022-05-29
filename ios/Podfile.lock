@@ -364,6 +364,8 @@ PODS:
     - UMCore
   - EXCrypto (8.4.0):
     - UMCore
+  - EXDevice (3.2.0):
+    - UMCore
   - EXErrorRecovery (2.1.0):
     - UMCore
   - EXFileSystem (11.0.2):
@@ -863,10 +865,16 @@ PODS:
     - Yoga
   - RNScreens (3.0.0):
     - React-Core
+  - RNSentry (3.4.2):
+    - React-Core
+    - Sentry (= 7.11.0)
   - RNSVG (12.1.0):
     - React
   - RNVectorIcons (7.1.0):
     - React
+  - Sentry (7.11.0):
+    - Sentry/Core (= 7.11.0)
+  - Sentry/Core (7.11.0)
   - UMAppLoader (2.1.0)
   - UMBarCodeScannerInterface (6.1.0):
     - UMCore
@@ -898,6 +906,7 @@ DEPENDENCIES:
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXCrypto (from `../node_modules/expo-crypto/ios`)
+  - EXDevice (from `../node_modules/expo-device/ios`)
   - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
@@ -954,6 +963,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
@@ -999,6 +1009,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - Sentry
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -1013,6 +1024,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-constants/ios"
   EXCrypto:
     :path: "../node_modules/expo-crypto/ios"
+  EXDevice:
+    :path: "../node_modules/expo-device/ios"
   EXErrorRecovery:
     :path: "../node_modules/expo-error-recovery/ios"
   EXFileSystem:
@@ -1119,6 +1132,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
@@ -1163,6 +1178,7 @@ SPEC CHECKSUMS:
   EXAV: e32adf44c10a82f723172d5b01d5693890888dd6
   EXConstants: c4dd28acc12039c999612507a5f935556f2c86ce
   EXCrypto: 81948191c3d2caf18fb32f18ee88d87d42532d62
+  EXDevice: e69996534618927956e80a91135b5c0dd1d7d114
   EXErrorRecovery: 720641265b8cf95e6cdeb1884ac38e794a352488
   EXFileSystem: dcf2273f49431e5037347c733a2dc5d08e0d0a9e
   EXFont: d6fb79f9863120f0d0b26b0c2d1453bc9511e9df
@@ -1238,8 +1254,10 @@ SPEC CHECKSUMS:
   RNGoogleSignin: e64616a4080cf7d83f4b292fad82d174587444e2
   RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
   RNScreens: e8e8dd0588b5da0ab57dcca76ab9b2d8987757e0
+  RNSentry: 2cd1daa124b0d9fd0dfc2cb6094fdd168cb579bc
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
+  Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
   UMAppLoader: fe2708bb0ac5cd70052bc207d06aa3b7e72b9e97
   UMBarCodeScannerInterface: 79f92bea5f7af39b381a4c82298105ceb537408a
   UMCameraInterface: 81ff46700da88435f17afedfc88915eaede7e6a6

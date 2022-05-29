@@ -51,6 +51,7 @@
     "@react-navigation/material-top-tabs": "^5.x",
     "@react-navigation/native": "^5.x",
     "@react-navigation/stack": "^5.x",
+    "@sentry/react-native": "^3.4.2",
     "base-64": "^0.1.0",
     "cors": "^2.8.5",
     "date-fns": "^2.22.1",
@@ -62,6 +63,7 @@
     "expo-asset": "~8.3.1",
     "expo-constants": "~10.1.3",
     "expo-crypto": "~8.4.0",
+    "expo-device": "~3.2.0",
     "expo-font": "~9.1.0",
     "expo-intent-launcher": "~8.4.0",
     "expo-notifications": "~0.11.6",
@@ -98,6 +100,7 @@
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
     "react-native-webview": "11.0.0",
+    "sentry-expo": "^3.1.0",
     "victory-native": "^35.0.1"
   },
   "devDependencies": {
