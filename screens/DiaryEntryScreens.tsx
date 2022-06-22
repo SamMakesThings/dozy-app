@@ -736,11 +736,12 @@ export const TagsNotesInput: React.FC<Props> = ({ navigation }) => {
         { label: 'stress', icon: 'new' },
         { label: 'pain', icon: 'flash' },
         { label: 'restroom', icon: 'warning' },
-        { label: 'phone & devices', icon: 'mobile' },
         { label: 'eating', icon: 'bowl' },
         { label: 'smoking', icon: 'cloud' },
         { label: 'late caffeine', icon: 'drop' },
-        { label: 'late alcohol', icon: 'cup' },
+        { label: 'late alcohol', icon: 'drink' },
+        { label: 'late TV', icon: 'tv' },
+        { label: 'phone & devices', icon: 'mobile' },
       ]}
       validateSleepLog={validateLog}
       onInvalidForm={onInvalidForm}

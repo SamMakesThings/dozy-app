@@ -52,6 +52,7 @@ import fetchChats from '../utilities/fetchChats';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { Chat } from '../types/custom';
 import { ErrorObj } from '../types/error';
+import { ISIquestionSubtitle } from '../constants/Onboarding';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -220,6 +221,7 @@ export const ISI1: React.FC<Props> = ({ navigation }) => {
         { label: 'Extreme difficulty', value: 4, solidColor: true },
       ]}
       questionLabel="How much difficulty do you have falling asleep?"
+      questionSubtitle={ISIquestionSubtitle}
     />
   );
 };
@@ -249,6 +251,7 @@ export const ISI2: React.FC<Props> = ({ navigation }) => {
         { label: 'Extreme difficulty', value: 4, solidColor: true },
       ]}
       questionLabel="How much difficulty do you have *staying* asleep?"
+      questionSubtitle={ISIquestionSubtitle}
     />
   );
 };
@@ -281,6 +284,7 @@ export const ISI3: React.FC<Props> = ({ navigation }) => {
         { label: 'I always wake up too early', value: 4, solidColor: true },
       ]}
       questionLabel="How much of a problem do you have with waking up too early?"
+      questionSubtitle={ISIquestionSubtitle}
     />
   );
 };
@@ -314,6 +318,7 @@ export const ISI4: React.FC<Props> = ({ navigation }) => {
         { label: 'Very dissatisfied', value: 4, solidColor: true },
       ]}
       questionLabel="How satisfied/dissatisfied are you with your current sleep pattern?"
+      questionSubtitle={ISIquestionSubtitle}
     />
   );
 };
@@ -343,6 +348,7 @@ export const ISI5: React.FC<Props> = ({ navigation }) => {
         { label: 'Very much noticeable', value: 4, solidColor: true },
       ]}
       questionLabel="How noticeable to others do you think your sleep problem is? (in terms of impairing the quality of your life)"
+      questionSubtitle={ISIquestionSubtitle}
     />
   );
 };
@@ -372,6 +378,7 @@ export const ISI6: React.FC<Props> = ({ navigation }) => {
         { label: 'Very much worried', value: 4, solidColor: true },
       ]}
       questionLabel="How worried are you about your current sleep pattern?"
+      questionSubtitle={ISIquestionSubtitle}
     />
   );
 };
@@ -413,6 +420,7 @@ export const ISI7: React.FC<Props> = ({ navigation }) => {
         { label: 'Very much interfering', value: 4, solidColor: true },
       ]}
       questionLabel="How much does your sleep problem interfere with your daily life? (e.g. tiredness, mood, ability to function at work, concentration, etc.)?"
+      questionSubtitle={ISIquestionSubtitle}
     />
   );
 };
