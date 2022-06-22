@@ -58,11 +58,11 @@ const ToggleTag: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   View_ToggleContainer: {
-    width: '17%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     margin: scale(4),
+    width: '20%',
   },
   View_IconContainer: {
     borderWidth: scale(1),
