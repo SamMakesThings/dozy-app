@@ -33,7 +33,7 @@
     "electron": "^11.0.1"
   },
   "dependencies": {
-    "@draftbit/ui": "npm:@fancydevpro/draftbit-ui@39.7.1-patch-expo-av-upgrade",
+    "@draftbit/ui": "npm:@fancydevpro/draftbit-ui@39.7.1-patch-bob-upgrade",
     "@expo-google-fonts/rubik": "^0.1.0",
     "@expo/vector-icons": "^12.0.0",
     "@react-native-community/datetimepicker": "4.0.0",
