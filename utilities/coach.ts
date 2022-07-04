@@ -9,7 +9,7 @@ export async function getOnboardingCoach(): Promise<Coach> {
   let coachDTO: CoachDTO | undefined;
   const defaultCoachQuery = await firestore()
     .collection<CoachDTO>('coaches')
-    .where('firstName', '==', 'Sam')
+    .where('firstName', '==', 'Michelle')
     .get();
   if (defaultCoachQuery.docs.length) {
     coachDTO = defaultCoachQuery.docs[0].data();
