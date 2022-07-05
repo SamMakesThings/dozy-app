@@ -2,8 +2,8 @@ import { Coach } from '../types/coach';
 import Images from '../config/Images';
 
 const defaultCoach: Coach = {
-  firstName: 'Sam',
-  lastName: 'Stowers',
+  firstName: 'Michelle',
+  lastName: 'Hackl',
   title: 'Founder & Sleep Coach',
   id: '',
   image: Images.SamProfile,
