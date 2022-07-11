@@ -72,8 +72,9 @@ android/fastlane/README.md
 # Bundle artifacts
 *.jsbundle
 
-# CocoaPods
+# Ruby / CocoaPods
 /ios/Pods/
+/vendor/bundle/
 
 # Expo
 .expo/*
