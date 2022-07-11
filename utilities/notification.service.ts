@@ -176,7 +176,7 @@ export default class Notification {
                 Linking.openSettings();
               } else {
                 IntentLauncher.startActivityAsync(
-                  IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                  IntentLauncher.ActivityAction.APP_NOTIFICATION_SETTINGS,
                   {
                     data: `package:${Application.applicationId}`,
                   },

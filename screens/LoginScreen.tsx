@@ -99,10 +99,7 @@ const LoginScreen: React.FC = () => {
                 AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
               }
               cornerRadius={theme.borderRadius.button}
-              style={[
-                theme.buttonLayout,
-                { borderRadius: theme.borderRadius.button },
-              ]}
+              style={theme.buttonLayout}
               onPress={signInWithApple}
             />
           )}
