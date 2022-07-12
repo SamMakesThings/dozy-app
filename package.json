@@ -30,6 +30,7 @@
     }
   },
   "resolutions": {
+    "expo-av": "11.2",
     "electron": "^11.0.1"
   },
   "dependencies": {
