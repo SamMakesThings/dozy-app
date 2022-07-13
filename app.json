@@ -7,13 +7,25 @@
     "sdkVersion": "41.0.0",
     "platforms": ["ios", "android"],
     "primaryColor": "#00818A",
-    "version": "0.7.238",
+    "version": "0.7.312",
     "orientation": "portrait",
     "icon": "./assets/images/appleIcon.png",
     "splash": {
       "image": "./assets/images/splashImage.png",
       "resizeMode": "contain",
       "backgroundColor": "#232B3F"
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "dozy",
+            "project": "dozy-mobile",
+            "authToken": "82be5876abc44092911beeb02882b1e6856354397950480ebfcd36034ac539f9"
+          }
+        }
+      ]
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,7 +35,11 @@
       "supportsTablet": false,
       "icon": "./assets/images/appleIcon.png",
       "bundleIdentifier": "com.dozyhealth.dozy",
+<<<<<<< HEAD
       "buildNumber": "253",
+=======
+      "buildNumber": "327",
+>>>>>>> develop
       "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.713165282203-dmren1nkmi5aho4bjm7ssiert19a3fpf"
@@ -33,7 +49,11 @@
     "android": {
       "package": "com.dozyhealth.dozy",
       "icon": "./assets/images/appleIcon.png",
+<<<<<<< HEAD
       "versionCode": 253,
+=======
+      "versionCode": 327,
+>>>>>>> develop
       "config": {
         "googleSignIn": {
           "certificateHash": "380B249EE454F973C64F8BE38A1604F5FF1A6B81",
@@ -79,7 +99,8 @@
           "icon": "./assets/images/android-notification-icon.png",
           "color": "#00818A"
         }
-      ]
+      ],
+      "sentry-expo"
     ]
   }
 }

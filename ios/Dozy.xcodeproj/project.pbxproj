@@ -143,6 +143,7 @@
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
 				1E3EAC1D8514AE49FCCA6BA8 /* [CP-User] [RNFB] Core Configuration */,
 				48701462FDCD27B337DB6558 /* [CP-User] [RNFB] Crashlytics Configuration */,
+				880C2C92C3EC4164AABC25BA /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -213,7 +214,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n../node_modules/expo-constants/scripts/get-app-config-ios.sh\n../node_modules/expo-updates/scripts/create-manifest-ios.sh\n";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n../node_modules/expo-constants/scripts/get-app-config-ios.sh\n../node_modules/expo-updates/scripts/create-manifest-ios.sh\n";
 		};
 		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -318,6 +319,20 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dozy/Pods-Dozy-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		880C2C92C3EC4164AABC25BA /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
+		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -372,7 +387,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Dozy/dozy.entitlements;
-				CURRENT_PROJECT_VERSION = 253;
+				CURRENT_PROJECT_VERSION = 327;
 				DEVELOPMENT_TEAM = B22L3PPZ5Q;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -383,7 +398,7 @@
 				INFOPLIST_FILE = Dozy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.7.238;
+				MARKETING_VERSION = 0.7.312;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -406,14 +421,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Dozy/dozy.entitlements;
-				CURRENT_PROJECT_VERSION = 253;
+				CURRENT_PROJECT_VERSION = 327;
 				DEVELOPMENT_TEAM = B22L3PPZ5Q;
 				ENABLE_BITCODE = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = Dozy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.7.238;
+				MARKETING_VERSION = 0.7.312;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
