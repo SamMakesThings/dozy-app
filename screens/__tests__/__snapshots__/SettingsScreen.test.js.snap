@@ -12,7 +12,7 @@ exports[`SettingsScreen should match the snapshot 1`] = `
     }
   }
 >
-  <ForwardRef
+  <TouchableOpacity
     disabled={true}
     onPress={[Function]}
   >
@@ -73,7 +73,7 @@ exports[`SettingsScreen should match the snapshot 1`] = `
         @dozyapp mock
       </Text>
     </withTheme(Container)>
-  </ForwardRef>
+  </TouchableOpacity>
   <withTheme(Container)
     elevation={0}
     style={

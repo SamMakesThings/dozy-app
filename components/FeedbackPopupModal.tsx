@@ -25,10 +25,7 @@ export const FeedbackPopupModal: React.FC<FeedbackPopupModalProps> = ({
 
   const onSubmit = useCallback((): void => {
     submitFeedback(rate, feedback);
-    if (onRequestClose) {
-      onRequestClose();
-    }
-  }, [rate, feedback, onRequestClose]);
+  }, [rate, feedback]);
 
   return (
     <Modal
