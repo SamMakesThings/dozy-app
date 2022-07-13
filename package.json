@@ -30,11 +30,12 @@
     }
   },
   "resolutions": {
+    "@types/react": "17.0.2",
     "expo-av": "11.2",
     "electron": "^11.0.1"
   },
   "dependencies": {
-    "@draftbit/ui": "npm:@fancydevpro/draftbit-ui@39.7.1-patch-types-fix",
+    "@draftbit/ui": "npm:@fancydevpro/draftbit-ui@39.7.1-patch-types-fix-3",
     "@expo-google-fonts/rubik": "^0.1.0",
     "@expo/vector-icons": "^13.0.0",
     "@react-native-community/datetimepicker": "6.1.2",
@@ -116,7 +117,7 @@
     "@types/intl": "^1.2.0",
     "@types/jest": "^26.0.13",
     "@types/lodash": "^4.14.172",
-    "@types/react": "~17.0.21",
+    "@types/react": "17.0.2",
     "@types/react-native": "~0.67.6",
     "@types/react-test-renderer": "^16.9.3",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
