@@ -877,7 +877,7 @@ PODS:
     - Yoga
   - RNScreens (3.0.0):
     - React-Core
-  - RNSentry (3.4.2):
+  - RNSentry (3.4.3):
     - React-Core
     - Sentry (= 7.11.0)
   - RNSVG (12.1.0):
@@ -894,7 +894,7 @@ PODS:
     - UMCore
   - UMConstantsInterface (6.1.0):
     - UMCore
-  - UMCore (7.1.1)
+  - UMCore (7.1.2)
   - UMFaceDetectorInterface (6.1.0)
   - UMFileSystemInterface (6.1.0)
   - UMFontInterface (6.1.0)
@@ -1276,7 +1276,7 @@ SPEC CHECKSUMS:
   RNInAppBrowser: 3ff3a3b8f458aaf25aaee879d057352862edf357
   RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
   RNScreens: e8e8dd0588b5da0ab57dcca76ab9b2d8987757e0
-  RNSentry: 2cd1daa124b0d9fd0dfc2cb6094fdd168cb579bc
+  RNSentry: 85f6525b5fe8d2ada065858026b338605b3c09da
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
@@ -1284,7 +1284,7 @@ SPEC CHECKSUMS:
   UMBarCodeScannerInterface: 79f92bea5f7af39b381a4c82298105ceb537408a
   UMCameraInterface: 81ff46700da88435f17afedfc88915eaede7e6a6
   UMConstantsInterface: bb94dd46039dcde276ed50225b29e22785e604bf
-  UMCore: 2f671796d7439604a1cf8ac7bbe5809cd5c50437
+  UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
   UMFaceDetectorInterface: 791eec55ffca1171992976b7eceb73e69e391c58
   UMFileSystemInterface: f72245e90ce78fa6427180ff0b0904ead13d8161
   UMFontInterface: 5843cff7db85a42ba629aaac53d33091c35524d3
@@ -1295,6 +1295,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 203c11259d2699b5b3a4eda4adbc466f5cb5c561
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 4976d62554ab1d874ef5a74c7732e06e8955f272
+PODFILE CHECKSUM: db0001fa52c77bef94e19eb1de2d1619775d9557
 
 COCOAPODS: 1.11.2
