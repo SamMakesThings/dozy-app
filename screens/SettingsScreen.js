@@ -248,21 +248,11 @@ export function SettingsScreen() {
         useThemeGutterPadding={true}
       >
         <Container
-          style={[styles.Container_ni, styles.optionsItem]}
+          style={[styles.optionsItem, styles.rowAlign]}
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Text
-            style={[
-              styles.Text_nv,
-              theme.typography.smallLabel,
-              {
-                color: theme.colors.strong,
-              },
-            ]}
-          >
-            Connect to Oura
-          </Text>
+          <Text style={styles.optionsItemText}>Connect to Oura</Text>
           <Switch
             style={styles.Switch_n9}
             color={theme.colors.primary}
@@ -305,7 +295,9 @@ export function SettingsScreen() {
           elevation={0}
           useThemeGutterPadding={true}
         >
-          <Text style={styles.optionsItemText}>Sleep log reminder time</Text>
+          <Text style={[styles.optionsItemText, styles.sleepLogReminderText]}>
+            Sleep log reminder time
+          </Text>
           <DatePicker
             style={styles.datePicker}
             mode="time"
@@ -326,7 +318,7 @@ export function SettingsScreen() {
         <View style={styles.horizontalRule} />
         <Touchable style={styles.touchableItemWrapper} onPress={signOut}>
           <Container
-            style={styles.optionsItem}
+            style={[styles.optionsItem, styles.rowAlign]}
             elevation={0}
             useThemeGutterPadding={true}
           >
@@ -346,18 +338,13 @@ export function SettingsScreen() {
 const styles = StyleSheet.create({
   optionsItem: {
     flexDirection: 'row',
-    paddingBottom: 15,
-  },
-  Container_ni: {
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 15,
+    height: 72,
   },
   optionsWrapper: {
     alignItems: 'flex-start',
     width: '100%',
     backgroundColor: dozy_theme.colors.medium,
-    paddingVertical: 10,
     borderRadius: 10,
     paddingLeft: 5,
     paddingRight: 0,
@@ -372,12 +359,12 @@ const styles = StyleSheet.create({
     ),
   },
   datePicker: {
+    alignSelf: 'flex-end',
+    marginRight: -16,
     padding: 0,
     minWidth: 100,
     paddingVertical: 0,
-    position: 'absolute',
-    right: 0,
-    top: -24,
+    marginBottom: -1,
   },
   Root_nd: {
     justifyContent: 'space-around',
@@ -397,7 +384,6 @@ const styles = StyleSheet.create({
     width: '95%',
     backgroundColor: dozy_theme.colors.mediumInverse,
     alignSelf: 'flex-end',
-    marginVertical: 10,
   },
   optionsItemText: {
     ...dozy_theme.typography.subtitle2,
@@ -408,6 +394,9 @@ const styles = StyleSheet.create({
   },
   rowAlign: {
     alignItems: 'center',
+  },
+  sleepLogReminderText: {
+    alignSelf: 'center',
   },
 });
 
