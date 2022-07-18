@@ -19,8 +19,9 @@ const LoginScreen: React.FC = () => {
   const previousLoadingStateRef = useRef(isLoading);
 
   useEffect(() => {
+    let timer: any;
     if (!state.isLoading && previousLoadingStateRef.current) {
-      setTimeout(() => {
+      timer = setTimeout(() => {
         setLoading(state.isLoading);
         previousLoadingStateRef.current = state.isLoading;
       }, 800);
@@ -28,6 +29,8 @@ const LoginScreen: React.FC = () => {
       setLoading(state.isLoading);
       previousLoadingStateRef.current = state.isLoading;
     }
+
+    return () => clearTimeout(timer);
   }, [state.isLoading]);
 
   return state.isSigningIn || !isLoading ? (
