@@ -143,6 +143,7 @@ android {
         manifestPlaceholders = [
             appAuthRedirectScheme: 'com.dozyhealth.dozy'
         ]
+        multiDexEnabled true
     }
     splits {
         abi {
