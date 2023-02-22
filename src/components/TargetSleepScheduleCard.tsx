@@ -3,9 +3,9 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { CardContainer } from './CardContainer';
 import { dozy_theme } from '../config/Themes';
-import CrescentMoon from '../assets/images/CrescentMoon.svg';
-import TransRightArrow from '../assets/images/TransRightArrow.svg';
-import YellowSun from '../assets/images/YellowSun.svg';
+import CrescentMoon from '../../assets/images/CrescentMoon.svg';
+import TransRightArrow from '../../assets/images/TransRightArrow.svg';
+import YellowSun from '../../assets/images/YellowSun.svg';
 
 interface Props {
   styles?: ViewStyle;

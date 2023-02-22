@@ -7,13 +7,13 @@ import {
   useWindowDimensions,
   ViewPropTypes,
   KeyboardEvent,
-  EmitterSubscription
+  EmitterSubscription,
 } from 'react-native';
 import PropTypes, { InferProps } from 'prop-types';
 
 const KeyboardAwareViewPropTypes = {
   ...ViewPropTypes,
-  enabled: PropTypes.bool
+  enabled: PropTypes.bool,
 };
 
 export type KeyboardAwareViewProps = InferProps<
@@ -28,14 +28,10 @@ const KeyboardAwareView: React.FC<KeyboardAwareViewProps> = ({
   ...props
 }) => {
   const [shiftForKeyboard] = useState(new Animated.Value(0));
-  const [
-    keyboardDidShowListener,
-    setKeyboardDidShowListener
-  ] = useState<EmitterSubscription | null>(null);
-  const [
-    keyboardDidHideListener,
-    setKeyboardDidHideListener
-  ] = useState<EmitterSubscription | null>(null);
+  const [keyboardDidShowListener, setKeyboardDidShowListener] =
+    useState<EmitterSubscription | null>(null);
+  const [keyboardDidHideListener, setKeyboardDidHideListener] =
+    useState<EmitterSubscription | null>(null);
   const windowDimensions = useWindowDimensions();
 
   const keyboardDidShow = useCallback(
@@ -58,30 +54,30 @@ const KeyboardAwareView: React.FC<KeyboardAwareViewProps> = ({
               Animated.timing(shiftForKeyboard, {
                 toValue: enabled ? gap : 0,
                 duration: 300,
-                useNativeDriver: true
+                useNativeDriver: true,
               }).start();
             }
-          }
+          },
         );
       }
     },
-    [shiftForKeyboard, enabled]
+    [shiftForKeyboard, enabled],
   );
 
   const keyboardDidHide = useCallback(() => {
     Animated.timing(shiftForKeyboard, {
       toValue: 0,
       duration: 300,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
   }, [shiftForKeyboard]);
 
   useEffect(() => {
     setKeyboardDidShowListener(
-      Keyboard.addListener('keyboardDidShow', keyboardDidShow)
+      Keyboard.addListener('keyboardDidShow', keyboardDidShow),
     );
     setKeyboardDidHideListener(
-      Keyboard.addListener('keyboardDidHide', keyboardDidHide)
+      Keyboard.addListener('keyboardDidHide', keyboardDidHide),
     );
 
     return () => {

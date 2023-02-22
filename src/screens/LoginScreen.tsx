@@ -5,8 +5,8 @@ import { StyleSheet, Text, ImageBackground, Platform } from 'react-native';
 import { scale, moderateScale } from 'react-native-size-matters';
 import Auth from '../utilities/auth.service';
 import { dozy_theme } from '../config/Themes';
-import WordmarkTrans from '../assets/images/WordmarkTrans.svg';
-import UndrawBed from '../assets/images/UndrawBed.svg';
+import WordmarkTrans from '../../assets/images/WordmarkTrans.svg';
+import UndrawBed from '../../assets/images/UndrawBed.svg';
 import LoadingOverlay from '../components/LoadingOverlay';
 
 const LoginScreen: React.FC = () => {
@@ -40,7 +40,7 @@ const LoginScreen: React.FC = () => {
       style={styles.View_RootContainer}
     >
       <ImageBackground
-        source={require('../assets/images/DreamBgExtended.png')}
+        source={require('../../assets/images/DreamBgExtended.png')}
         style={styles.View_ContentContainer}
         imageStyle={styles.background}
       >

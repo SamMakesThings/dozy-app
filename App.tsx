@@ -7,12 +7,12 @@ import { SENTRY_DSN } from '@env';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { LogBox, StatusBar, Text, UIManager, Platform } from 'react-native';
-import LoadingOverlay from './components/LoadingOverlay';
-import { dozy_theme } from './config/Themes';
-import AppNavigator from './navigation/AppNavigator';
-import Updates from './utilities/updates.service';
-import Feedback from './utilities/feedback.service';
-import Auth from './utilities/auth.service';
+import LoadingOverlay from './src/components/LoadingOverlay';
+import { dozy_theme } from './src/config/Themes';
+import AppNavigator from './src/navigation/AppNavigator';
+import Updates from './src/utilities/updates.service';
+import Feedback from './src/utilities/feedback.service';
+import Auth from './src/utilities/auth.service';
 
 // Mute "setting a timer" firebase warnings in console
 LogBox.ignoreLogs(['Setting a timer']);

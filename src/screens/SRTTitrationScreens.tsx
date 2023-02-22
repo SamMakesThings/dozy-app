@@ -11,8 +11,8 @@ import {
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import GLOBAL from '../utilities/global';
 import { dozy_theme } from '../config/Themes';
-import ThumbsUp from '../assets/images/ThumbsUp.svg';
-import AlarmClock from '../assets/images/AlarmClock.svg';
+import ThumbsUp from '../../assets/images/ThumbsUp.svg';
+import AlarmClock from '../../assets/images/AlarmClock.svg';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import Auth from '../utilities/auth.service';
 import { Navigation, SleepLog } from '../types/custom';

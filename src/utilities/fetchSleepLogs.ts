@@ -3,7 +3,7 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 import { omit } from 'lodash';
 import { SleepLog } from '../types/custom';
-import { decodeServerTime } from '../utilities/time';
+import { decodeServerTime } from './time';
 
 async function fetchSleepLogs(
   db: FirebaseFirestoreTypes.Module,
