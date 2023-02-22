@@ -152,6 +152,6 @@
     "typescript": "~4.3.5"
   },
   "private": true,
-  "name": "slumber-app",
+  "name": "dozy-app",
   "version": "1.0.0"
 }
