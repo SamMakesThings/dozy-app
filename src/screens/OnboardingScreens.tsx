@@ -24,17 +24,17 @@ import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
 import WizardContentScreen from '../components/screens/WizardContentScreen';
 import { dozy_theme } from '../config/Themes';
-import WaveHello from '../assets/images/WaveHello.svg';
-import LabCoat from '../assets/images/LabCoat.svg';
-import Clipboard from '../assets/images/Clipboard.svg';
-import TiredFace from '../assets/images/TiredFace.svg';
-import BarChart from '../assets/images/BarChart.svg';
-import Expressionless from '../assets/images/Expressionless.svg';
-import MonocleEmoji from '../assets/images/MonocleEmoji.svg';
-import Stop from '../assets/images/Stop.svg';
-import WarningTriangle from '../assets/images/WarningTriangle.svg';
-import TanBook from '../assets/images/TanBook.svg';
-import RaisedHands from '../assets/images/RaisedHands.svg';
+import WaveHello from '../../assets/images/WaveHello.svg';
+import LabCoat from '../../assets/images/LabCoat.svg';
+import Clipboard from '../../assets/images/Clipboard.svg';
+import TiredFace from '../../assets/images/TiredFace.svg';
+import BarChart from '../../assets/images/BarChart.svg';
+import Expressionless from '../../assets/images/Expressionless.svg';
+import MonocleEmoji from '../../assets/images/MonocleEmoji.svg';
+import Stop from '../../assets/images/Stop.svg';
+import WarningTriangle from '../../assets/images/WarningTriangle.svg';
+import TanBook from '../../assets/images/TanBook.svg';
+import RaisedHands from '../../assets/images/RaisedHands.svg';
 import { ChatMessage } from '../components/ChatMessage';
 import { ChatTextInput } from '../components/ChatTextInput';
 import submitOnboardingData, {
@@ -1004,8 +1004,10 @@ export const DiaryReminder: React.FC<Props> = ({ navigation }) => {
 };
 
 export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
-  const timePickerRef =
-    useRef<{ getValue: () => Date; setValue: (date: Date) => void }>(null);
+  const timePickerRef = useRef<{
+    getValue: () => Date;
+    setValue: (date: Date) => void;
+  }>(null);
 
   const validateInput = useCallback((val: Date): ErrorObj | boolean => {
     // Make sure the selected date is 7+ days from today

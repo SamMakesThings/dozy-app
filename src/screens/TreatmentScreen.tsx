@@ -30,7 +30,7 @@ import submitFeedback from '../utilities/submitFeedback';
 import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
 import { Navigation } from '../types/custom';
-import Clipboard from '../assets/images/Clipboard.svg';
+import Clipboard from '../../assets/images/Clipboard.svg';
 
 export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
