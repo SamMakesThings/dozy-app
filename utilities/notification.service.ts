@@ -101,7 +101,7 @@ export default class Notification {
   static async getExpoPushToken(): Promise<string | undefined> {
     return (
       await Notifications.getExpoPushTokenAsync({
-        experienceId: `@startupsam/${Constants.manifest.slug}`,
+        experienceId: `@startupsam/${Constants.manifest?.slug}`,
       })
     )?.data;
   }
@@ -176,7 +176,7 @@ export default class Notification {
                 Linking.openSettings();
               } else {
                 IntentLauncher.startActivityAsync(
-                  IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                  IntentLauncher.ActivityAction.APP_NOTIFICATION_SETTINGS,
                   {
                     data: `package:${Application.applicationId}`,
                   },

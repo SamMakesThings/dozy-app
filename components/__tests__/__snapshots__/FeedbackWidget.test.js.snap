@@ -111,15 +111,13 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
           }
         }
       >
-        <Component
-          allowFontScaling={true}
+        <TextInput
           enablesReturnKeyAutomatically={true}
           keyboardAppearance="dark"
           keyboardType="default"
           onSubmitEditing={[Function]}
           placeholder="Why did you give that rating? (optional)"
           placeholderTextColor="rgba(153, 172, 185, 1)"
-          rejectResponderTermination={true}
           returnKeyType="done"
           style={
             Object {
@@ -128,7 +126,6 @@ exports[`FeedbackWidget should match the snapshot 1`] = `
               "height": 96.42857142857143,
             }
           }
-          underlineColorAndroid="transparent"
         />
       </withTheme(Container)>
       <withTheme(Button)
