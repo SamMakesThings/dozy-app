@@ -617,14 +617,13 @@ PODS:
     - ExpoModulesCore
   - EXApplication (4.1.0):
     - ExpoModulesCore
-  - EXAV (10.2.1):
+  - EXAV (11.2.3):
     - ExpoModulesCore
-    - ReactCommon/turbomodule/core
+    - React-runtimeexecutor
+    - ReactCommon
   - EXConstants (13.1.1):
     - ExpoModulesCore
   - EXDevice (4.2.0):
-    - ExpoModulesCore
-  - EXErrorRecovery (3.1.0):
     - ExpoModulesCore
   - EXFileSystem (14.0.0):
     - ExpoModulesCore
@@ -1123,6 +1122,24 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.68.2)
   - React-runtimeexecutor (0.68.2):
     - React-jsi (= 0.68.2)
+  - ReactCommon (0.68.2):
+    - React-logger (= 0.68.2)
+    - ReactCommon/react_debug_core (= 0.68.2)
+    - ReactCommon/turbomodule (= 0.68.2)
+  - ReactCommon/react_debug_core (0.68.2):
+    - React-logger (= 0.68.2)
+  - ReactCommon/turbomodule (0.68.2):
+    - DoubleConversion
+    - glog
+    - RCT-Folly (= 2021.06.28.00-v2)
+    - React-callinvoker (= 0.68.2)
+    - React-Core (= 0.68.2)
+    - React-cxxreact (= 0.68.2)
+    - React-jsi (= 0.68.2)
+    - React-logger (= 0.68.2)
+    - React-perflogger (= 0.68.2)
+    - ReactCommon/turbomodule/core (= 0.68.2)
+    - ReactCommon/turbomodule/samples (= 0.68.2)
   - ReactCommon/turbomodule/core (0.68.2):
     - DoubleConversion
     - glog
@@ -1133,6 +1150,17 @@ PODS:
     - React-jsi (= 0.68.2)
     - React-logger (= 0.68.2)
     - React-perflogger (= 0.68.2)
+  - ReactCommon/turbomodule/samples (0.68.2):
+    - DoubleConversion
+    - glog
+    - RCT-Folly (= 2021.06.28.00-v2)
+    - React-callinvoker (= 0.68.2)
+    - React-Core (= 0.68.2)
+    - React-cxxreact (= 0.68.2)
+    - React-jsi (= 0.68.2)
+    - React-logger (= 0.68.2)
+    - React-perflogger (= 0.68.2)
+    - ReactCommon/turbomodule/core (= 0.68.2)
   - RNCMaskedView (0.1.10):
     - React
   - RNCPicker (1.6.0):
@@ -1222,7 +1250,6 @@ DEPENDENCIES:
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXDevice (from `../node_modules/expo-device/ios`)
-  - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
   - EXJSONUtils (from `../node_modules/expo-json-utils/ios`)
@@ -1340,8 +1367,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-constants/ios"
   EXDevice:
     :path: "../node_modules/expo-device/ios"
-  EXErrorRecovery:
-    :path: "../node_modules/expo-error-recovery/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   EXFont:
@@ -1481,10 +1506,9 @@ SPEC CHECKSUMS:
   EASClient: 93565f4d024559b75eac62bc7d50acaa354614f6
   EXAppleAuthentication: 709a807fe7f48ac6986a2ceed206ee6a8baf28df
   EXApplication: d6562af1204162e0ac46d341a7d4e5dc720b33de
-  EXAV: b9ed0c201092244c46aa78f907f5c66176bed236
+  EXAV: 88f61c5af8415715b7ee51f084c1020235b85c56
   EXConstants: fdbe52259365b6a6faaa5e99a3b82cfa6bc2eb61
   EXDevice: 0115b360059ccd32c1701744e374e3259ffbdd3c
-  EXErrorRecovery: 3ce46e5d42e53c0371ff048a7f0cbc959968ef4a
   EXFileSystem: 2aa2d9289f84bca9532b9ccbd81504fa31eb1ded
   EXFont: 04235cc22e6fef86028feb67db452978dc6f240f
   EXJSONUtils: 2a74b8f40f1523cc3f92af99c91aa78201737a77
