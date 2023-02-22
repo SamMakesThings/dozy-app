@@ -31,7 +31,7 @@ export const FeedbackPopupModal: React.FC<FeedbackPopupModalProps> = ({
     <Modal
       animationType="slide"
       transparent
-      onRequestClose={onRequestClose}
+      onRequestClose={(event) => onRequestClose?.(event)}
       {...props}
     >
       <TouchableWithoutFeedback onPress={onRequestClose}>
