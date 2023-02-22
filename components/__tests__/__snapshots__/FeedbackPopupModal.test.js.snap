@@ -4,6 +4,7 @@ exports[`FeedbackPopupModal should match the snapshot 1`] = `
 <Modal
   animationType="slide"
   hardwareAccelerated={false}
+  onRequestClose={[Function]}
   theme={
     Object {
       "borderRadius": Object {
