@@ -1,6 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
 import { Chat, SleepLog, Task } from '../types/custom';
-import alterMonthSelection from './alterMonthSelection';
 import CoachConstants from '../constants/Coach';
 import { Coach } from '../types/coach';
 
@@ -17,7 +16,6 @@ export type AppState = {
   authLoading: boolean;
   chats: Chat[] | [];
   tasks: Task[];
-  selectedDate: { year: number; month: number };
 };
 
 export const initialState: AppState = {
@@ -41,10 +39,6 @@ export const initialState: AppState = {
     },
   ],
   tasks: [],
-  selectedDate: {
-    month: new Date().getMonth(),
-    year: new Date().getFullYear(),
-  },
 };
 
 export type ACTION =
@@ -119,14 +113,6 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
       return {
         ...prevState,
         tasks: action.tasks,
-      };
-    case 'CHANGE_SELECTED_MONTH':
-      return {
-        ...prevState,
-        selectedDate: alterMonthSelection(
-          prevState.selectedDate,
-          action.changeMonthBy,
-        ),
       };
     case 'SET_LOADING':
       return {

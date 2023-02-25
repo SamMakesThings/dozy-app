@@ -30,6 +30,7 @@ import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import Notification from '../utilities/notification.service';
+import { useSelectedDateStore } from '../utilities/selectedDateStore';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -51,6 +52,8 @@ const SleepLogsView = (props: {
   let loggedToday = false;
   let selectedSleepLogs: Array<SleepLog> = [];
 
+  const selectedDate = useSelectedDateStore((state) => state.selectedDate);
+
   // Determine whether user has logged sleep for the previous night
   if (props.sleepLogs != [] && props.sleepLogs[0]) {
     loggedToday =
@@ -60,8 +63,8 @@ const SleepLogsView = (props: {
     selectedSleepLogs = props.sleepLogs.filter((log) => {
       const logDate = log.upTime.toDate();
       return (
-        logDate.getMonth() == state.selectedDate.month &&
-        logDate.getFullYear() == state.selectedDate.year
+        logDate.getMonth() == selectedDate.month &&
+        logDate.getFullYear() == selectedDate.year
       );
     });
   }
