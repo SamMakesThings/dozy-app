@@ -9,6 +9,7 @@ import { SleepLog } from '../types/custom';
 import { getLogStreakLength } from '../utilities/getLogStreakLength';
 import Auth from '../utilities/auth.service';
 import { LogStatsLineGraph } from '../components/LogStatsLineGraphComponent';
+import { useSelectedDateStore } from '../utilities/selectedDateStore';
 
 export const DiaryStatsScreen: React.FC = () => {
   const { state } = Auth.useAuth();
@@ -17,11 +18,13 @@ export const DiaryStatsScreen: React.FC = () => {
   // Calculate the current diary streak length
   const streakLength = getLogStreakLength(allSleepLogs);
 
+  const selectedDate = useSelectedDateStore((state) => state.selectedDate);
+
   // Filter sleepLogs to only show selected month
   const selectedSleepLogs = allSleepLogs.filter(
     (s) =>
-      s.upTime.toDate().getMonth() === state.selectedDate.month &&
-      s.upTime.toDate().getFullYear() === state.selectedDate.year,
+      s.upTime.toDate().getMonth() === selectedDate.month &&
+      s.upTime.toDate().getFullYear() === selectedDate.year,
   );
 
   return (
