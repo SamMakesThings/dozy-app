@@ -10,7 +10,6 @@ export type SelectedDateState = {
 };
 
 export const useSelectedDateStore = create<SelectedDateState>((set) => ({
-  month: new Date().getMonth(),
   selectedDate: {
     month: new Date().getMonth(),
     year: new Date().getFullYear(),
@@ -18,7 +17,8 @@ export const useSelectedDateStore = create<SelectedDateState>((set) => ({
   },
   alterMonthSelection: (changeBy: number) =>
     set((state) => {
-      let { month, year, date } = state.selectedDate;
+      let { month, year } = state.selectedDate;
+      const date = state.selectedDate.date;
       const adjustedMonth = month + changeBy;
 
       if (adjustedMonth === 12) {
