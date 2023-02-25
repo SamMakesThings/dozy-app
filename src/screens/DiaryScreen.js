@@ -28,15 +28,15 @@ const Tab = createMaterialTopTabNavigator();
 
 function DiaryScreen() {
   const theme = dozy_theme;
-  const { dispatch, state } = Auth.useAuth();
+  const { state } = Auth.useAuth();
 
   // Get selected date from store
   const alterMonthSelection = useSelectedDateStore(
-    (state) => state.alterMonthSelection,
+    (dateState) => dateState.alterMonthSelection,
   );
 
-  const currentMonthString = useSelectedDateStore((state) =>
-    state.selectedDate.date.toLocaleDateString('en-US', {
+  const currentMonthString = useSelectedDateStore((dateState) =>
+    dateState.selectedDate.date.toLocaleDateString('en-US', {
       month: 'long',
       year: 'numeric',
     }),
