@@ -244,7 +244,7 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
           format={'dddd, mmmm dS'}
           date={selectedDate}
           onDateChange={(selectedDay: Date) => {
-            let dateSetting = selectedDay; // why do dates have to be mutable like this
+            let dateSetting = selectedDay;
             dateSetting.setHours(new Date().getHours());
             dateSetting.setMinutes(new Date().getMinutes() - 7); // TODO: Make this less hacky
             logState.logDate = dateSetting;
