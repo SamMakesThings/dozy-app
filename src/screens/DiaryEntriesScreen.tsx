@@ -48,7 +48,6 @@ const SleepLogsView = (props: {
   navigation: Navigation;
 }) => {
   const theme = dozy_theme;
-  const { state } = Auth.useAuth();
   let loggedToday = false;
   let selectedSleepLogs: Array<SleepLog> = [];
 
