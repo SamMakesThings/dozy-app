@@ -18,7 +18,9 @@ export const DiaryStatsScreen: React.FC = () => {
   // Calculate the current diary streak length
   const streakLength = getLogStreakLength(allSleepLogs);
 
-  const selectedDate = useSelectedDateStore((state) => state.selectedDate);
+  const selectedDate = useSelectedDateStore(
+    (dateState) => dateState.selectedDate,
+  );
 
   // Filter sleepLogs to only show selected month
   const selectedSleepLogs = allSleepLogs.filter(
