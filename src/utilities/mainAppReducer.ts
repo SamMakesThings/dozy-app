@@ -136,4 +136,5 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
         coach: action.coach,
       };
   }
+  return prevState;
 };
