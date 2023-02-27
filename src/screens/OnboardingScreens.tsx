@@ -53,6 +53,7 @@ import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { Chat } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import { ISIquestionSubtitle } from '../constants/Onboarding';
+import { useChatsStore } from '../utilities/chatsStore';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -1140,6 +1141,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
   const displayName = state.userData.userInfo.displayName;
   const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
   const coach = `${state.coach.firstName} ${state.coach.lastName}`;
+  const chats = useChatsStore((chatsState) => chatsState.chats);
 
   const [message, setMessage] = React.useState('');
   const [replyVisible, makeReplyVisible] = React.useState(false);
@@ -1151,12 +1153,12 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
   }, []);
 
   useEffect((): void => {
-    const lastUserMessage = findLast(state.chats, { sentByUser: true });
+    const lastUserMessage = findLast(chats, { sentByUser: true });
     if (lastUserMessage?.message) {
       setMessage(lastUserMessage.message);
       makeReplyVisible(true);
     }
-  }, [state.chats]);
+  }, [chats]);
 
   return (
     <WizardContentScreen
@@ -1175,7 +1177,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
         style={styles.keyboardAvoidingView}
       >
         <View style={styles.spacer6} />
-        {state.chats.length ? (
+        {chats.length ? (
           <FlatList
             contentContainerStyle={styles.View_ContentContainer}
             renderItem={({ item }) => (
@@ -1188,7 +1190,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
             )}
             keyExtractor={(item, index) => `${item.message}${index}`}
             inverted={true}
-            data={state.chats}
+            data={chats}
           />
         ) : (
           <>
