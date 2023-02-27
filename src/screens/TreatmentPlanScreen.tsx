@@ -18,7 +18,6 @@ const TreatmentPlanScreen: React.FC<{
   navigation: NavigationProp<any>;
   route: { params: { completionPercentProgress: number } };
 }> = ({ navigation, route }) => {
-  const { state } = Auth.useAuth();
   const { userData } = useUserDataStore((userState) => userState.userData);
   const treatmentPlan = GLOBAL.treatmentPlan;
 
