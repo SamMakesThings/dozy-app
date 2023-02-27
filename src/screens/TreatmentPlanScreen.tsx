@@ -10,6 +10,7 @@ import { CardContainer } from '../components/CardContainer';
 import treatments from '../constants/Treatments';
 import GLOBAL from '../utilities/global';
 import Auth from '../utilities/auth.service';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 const theme = dozy_theme;
 
@@ -18,6 +19,7 @@ const TreatmentPlanScreen: React.FC<{
   route: { params: { completionPercentProgress: number } };
 }> = ({ navigation, route }) => {
   const { state } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
   const treatmentPlan = GLOBAL.treatmentPlan;
 
   // Calculate flex value for the vertical progress bar
@@ -34,7 +36,7 @@ const TreatmentPlanScreen: React.FC<{
       <View style={styles.View_ContentContainer}>
         <TreatmentPlanCard
           completionPercentProgress={route.params.completionPercentProgress}
-          nextCheckinDate={state.userData.nextCheckin.nextCheckinDatetime}
+          nextCheckinDate={userData.nextCheckin.nextCheckinDatetime}
           title={'Progress so far'}
           titleOpacity={0.6}
         />
