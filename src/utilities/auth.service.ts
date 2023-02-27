@@ -21,6 +21,7 @@ import Analytics from './analytics.service';
 import { ACTION, initialState, appReducer, AppState } from './mainAppReducer';
 import refreshUserData from './refreshUserData';
 import Notification from './notification.service';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 export type AuthContextValue = {
   state: AppState;
@@ -301,7 +302,7 @@ export default class Auth {
     }, [dispatch, processFbLogin]);
 
     const finishOnboarding = useCallback(async () => {
-      dispatch({ type: 'FINISH_ONBOARDING' });
+      useUserDataStore((state) => state.setOnboardingComplete());
     }, [dispatch]);
 
     const value = useMemo(

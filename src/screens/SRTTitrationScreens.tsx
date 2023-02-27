@@ -17,6 +17,7 @@ import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import Auth from '../utilities/auth.service';
 import { Navigation, SleepLog } from '../types/custom';
 import { useSleepLogsStore } from '../utilities/sleepLogsStore';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 interface Props {
   navigation: Navigation;
@@ -100,7 +101,7 @@ export const SRTTitrationStart: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -112,8 +113,7 @@ export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
   );
 
   // Pull baseline from state
-  const sleepEfficiencyAvgBaseline =
-    state.userData.baselineInfo.sleepEfficiencyAvg;
+  const sleepEfficiencyAvgBaseline = userData.baselineInfo.sleepEfficiencyAvg;
 
   function getLabel(sleepEffiencyAvg: number) {
     if (sleepEfficiencyAvg < sleepEfficiencyAvgBaseline) {
@@ -183,7 +183,7 @@ export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SRTTitration: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
 
   const imgSize = imgSizePercent * useWindowDimensions().width;
 
@@ -197,18 +197,16 @@ export const SRTTitration: React.FC<Props> = ({ navigation }) => {
   );
 
   // Use old target bedtime to calculate new (if needed)
-  const oldTargetBedTime =
-    state.userData.currentTreatments.targetBedTime.toDate();
+  const oldTargetBedTime = userData.currentTreatments.targetBedTime.toDate();
   const newTargetBedTime = oldTargetBedTime;
-  GLOBAL.targetTimeInBed = state.userData.currentTreatments.targetTimeInBed;
+  GLOBAL.targetTimeInBed = userData.currentTreatments.targetTimeInBed;
   if (sleepEfficiencyAvg >= 87) {
     newTargetBedTime.setMinutes(oldTargetBedTime.getMinutes() - 15);
-    GLOBAL.targetTimeInBed =
-      state.userData.currentTreatments.targetTimeInBed + 15;
+    GLOBAL.targetTimeInBed = userData.currentTreatments.targetTimeInBed + 15;
   }
   const targetBedTimeLabel = formatDateAsTime(newTargetBedTime);
   const targetWakeTimeLabel = formatDateAsTime(
-    state.userData.currentTreatments.targetWakeTime.toDate(),
+    userData.currentTreatments.targetWakeTime.toDate(),
   );
 
   function getSRTTitrationLabel(sleepEffiencyAvg: number) {
@@ -229,7 +227,7 @@ export const SRTTitration: React.FC<Props> = ({ navigation }) => {
         // Set target bedtime and wake time in Global for use in treatment module submit function
         GLOBAL.targetBedTime = newTargetBedTime;
         GLOBAL.targetWakeTime =
-          state.userData.currentTreatments.targetWakeTime.toDate();
+          userData.currentTreatments.targetWakeTime.toDate();
         navigation.navigate('SleepOnset', { progressBarPercent: 0.15 });
       }}
       textLabel={getSRTTitrationLabel(sleepEfficiencyAvg)}
@@ -242,7 +240,7 @@ export const SRTTitration: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepOnset: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
 
   // Calculate recent sleep onset average & fetch baseline for comparison
   const sleepOnsetAvg = Number(
@@ -251,7 +249,7 @@ export const SleepOnset: React.FC<Props> = ({ navigation }) => {
       recentSleepLogs.length
     ).toFixed(0),
   );
-  const baselineSleepOnsetAvg = state.userData.baselineInfo.sleepOnsetAvg;
+  const baselineSleepOnsetAvg = userData.baselineInfo.sleepOnsetAvg;
 
   function getLabel(sleepAvg: number) {
     if (sleepAvg > baselineSleepOnsetAvg + 5) {
@@ -320,7 +318,7 @@ export const SleepOnset: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepMaintenance: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
 
   // Calculate recent night mins awake average & fetch baseline for comparison
   const nightMinsAwakeAvg = Number(
@@ -329,8 +327,7 @@ export const SleepMaintenance: React.FC<Props> = ({ navigation }) => {
       recentSleepLogs.length
     ).toFixed(0),
   );
-  const baselineSleepMaintenanceAvg =
-    state.userData.baselineInfo.nightMinsAwakeAvg;
+  const baselineSleepMaintenanceAvg = userData.baselineInfo.nightMinsAwakeAvg;
 
   function getLabel(nightMinsAvg: number) {
     if (nightMinsAvg > baselineSleepMaintenanceAvg + 5) {
@@ -399,7 +396,7 @@ export const SleepMaintenance: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepDuration: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
 
   // Calculate recent night mins awake average & fetch baseline for comparison
   const sleepDurationAvg = Number(
@@ -408,7 +405,7 @@ export const SleepDuration: React.FC<Props> = ({ navigation }) => {
       recentSleepLogs.length
     ).toFixed(0),
   );
-  const baselineSleepDurationAvg = state.userData.baselineInfo.sleepDurationAvg;
+  const baselineSleepDurationAvg = userData.baselineInfo.sleepDurationAvg;
   const sleepDurationAvgLabel = (sleepDurationAvg / 60).toFixed(1);
   const baselineSleepDurationAvgLabel = (baselineSleepDurationAvg / 60).toFixed(
     1,

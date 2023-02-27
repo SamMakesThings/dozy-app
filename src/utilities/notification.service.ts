@@ -17,6 +17,7 @@ import Navigation from './navigation.service';
 import Auth from './auth.service';
 import { NotificationType, NotificationData } from '../types/notification';
 import { useSleepLogsStore } from '../utilities/sleepLogsStore';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 export default class Notification {
   static notificationTray: NotificationData[] = [];
@@ -30,6 +31,7 @@ export default class Notification {
     const notificationReceivedListener = useRef<any>(null);
     const notificationResponseListener = useRef<any>(null);
     const { state } = Auth.useAuth();
+    const { userData } = useUserDataStore((userDataState) => userDataState);
 
     const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
 
@@ -87,16 +89,15 @@ export default class Notification {
     }, [userId]);
 
     useEffect(() => {
-      Notification.treatmentModule =
-        state.userData?.nextCheckin?.treatmentModule;
+      Notification.treatmentModule = userData?.nextCheckin?.treatmentModule;
       Notification.isCheckinDue =
-        moment(state.userData?.currentTreatments?.nextCheckinDatetime.toDate())
+        moment(userData?.currentTreatments?.nextCheckinDatetime.toDate())
           .startOf('date')
           .isSameOrBefore(new Date()) && sleepLogs.length >= 7;
     }, [
       userId,
-      state.userData?.nextCheckin?.treatmentModule,
-      state.userData?.currentTreatments?.nextCheckinDatetime,
+      userData?.nextCheckin?.treatmentModule,
+      userData?.currentTreatments?.nextCheckinDatetime,
       sleepLogs,
     ]);
   }

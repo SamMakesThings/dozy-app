@@ -32,6 +32,7 @@ import Notification from '../utilities/notification.service';
 import { Navigation } from '../types/custom';
 import Clipboard from '../../assets/images/Clipboard.svg';
 import { useSleepLogsStore } from '../utilities/sleepLogsStore';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
@@ -43,6 +44,9 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   const [rate, setRate] = useState(0);
   const [feedback, setFeedback] = useState('');
   const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
+  const { userData } = useUserDataStore((state) => ({
+    userData: state.userData,
+  }));
 
   const onSubmitFeedback = useCallback((): void => {
     submitFeedback(rate, feedback);
@@ -54,23 +58,23 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   }, [rate, feedback]);
 
   // If state is available, show screen. Otherwise, show loading indicator.
-  if (sleepLogs && state.userData?.currentTreatments) {
+  if (sleepLogs && userData?.currentTreatments) {
     // Calculate the full treatment plan and store it in static global state
     const treatmentPlan = planTreatmentModules({
       sleepLogs: sleepLogs,
-      currentTreatments: state.userData.currentTreatments,
+      currentTreatments: userData.currentTreatments,
     });
     GLOBAL.treatmentPlan = treatmentPlan;
 
     // Get current treatment module string from state
-    const currentModule = state.userData.currentTreatments.currentModule;
+    const currentModule = userData.currentTreatments.currentModule;
 
     // Compute current module's progress percent based on dates
     // Make sure it doesn't go over 100%
-    const nextCheckinTime = state.userData.nextCheckin.nextCheckinDatetime
+    const nextCheckinTime = userData.nextCheckin.nextCheckinDatetime
       .toDate()
       .getTime();
-    const lastCheckinTime = state.userData.currentTreatments.lastCheckinDatetime
+    const lastCheckinTime = userData.currentTreatments.lastCheckinDatetime
       .toDate()
       .getTime();
     const countOfLogsInCurrentCheckin = sleepLogs.filter((it) =>
@@ -111,7 +115,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
 
     // Strip time from next checkin datetime to determine whether to show checkin button
     const isCheckinDue =
-      moment(state.userData?.currentTreatments.nextCheckinDatetime.toDate())
+      moment(userData?.currentTreatments.nextCheckinDatetime.toDate())
         .startOf('date')
         .isSameOrBefore(new Date()) && sleepLogs.length >= 7;
 
@@ -131,7 +135,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             height={scale(80)}
           />
           {isCheckinDue &&
-            treatments[state.userData.nextCheckin.treatmentModule]?.ready && (
+            treatments[userData.nextCheckin.treatmentModule]?.ready && (
               <IconTitleSubtitleButton
                 titleLabel="Check in now!"
                 subtitleLabel="Press here to begin the next module"
@@ -145,9 +149,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
                 }
                 badge
                 onPress={() =>
-                  navigation.navigate(
-                    state.userData.nextCheckin.treatmentModule,
-                  )
+                  navigation.navigate(userData.nextCheckin.treatmentModule)
                 }
               />
             )}
@@ -187,12 +189,10 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
           </TouchableOpacity> */}
           {
             // Display target sleep schedule card if defined in backend
-            state.userData.currentTreatments.targetBedTime && (
+            userData.currentTreatments.targetBedTime && (
               <TargetSleepScheduleCard
                 remainingDays={Math.round(
-                  (state.userData.nextCheckin.nextCheckinDatetime
-                    .toDate()
-                    .getTime() -
+                  (userData.nextCheckin.nextCheckinDatetime.toDate().getTime() -
                     Date.now()) /
                     1000 /
                     60 /
@@ -200,17 +200,17 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
                     24,
                 )}
                 bedTime={formatDateAsTime(
-                  state.userData.currentTreatments.targetBedTime.toDate(),
+                  userData.currentTreatments.targetBedTime.toDate(),
                 )}
                 wakeTime={formatDateAsTime(
-                  state.userData.currentTreatments.targetWakeTime.toDate(),
+                  userData.currentTreatments.targetWakeTime.toDate(),
                 )}
               />
             )
           }
           <TreatmentPlanCard
             completionPercentProgress={percentTreatmentCompleted}
-            nextCheckinDate={state.userData.nextCheckin.nextCheckinDatetime}
+            nextCheckinDate={userData.nextCheckin.nextCheckinDatetime}
             onPress={() => {
               navigation.navigate('TreatmentPlan', {
                 completionPercentProgress: percentTreatmentCompleted,
@@ -219,7 +219,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
           />
           {
             // Display PMR video if module has been completed
-            state.userData.currentTreatments.RLX && (
+            userData.currentTreatments.RLX && (
               <CardContainer>
                 <View style={styles.View_CardHeaderContainer}>
                   <Text
@@ -259,7 +259,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
             >
               Previous modules
             </Text>
-            {Object.keys(state.userData.currentTreatments).map((item) => {
+            {Object.keys(userData.currentTreatments).map((item) => {
               if (treatments[item]) {
                 return (
                   <LinkCard

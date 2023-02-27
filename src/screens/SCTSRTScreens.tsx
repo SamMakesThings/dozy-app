@@ -35,6 +35,7 @@ import { ErrorObj } from '../types/error';
 import Feedback from '../utilities/feedback.service';
 import Auth from '../utilities/auth.service';
 import { useSleepLogsStore } from '../utilities/sleepLogsStore';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 interface Props {
   navigation: Navigation;
@@ -909,6 +910,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Calculate some baseline statistics for later reference
@@ -946,7 +948,7 @@ export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
 
   // Create reminder object for next checkin
   const reminderObject = {
-    expoPushToken: state.userData.reminders.expoPushToken,
+    expoPushToken: userData.reminders.expoPushToken,
     title: 'Next check-in is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
