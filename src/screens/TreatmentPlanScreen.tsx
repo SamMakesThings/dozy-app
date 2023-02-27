@@ -9,7 +9,6 @@ import { dozy_theme } from '../config/Themes';
 import { CardContainer } from '../components/CardContainer';
 import treatments from '../constants/Treatments';
 import GLOBAL from '../utilities/global';
-import Auth from '../utilities/auth.service';
 import { useUserDataStore } from '../utilities/userDataStore';
 
 const theme = dozy_theme;
