@@ -55,7 +55,7 @@ const SleepLogsView = (props: {
   const selectedDate = useSelectedDateStore((state) => state.selectedDate);
 
   // Determine whether user has logged sleep for the previous night
-  if (props.sleepLogs != [] && props.sleepLogs[0]) {
+  if (props.sleepLogs.length > 0 && props.sleepLogs[0]) {
     loggedToday =
       props.sleepLogs[0].upTime.toDate().getDate() === new Date().getDate();
 
@@ -241,8 +241,8 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
     // Setup a listener to get new tasks from Firebase
     tasksColRef.onSnapshot(async function () {
       if (!state.userId) return false;
-      const tasks = await fetchTasks(db, state.userId);
-      dispatch({ type: 'SET_TASKS', tasks: tasks });
+      // const tasks = await fetchTasks(db, state.userId);
+      // dispatch({ type: 'SET_TASKS', tasks: tasks });
     });
   }
 
