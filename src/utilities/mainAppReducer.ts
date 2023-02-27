@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { Chat, Task } from '../types/custom';
+import { Chat } from '../types/custom';
 import CoachConstants from '../constants/Coach';
 import { Coach } from '../types/coach';
 
@@ -14,7 +14,6 @@ export type AppState = {
   profileData: Record<string, any>;
   authLoading: boolean;
   chats: Chat[] | [];
-  tasks: Task[];
 };
 
 export const initialState: AppState = {
@@ -36,7 +35,6 @@ export const initialState: AppState = {
       sentByUser: true,
     },
   ],
-  tasks: [],
 };
 
 export type ACTION =
@@ -59,7 +57,6 @@ export type ACTION =
       onboardingComplete: boolean | undefined;
     }
   | { type: 'SET_CHATS'; chats: Chat[] | [] }
-  | { type: 'SET_TASKS'; tasks: Task[] }
   | { type: 'SET_LOADING'; isLoading: boolean }
   | { type: 'SET_SIGNINGIN'; isSigningIn: boolean }
   | { type: 'FINISH_ONBOARDING' }
@@ -99,11 +96,6 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
       return {
         ...prevState,
         chats: action.chats,
-      };
-    case 'SET_TASKS':
-      return {
-        ...prevState,
-        tasks: action.tasks,
       };
     case 'SET_LOADING':
       return {
