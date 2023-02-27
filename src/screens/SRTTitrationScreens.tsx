@@ -60,9 +60,8 @@ const chartStyles = {
 };
 
 export const SRTTitrationStart: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
   const imgSize = imgSizePercent * useWindowDimensions().width;
-  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
+  const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
   // Trim sleepLogs to only show most recent 7
   recentSleepLogs = sleepLogs.slice(0, 7);
 

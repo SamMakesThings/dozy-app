@@ -120,7 +120,7 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
   // bedtime value as a default.
   // Also use hook to set globalState value for the file
   const { state } = Auth.useAuth();
-  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
+  const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
   const safeInsets = useSafeAreaInsets();
 
   globalState =

@@ -190,8 +190,8 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
   // Set local state for loading/not loading
   const [logsLoading, setLogsLoading] = useState(true);
 
-  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
-  const setSleepLogs = useSleepLogsStore((state) => state.setSleepLogs);
+  const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
+  const setSleepLogs = useSleepLogsStore((logsState) => logsState.setSleepLogs);
 
   let colRef: FirebaseFirestoreTypes.CollectionReference;
   let db: FirebaseFirestoreTypes.Module;

@@ -41,7 +41,7 @@ interface Props {
 }
 
 // Create a global state object for the file
-let SCTSRTState = {
+const SCTSRTState = {
   SCTSRTWakeTime: new Date(),
   SCTSRTTimeInBedTarget: 480,
   SCTSRTBedTime: new Date(),
@@ -912,7 +912,7 @@ export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Calculate some baseline statistics for later reference
-  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
+  const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
 
   // Calculate baseline sleep efficiency average
   const sleepEfficiencyAvg = Number(

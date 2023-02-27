@@ -31,7 +31,7 @@ export default class Notification {
     const notificationResponseListener = useRef<any>(null);
     const { state } = Auth.useAuth();
 
-    const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
+    const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
 
     useEffect((): (() => void) | void => {
       if (userId) {
