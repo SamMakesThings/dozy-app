@@ -205,7 +205,7 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
   }
 
   // Function to fetch sleep logs from Firebase and put them in global state
-  async function getSleepLogs() {
+  async function getSleepLogsAndAddListeners(): Promise<void> {
     async function fetchData() {
       if (!state.userId) return false;
       fetchSleepLogs(db, state.userId)
@@ -253,7 +253,7 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
 
   // Set sleep logs once upon loading
   useEffect(() => {
-    getSleepLogs();
+    getSleepLogsAndAddListeners();
   }, []);
 
   // Maybe remove DAILY_LOG push notification
