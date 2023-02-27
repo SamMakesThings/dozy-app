@@ -77,12 +77,12 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
     async function fetchData() {
       if (!state.userId) throw new Error();
       fetchChats(firestore(), state.userId)
-        .then((chats: Array<Chat>) => {
+        .then((newChats: Array<Chat>) => {
           // Check that theres >1 entry. If no, set state accordingly
-          if (chats.length === 0) {
+          if (newChats.length === 0) {
             setChatsInState([]);
           } else {
-            setChatsInState(chats);
+            setChatsInState(newChats);
           }
 
           return;

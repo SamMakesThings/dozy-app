@@ -27,7 +27,6 @@ import planTreatmentModules from '../utilities/planTreatmentModules';
 import GLOBAL from '../utilities/global';
 import Feedback from '../utilities/feedback.service';
 import submitFeedback from '../utilities/submitFeedback';
-import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
 import { Navigation } from '../types/custom';
 import Clipboard from '../../assets/images/Clipboard.svg';

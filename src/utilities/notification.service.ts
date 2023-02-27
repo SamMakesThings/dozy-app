@@ -30,7 +30,6 @@ export default class Notification {
     const notificationEnabledRef = useRef(false);
     const notificationReceivedListener = useRef<any>(null);
     const notificationResponseListener = useRef<any>(null);
-    const { state } = Auth.useAuth();
     const { userData } = useUserDataStore((userDataState) => userDataState);
 
     const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);

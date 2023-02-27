@@ -1079,8 +1079,8 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
   const { setChats } = useChatsStore((chatsState) => ({
     setChats: chatsState.setChats,
   }));
-  const { coach } = useUserDataStore((state) => ({
-    coach: state.coach,
+  const { coach } = useUserDataStore((userDataState) => ({
+    coach: userDataState.coach,
   }));
 
   useEffect((): void => {
