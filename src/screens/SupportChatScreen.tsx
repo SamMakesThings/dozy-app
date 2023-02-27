@@ -37,9 +37,9 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   // Get global state
   const { state } = Auth.useAuth();
   const chats = useChatsStore((chatsState) => chatsState.chats);
-  const { coach, userData } = useUserDataStore((state) => ({
-    coach: state.coach,
-    userData: state.userData,
+  const { coach, userData } = useUserDataStore((userDataState) => ({
+    coach: userDataState.coach,
+    userData: userDataState.userData,
   }));
   const setChatsInState = useChatsStore((chatsState) => chatsState.setChats);
   const coachNameString = `${coach.firstName} ${coach.lastName}`;

@@ -1,8 +1,3 @@
-import firestore from '@react-native-firebase/firestore';
-import { Chat } from '../types/custom';
-import CoachConstants from '../constants/Coach';
-import { Coach } from '../types/coach';
-
 export type AppState = {
   isLoading: boolean;
   isSigningIn: boolean;

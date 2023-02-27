@@ -25,7 +25,6 @@ import { dozy_theme } from '../config/Themes';
 import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { Navigation, SleepLog } from '../types/custom';
 import { Theme } from '../types/theme';
-import fetchTasks from '../utilities/fetchTasks';
 import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
@@ -185,7 +184,7 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
   props,
 ) => {
   // Get global state & dispatch
-  const { state, dispatch } = Auth.useAuth();
+  const { state } = Auth.useAuth();
 
   // Set local state for loading/not loading
   const [logsLoading, setLogsLoading] = useState(true);

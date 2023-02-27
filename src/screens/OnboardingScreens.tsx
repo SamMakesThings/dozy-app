@@ -94,14 +94,14 @@ let chatSubscriber: (() => void) | undefined;
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
 
-  const { coach, setCoach } = useUserDataStore((state) => ({
+  const { setCoach } = useUserDataStore((state) => ({
     coach: state.coach,
     setCoach: state.setCoach,
   }));
 
   useEffect((): void => {
-    getOnboardingCoach().then((coach) => {
-      setCoach(coach);
+    getOnboardingCoach().then((newCoach) => {
+      setCoach(newCoach);
     });
 
     Notification.registerForPushNotificationsAsync().then(
@@ -1076,8 +1076,8 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
   const { state } = Auth.useAuth();
-  const { setChats } = useChatsStore((state) => ({
-    setChats: state.setChats,
+  const { setChats } = useChatsStore((chatsState) => ({
+    setChats: chatsState.setChats,
   }));
   const { coach } = useUserDataStore((state) => ({
     coach: state.coach,

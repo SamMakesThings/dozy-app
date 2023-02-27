@@ -14,7 +14,6 @@ import { dozy_theme } from '../config/Themes';
 import ThumbsUp from '../../assets/images/ThumbsUp.svg';
 import AlarmClock from '../../assets/images/AlarmClock.svg';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
-import Auth from '../utilities/auth.service';
 import { Navigation, SleepLog } from '../types/custom';
 import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 import { useUserDataStore } from '../utilities/userDataStore';

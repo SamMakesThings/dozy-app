@@ -302,7 +302,9 @@ export default class Auth {
     }, [dispatch, processFbLogin]);
 
     const finishOnboarding = useCallback(async () => {
-      useUserDataStore((state) => state.setOnboardingComplete());
+      useUserDataStore((userDataState) =>
+        userDataState.setOnboardingComplete(),
+      );
     }, [dispatch]);
 
     const value = useMemo(

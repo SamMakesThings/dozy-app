@@ -38,14 +38,13 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
   const theme = dozy_theme;
-  const { state } = Auth.useAuth();
   const { showingFeedbackWidget, isFeedbackSubmitted, setFeedbackSubmitted } =
     Feedback.useFeedback();
   const [rate, setRate] = useState(0);
   const [feedback, setFeedback] = useState('');
   const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
-  const { userData } = useUserDataStore((state) => ({
-    userData: state.userData,
+  const { userData } = useUserDataStore((userDataState) => ({
+    userData: userDataState.userData,
   }));
 
   const onSubmitFeedback = useCallback((): void => {

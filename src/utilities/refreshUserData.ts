@@ -35,9 +35,9 @@ export default async function refreshUserData(
       .get()
       .then((userData) => {
         updateUserData(userData.data() ?? {});
-        userData.exists && userData.data()?.onboardingComplete === true
-          ? setOnboardingComplete()
-          : null;
+        if (userData.exists && userData.data()?.onboardingComplete === true) {
+          setOnboardingComplete();
+        }
 
         dispatch({ type: 'SET_LOADING', isLoading: false });
       });
@@ -49,9 +49,9 @@ export default async function refreshUserData(
       .onSnapshot((userData) => {
         if (userData) {
           updateUserData(userData.data() ?? {});
-          userData.exists && userData.data()?.onboardingComplete === true
-            ? setOnboardingComplete()
-            : null;
+          if (userData.exists && userData.data()?.onboardingComplete === true) {
+            setOnboardingComplete();
+          }
         } else {
           console.log("docSnapshot isn't defined at this point");
         }
