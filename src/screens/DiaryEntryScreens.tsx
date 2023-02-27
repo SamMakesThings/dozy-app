@@ -21,6 +21,7 @@ import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { RichTextData } from '../types/RichTextData';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 
 // Define the theme & state objects for the file globally
 const theme = dozy_theme;
@@ -35,7 +36,6 @@ interface Props {
 }
 
 interface GlobalState {
-  sleepLogs: SleepLog[];
   userData: {
     currentTreatments: {
       RLX?: Date;
@@ -46,7 +46,6 @@ interface GlobalState {
 }
 
 let globalState: GlobalState = {
-  sleepLogs: [] as SleepLog[],
   userData: {
     currentTreatments: {
       RLX: undefined as undefined | Date,
@@ -121,27 +120,28 @@ export const BedTimeInput: React.FC<Props> = ({ navigation, route }) => {
   // bedtime value as a default.
   // Also use hook to set globalState value for the file
   const { state } = Auth.useAuth();
+  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
   const safeInsets = useSafeAreaInsets();
 
   globalState =
     (pick(state, ['userData', 'sleepLogs']) as GlobalState) || globalState;
   let defaultDate = moment().hour(22).minute(0).toDate();
-  if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
+  if (sleepLogs && sleepLogs.length > 0) {
     defaultDate = moment()
-      .hour(globalState.sleepLogs[0].bedTime.toDate().getHours())
-      .minute(globalState.sleepLogs[0].bedTime.toDate().getMinutes())
+      .hour(sleepLogs[0].bedTime.toDate().getHours())
+      .minute(sleepLogs[0].bedTime.toDate().getMinutes())
       .toDate();
   }
 
-  const baseSleepLog: SleepLog | undefined = globalState.sleepLogs.find(
+  const baseSleepLog: SleepLog | undefined = sleepLogs.find(
     (sleepLog) => sleepLog.logId === route.params?.logId,
   );
   let initialDateVal = baseSleepLog ? baseSleepLog.upTime.toDate() : new Date(); // Declare variable for the initial selectedState value
 
   const validateDate = useCallback((date: Date): boolean => {
     const sleepLogsToCompare: SleepLog[] = baseSleepLog
-      ? state.sleepLogs.filter((it) => it.logId !== baseSleepLog.logId)
-      : state.sleepLogs;
+      ? sleepLogs.filter((it) => it.logId !== baseSleepLog.logId)
+      : sleepLogs;
 
     return !sleepLogsToCompare.find((it) =>
       moment(it.upTime.toDate()).isSame(date, 'day'),
@@ -546,11 +546,13 @@ export const NightMinsAwakeInput: React.FC<Props> = ({ navigation }) => {
 };
 
 export const WakeTimeInput: React.FC<Props> = ({ navigation }) => {
+  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
+
   // If there is a sleep log recorded, use the most recent
   // wake time value as a default
   let defaultDate;
-  if (globalState.sleepLogs && globalState.sleepLogs.length > 0) {
-    const previousWakeTime = globalState.sleepLogs[0].wakeTime.toDate();
+  if (sleepLogs && sleepLogs.length > 0) {
+    const previousWakeTime = sleepLogs[0].wakeTime.toDate();
     const correctedPrevWakeTime = moment(logState.logDate)
       .hour(previousWakeTime.getHours())
       .minute(previousWakeTime.getMinutes())

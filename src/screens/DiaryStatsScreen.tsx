@@ -7,13 +7,14 @@ import { CardContainer } from '../components/CardContainer';
 import { dozy_theme } from '../config/Themes';
 import { SleepLog } from '../types/custom';
 import { getLogStreakLength } from '../utilities/getLogStreakLength';
-import Auth from '../utilities/auth.service';
 import { LogStatsLineGraph } from '../components/LogStatsLineGraphComponent';
 import { useSelectedDateStore } from '../utilities/selectedDateStore';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 
 export const DiaryStatsScreen: React.FC = () => {
-  const { state } = Auth.useAuth();
-  const allSleepLogs: Array<SleepLog> = state.sleepLogs;
+  const allSleepLogs: Array<SleepLog> = useSleepLogsStore(
+    (logsState) => logsState.sleepLogs,
+  );
 
   // Calculate the current diary streak length
   const streakLength = getLogStreakLength(allSleepLogs);

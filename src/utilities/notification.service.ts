@@ -16,6 +16,7 @@ import { get, omit, findIndex } from 'lodash';
 import Navigation from './navigation.service';
 import Auth from './auth.service';
 import { NotificationType, NotificationData } from '../types/notification';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 
 export default class Notification {
   static notificationTray: NotificationData[] = [];
@@ -29,6 +30,8 @@ export default class Notification {
     const notificationReceivedListener = useRef<any>(null);
     const notificationResponseListener = useRef<any>(null);
     const { state } = Auth.useAuth();
+
+    const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
 
     useEffect((): (() => void) | void => {
       if (userId) {
@@ -89,12 +92,12 @@ export default class Notification {
       Notification.isCheckinDue =
         moment(state.userData?.currentTreatments?.nextCheckinDatetime.toDate())
           .startOf('date')
-          .isSameOrBefore(new Date()) && state.sleepLogs.length >= 7;
+          .isSameOrBefore(new Date()) && sleepLogs.length >= 7;
     }, [
       userId,
       state.userData?.nextCheckin?.treatmentModule,
       state.userData?.currentTreatments?.nextCheckinDatetime,
-      state.sleepLogs,
+      sleepLogs,
     ]);
   }
 

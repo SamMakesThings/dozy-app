@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { Chat, SleepLog, Task } from '../types/custom';
+import { Chat, Task } from '../types/custom';
 import CoachConstants from '../constants/Coach';
 import { Coach } from '../types/coach';
 
@@ -12,7 +12,6 @@ export type AppState = {
   onboardingComplete: boolean | undefined;
   coach: Coach;
   profileData: Record<string, any>;
-  sleepLogs: SleepLog[];
   authLoading: boolean;
   chats: Chat[] | [];
   tasks: Task[];
@@ -27,7 +26,6 @@ export const initialState: AppState = {
   onboardingComplete: undefined,
   coach: CoachConstants.defaultCoach,
   profileData: {},
-  sleepLogs: [],
   authLoading: false,
   chats: [
     {
@@ -60,10 +58,8 @@ export type ACTION =
       userData: Record<string, any>;
       onboardingComplete: boolean | undefined;
     }
-  | { type: 'SET_SLEEPLOGS'; sleepLogs: SleepLog[] }
   | { type: 'SET_CHATS'; chats: Chat[] | [] }
   | { type: 'SET_TASKS'; tasks: Task[] }
-  | { type: 'CHANGE_SELECTED_MONTH'; changeMonthBy: any }
   | { type: 'SET_LOADING'; isLoading: boolean }
   | { type: 'SET_SIGNINGIN'; isSigningIn: boolean }
   | { type: 'FINISH_ONBOARDING' }
@@ -98,11 +94,6 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
         ...prevState,
         userData: action.userData,
         onboardingComplete: action.onboardingComplete,
-      };
-    case 'SET_SLEEPLOGS':
-      return {
-        ...prevState,
-        sleepLogs: action.sleepLogs,
       };
     case 'SET_CHATS':
       return {

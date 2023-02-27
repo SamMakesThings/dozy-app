@@ -19,6 +19,7 @@ import refreshUserData from '../utilities/refreshUserData';
 import { ErrorObj } from '../types/error';
 import Feedback from '../utilities/feedback.service';
 import Auth from '../utilities/auth.service';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 
 const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
@@ -71,10 +72,10 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
 // Screen it targets for return navigation is 'TreatmentPlan'
 
 export const TreatmentPlan: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
 
   // Trim sleepLogs to only show most recent 12
-  const recentSleepLogs = state.sleepLogs.slice(0, 12);
+  const recentSleepLogs = sleepLogs.slice(0, 12);
 
   // Find top 3 sleep disturbance tags.
   const logTagsFrequencyObject: {

@@ -34,13 +34,14 @@ import { Navigation, SleepLog } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import Feedback from '../utilities/feedback.service';
 import Auth from '../utilities/auth.service';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 
 interface Props {
   navigation: Navigation;
 }
 
 // Create a global state object for the file
-const SCTSRTState = {
+let SCTSRTState = {
   SCTSRTWakeTime: new Date(),
   SCTSRTTimeInBedTarget: 480,
   SCTSRTBedTime: new Date(),
@@ -106,10 +107,10 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
 
   // Trim sleepLogs to only show most recent 10
-  recentSleepLogs = state.sleepLogs.slice(0, 10);
+  recentSleepLogs = sleepLogs.slice(0, 10);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -911,7 +912,7 @@ export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Calculate some baseline statistics for later reference
-  const sleepLogs: Array<SleepLog> = state.sleepLogs;
+  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
 
   // Calculate baseline sleep efficiency average
   const sleepEfficiencyAvg = Number(

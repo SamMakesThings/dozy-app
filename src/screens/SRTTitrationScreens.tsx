@@ -16,6 +16,7 @@ import AlarmClock from '../../assets/images/AlarmClock.svg';
 import { formatDateAsTime } from '../utilities/formatDateAsTime';
 import Auth from '../utilities/auth.service';
 import { Navigation, SleepLog } from '../types/custom';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 
 interface Props {
   navigation: Navigation;
@@ -61,8 +62,9 @@ const chartStyles = {
 export const SRTTitrationStart: React.FC<Props> = ({ navigation }) => {
   const { state } = Auth.useAuth();
   const imgSize = imgSizePercent * useWindowDimensions().width;
+  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
   // Trim sleepLogs to only show most recent 7
-  recentSleepLogs = state.sleepLogs.slice(0, 7);
+  recentSleepLogs = sleepLogs.slice(0, 7);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(

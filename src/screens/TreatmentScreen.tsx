@@ -31,6 +31,7 @@ import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
 import { Navigation } from '../types/custom';
 import Clipboard from '../../assets/images/Clipboard.svg';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 
 export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
@@ -41,6 +42,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
     Feedback.useFeedback();
   const [rate, setRate] = useState(0);
   const [feedback, setFeedback] = useState('');
+  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
 
   const onSubmitFeedback = useCallback((): void => {
     submitFeedback(rate, feedback);
@@ -52,10 +54,10 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   }, [rate, feedback]);
 
   // If state is available, show screen. Otherwise, show loading indicator.
-  if (state.sleepLogs && state.userData?.currentTreatments) {
+  if (sleepLogs && state.userData?.currentTreatments) {
     // Calculate the full treatment plan and store it in static global state
     const treatmentPlan = planTreatmentModules({
-      sleepLogs: state.sleepLogs,
+      sleepLogs: sleepLogs,
       currentTreatments: state.userData.currentTreatments,
     });
     GLOBAL.treatmentPlan = treatmentPlan;
@@ -71,7 +73,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
     const lastCheckinTime = state.userData.currentTreatments.lastCheckinDatetime
       .toDate()
       .getTime();
-    const countOfLogsInCurrentCheckin = state.sleepLogs.filter((it) =>
+    const countOfLogsInCurrentCheckin = sleepLogs.filter((it) =>
       moment(lastCheckinTime).isSameOrBefore(it.upTime.toDate()),
     ).length;
     let progressPercent =
@@ -111,7 +113,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
     const isCheckinDue =
       moment(state.userData?.currentTreatments.nextCheckinDatetime.toDate())
         .startOf('date')
-        .isSameOrBefore(new Date()) && state.sleepLogs.length >= 7;
+        .isSameOrBefore(new Date()) && sleepLogs.length >= 7;
 
     // Maybe remove CHECKIN_REMINDER push notification
     useEffect(() => {
