@@ -13,7 +13,6 @@ export type AppState = {
   coach: Coach;
   profileData: Record<string, any>;
   authLoading: boolean;
-  chats: Chat[] | [];
 };
 
 export const initialState: AppState = {
@@ -26,15 +25,6 @@ export const initialState: AppState = {
   coach: CoachConstants.defaultCoach,
   profileData: {},
   authLoading: false,
-  chats: [
-    {
-      chatId: '',
-      time: firestore.Timestamp.now(),
-      message: '',
-      sender: '',
-      sentByUser: true,
-    },
-  ],
 };
 
 export type ACTION =
@@ -56,7 +46,6 @@ export type ACTION =
       userData: Record<string, any>;
       onboardingComplete: boolean | undefined;
     }
-  | { type: 'SET_CHATS'; chats: Chat[] | [] }
   | { type: 'SET_LOADING'; isLoading: boolean }
   | { type: 'SET_SIGNINGIN'; isSigningIn: boolean }
   | { type: 'FINISH_ONBOARDING' }
@@ -91,11 +80,6 @@ export const appReducer = (prevState: AppState, action: ACTION): AppState => {
         ...prevState,
         userData: action.userData,
         onboardingComplete: action.onboardingComplete,
-      };
-    case 'SET_CHATS':
-      return {
-        ...prevState,
-        chats: action.chats,
       };
     case 'SET_LOADING':
       return {
