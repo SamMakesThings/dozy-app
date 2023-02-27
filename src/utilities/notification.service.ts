@@ -14,7 +14,6 @@ import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 import { get, omit, findIndex } from 'lodash';
 import Navigation from './navigation.service';
-import Auth from './auth.service';
 import { NotificationType, NotificationData } from '../types/notification';
 import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 import { useUserDataStore } from '../utilities/userDataStore';
