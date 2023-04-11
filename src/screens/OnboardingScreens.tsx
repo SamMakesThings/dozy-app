@@ -53,6 +53,8 @@ import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { Chat } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import { ISIquestionSubtitle } from '../constants/Onboarding';
+import { useChatsStore } from '../utilities/chatsStore';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -90,15 +92,16 @@ const onboardingState: OnboardingState = {
 let chatSubscriber: (() => void) | undefined;
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
-  const { dispatch } = Auth.useAuth();
   imgSize = imgSizePercent * useWindowDimensions().width;
 
+  const { setCoach } = useUserDataStore((state) => ({
+    coach: state.coach,
+    setCoach: state.setCoach,
+  }));
+
   useEffect((): void => {
-    getOnboardingCoach().then((coach) => {
-      dispatch({
-        type: 'SET_COACH',
-        coach,
-      });
+    getOnboardingCoach().then((newCoach) => {
+      setCoach(newCoach);
     });
 
     Notification.registerForPushNotificationsAsync().then(
@@ -1072,7 +1075,13 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
-  const { state, dispatch } = Auth.useAuth();
+  const { state } = Auth.useAuth();
+  const { setChats } = useChatsStore((chatsState) => ({
+    setChats: chatsState.setChats,
+  }));
+  const { coach } = useUserDataStore((userDataState) => ({
+    coach: userDataState.coach,
+  }));
 
   useEffect((): void => {
     chatSubscriber = undefined;
@@ -1084,9 +1093,9 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
           .then((chats: Array<Chat>) => {
             // Check that theres >1 entry. If no, set state accordingly
             if (chats.length === 0) {
-              dispatch({ type: 'SET_CHATS', chats: [] });
+              setChats([]);
             } else {
-              dispatch({ type: 'SET_CHATS', chats: chats });
+              setChats(chats);
             }
             console.log('set chats: ', chats);
 
@@ -1105,7 +1114,7 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
     }
   }, []);
 
-  const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
+  const senderName = `${coach.firstName} ${coach.lastName}`;
 
   return (
     <WizardContentScreen
@@ -1136,10 +1145,14 @@ export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
-  const displayName = state.userData.userInfo.displayName;
-  const senderName = `${state.coach.firstName} ${state.coach.lastName}`;
-  const coach = `${state.coach.firstName} ${state.coach.lastName}`;
+  const { coach } = useUserDataStore((state) => ({
+    coach: state.coach,
+  }));
+  const { userData } = useUserDataStore((state) => state.userData);
+  const displayName = userData.userInfo.displayName;
+  const senderName = `${coach.firstName} ${coach.lastName}`;
+  const coachNameString = `${coach.firstName} ${coach.lastName}`;
+  const chats = useChatsStore((chatsState) => chatsState.chats);
 
   const [message, setMessage] = React.useState('');
   const [replyVisible, makeReplyVisible] = React.useState(false);
@@ -1151,12 +1164,12 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
   }, []);
 
   useEffect((): void => {
-    const lastUserMessage = findLast(state.chats, { sentByUser: true });
+    const lastUserMessage = findLast(chats, { sentByUser: true });
     if (lastUserMessage?.message) {
       setMessage(lastUserMessage.message);
       makeReplyVisible(true);
     }
-  }, [state.chats]);
+  }, [chats]);
 
   return (
     <WizardContentScreen
@@ -1175,7 +1188,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
         style={styles.keyboardAvoidingView}
       >
         <View style={styles.spacer6} />
-        {state.chats.length ? (
+        {chats.length ? (
           <FlatList
             contentContainerStyle={styles.View_ContentContainer}
             renderItem={({ item }) => (
@@ -1183,18 +1196,18 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
                 message={item.message}
                 time={(item.time as FirebaseFirestoreTypes.Timestamp).toDate()}
                 sentByUser={item.sentByUser}
-                coach={coach}
+                coach={coachNameString}
               />
             )}
             keyExtractor={(item, index) => `${item.message}${index}`}
             inverted={true}
-            data={state.chats}
+            data={chats}
           />
         ) : (
           <>
             <ChatMessage
               coach={senderName}
-              message={`Welcome to Dozy! I'm ${state.coach.firstName}, I'll be your sleep coach.`}
+              message={`Welcome to Dozy! I'm ${coach.firstName}, I'll be your sleep coach.`}
               time={new Date()}
               sentByUser={false}
             />
@@ -1232,8 +1245,8 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
               Keyboard.dismiss();
               submitFirstChatMessage(
                 typedMsg,
-                state.coach.id,
-                state.coach.firstName,
+                coach.id,
+                coach.firstName,
                 displayName,
               );
               setTimeout(() => {

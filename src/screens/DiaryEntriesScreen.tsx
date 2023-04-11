@@ -25,11 +25,12 @@ import { dozy_theme } from '../config/Themes';
 import fetchSleepLogs from '../utilities/fetchSleepLogs';
 import { Navigation, SleepLog } from '../types/custom';
 import { Theme } from '../types/theme';
-import fetchTasks from '../utilities/fetchTasks';
 import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import Notification from '../utilities/notification.service';
+import { useSelectedDateStore } from '../utilities/selectedDateStore';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 
 if (Platform.OS === 'android') {
   require('intl/locale-data/jsonp/en-US');
@@ -47,12 +48,13 @@ const SleepLogsView = (props: {
   navigation: Navigation;
 }) => {
   const theme = dozy_theme;
-  const { state } = Auth.useAuth();
   let loggedToday = false;
   let selectedSleepLogs: Array<SleepLog> = [];
 
+  const selectedDate = useSelectedDateStore((state) => state.selectedDate);
+
   // Determine whether user has logged sleep for the previous night
-  if (props.sleepLogs != [] && props.sleepLogs[0]) {
+  if (props.sleepLogs.length > 0 && props.sleepLogs[0]) {
     loggedToday =
       props.sleepLogs[0].upTime.toDate().getDate() === new Date().getDate();
 
@@ -60,8 +62,8 @@ const SleepLogsView = (props: {
     selectedSleepLogs = props.sleepLogs.filter((log) => {
       const logDate = log.upTime.toDate();
       return (
-        logDate.getMonth() == state.selectedDate.month &&
-        logDate.getFullYear() == state.selectedDate.year
+        logDate.getMonth() == selectedDate.month &&
+        logDate.getFullYear() == selectedDate.year
       );
     });
   }
@@ -182,10 +184,13 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
   props,
 ) => {
   // Get global state & dispatch
-  const { state, dispatch } = Auth.useAuth();
+  const { state } = Auth.useAuth();
 
   // Set local state for loading/not loading
   const [logsLoading, setLogsLoading] = useState(true);
+
+  const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
+  const setSleepLogs = useSleepLogsStore((logsState) => logsState.setSleepLogs);
 
   let colRef: FirebaseFirestoreTypes.CollectionReference;
   let db: FirebaseFirestoreTypes.Module;
@@ -199,23 +204,23 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
   }
 
   // Function to fetch sleep logs from Firebase and put them in global state
-  async function setSleepLogs() {
+  async function getSleepLogsAndAddListeners(): Promise<void> {
     async function fetchData() {
       if (!state.userId) return false;
       fetchSleepLogs(db, state.userId)
-        .then((sleepLogs: Array<SleepLog>) => {
+        .then((fetchedSleepLogs: Array<SleepLog>) => {
           // Check that theres >1 entry. If no, set state accordingly
-          if (sleepLogs.length === 0) {
-            dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: [] });
-          } else if (sleepLogs.length === 1) {
-            dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
+          if (fetchedSleepLogs.length === 0) {
+            setSleepLogs([]);
+          } else if (fetchedSleepLogs.length === 1) {
+            setSleepLogs(fetchedSleepLogs);
             Alert.alert(
               'Done for now',
               "Once you've collected 7 nights of data, we'll get started on improvement.",
               [{ text: 'Ok' }],
             );
           } else {
-            dispatch({ type: 'SET_SLEEPLOGS', sleepLogs: sleepLogs });
+            setSleepLogs(fetchedSleepLogs);
           }
 
           setLogsLoading(false);
@@ -235,8 +240,8 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
     // Setup a listener to get new tasks from Firebase
     tasksColRef.onSnapshot(async function () {
       if (!state.userId) return false;
-      const tasks = await fetchTasks(db, state.userId);
-      dispatch({ type: 'SET_TASKS', tasks: tasks });
+      // const tasks = await fetchTasks(db, state.userId);
+      // dispatch({ type: 'SET_TASKS', tasks: tasks });
     });
   }
 
@@ -247,13 +252,13 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
 
   // Set sleep logs once upon loading
   useEffect(() => {
-    setSleepLogs();
+    getSleepLogsAndAddListeners();
   }, []);
 
   // Maybe remove DAILY_LOG push notification
   const loggedToday =
-    get(state.sleepLogs, 'length', 0) > 0 &&
-    moment(state.sleepLogs[0].upTime.toDate()).isSame(new Date(), 'day');
+    get(sleepLogs, 'length', 0) > 0 &&
+    moment(sleepLogs[0].upTime.toDate()).isSame(new Date(), 'day');
 
   useEffect(() => {
     if (loggedToday) {
@@ -274,7 +279,7 @@ const SleepLogsScreen: React.FC<{ navigation: Navigation; theme: Theme }> = (
       >
         <SleepLogsView
           isLoading={logsLoading}
-          sleepLogs={state.sleepLogs || []}
+          sleepLogs={sleepLogs || []}
           logEntryRedirect={addSleepLog}
           navigation={props.navigation}
         />

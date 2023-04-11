@@ -26,15 +26,18 @@ import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
 import { getCoachAssignedToUser } from '../utilities/coach';
 import Navigation from '../utilities/navigation.service';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 // Create the main app auth navigation flow
 // Define the stack navigator
-// (do I need individual definitions, or should I just use "Stack" every time?)
 const TopStack = createStackNavigator();
 
 // Export the navigation components and screens, with if/then for auth state
 function InitialAuthNavigator() {
   const { state } = Auth.useAuth();
+  const { onboardingComplete } = useUserDataStore((userDataState) => ({
+    onboardingComplete: userDataState.isOnboardingComplete,
+  }));
 
   return (
     <TopStack.Navigator
@@ -45,7 +48,7 @@ function InitialAuthNavigator() {
     >
       {state.userId && !state.isLoading ? (
         <>
-          {state.onboardingComplete ? (
+          {onboardingComplete ? (
             <TopStack.Screen name="App" component={BottomTabs} />
           ) : (
             <TopStack.Screen
@@ -111,6 +114,12 @@ InitialAuthNavigator.propTypes = {
 
 const AppNavigator = () => {
   const { state, dispatch } = Auth.useAuth();
+  const { onboardingComplete, setCoach } = useUserDataStore(
+    (userDataState) => ({
+      onboardingComplete: userDataState.onboardingComplete,
+      setCoach: userDataState.setCoach,
+    }),
+  );
   Analytics.useAnalytics(state.userId);
   Crashlytics.useCrashlytics(state.userId);
   Notification.useNotificationService(state.userId);
@@ -120,7 +129,7 @@ const AppNavigator = () => {
   );
   const { initABTesting } = ABTesting.useABTestingService();
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Update user data from storage and Firebase, update state w/dispatch
     const subscriber = auth().onAuthStateChanged(async (user) => {
       if (user) {
@@ -139,12 +148,9 @@ const AppNavigator = () => {
   }, []);
 
   useEffect(() => {
-    if (state.onboardingComplete && state.userId) {
+    if (onboardingComplete && state.userId) {
       getCoachAssignedToUser(state.userId).then((coach) => {
-        dispatch({
-          type: 'SET_COACH',
-          coach,
-        });
+        setCoach(coach);
       });
       Notification.registerForPushNotificationsAsync(false)
         .then((expoPushToken) => {
@@ -158,7 +164,7 @@ const AppNavigator = () => {
           }
         });
     }
-  }, [state.onboardingComplete, state.userId]);
+  }, [onboardingComplete, state.userId]);
 
   const DozyNavTheme = {
     dark: true,

@@ -28,13 +28,21 @@ import AnalyticsEvents from '../constants/AnalyticsEvents';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
+import { useChatsStore } from '../utilities/chatsStore';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
-  // Get global state & dispatch
-  const { state, dispatch } = Auth.useAuth();
-  const coach = `${state.coach.firstName} ${state.coach.lastName}`;
+  // Get global state
+  const { state } = Auth.useAuth();
+  const chats = useChatsStore((chatsState) => chatsState.chats);
+  const { coach, userData } = useUserDataStore((userDataState) => ({
+    coach: userDataState.coach,
+    userData: userDataState.userData,
+  }));
+  const setChatsInState = useChatsStore((chatsState) => chatsState.setChats);
+  const coachNameString = `${coach.firstName} ${coach.lastName}`;
   // Set Firebase DB references if userId is defined
   let colRef: FirebaseFirestoreTypes.CollectionReference;
   if (state.userId) {
@@ -47,7 +55,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   useFocusEffect(
     useCallback(() => {
       // If LiveChat has a msg marked as unread, mark it as read in Firebase
-      if (state.userData?.livechatUnreadMsg) {
+      if (userData?.livechatUnreadMsg) {
         firestore().collection('users').doc(state.userId).update({
           livechatUnreadMsg: false,
         });
@@ -69,12 +77,12 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
     async function fetchData() {
       if (!state.userId) throw new Error();
       fetchChats(firestore(), state.userId)
-        .then((chats: Array<Chat>) => {
+        .then((newChats: Array<Chat>) => {
           // Check that theres >1 entry. If no, set state accordingly
-          if (chats.length === 0) {
-            dispatch({ type: 'SET_CHATS', chats: [] });
+          if (newChats.length === 0) {
+            setChatsInState([]);
           } else {
-            dispatch({ type: 'SET_CHATS', chats: chats });
+            setChatsInState(newChats);
           }
 
           return;
@@ -100,14 +108,14 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
   const theme = dozy_theme;
 
   // If state is available, show screen. Otherwise, show loading indicator.
-  if (state.chats && state.userData?.currentTreatments) {
+  if (chats && userData?.currentTreatments) {
     return (
       <SafeAreaView style={styles.SafeAreaView} edges={['top']}>
         <FocusAwareStatusBar backgroundColor={dozy_theme.colors.medium} />
         <View style={styles.Root}>
           <View style={styles.View_HeaderContainer}>
-            {!!state.coach.image && (
-              <Image source={state.coach.image} style={styles.Img_Profile} />
+            {!!coach.image && (
+              <Image source={coach.image} style={styles.Img_Profile} />
             )}
             <View style={styles.View_ChatNameContainer}>
               <Text
@@ -121,7 +129,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
               <Text
                 style={{ ...theme.typography.body2, ...styles.Text_CoachTitle }}
               >
-                {state.coach.title}
+                {coach.title}
               </Text>
             </View>
             <TouchableOpacity
@@ -152,30 +160,26 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
                     item.time as FirebaseFirestoreTypes.Timestamp
                   ).toDate()}
                   sentByUser={item.sentByUser}
-                  coach={coach}
+                  coach={coachNameString}
                   pending={item.pending}
                 />
               )}
               keyExtractor={(item, index) => `${item.message}${index}`}
               inverted={true}
-              data={state.chats}
+              data={chats}
             />
             <ChatTextInput
               onSend={(typedMsg: string) => {
                 if (state.userId && typedMsg?.trim().length) {
                   const newMessage: Chat = {
                     sender:
-                      state.profileData.name ||
-                      state.userData.userInfo?.displayName,
+                      state.profileData.name || userData.userInfo?.displayName,
                     message: typedMsg,
                     time: firestore.Timestamp.fromDate(new Date()),
                     sentByUser: true,
                     pending: true,
                   };
-                  dispatch({
-                    type: 'SET_CHATS',
-                    chats: [newMessage, ...state.chats],
-                  });
+                  setChatsInState([newMessage, ...chats]);
                   sendChatMessage(firestore(), state.userId, newMessage);
                   Analytics.logEvent(AnalyticsEvents.sendMessage);
                 }

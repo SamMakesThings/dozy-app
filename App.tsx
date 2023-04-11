@@ -13,6 +13,7 @@ import AppNavigator from './src/navigation/AppNavigator';
 import Updates from './src/utilities/updates.service';
 import Feedback from './src/utilities/feedback.service';
 import Auth from './src/utilities/auth.service';
+import { useUserDataStore } from './src/utilities/userDataStore';
 
 // Mute "setting a timer" firebase warnings in console
 LogBox.ignoreLogs(['Setting a timer']);
@@ -53,11 +54,13 @@ export default function App(): React.ReactElement {
   const isCheckingUpdate: boolean = Updates.useUpdating();
   const feedbackContextValue = Feedback.useFeedbackService();
   const authContextValue = Auth.useAuthService();
+  const isOnboardingComplete = useUserDataStore(
+    (state) => state.isOnboardingComplete,
+  );
   const [isLoading, setIsLoading] = React.useState(true);
 
   const isCheckingOnboarding: boolean =
-    !!authContextValue.state.userId &&
-    authContextValue.state.onboardingComplete === undefined;
+    !!authContextValue.state.userId && isOnboardingComplete === undefined;
 
   // Create authContext so relevant functions are available through the app
 

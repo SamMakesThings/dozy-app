@@ -14,8 +14,9 @@ import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 import { get, omit, findIndex } from 'lodash';
 import Navigation from './navigation.service';
-import Auth from './auth.service';
 import { NotificationType, NotificationData } from '../types/notification';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 export default class Notification {
   static notificationTray: NotificationData[] = [];
@@ -28,7 +29,9 @@ export default class Notification {
     const notificationEnabledRef = useRef(false);
     const notificationReceivedListener = useRef<any>(null);
     const notificationResponseListener = useRef<any>(null);
-    const { state } = Auth.useAuth();
+    const { userData } = useUserDataStore((userDataState) => userDataState);
+
+    const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
 
     useEffect((): (() => void) | void => {
       if (userId) {
@@ -84,17 +87,16 @@ export default class Notification {
     }, [userId]);
 
     useEffect(() => {
-      Notification.treatmentModule =
-        state.userData?.nextCheckin?.treatmentModule;
+      Notification.treatmentModule = userData?.nextCheckin?.treatmentModule;
       Notification.isCheckinDue =
-        moment(state.userData?.currentTreatments?.nextCheckinDatetime.toDate())
+        moment(userData?.currentTreatments?.nextCheckinDatetime.toDate())
           .startOf('date')
-          .isSameOrBefore(new Date()) && state.sleepLogs.length >= 7;
+          .isSameOrBefore(new Date()) && sleepLogs.length >= 7;
     }, [
       userId,
-      state.userData?.nextCheckin?.treatmentModule,
-      state.userData?.currentTreatments?.nextCheckinDatetime,
-      state.sleepLogs,
+      userData?.nextCheckin?.treatmentModule,
+      userData?.currentTreatments?.nextCheckinDatetime,
+      sleepLogs,
     ]);
   }
 

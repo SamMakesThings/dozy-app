@@ -2,11 +2,16 @@ import React from 'react';
 import firestore from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
 import { ACTION } from './mainAppReducer';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 export default async function refreshUserData(
   dispatch: React.Dispatch<ACTION>,
 ): Promise<void> {
   let userId;
+
+  const updateUserData = useUserDataStore.getState().updateUserData;
+  const setOnboardingComplete =
+    useUserDataStore.getState().setOnboardingComplete;
 
   try {
     userId = await SecureStore.getItemAsync('userId');
@@ -29,12 +34,11 @@ export default async function refreshUserData(
       .doc(userId)
       .get()
       .then((userData) => {
-        dispatch({
-          type: 'UPDATE_USERDATA',
-          userData: userData.data() ?? {},
-          onboardingComplete:
-            userData.exists && userData.data()?.onboardingComplete === true,
-        });
+        updateUserData(userData.data() ?? {});
+        if (userData.exists && userData.data()?.onboardingComplete === true) {
+          setOnboardingComplete();
+        }
+
         dispatch({ type: 'SET_LOADING', isLoading: false });
       });
 
@@ -44,12 +48,10 @@ export default async function refreshUserData(
       .doc(userId)
       .onSnapshot((userData) => {
         if (userData) {
-          dispatch({
-            type: 'UPDATE_USERDATA',
-            userData: userData.data() ?? {},
-            onboardingComplete:
-              userData.exists && userData.data()?.onboardingComplete === true,
-          });
+          updateUserData(userData.data() ?? {});
+          if (userData.exists && userData.data()?.onboardingComplete === true) {
+            setOnboardingComplete();
+          }
         } else {
           console.log("docSnapshot isn't defined at this point");
         }

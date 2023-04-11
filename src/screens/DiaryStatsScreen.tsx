@@ -7,21 +7,27 @@ import { CardContainer } from '../components/CardContainer';
 import { dozy_theme } from '../config/Themes';
 import { SleepLog } from '../types/custom';
 import { getLogStreakLength } from '../utilities/getLogStreakLength';
-import Auth from '../utilities/auth.service';
 import { LogStatsLineGraph } from '../components/LogStatsLineGraphComponent';
+import { useSelectedDateStore } from '../utilities/selectedDateStore';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 
 export const DiaryStatsScreen: React.FC = () => {
-  const { state } = Auth.useAuth();
-  const allSleepLogs: Array<SleepLog> = state.sleepLogs;
+  const allSleepLogs: Array<SleepLog> = useSleepLogsStore(
+    (logsState) => logsState.sleepLogs,
+  );
 
   // Calculate the current diary streak length
   const streakLength = getLogStreakLength(allSleepLogs);
 
+  const selectedDate = useSelectedDateStore(
+    (dateState) => dateState.selectedDate,
+  );
+
   // Filter sleepLogs to only show selected month
   const selectedSleepLogs = allSleepLogs.filter(
     (s) =>
-      s.upTime.toDate().getMonth() === state.selectedDate.month &&
-      s.upTime.toDate().getFullYear() === state.selectedDate.year,
+      s.upTime.toDate().getMonth() === selectedDate.month &&
+      s.upTime.toDate().getFullYear() === selectedDate.year,
   );
 
   return (

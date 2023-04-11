@@ -34,6 +34,8 @@ import { Navigation, SleepLog } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import Feedback from '../utilities/feedback.service';
 import Auth from '../utilities/auth.service';
+import { useSleepLogsStore } from '../utilities/sleepLogsStore';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 interface Props {
   navigation: Navigation;
@@ -106,10 +108,10 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const sleepLogs = useSleepLogsStore((state) => state.sleepLogs);
 
   // Trim sleepLogs to only show most recent 10
-  recentSleepLogs = state.sleepLogs.slice(0, 10);
+  recentSleepLogs = sleepLogs.slice(0, 10);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -908,10 +910,11 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Calculate some baseline statistics for later reference
-  const sleepLogs: Array<SleepLog> = state.sleepLogs;
+  const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
 
   // Calculate baseline sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -945,7 +948,7 @@ export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
 
   // Create reminder object for next checkin
   const reminderObject = {
-    expoPushToken: state.userData.reminders.expoPushToken,
+    expoPushToken: userData.reminders.expoPushToken,
     title: 'Next check-in is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',

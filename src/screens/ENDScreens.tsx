@@ -22,6 +22,7 @@ import { Navigation } from '../types/custom';
 import Feedback from '../utilities/feedback.service';
 import Auth from '../utilities/auth.service';
 import { ISIquestionSubtitle } from '../constants/Onboarding';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -306,10 +307,10 @@ export const ISIProcessing: React.FC<Props> = ({ navigation }) => {
 // TODO: Handle (unlikely but possible) worse sleep numbers with different flow
 
 export const ISIResults: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
 
   // Get % improvement in ISI score, format it nicely
-  const prevISITotal = state.userData.baselineInfo.isiTotal;
+  const prevISITotal = userData.baselineInfo.isiTotal;
   const currentISITotal = ENDState.ISITotal;
   const rawISIPercentImprovement = (prevISITotal - currentISITotal) / 28;
   const ISIPercentImprovement =
@@ -350,9 +351,9 @@ export const ISIResults: React.FC<Props> = ({ navigation }) => {
 };
 
 export const ISICategoryChange: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
 
-  const prevISITotal = state.userData.baselineInfo.isiTotal;
+  const prevISITotal = userData.baselineInfo.isiTotal;
   const currentISITotal = ENDState.ISITotal;
 
   return (

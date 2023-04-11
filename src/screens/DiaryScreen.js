@@ -21,23 +21,26 @@ import Auth from '../utilities/auth.service';
 import { decodeServerTime, encodeLocalTime } from '../utilities/time';
 import Notification from '../utilities/notification.service';
 import Navigation from '../utilities/navigation.service';
+import { useSelectedDateStore } from '../utilities/selectedDateStore';
 
 // Create tab nav for switching between entries and stats
 const Tab = createMaterialTopTabNavigator();
 
 function DiaryScreen() {
   const theme = dozy_theme;
-  const { dispatch, state } = Auth.useAuth();
+  const { state } = Auth.useAuth();
 
-  // Set date value from selected month
-  const selectedDate = new Date();
-  selectedDate.setMonth(state.selectedDate.month, 15);
-  selectedDate.setFullYear(state.selectedDate.year);
+  // Get selected date from store
+  const alterMonthSelection = useSelectedDateStore(
+    (dateState) => dateState.alterMonthSelection,
+  );
 
-  const currentMonthString = selectedDate.toLocaleDateString('en-US', {
-    month: 'long',
-    year: 'numeric',
-  });
+  const currentMonthString = useSelectedDateStore((dateState) =>
+    dateState.selectedDate.date.toLocaleDateString('en-US', {
+      month: 'long',
+      year: 'numeric',
+    }),
+  );
 
   useEffect(() => {
     const maybeUpdateReminderTimezone = async () => {
@@ -103,11 +106,7 @@ function DiaryScreen() {
     <SafeAreaView style={styles.ScreenContainer} edges={['top']}>
       <FocusAwareStatusBar backgroundColor={dozy_theme.colors.medium} />
       <View style={styles.View_MonthSelectContainer}>
-        <TouchableOpacity
-          onPress={() =>
-            dispatch({ type: 'CHANGE_SELECTED_MONTH', changeMonthBy: -1 })
-          }
-        >
+        <TouchableOpacity onPress={() => alterMonthSelection(-1)}>
           <Entypo
             name="chevron-left"
             size={scale(24)}
@@ -120,11 +119,7 @@ function DiaryScreen() {
         >
           {currentMonthString}
         </Text>
-        <TouchableOpacity
-          onPress={() =>
-            dispatch({ type: 'CHANGE_SELECTED_MONTH', changeMonthBy: 1 })
-          }
-        >
+        <TouchableOpacity onPress={() => alterMonthSelection(1)}>
           <Entypo
             name="chevron-right"
             size={scale(24)}

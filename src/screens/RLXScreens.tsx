@@ -21,6 +21,7 @@ import { Navigation } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import Feedback from '../utilities/feedback.service';
 import Auth from '../utilities/auth.service';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 // Define the theme for the file globally
 const theme = dozy_theme;
@@ -401,12 +402,13 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
   const { state, dispatch } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder objects, put them in an array
   const reminderArray = [
     {
-      expoPushToken: state.userData.reminders.expoPushToken,
+      expoPushToken: userData.reminders.expoPushToken,
       title: 'Next check-in is ready',
       body: 'Open the app now to get started',
       type: 'CHECKIN_REMINDER',
@@ -417,7 +419,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
   // Give the option to not set a reminder for PMR practice
   if (RLXState.PMRIntentionTime) {
     reminderArray.push({
-      expoPushToken: state.userData.reminders.expoPushToken,
+      expoPushToken: userData.reminders.expoPushToken,
       title: 'Remember to practice PMR',
       body: 'Go to the home screen to practice',
       type: 'PMR_REMINDER',

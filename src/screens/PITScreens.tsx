@@ -24,6 +24,7 @@ import refreshUserData from '../utilities/refreshUserData';
 import { ErrorObj } from '../types/error';
 import Feedback from '../utilities/feedback.service';
 import Auth from '../utilities/auth.service';
+import { useUserDataStore } from '../utilities/userDataStore';
 
 // Use a local state object instead of GLOBAL for GSES score, next checkin time
 interface Global {
@@ -496,11 +497,12 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const PITEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = Auth.useAuth();
+  const { userData } = useUserDataStore((userState) => userState.userData);
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin
   const reminderObject = {
-    expoPushToken: state.userData.reminders.expoPushToken,
+    expoPushToken: userData.reminders.expoPushToken,
     title: 'Next check-in is ready',
     body: 'Open the app now to get started',
     type: 'CHECKIN_REMINDER',
