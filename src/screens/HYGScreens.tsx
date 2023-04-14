@@ -428,6 +428,11 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
   hygModulesToVisit = Object.keys(HYGState).filter((key) => {
     const keyVal = HYGState[key as keyof typeof HYGState];
 
+    // Exclude these four values from category navigation
+    if (['SHI1', 'SHI3', 'SHI4', 'SHI6'].includes(key)) {
+      return false;
+    }
+
     return typeof keyVal == 'number' && keyVal > 2;
   });
 
