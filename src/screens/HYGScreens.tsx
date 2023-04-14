@@ -70,6 +70,16 @@ interface Props {
   navigation: NavigationProp<any>;
 }
 
+function goToNextCateogry(navigation: NavigationProp<any>) {
+  // Function to navigate to the next category of HYG screens
+  const nextModule = hygModulesToVisit.shift();
+  if (nextModule) {
+    navigation.navigate(nextModule, { progressBarPercent: 0.6 });
+  } else {
+    navigation.navigate('HYGReview', { progressBarPercent: 0.95 });
+  }
+}
+
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
 
@@ -469,7 +479,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
   }
 
   // Create an in-sentence string reviewing the modules to visit, separated by commas, based on hygModulesToVisit, using hygLabels
-  const hygModulesToVisitInSentence = hygModulesToVisit
+  const sentenceLabelForAllHygModules = hygModulesToVisit
     .map((key, index) => {
       // Add an "and" if last item
       if (index === hygModulesToVisit.length - 1) {
@@ -509,7 +519,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
           });
         }}
         titleLabel={`You've finished the sleep hygiene index!`}
-        textLabel={`There are some improvements to be made, but we can help. Let's spend the next few minutes addressing your ${hygModulesToVisitInSentence}.`}
+        textLabel={`There are some improvements to be made, but we can help. Let's spend the next few minutes addressing your ${sentenceLabelForAllHygModules}.`}
         buttonLabel="Continue"
         flexibleLayout
       >
@@ -536,6 +546,101 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
   //   </WizardContentScreen>
   // );
 };
+
+/*
+
+SHI2 - late night exercise flow
+
+*/
+
+export const SHI2Begin: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI2CommitAsk', {
+          progressBarPercent: 0.96,
+        });
+      }}
+      titleLabel="So you're a late night exerciser."
+      textLabel="First off, good on you for staying in shape! But you should consider changing the timing of your exercise. By working out so close to bedtime, you could be making it harder to fall asleep."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI2CommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === 'Yes') {
+          navigation.navigate('SHI2Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI2NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Are you willing to change the timing of your exercise routine?"
+      textLabel="To avoid waking your body up too close to bedtime."
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI2Commit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Great!"
+      textLabel="Let's continue to track how late-night exercise affects your sleep in the meantime."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI2NoCommit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Ok, no worries."
+      textLabel="We'll continue tracking how late-night exercise affects your sleep in the meantime and will follow up with you if necessary."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+/* 
+
+Final meta flows
+
+*/
 
 export const HYGReview: React.FC<Props> = ({ navigation }) => {
   return (
