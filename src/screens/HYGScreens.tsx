@@ -42,6 +42,24 @@ const HYGState = {
   SHIScore: 0,
 };
 
+const hygLabels = {
+  SHI2: {
+    inSentence: 'late night exercise',
+  },
+  SHI5: {
+    inSentence: 'other nighttime activities',
+  },
+  SHI7: {
+    inSentence: 'uncomfortable bed',
+  },
+  SHI8: {
+    inSentence: 'uncomfortable bedroom environment',
+  },
+  SHI9: {
+    inSentence: 'doing important work before bedtime',
+  },
+};
+
 let hygModulesToVisit: string[] = [];
 
 const imgSizePercent = 0.4; // Define square image size defaults as a percent of width
@@ -436,6 +454,25 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
     return typeof keyVal == 'number' && keyVal > 2;
   });
 
+  // If there are no modules to visit, go to the review screen
+  // if (hygModulesToVisit.length == 0) {
+  //   navigation.navigate('HYGReview', {
+  //     progressBarPercent: 0.96,
+  //   });
+  // }
+
+  // Create an in-sentence string reviewing the modules to visit, separated by commas, based on hygModulesToVisit, using hygLabels
+  const hygModulesToVisitInSentence = hygModulesToVisit
+    .map((key, index) => {
+      // Add an "and" if last item
+      if (index === hygModulesToVisit.length - 1) {
+        return `and ${hygLabels[key as keyof typeof hygLabels].inSentence}`;
+      }
+
+      return hygLabels[key as keyof typeof hygLabels].inSentence;
+    })
+    .join(', ');
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -445,14 +482,32 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
           progressBarPercent: 0.96,
         });
       }}
-      titleLabel={`You scored a ${HYGState.SHIScore} on the shortened Sleep Hygiene Index (out of 36).`}
-      textLabel="There are some improvements to be made, but we can help. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
+      titleLabel={`You've finished the sleep hygiene index!`}
+      textLabel={`There are some improvements to be made, but we can help. Let's spend the next few minutes addressing your ${hygModulesToVisitInSentence} Send us a message after you've scheduled your next checkin and we'll work out a plan together.`}
       buttonLabel="OK"
       flexibleLayout
     >
       <BarChart width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
+
+  // return (
+  //   <WizardContentScreen
+  //     theme={theme}
+  //     bottomBackButton={() => navigation.goBack()}
+  //     onQuestionSubmit={() => {
+  //       navigation.navigate('HYGReview', {
+  //         progressBarPercent: 0.96,
+  //       });
+  //     }}
+  //     titleLabel={`You scored a ${HYGState.SHIScore} on the shortened Sleep Hygiene Index (out of 36).`}
+  //     textLabel="There are some improvements to be made, but we can help. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
+  //     buttonLabel="OK"
+  //     flexibleLayout
+  //   >
+  //     <BarChart width={imgSize} height={imgSize} />
+  //   </WizardContentScreen>
+  // );
 };
 
 export const HYGReview: React.FC<Props> = ({ navigation }) => {
