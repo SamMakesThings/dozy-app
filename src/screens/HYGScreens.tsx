@@ -42,6 +42,8 @@ const HYGState = {
   SHIScore: 0,
 };
 
+let hygModulesToVisit: string[] = [];
+
 const imgSizePercent = 0.4; // Define square image size defaults as a percent of width
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
@@ -421,6 +423,13 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
     HYGState.SHI7 +
     HYGState.SHI8 +
     HYGState.SHI9;
+
+  // Filter out any keys from hygstate where the numerical value is 2 or lower
+  hygModulesToVisit = Object.keys(HYGState).filter((key) => {
+    const keyVal = HYGState[key as keyof typeof HYGState];
+
+    return typeof keyVal == 'number' && keyVal > 2;
+  });
 
   return (
     <WizardContentScreen
