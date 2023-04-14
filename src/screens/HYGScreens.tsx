@@ -454,12 +454,19 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
     return typeof keyVal == 'number' && keyVal > 2;
   });
 
-  // If there are no modules to visit, go to the review screen
-  // if (hygModulesToVisit.length == 0) {
-  //   navigation.navigate('HYGReview', {
-  //     progressBarPercent: 0.96,
-  //   });
-  // }
+  // If there aren't any modules 3 or higher, lower to 2
+  if (hygModulesToVisit.length == 0) {
+    hygModulesToVisit = Object.keys(HYGState).filter((key) => {
+      const keyVal = HYGState[key as keyof typeof HYGState];
+
+      // Exclude these four values from category navigation
+      if (['SHI1', 'SHI3', 'SHI4', 'SHI6'].includes(key)) {
+        return false;
+      }
+
+      return typeof keyVal == 'number' && keyVal > 1;
+    });
+  }
 
   // Create an in-sentence string reviewing the modules to visit, separated by commas, based on hygModulesToVisit, using hygLabels
   const hygModulesToVisitInSentence = hygModulesToVisit
@@ -473,23 +480,43 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
     })
     .join(', ');
 
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
-      onQuestionSubmit={() => {
-        navigation.navigate('HYGReview', {
-          progressBarPercent: 0.96,
-        });
-      }}
-      titleLabel={`You've finished the sleep hygiene index!`}
-      textLabel={`There are some improvements to be made, but we can help. Let's spend the next few minutes addressing your ${hygModulesToVisitInSentence} Send us a message after you've scheduled your next checkin and we'll work out a plan together.`}
-      buttonLabel="OK"
-      flexibleLayout
-    >
-      <BarChart width={imgSize} height={imgSize} />
-    </WizardContentScreen>
-  );
+  if (hygModulesToVisit.length === 0) {
+    return (
+      <WizardContentScreen
+        theme={theme}
+        bottomBackButton={() => navigation.goBack()}
+        onQuestionSubmit={() => {
+          navigation.navigate('CheckinScheduling', {
+            progressBarPercent: 0.985,
+          });
+        }}
+        titleLabel="You've finished the sleep hygiene index!"
+        textLabel={`You got a total score of ${HYGState.SHIScore} out of 36. That's pretty good! It's unlikely sleep hygiene is a major contributor to your sleep issues. Let's finish the module for this week and schedule your next checkin.`}
+        buttonLabel="OK"
+        flexibleLayout
+      >
+        <BarChart width={imgSize} height={imgSize} />
+      </WizardContentScreen>
+    );
+  } else {
+    return (
+      <WizardContentScreen
+        theme={theme}
+        bottomBackButton={() => navigation.goBack()}
+        onQuestionSubmit={() => {
+          navigation.navigate('HYGReview', {
+            progressBarPercent: 0.96,
+          });
+        }}
+        titleLabel={`You've finished the sleep hygiene index!`}
+        textLabel={`There are some improvements to be made, but we can help. Let's spend the next few minutes addressing your ${hygModulesToVisitInSentence}.`}
+        buttonLabel="Continue"
+        flexibleLayout
+      >
+        <BarChart width={imgSize} height={imgSize} />
+      </WizardContentScreen>
+    );
+  }
 
   // return (
   //   <WizardContentScreen
