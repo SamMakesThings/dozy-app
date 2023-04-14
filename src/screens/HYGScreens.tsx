@@ -636,6 +636,95 @@ export const SHI2NoCommit: React.FC<Props> = ({ navigation }) => {
   );
 };
 
+/*
+
+SHI5 - late night exercise flow
+
+*/
+
+export const SHI5Begin: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI5CommitAsk', {
+          progressBarPercent: 0.96,
+        });
+      }}
+      titleLabel="Seems you do some kind of wakeful activity before bed."
+      textLabel={`Doing mentally or physically active things around bedtime (like video games, social media, or cleaning) can make it harder for you to fall asleep. \n\nThose activities can get your brain stuck in "productive mode". Without some natural wind-down time, your brain might still be in "productive mode" even when you're trying to sleep.`}
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI5CommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === 'Yes') {
+          navigation.navigate('SHI5Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI5NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Think you can try reducing evening activity this week?"
+      textLabel={`By reducing these activities or moving them away from bedtime, we can make the rest of your program more effective. For 10-30 minutes before bedtime, try activities that stimulate the brain less (like reading a book, watching a movie, or journaling) instead of things like like social media, video games, or doing work. `}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI5Commit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Great!"
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI5NoCommit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Ok, no worries."
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
 /* 
 
 Final meta flows
