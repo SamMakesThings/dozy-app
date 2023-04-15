@@ -11,14 +11,17 @@ export type UserDataState = {
   setCoach: (coach: Coach) => void;
 };
 
-export const useUserDataStore = create<UserDataState>((set) => ({
+export const useUserDataStore = create<UserDataState>((set, get) => ({
   userData: {},
   isOnboardingComplete: false,
   coach: CoachConstants.defaultCoach,
-  updateUserData: (newUserData) =>
-    set(() => {
-      return { userData: newUserData };
-    }),
+  updateUserData: (newUserData) => {
+    if (newUserData != get().userData) {
+      set(() => {
+        return { userData: newUserData };
+      });
+    }
+  },
   setOnboardingComplete: () =>
     set(() => {
       return { isOnboardingComplete: true };
