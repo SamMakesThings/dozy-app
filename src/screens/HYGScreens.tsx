@@ -46,6 +46,9 @@ const hygLabels = {
   SHI2: {
     inSentence: 'late night exercise',
   },
+  SHI4: {
+    inSentence: 'substance use',
+  },
   SHI5: {
     inSentence: 'other nighttime activities',
   },
@@ -74,7 +77,7 @@ function goToNextCateogry(navigation: NavigationProp<any>) {
   // Function to navigate to the next category of HYG screens
   const nextModule = hygModulesToVisit.shift();
   if (nextModule) {
-    navigation.navigate(nextModule, { progressBarPercent: 0.6 });
+    navigation.navigate(nextModule + 'Begin', { progressBarPercent: 0.6 });
   } else {
     navigation.navigate('HYGReview', { progressBarPercent: 0.95 });
   }
@@ -323,7 +326,6 @@ export const SHI4a: React.FC<Props> = ({ navigation }) => {
         { label: 'Alcohol', value: 'alcohol', solidColor: false },
         { label: 'Caffeine', value: 'caffeine', solidColor: false },
         { label: 'Tobacco/Nicotine', value: 'nicotine', solidColor: false },
-        { label: 'Other', value: 'other', solidColor: false },
       ]}
     />
   );
@@ -486,7 +488,9 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
       }
 
       // Add an "and" if last item
-      if (index === hygModulesToVisit.length - 1) {
+      if (hygModulesToVisit.length === 1) {
+        return hygLabels[key as keyof typeof hygLabels].inSentence;
+      } else if (index === hygModulesToVisit.length - 1) {
         return `and ${hygLabels[key as keyof typeof hygLabels].inSentence}`;
       }
 
@@ -518,9 +522,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
         theme={theme}
         bottomBackButton={() => navigation.goBack()}
         onQuestionSubmit={() => {
-          navigation.navigate('HYGReview', {
-            progressBarPercent: 0.96,
-          });
+          goToNextCateogry(navigation);
         }}
         titleLabel={`You've finished the sleep hygiene index!`}
         textLabel={`There are some improvements to be made, but we can help. Let's spend the next few minutes addressing your ${sentenceLabelForAllHygModules}.`}
@@ -583,7 +585,7 @@ export const SHI2CommitAsk: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
-        if (res === 'Yes') {
+        if (res === undefined) {
           navigation.navigate('SHI2Commit', {
             progressBarPercent: 0.96,
           });
@@ -642,6 +644,176 @@ export const SHI2NoCommit: React.FC<Props> = ({ navigation }) => {
 
 /*
 
+SHI4 - substance use - alcohol, caffeine, nicotene
+
+*/
+
+export const SHI4Begin: React.FC<Props> = ({ navigation }) => {
+  let textLabel;
+
+  switch (HYGState.SHI4a) {
+    case 'alcohol':
+      textLabel = `It's true that alcohol can make you fall asleep faster. And that's great! However, there's a catch: alcohol is one of the most powerful suppressors of REM sleep there is.`;
+      break;
+    case 'caffeine':
+      textLabel = `Caffeine works by temporarily blocking some of the sleep-inducing circuits in your brain. This is great in the morning when you need to be awake for work, but less so when you're struggling with insomnia.`;
+      break;
+    case 'nicotine':
+      textLabel = `Nicotine can help you relax, and it's certainly not something you can just stop doing on a whim. Nor is it necessarily a good idea to stop cold turkey - suddenly quitting smoking can actually make insomnia worse.`;
+      break;
+    default:
+      textLabel = ``;
+      break;
+  }
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI4Explain', {
+          progressBarPercent: 0.96,
+        });
+      }}
+      titleLabel={`Using ${HYGState.SHI4a} close to bedtime isn't great for sleep.`}
+      textLabel={textLabel}
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI4Explain: React.FC<Props> = ({ navigation }) => {
+  let titleLabel;
+  let textLabel;
+
+  switch (HYGState.SHI4a) {
+    case 'alcohol':
+      titleLabel = `REM sleep is critical for good sleep quality.`;
+      textLabel = `So yes, alcohol will make you fall asleep faster, but your sleep quality will be lower, and you'll be far less rested the next day. To maximize restful sleep, it's helpful to avoid acohol within a few hours of bedtime.`;
+      break;
+    case 'caffeine':
+      titleLabel = `Even if you're quite tolerant to caffeine,`;
+      textLabel = `...having it in your system at bedtime can make it harder to fall asleep and even reduce your sleep quality, without you being aware of it!`;
+      break;
+    case 'nicotine':
+      titleLabel = `Avoiding nicotene for 2+ hours before bed`;
+      textLabel = `...and not smoking during the night, will help avoid any nicotene-related sleep disruptions or hurt your nighttime restfulness.`;
+      break;
+    default:
+      titleLabel = ``;
+      textLabel = ``;
+      break;
+  }
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI4CommitAsk', {
+          progressBarPercent: 0.96,
+        });
+      }}
+      titleLabel={titleLabel}
+      textLabel={textLabel}
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI4CommitAsk: React.FC<Props> = ({ navigation }) => {
+  let titleLabel;
+  let textLabel;
+
+  switch (HYGState.SHI4a) {
+    case 'alcohol':
+      titleLabel = `Think you can try reducing late-night drinks this week?`;
+      textLabel = `By reducing late-night alcohol or moving it earlier in the day (3+ hours before bedtime), we can make it easier for your brain to sleep well.`;
+      break;
+    case 'caffeine':
+      titleLabel = `Think you can try reducing late-night caffeine this week?`;
+      textLabel = `A night of late caffeine-induced wakefulness once in a rare while is ok, but as a habit it's damaging to your circadian rhythm.`;
+      break;
+    case 'nicotine':
+      titleLabel = `Think you can try reducing late-night nicotine this week?`;
+      textLabel = `By adjusting the timing of nicotene to 2+ hours before bedtime, we can make it easier for an insomnia-prone brain to fall asleep.`;
+      break;
+    default:
+      titleLabel = ``;
+      textLabel = ``;
+      break;
+  }
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI4Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI4NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel={titleLabel}
+      textLabel={textLabel}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI4Commit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Great!"
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI4NoCommit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Ok, no worries."
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+/*
+
 SHI5 - late night exercise flow
 
 */
@@ -672,7 +844,7 @@ export const SHI5CommitAsk: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
-        if (res === 'Yes') {
+        if (res === undefined) {
           navigation.navigate('SHI5Commit', {
             progressBarPercent: 0.96,
           });
