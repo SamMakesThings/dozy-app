@@ -456,8 +456,8 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
   hygModulesToVisit = Object.keys(HYGState).filter((key) => {
     const keyVal = HYGState[key as keyof typeof HYGState];
 
-    // Exclude these four values from category navigation
-    if (['SHI1', 'SHI3', 'SHI4', 'SHI6'].includes(key)) {
+    // Exclude unused values from category navigation
+    if (Object.keys(hygLabels).includes(key) === false) {
       return false;
     }
 
@@ -470,7 +470,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
       const keyVal = HYGState[key as keyof typeof HYGState];
 
       // Exclude these four values from category navigation
-      if (['SHI1', 'SHI3', 'SHI4', 'SHI6'].includes(key)) {
+      if (Object.keys(hygLabels).includes(key) === false) {
         return false;
       }
 
@@ -481,6 +481,10 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
   // Create an in-sentence string reviewing the modules to visit, separated by commas, based on hygModulesToVisit, using hygLabels
   const sentenceLabelForAllHygModules = hygModulesToVisit
     .map((key, index) => {
+      if (Object.keys(hygLabels).includes(key) === false) {
+        return '';
+      }
+
       // Add an "and" if last item
       if (index === hygModulesToVisit.length - 1) {
         return `and ${hygLabels[key as keyof typeof hygLabels].inSentence}`;
@@ -488,7 +492,7 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
 
       return hygLabels[key as keyof typeof hygLabels].inSentence;
     })
-    .join(', ');
+    .join(hygModulesToVisit.length === 2 ? ' ' : ', ');
 
   if (hygModulesToVisit.length === 0) {
     return (
