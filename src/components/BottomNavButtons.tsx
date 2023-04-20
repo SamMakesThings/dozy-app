@@ -12,6 +12,7 @@ interface Props {
     label: string;
     value: string | number | boolean;
     solidColor?: boolean;
+    disabled?: boolean;
   }>;
   onPress?: (value?: string | number | boolean) => void;
   onlyBackButton?: boolean;
@@ -49,15 +50,19 @@ const BottomNavButtons: React.FC<Props> = (props) => {
     >
       {props.buttonValues &&
         props.buttonValues.map((val) => {
-          const { label, value, solidColor } = val;
+          const { label, value, solidColor, disabled } = val;
           return (
             <Button
               key={value.toString()}
-              style={[theme.buttonLayout as ViewStyle, styles.Button_Default]}
+              style={[
+                theme.buttonLayout as ViewStyle,
+                styles.Button_Default,
+                { opacity: disabled ? 0.4 : 1 },
+              ]}
               type={solidColor ? 'solid' : 'outline'}
               color={solidColor ? theme.colors.primary : theme.colors.secondary}
               loading={false}
-              disabled={false}
+              disabled={disabled}
               onPress={() => {
                 if (props.onPress) {
                   props.onPress(value);
