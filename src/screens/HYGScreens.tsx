@@ -976,7 +976,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const HYGEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = Auth.useAuth();
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin

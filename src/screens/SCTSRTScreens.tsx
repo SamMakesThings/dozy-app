@@ -910,7 +910,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = Auth.useAuth();
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Calculate some baseline statistics for later reference

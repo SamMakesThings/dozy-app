@@ -307,7 +307,7 @@ export const ISIProcessing: React.FC<Props> = ({ navigation }) => {
 // TODO: Handle (unlikely but possible) worse sleep numbers with different flow
 
 export const ISIResults: React.FC<Props> = ({ navigation }) => {
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
 
   // Get % improvement in ISI score, format it nicely
   const prevISITotal = userData.baselineInfo.isiTotal;
@@ -351,7 +351,7 @@ export const ISIResults: React.FC<Props> = ({ navigation }) => {
 };
 
 export const ISICategoryChange: React.FC<Props> = ({ navigation }) => {
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
 
   const prevISITotal = userData.baselineInfo.isiTotal;
   const currentISITotal = ENDState.ISITotal;

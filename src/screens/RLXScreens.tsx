@@ -402,7 +402,7 @@ export const SCTSRTEnd: React.FC<{ navigation: Navigation }> = ({
   navigation,
 }) => {
   const { state, dispatch } = Auth.useAuth();
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder objects, put them in an array
