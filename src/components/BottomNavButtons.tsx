@@ -57,7 +57,7 @@ const BottomNavButtons: React.FC<Props> = (props) => {
               style={[
                 theme.buttonLayout as ViewStyle,
                 styles.Button_Default,
-                { opacity: disabled ? 0.4 : 1 },
+                disabled ? styles.Button_Disabled : {},
               ]}
               type={solidColor ? 'solid' : 'outline'}
               color={solidColor ? theme.colors.primary : theme.colors.secondary}
@@ -143,6 +143,9 @@ const styles = StyleSheet.create({
   Button_Continue: {
     paddingTop: 0,
     marginTop: scale(5),
+  },
+  Button_Disabled: {
+    opacity: 0.4,
   },
   View_ButtonContainer: {
     marginBottom: scale(15),
