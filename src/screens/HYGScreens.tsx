@@ -42,12 +42,46 @@ const HYGState = {
   SHIScore: 0,
 };
 
+const hygLabels = {
+  SHI2: {
+    inSentence: 'late night exercise',
+  },
+  SHI4: {
+    inSentence: 'substance use',
+  },
+  SHI5: {
+    inSentence: 'other nighttime activities',
+  },
+  SHI7: {
+    inSentence: 'uncomfortable bed',
+  },
+  SHI8: {
+    inSentence: 'uncomfortable bedroom environment',
+  },
+  SHI9: {
+    inSentence: 'doing important work before bedtime',
+  },
+};
+
+let hygModulesToVisit: string[] = [];
+const visitedBedroomEnvSections: string[] = [];
+
 const imgSizePercent = 0.4; // Define square image size defaults as a percent of width
 let imgSize = 0; // This value is replaced on the first screen to adjust for window width
 
 interface Props {
   // Define Props type for all screens in this flow
   navigation: NavigationProp<any>;
+}
+
+function goToNextCateogry(navigation: NavigationProp<any>) {
+  // Function to navigate to the next category of HYG screens
+  const nextModule = hygModulesToVisit.shift();
+  if (nextModule) {
+    navigation.navigate(nextModule + 'Begin', { progressBarPercent: 0.6 });
+  } else {
+    navigation.navigate('HYGReview', { progressBarPercent: 0.95 });
+  }
 }
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
@@ -293,7 +327,6 @@ export const SHI4a: React.FC<Props> = ({ navigation }) => {
         { label: 'Alcohol', value: 'alcohol', solidColor: false },
         { label: 'Caffeine', value: 'caffeine', solidColor: false },
         { label: 'Tobacco/Nicotine', value: 'nicotine', solidColor: false },
-        { label: 'Other', value: 'other', solidColor: false },
       ]}
     />
   );
@@ -422,24 +455,966 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
     HYGState.SHI8 +
     HYGState.SHI9;
 
+  // Filter out any keys from hygstate where the numerical value is 2 or lower
+  hygModulesToVisit = Object.keys(HYGState).filter((key) => {
+    const keyVal = HYGState[key as keyof typeof HYGState];
+
+    // Exclude unused values from category navigation
+    if (Object.keys(hygLabels).includes(key) === false) {
+      return false;
+    }
+
+    return typeof keyVal == 'number' && keyVal > 2;
+  });
+
+  // If there aren't any modules 3 or higher, lower to 2
+  if (hygModulesToVisit.length == 0) {
+    hygModulesToVisit = Object.keys(HYGState).filter((key) => {
+      const keyVal = HYGState[key as keyof typeof HYGState];
+
+      // Exclude these four values from category navigation
+      if (Object.keys(hygLabels).includes(key) === false) {
+        return false;
+      }
+
+      return typeof keyVal == 'number' && keyVal > 1;
+    });
+  }
+
+  // Create an in-sentence string reviewing the modules to visit, separated by commas, based on hygModulesToVisit, using hygLabels
+  const sentenceLabelForAllHygModules = hygModulesToVisit
+    .map((key, index) => {
+      if (Object.keys(hygLabels).includes(key) === false) {
+        return '';
+      }
+
+      // Add an "and" if last item
+      if (hygModulesToVisit.length === 1) {
+        return hygLabels[key as keyof typeof hygLabels].inSentence;
+      } else if (index === hygModulesToVisit.length - 1) {
+        return `and ${hygLabels[key as keyof typeof hygLabels].inSentence}`;
+      }
+
+      return hygLabels[key as keyof typeof hygLabels].inSentence;
+    })
+    .join(hygModulesToVisit.length === 2 ? ' ' : ', ');
+
+  if (hygModulesToVisit.length === 0) {
+    return (
+      <WizardContentScreen
+        theme={theme}
+        bottomBackButton={() => navigation.goBack()}
+        onQuestionSubmit={() => {
+          navigation.navigate('CheckinScheduling', {
+            progressBarPercent: 0.985,
+          });
+        }}
+        titleLabel="You've finished the sleep hygiene index!"
+        textLabel={`You got a total score of ${HYGState.SHIScore} out of 36. That's pretty good! It's unlikely sleep hygiene is a major contributor to your sleep issues. Let's finish the module for this week and schedule your next checkin.`}
+        buttonLabel="OK"
+        flexibleLayout
+      >
+        <BarChart width={imgSize} height={imgSize} />
+      </WizardContentScreen>
+    );
+  } else {
+    return (
+      <WizardContentScreen
+        theme={theme}
+        bottomBackButton={() => navigation.goBack()}
+        onQuestionSubmit={() => {
+          goToNextCateogry(navigation);
+        }}
+        titleLabel={`You've finished the sleep hygiene index!`}
+        textLabel={`There are some improvements to be made, but we can help. Let's spend the next few minutes addressing your ${sentenceLabelForAllHygModules}.`}
+        buttonLabel="Continue"
+        flexibleLayout
+      >
+        <BarChart width={imgSize} height={imgSize} />
+      </WizardContentScreen>
+    );
+  }
+
+  // return (
+  //   <WizardContentScreen
+  //     theme={theme}
+  //     bottomBackButton={() => navigation.goBack()}
+  //     onQuestionSubmit={() => {
+  //       navigation.navigate('HYGReview', {
+  //         progressBarPercent: 0.96,
+  //       });
+  //     }}
+  //     titleLabel={`You scored a ${HYGState.SHIScore} on the shortened Sleep Hygiene Index (out of 36).`}
+  //     textLabel="There are some improvements to be made, but we can help. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
+  //     buttonLabel="OK"
+  //     flexibleLayout
+  //   >
+  //     <BarChart width={imgSize} height={imgSize} />
+  //   </WizardContentScreen>
+  // );
+};
+
+/*
+
+SHI2 - late night exercise flow
+
+*/
+
+export const SHI2Begin: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('HYGReview', {
+        navigation.navigate('SHI2CommitAsk', {
           progressBarPercent: 0.96,
         });
       }}
-      titleLabel={`You scored a ${HYGState.SHIScore} on the shortened Sleep Hygiene Index (out of 36).`}
-      textLabel="There are some improvements to be made, but we can help. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
-      buttonLabel="OK"
+      titleLabel="So you're a late night exerciser."
+      textLabel="First off, good on you for staying in shape! But you should consider changing the timing of your exercise. By working out so close to bedtime, you could be making it harder to fall asleep."
+      buttonLabel="Continue"
       flexibleLayout
     >
-      <BarChart width={imgSize} height={imgSize} />
+      <FemaleDoctor width={imgSize} height={imgSize} />
     </WizardContentScreen>
   );
 };
+
+export const SHI2CommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI2Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI2NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Are you willing to change the timing of your exercise routine?"
+      textLabel="To avoid waking your body up too close to bedtime."
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI2Commit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Great!"
+      textLabel="Let's continue to track how late-night exercise affects your sleep in the meantime."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI2NoCommit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Ok, no worries."
+      textLabel="We'll continue tracking how late-night exercise affects your sleep in the meantime and will follow up with you if necessary."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+/*
+
+SHI4 - substance use - alcohol, caffeine, nicotene
+
+*/
+
+export const SHI4Begin: React.FC<Props> = ({ navigation }) => {
+  let textLabel;
+
+  switch (HYGState.SHI4a) {
+    case 'alcohol':
+      textLabel = `It's true that alcohol can make you fall asleep faster. And that's great! However, there's a catch: alcohol is one of the most powerful suppressors of REM sleep there is.`;
+      break;
+    case 'caffeine':
+      textLabel = `Caffeine works by temporarily blocking some of the sleep-inducing circuits in your brain. This is great in the morning when you need to be awake for work, but less so when you're struggling with insomnia.`;
+      break;
+    case 'nicotine':
+      textLabel = `Nicotine can help you relax, and it's certainly not something you can just stop doing on a whim. Nor is it necessarily a good idea to stop cold turkey - suddenly quitting smoking can actually make insomnia worse.`;
+      break;
+    default:
+      textLabel = ``;
+      break;
+  }
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI4Explain', {
+          progressBarPercent: 0.96,
+        });
+      }}
+      titleLabel={`Using ${HYGState.SHI4a} close to bedtime isn't great for sleep.`}
+      textLabel={textLabel}
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI4Explain: React.FC<Props> = ({ navigation }) => {
+  let titleLabel;
+  let textLabel;
+
+  switch (HYGState.SHI4a) {
+    case 'alcohol':
+      titleLabel = `REM sleep is critical for good sleep quality.`;
+      textLabel = `So yes, alcohol will make you fall asleep faster, but your sleep quality will be lower, and you'll be far less rested the next day. To maximize restful sleep, it's helpful to avoid acohol within a few hours of bedtime.`;
+      break;
+    case 'caffeine':
+      titleLabel = `Even if you're quite tolerant to caffeine,`;
+      textLabel = `...having it in your system at bedtime can make it harder to fall asleep and even reduce your sleep quality, without you being aware of it!`;
+      break;
+    case 'nicotine':
+      titleLabel = `Avoiding nicotene for 2+ hours before bed`;
+      textLabel = `...and not smoking during the night, will help avoid any nicotene-related sleep disruptions or hurt your nighttime restfulness.`;
+      break;
+    default:
+      titleLabel = ``;
+      textLabel = ``;
+      break;
+  }
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI4CommitAsk', {
+          progressBarPercent: 0.96,
+        });
+      }}
+      titleLabel={titleLabel}
+      textLabel={textLabel}
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI4CommitAsk: React.FC<Props> = ({ navigation }) => {
+  let titleLabel;
+  let textLabel;
+
+  switch (HYGState.SHI4a) {
+    case 'alcohol':
+      titleLabel = `Think you can try reducing late-night drinks this week?`;
+      textLabel = `By reducing late-night alcohol or moving it earlier in the day (3+ hours before bedtime), we can make it easier for your brain to sleep well.`;
+      break;
+    case 'caffeine':
+      titleLabel = `Think you can try reducing late-night caffeine this week?`;
+      textLabel = `A night of late caffeine-induced wakefulness once in a rare while is ok, but as a habit it's damaging to your circadian rhythm.`;
+      break;
+    case 'nicotine':
+      titleLabel = `Think you can try reducing late-night nicotine this week?`;
+      textLabel = `By adjusting the timing of nicotene to 2+ hours before bedtime, we can make it easier for an insomnia-prone brain to fall asleep.`;
+      break;
+    default:
+      titleLabel = ``;
+      textLabel = ``;
+      break;
+  }
+
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI4Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI4NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel={titleLabel}
+      textLabel={textLabel}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI4Commit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Great!"
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI4NoCommit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Ok, no worries."
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+/*
+
+SHI5 - late night exercise flow
+
+*/
+
+export const SHI5Begin: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI5CommitAsk', {
+          progressBarPercent: 0.96,
+        });
+      }}
+      titleLabel="Seems you do some kind of wakeful activity before bed."
+      textLabel={`Doing mentally or physically active things around bedtime (like video games, social media, or cleaning) can make it harder for you to fall asleep. \n\nThose activities can get your brain stuck in "productive mode". Without some natural wind-down time, your brain might still be in "productive mode" even when you're trying to sleep.`}
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI5CommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI5Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI5NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Think you can try reducing evening activity this week?"
+      textLabel={`By reducing these activities or moving them away from bedtime, we can make the rest of your program more effective. For 10-30 minutes before bedtime, try activities that stimulate the brain less (like reading a book, watching a movie, or journaling) instead of things like like social media, video games, or doing work. `}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI5Commit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Great!"
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI5NoCommit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Ok, no worries."
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+/*
+
+SHI7 - uncomfortable bed
+
+*/
+
+export const SHI7Begin: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        // HYGState.SHI6 = value as number;
+        switch (value) {
+          case 'mattress':
+            navigation.navigate('SHI7MattressCommitAsk', {
+              progressBarPercent: 0.8,
+            });
+            break;
+          case 'pillow':
+            navigation.navigate('SHI7PillowCommitAsk', {
+              progressBarPercent: 0.8,
+            });
+            break;
+          case 'blankets':
+            navigation.navigate('SHI7BlanketsCommitAsk', {
+              progressBarPercent: 0.8,
+            });
+            break;
+          default:
+            navigation.navigate('SHI7OtherCommitAsk', {
+              progressBarPercent: 0.8,
+            });
+            break;
+        }
+        navigation.navigate('SHI7MattressCommitAsk', {
+          progressBarPercent: 0.8,
+        });
+      }}
+      questionLabel="What about your bed is making you most uncomfortable?"
+      questionSubtitle={`So your bed is uncomfortable. It makes sense that having an uncomfortable bed can interfere with quality sleep. Buying new gear can be expensive, but helpful. `}
+      buttonValues={[
+        { label: 'My mattress', value: 'mattress', solidColor: false },
+        { label: 'My pillow', value: 'pillow', solidColor: false },
+        { label: 'My blankets', value: 'blankets', solidColor: false },
+        { label: 'Something else', value: 'other', solidColor: false },
+      ]}
+    />
+  );
+};
+
+export const SHI7MattressCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI7Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI7NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to getting a new mattress this week?"
+      textLabel={`A bad mattress can be stiff, arch your back, and more. New foam mattresses can be pretty cheap too.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI7PillowCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI7Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI7NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to getting a new pillow this week?"
+      textLabel={`A bad pillow can certainly cause a sore neck, among other things. New pillows can be pretty cheap on Amazon too.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI7BlanketsCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI7Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI7NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to getting a new blanket this week?"
+      textLabel={`A bad blanket (or bad quantity of blankets) can leave you too cold, too hot, or too itchy.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI7OtherCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI7Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI7NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to improving your comfort in bed this week?"
+      textLabel={`Depends on what your issues involve. Definitely consult Google or ChatGPT for ideas, but don't take what they say as medical advice.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI7Commit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Great!"
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI7NoCommit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Ok, no worries."
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+/*
+
+SHI8 - uncomfortable bedroom environment
+
+*/
+
+export const SHI8Begin: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI8Disambiguate', {
+          progressBarPercent: 0.8,
+        });
+      }}
+      titleLabel="Your bedroom environment might be a problem."
+      textLabel={`Insomnia is primarily psychological. However, a poor sleep environment can perpetuate insomnia or even make it worse. \n\nYour bedroom environment likely isn't the sole cause of your issues, but it may make it harder to get back to sleeping well.`}
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8Disambiguate: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        // HYGState.SHI6 = value as number;
+        switch (value) {
+          case 'light':
+            navigation.navigate('SHI8LightCommitAsk', {
+              progressBarPercent: 0.8,
+            });
+            break;
+          case 'noise':
+            navigation.navigate('SHI8NoiseCommitAsk', {
+              progressBarPercent: 0.8,
+            });
+            break;
+          case 'temp':
+            navigation.navigate('SHI8TempCommitAsk', {
+              progressBarPercent: 0.8,
+            });
+            break;
+          case 'partner':
+            navigation.navigate('SHI8PartnerCommitAsk', {
+              progressBarPercent: 0.8,
+            });
+            break;
+          case 'pets':
+            navigation.navigate('SHI8PetsCommitAsk', {
+              progressBarPercent: 0.8,
+            });
+            break;
+          case 'continue':
+            goToNextCateogry(navigation);
+            break;
+        }
+        navigation.navigate('SHI8LightCommitAsk', {
+          progressBarPercent: 0.8,
+        });
+      }}
+      questionLabel="Which of these has been causing you the most issues?"
+      buttonValues={[
+        {
+          label: 'Light',
+          value: 'light',
+          solidColor: false,
+          disabled: visitedBedroomEnvSections.includes('light'),
+        },
+        {
+          label: 'Noise',
+          value: 'noise',
+          solidColor: false,
+          disabled: visitedBedroomEnvSections.includes('noise'),
+        },
+        {
+          label: 'Temperature',
+          value: 'temp',
+          solidColor: false,
+          disabled: visitedBedroomEnvSections.includes('temp'),
+        },
+        {
+          label: 'Partner',
+          value: 'partner',
+          solidColor: false,
+          disabled: visitedBedroomEnvSections.includes('partner'),
+        },
+        {
+          label: 'Pets',
+          value: 'pets',
+          solidColor: false,
+          disabled: visitedBedroomEnvSections.includes('pets'),
+        },
+        {
+          label: 'Continue to next section',
+          value: 'continue',
+          solidColor: true,
+        },
+      ]}
+    />
+  );
+};
+
+export const SHI8LightBegin: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI8LightCommitAsk', {
+          progressBarPercent: 0.96,
+        });
+      }}
+      textLabel={`Light in your bedroom can make it harder to fall asleep and cause you to wake up way too early. Conversely, a darker room can help you fall asleep and stay asleep.`}
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8LightDisambiguation: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        // HYGState.SHI6 = value as number;
+        switch (value) {
+          case 'light':
+            navigation.navigate('SHI8LightCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'dark':
+            navigation.navigate('SHI8LightCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+        }
+      }}
+      questionLabel="Which of these sounds most appealing to you?"
+      questionSubtitle="You can darken your bedroom environment (by getting blackout curtains, covering LEDs, etc.) or reduce light entering your eyes via a sleep mask."
+      buttonValues={[
+        {
+          label: 'Darken bedroom via curtains',
+          value: 'curtains',
+          solidColor: false,
+        },
+        {
+          label: 'Try a sleep mask',
+          value: 'mask',
+          solidColor: false,
+        },
+      ]}
+    />
+  );
+};
+
+export const SHI8LightCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        // Mark as visited
+        visitedBedroomEnvSections.push('light');
+
+        if (res === undefined) {
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to getting a new mattress this week?"
+      textLabel={`A bad mattress can be stiff, arch your back, and more. New foam mattresses can be pretty cheap too.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8PillowCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to getting a new pillow this week?"
+      textLabel={`A bad pillow can certainly cause a sore neck, among other things. New pillows can be pretty cheap on Amazon too.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8BlanketsCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to getting a new blanket this week?"
+      textLabel={`A bad blanket (or bad quantity of blankets) can leave you too cold, too hot, or too itchy.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8OtherCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to improving your comfort in bed this week?"
+      textLabel={`Depends on what your issues involve. Definitely consult Google or ChatGPT for ideas, but don't take what they say as medical advice.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8Commit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Great!"
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8NoCommit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Ok, no worries."
+      textLabel="Let's move on to the next category."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+/* 
+
+Final meta flows
+
+*/
 
 export const HYGReview: React.FC<Props> = ({ navigation }) => {
   return (
@@ -510,7 +1485,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const HYGEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = Auth.useAuth();
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Create reminder object for next checkin

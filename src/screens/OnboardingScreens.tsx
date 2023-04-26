@@ -1148,7 +1148,7 @@ export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
   const { coach } = useUserDataStore((state) => ({
     coach: state.coach,
   }));
-  const { userData } = useUserDataStore((state) => state.userData);
+  const userData = useUserDataStore((state) => state.userData);
   const displayName = userData.userInfo.displayName;
   const senderName = `${coach.firstName} ${coach.lastName}`;
   const coachNameString = `${coach.firstName} ${coach.lastName}`;

@@ -17,7 +17,7 @@ const TreatmentPlanScreen: React.FC<{
   navigation: NavigationProp<any>;
   route: { params: { completionPercentProgress: number } };
 }> = ({ navigation, route }) => {
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
   const treatmentPlan = GLOBAL.treatmentPlan;
 
   // Calculate flex value for the vertical progress bar

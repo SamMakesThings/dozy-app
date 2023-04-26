@@ -12,6 +12,7 @@ interface Props {
     label: string;
     value: string | number | boolean;
     solidColor?: boolean;
+    disabled?: boolean;
   }>;
   onQuestionSubmit: (value?: string | number | boolean) => void;
   theme: Theme;

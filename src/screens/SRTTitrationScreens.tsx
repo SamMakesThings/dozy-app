@@ -100,7 +100,7 @@ export const SRTTitrationStart: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
 
   // Calculate recent sleep efficiency average
   const sleepEfficiencyAvg = Number(
@@ -182,7 +182,7 @@ export const SleepEfficiency: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SRTTitration: React.FC<Props> = ({ navigation }) => {
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
 
   const imgSize = imgSizePercent * useWindowDimensions().width;
 
@@ -239,7 +239,7 @@ export const SRTTitration: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepOnset: React.FC<Props> = ({ navigation }) => {
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
 
   // Calculate recent sleep onset average & fetch baseline for comparison
   const sleepOnsetAvg = Number(
@@ -317,7 +317,7 @@ export const SleepOnset: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepMaintenance: React.FC<Props> = ({ navigation }) => {
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
 
   // Calculate recent night mins awake average & fetch baseline for comparison
   const nightMinsAwakeAvg = Number(
@@ -395,7 +395,7 @@ export const SleepMaintenance: React.FC<Props> = ({ navigation }) => {
 };
 
 export const SleepDuration: React.FC<Props> = ({ navigation }) => {
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
 
   // Calculate recent night mins awake average & fetch baseline for comparison
   const sleepDurationAvg = Number(

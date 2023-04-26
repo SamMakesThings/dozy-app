@@ -29,7 +29,9 @@ export default class Notification {
     const notificationEnabledRef = useRef(false);
     const notificationReceivedListener = useRef<any>(null);
     const notificationResponseListener = useRef<any>(null);
-    const { userData } = useUserDataStore((userDataState) => userDataState);
+    const userData = useUserDataStore(
+      (userDataState) => userDataState.userData,
+    );
 
     const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
 
@@ -129,7 +131,7 @@ export default class Notification {
     if (Platform.OS === 'android') {
       Notifications.setNotificationChannelAsync('default', {
         name: 'default',
-        importance: 100,
+        importance: Notifications.AndroidImportance.DEFAULT,
       });
     }
 

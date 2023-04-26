@@ -42,9 +42,7 @@ export const TreatmentScreen: React.FC<{ navigation: Navigation }> = ({
   const [rate, setRate] = useState(0);
   const [feedback, setFeedback] = useState('');
   const sleepLogs = useSleepLogsStore((logsState) => logsState.sleepLogs);
-  const { userData } = useUserDataStore((userDataState) => ({
-    userData: userDataState.userData,
-  }));
+  const userData = useUserDataStore((userDataState) => userDataState.userData);
 
   const onSubmitFeedback = useCallback((): void => {
     submitFeedback(rate, feedback);

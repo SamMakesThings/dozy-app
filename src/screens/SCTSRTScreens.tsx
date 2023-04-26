@@ -615,7 +615,7 @@ export const UnderstandingAsk: React.FC<Props> = ({ navigation }) => {
           });
         }
       }}
-      textLabel="In other words, by following this program, you're trading a week or two of reduced sleep for a lifetime without insomnia. Short-term pain for long term gain."
+      textLabel={`In other words, by following this program, you're trading a week or two of reduced sleep for a lifetime without insomnia. Short-term pain for long term gain. \n\nKeep in mind that 100% adherence to these rules is impossible - don't beat yourself up if you miss a day. Just keep going and you'll get the results you need!`}
       flexibleLayout
       buttonLabel="I understand, let's start"
       bottomGreyButtonLabel="I have some questions or concerns"
@@ -910,7 +910,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
 
 export const SCTSRTEnd: React.FC<Props> = ({ navigation }) => {
   const { state, dispatch } = Auth.useAuth();
-  const { userData } = useUserDataStore((userState) => userState.userData);
+  const userData = useUserDataStore((userState) => userState.userData);
   const { setShowingFeedbackWidget } = Feedback.useFeedback();
 
   // Calculate some baseline statistics for later reference
