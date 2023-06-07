@@ -21,12 +21,42 @@ import Feedback from '../utilities/feedback.service';
 import Auth from '../utilities/auth.service';
 import { useSleepLogsStore } from '../utilities/sleepLogsStore';
 import { useUserDataStore } from '../utilities/userDataStore';
+import { hygLabels, interventionLabels } from './HYGConstants';
 
 const theme: any = dozy_theme; // Define the theme for the file globally
 // 'any' type for now since it's getting an expected something from Draftbit that's breaking.
 
 // Define an interface for HYG flow state (SHI score & next checkin info)
-const HYGState = {
+interface TreatmentPlanItem {
+  started: boolean;
+  module: string;
+}
+
+interface Intervention {
+  key: string;
+  inSentence: string;
+  questionLabel: string;
+  todoLabel: string;
+}
+
+interface HYGStateType {
+  nextCheckinTime: Date;
+  treatmentPlan: TreatmentPlanItem[];
+  SHI1: number;
+  SHI2: number;
+  SHI3: number;
+  SHI4: number;
+  SHI4a: string;
+  SHI5: number;
+  SHI6: number;
+  SHI7: number;
+  SHI8: number;
+  SHI9: number;
+  SHIScore: number;
+  interventionsChosen: Intervention[];
+}
+
+const HYGState: HYGStateType = {
   nextCheckinTime: new Date(),
   treatmentPlan: [{ started: false, module: 'deleteme' }],
   SHI1: 0,
@@ -40,27 +70,7 @@ const HYGState = {
   SHI8: 0,
   SHI9: 0,
   SHIScore: 0,
-};
-
-const hygLabels = {
-  SHI2: {
-    inSentence: 'late night exercise',
-  },
-  SHI4: {
-    inSentence: 'substance use',
-  },
-  SHI5: {
-    inSentence: 'other nighttime activities',
-  },
-  SHI7: {
-    inSentence: 'uncomfortable bed',
-  },
-  SHI8: {
-    inSentence: 'uncomfortable bedroom environment',
-  },
-  SHI9: {
-    inSentence: 'doing important work before bedtime',
-  },
+  interventionsChosen: [],
 };
 
 let hygModulesToVisit: string[] = [];
@@ -587,6 +597,7 @@ export const SHI2CommitAsk: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
         if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.lateExercise);
           navigation.navigate('SHI2Commit', {
             progressBarPercent: 0.96,
           });
@@ -757,6 +768,7 @@ export const SHI4CommitAsk: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
         if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.substanceUse);
           navigation.navigate('SHI4Commit', {
             progressBarPercent: 0.96,
           });
@@ -815,7 +827,7 @@ export const SHI4NoCommit: React.FC<Props> = ({ navigation }) => {
 
 /*
 
-SHI5 - late night exercise flow
+SHI5 - other nighttime activities flow
 
 */
 
@@ -846,6 +858,9 @@ export const SHI5CommitAsk: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
         if (res === undefined) {
+          HYGState.interventionsChosen.push(
+            interventionLabels.otherNighttimeActivities,
+          );
           navigation.navigate('SHI5Commit', {
             progressBarPercent: 0.96,
           });
@@ -937,9 +952,6 @@ export const SHI7Begin: React.FC<Props> = ({ navigation }) => {
             });
             break;
         }
-        navigation.navigate('SHI7MattressCommitAsk', {
-          progressBarPercent: 0.8,
-        });
       }}
       questionLabel="What about your bed is making you most uncomfortable?"
       questionSubtitle={`So your bed is uncomfortable. It makes sense that having an uncomfortable bed can interfere with quality sleep. Buying new gear can be expensive, but helpful. `}
@@ -960,6 +972,7 @@ export const SHI7MattressCommitAsk: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
         if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.newMattress);
           navigation.navigate('SHI7Commit', {
             progressBarPercent: 0.96,
           });
@@ -987,6 +1000,7 @@ export const SHI7PillowCommitAsk: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
         if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.newPillow);
           navigation.navigate('SHI7Commit', {
             progressBarPercent: 0.96,
           });
@@ -1014,6 +1028,7 @@ export const SHI7BlanketsCommitAsk: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
         if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.newBlanket);
           navigation.navigate('SHI7Commit', {
             progressBarPercent: 0.96,
           });
@@ -1041,6 +1056,7 @@ export const SHI7OtherCommitAsk: React.FC<Props> = ({ navigation }) => {
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
         if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.bedOther);
           navigation.navigate('SHI7Commit', {
             progressBarPercent: 0.96,
           });
@@ -1132,27 +1148,22 @@ export const SHI8Disambiguate: React.FC<Props> = ({ navigation }) => {
         // HYGState.SHI6 = value as number;
         switch (value) {
           case 'light':
-            navigation.navigate('SHI8LightCommitAsk', {
+            navigation.navigate('SHI8LightBegin', {
               progressBarPercent: 0.8,
             });
             break;
           case 'noise':
-            navigation.navigate('SHI8NoiseCommitAsk', {
+            navigation.navigate('SHI8NoiseDisambiguation', {
               progressBarPercent: 0.8,
             });
             break;
           case 'temp':
-            navigation.navigate('SHI8TempCommitAsk', {
+            navigation.navigate('SHI8TempDisambiguation', {
               progressBarPercent: 0.8,
             });
             break;
           case 'partner':
-            navigation.navigate('SHI8PartnerCommitAsk', {
-              progressBarPercent: 0.8,
-            });
-            break;
-          case 'pets':
-            navigation.navigate('SHI8PetsCommitAsk', {
+            navigation.navigate('SHI8PartnerDisambiguation', {
               progressBarPercent: 0.8,
             });
             break;
@@ -1160,9 +1171,6 @@ export const SHI8Disambiguate: React.FC<Props> = ({ navigation }) => {
             goToNextCateogry(navigation);
             break;
         }
-        navigation.navigate('SHI8LightCommitAsk', {
-          progressBarPercent: 0.8,
-        });
       }}
       questionLabel="Which of these has been causing you the most issues?"
       buttonValues={[
@@ -1191,12 +1199,6 @@ export const SHI8Disambiguate: React.FC<Props> = ({ navigation }) => {
           disabled: visitedBedroomEnvSections.includes('partner'),
         },
         {
-          label: 'Pets',
-          value: 'pets',
-          solidColor: false,
-          disabled: visitedBedroomEnvSections.includes('pets'),
-        },
-        {
           label: 'Continue to next section',
           value: 'continue',
           solidColor: true,
@@ -1212,7 +1214,7 @@ export const SHI8LightBegin: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={() => {
-        navigation.navigate('SHI8LightCommitAsk', {
+        navigation.navigate('SHI8LightDisambiguation', {
           progressBarPercent: 0.96,
         });
       }}
@@ -1231,15 +1233,14 @@ export const SHI8LightDisambiguation: React.FC<Props> = ({ navigation }) => {
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(value?: string | number | boolean) => {
-        // HYGState.SHI6 = value as number;
         switch (value) {
-          case 'light':
-            navigation.navigate('SHI8LightCommitAsk', {
+          case 'curtains':
+            navigation.navigate('SHI8LightCurtainsCommitAsk', {
               progressBarPercent: 0.96,
             });
             break;
-          case 'dark':
-            navigation.navigate('SHI8LightCommitAsk', {
+          case 'mask':
+            navigation.navigate('SHI8LightMaskCommitAsk', {
               progressBarPercent: 0.96,
             });
             break;
@@ -1249,7 +1250,7 @@ export const SHI8LightDisambiguation: React.FC<Props> = ({ navigation }) => {
       questionSubtitle="You can darken your bedroom environment (by getting blackout curtains, covering LEDs, etc.) or reduce light entering your eyes via a sleep mask."
       buttonValues={[
         {
-          label: 'Darken bedroom via curtains',
+          label: 'Darken bedroom via curtains & covering lights',
           value: 'curtains',
           solidColor: false,
         },
@@ -1263,16 +1264,14 @@ export const SHI8LightDisambiguation: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const SHI8LightCommitAsk: React.FC<Props> = ({ navigation }) => {
+export const SHI8LightCurtainsCommitAsk: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
-        // Mark as visited
-        visitedBedroomEnvSections.push('light');
-
         if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.curtains);
           navigation.navigate('SHI8Commit', {
             progressBarPercent: 0.96,
           });
@@ -1282,8 +1281,8 @@ export const SHI8LightCommitAsk: React.FC<Props> = ({ navigation }) => {
           });
         }
       }}
-      titleLabel="Can you commit to getting a new mattress this week?"
-      textLabel={`A bad mattress can be stiff, arch your back, and more. New foam mattresses can be pretty cheap too.`}
+      titleLabel="Can you commit to buying blackout curtains, covering LEDs with tape, or taking other steps to block light in your bedroom this week?"
+      textLabel={`Changing the bedroom light conditions themselves will make the bedroom naturally easier to sleep in. This can mean installing blackout curtains, covering LEDs from electronics, and more.`}
       buttonLabel="Yes"
       bottomGreyButtonLabel="No"
       flexibleLayout
@@ -1293,13 +1292,14 @@ export const SHI8LightCommitAsk: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const SHI8PillowCommitAsk: React.FC<Props> = ({ navigation }) => {
+export const SHI8LightMaskCommitAsk: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
         if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.sleepMask);
           navigation.navigate('SHI8Commit', {
             progressBarPercent: 0.96,
           });
@@ -1309,8 +1309,8 @@ export const SHI8PillowCommitAsk: React.FC<Props> = ({ navigation }) => {
           });
         }
       }}
-      titleLabel="Can you commit to getting a new pillow this week?"
-      textLabel={`A bad pillow can certainly cause a sore neck, among other things. New pillows can be pretty cheap on Amazon too.`}
+      titleLabel="Can you commit to buying and using a sleep mask this week?"
+      textLabel={`A lot of people find success in using a sleep mask, like the $12 Nidra mask from Amazon. It's a way to control your light issues without messing with your bedroom environment.`}
       buttonLabel="Yes"
       bottomGreyButtonLabel="No"
       flexibleLayout
@@ -1320,13 +1320,71 @@ export const SHI8PillowCommitAsk: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const SHI8BlanketsCommitAsk: React.FC<Props> = ({ navigation }) => {
+export const SHI8NoiseDisambiguation: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        switch (value) {
+          case 'fan':
+            navigation.navigate('SHI8NoiseFanCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'family':
+            navigation.navigate('SHI8NoiseFamilyCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'pets':
+            navigation.navigate('SHI8NoisePetsCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'earplugs':
+            navigation.navigate('SHI8NoiseEarplugsCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+        }
+      }}
+      questionLabel="Which of these sounds most helpful to you?"
+      questionSubtitle="We know noise is sometimes unavoidable, but there are steps we can take to reduce its impact on your sleep."
+      buttonValues={[
+        {
+          label: 'Use a fan, white noise machine, or app',
+          value: 'fan',
+          solidColor: false,
+        },
+        {
+          label: `Ask partner/kids to be quieter when you're sleeping`,
+          value: 'family',
+          solidColor: false,
+        },
+        {
+          label: `Have pets sleep in another room`,
+          value: 'pets',
+          solidColor: false,
+        },
+        {
+          label: `Buy comfy earplugs`,
+          value: 'earplugs',
+          solidColor: false,
+        },
+      ]}
+    />
+  );
+};
+
+export const SHI8NoiseFanCommitAsk: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
         if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.fanNoise);
           navigation.navigate('SHI8Commit', {
             progressBarPercent: 0.96,
           });
@@ -1336,8 +1394,8 @@ export const SHI8BlanketsCommitAsk: React.FC<Props> = ({ navigation }) => {
           });
         }
       }}
-      titleLabel="Can you commit to getting a new blanket this week?"
-      textLabel={`A bad blanket (or bad quantity of blankets) can leave you too cold, too hot, or too itchy.`}
+      titleLabel="Think you can try using a white noise machine of some type this week?"
+      textLabel={`A box fan or white noise machine can help mask many outside sounds - it's helpful for a lot of people. You can use a box fan, a dedicated white noise machine, or just an app on your phone.`}
       buttonLabel="Yes"
       bottomGreyButtonLabel="No"
       flexibleLayout
@@ -1347,13 +1405,14 @@ export const SHI8BlanketsCommitAsk: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const SHI8OtherCommitAsk: React.FC<Props> = ({ navigation }) => {
+export const SHI8NoiseFamilyCommitAsk: React.FC<Props> = ({ navigation }) => {
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
       onQuestionSubmit={(res?: string) => {
         if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.askFamilyQuiet);
           navigation.navigate('SHI8Commit', {
             progressBarPercent: 0.96,
           });
@@ -1363,8 +1422,551 @@ export const SHI8OtherCommitAsk: React.FC<Props> = ({ navigation }) => {
           });
         }
       }}
-      titleLabel="Can you commit to improving your comfort in bed this week?"
-      textLabel={`Depends on what your issues involve. Definitely consult Google or ChatGPT for ideas, but don't take what they say as medical advice.`}
+      titleLabel="Is it feasible to ask them to be quieter at times when you're trying to sleep?"
+      textLabel={`Oof. We know that sometimes this is unavoidable (especially if you have young kids). However, some things are in your and their control: For instance, how much noise they make when going to/getting out of bed when you're sleeping.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8NoisePetsCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.movePets);
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Are you willing to have your pets sleep in a different room for a while, to help you fix your insomnia?"
+      textLabel={`Aww. We're sure they're cute, but your sleep also needs to be protected. Pets have very different sleep schedules from us humans, and they don't let us forget it.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8NoiseEarplugsCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.getEarplugs);
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Think you could get some comfortable earplugs and try them out this week?"
+      textLabel={`We know they can be uncomfortable, but a good pair can be both cozy and effective.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8TempDisambiguation: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        switch (value) {
+          case 'hot':
+            navigation.navigate('SHI8TempHotDisambiguation', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'cold':
+            navigation.navigate('SHI8TempColdDisambiguation', {
+              progressBarPercent: 0.96,
+            });
+            break;
+        }
+      }}
+      questionLabel="Regarding temperature - are you getting too hot, or too cold?"
+      questionSubtitle="If both, pick the one that happens more often."
+      buttonValues={[
+        {
+          label: 'Too hot',
+          value: 'hot',
+          solidColor: false,
+        },
+        {
+          label: `Too cold`,
+          value: 'cold',
+          solidColor: false,
+        },
+      ]}
+    />
+  );
+};
+
+export const SHI8TempHotDisambiguation: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        switch (value) {
+          case 'thermostat':
+            navigation.navigate('SHI8TempHotThermostatCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'fan':
+            navigation.navigate('SHI8TempHotFanCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'cooler':
+            navigation.navigate('SHI8TempHotCoolerCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+        }
+      }}
+      questionLabel="To cool off at night, which seems most promising to you?"
+      questionSubtitle="Did you know the recommended temperature for sleep is between 60 and 67 degrees F? When lying in bed trying to sleep, your body temperature decreases to initiate sleep. Cooler temperatures make it easier for your body to do this. In contrast, warmer temperatures can lead to restlessness and reduce the quality of sleep."
+      buttonValues={[
+        {
+          label: 'Turn down thermostat',
+          value: 'thermostat',
+          solidColor: false,
+        },
+        {
+          label: `Use a fan`,
+          value: 'fan',
+          solidColor: false,
+        },
+        {
+          label: `Buy mattress cooling pad`,
+          value: 'cooler',
+          solidColor: false,
+        },
+      ]}
+    />
+  );
+};
+
+export const SHI8TempColdDisambiguation: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        switch (value) {
+          case 'blankets':
+            navigation.navigate('SHI8TempColdBlanketsCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'thermostat':
+            navigation.navigate('SHI8TempColdThermostatCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'pad':
+            navigation.navigate('SHI8TempColdPadCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+        }
+      }}
+      questionLabel="To warm up at night, which seems most promising to you?"
+      questionSubtitle="Did you know the recommended temperature for sleep is between 60 and 67 degrees F? When lying in bed trying to sleep, your body temperature decreases to initiate sleep. Cooler temperatures sometimes make it easier for your body to do this. However, if you're too cold, your body will have a harder time controlling temperature and sleep becomes harder."
+      buttonValues={[
+        {
+          label: 'Get more blankets',
+          value: 'blankets',
+          solidColor: false,
+        },
+        {
+          label: `Turn up thermostat`,
+          value: 'thermostat',
+          solidColor: false,
+        },
+        {
+          label: `Buy a mattress thermal control pad`,
+          value: 'pad',
+          solidColor: false,
+        },
+      ]}
+    />
+  );
+};
+
+export const SHI8TempHotThermostatCommitAsk: React.FC<Props> = ({
+  navigation,
+}) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.thermostatDown);
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Think you can try having it lower this week? Maybe low 70s?"
+      textLabel={`You don't have to turn the thermostat all the way down below 67, but lowering it a couple degress may improve your sleep quality.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8TempHotFanCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.fanTemp);
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to buying (if necessary) and using a box fan when you're trying to sleep?"
+      textLabel={`Having a fan can lower your temperature a few degrees, and it's among the cheapest options. Plus, the background noise a box fan provides makes it easier for most to fall asleep.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8TempHotCoolerCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.mattressCooler);
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to buying a mattress cooling pad and trying it out this week?"
+      textLabel={`A mattress topper with thermal control can be expensive ($400-$1000), but potentially worthwhile. Check out the BedJet, 8Sleep, and Perfectly Snug brands.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8TempColdBlanketsCommitAsk: React.FC<Props> = ({
+  navigation,
+}) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.moreBlankets);
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to using (and buying if needed) more blankets to use this week?"
+      textLabel={`This is the most cost-effective solution for most people. Blankets are cheap, and we often have extra around the house.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8TempColdThermostatCommitAsk: React.FC<Props> = ({
+  navigation,
+}) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.thermostatUp);
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can increase the thermostat slightly this week? Maybe low 70s?"
+      textLabel={`You shouldn't do this if it's already above 72.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8TempColdPadCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.mattressWarmer);
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to buying a mattress thermal control pad and trying it out this week?"
+      textLabel={`A mattress topper with thermal control can be expensive ($400-$1000), but potentially worthwhile. Check out the BedJet, 8Sleep, and Perfectly Snug brands.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8PartnerDisambiguation: React.FC<Props> = ({ navigation }) => {
+  return (
+    <MultiButtonScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(value?: string | number | boolean) => {
+        switch (value) {
+          case 'careful':
+            navigation.navigate('SHI8PartnerCarefulCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'morning':
+            navigation.navigate('SHI8PartnerMorningCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'mask':
+            navigation.navigate('SHI8PartnerMaskCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+          case 'treatment':
+            navigation.navigate('SHI8PartnerTreatmentCommitAsk', {
+              progressBarPercent: 0.96,
+            });
+            break;
+        }
+      }}
+      questionLabel="Which of these do you think is most realistic for you?"
+      questionSubtitle="So your partner is making it hard to sleep? This one can be tricky. They can wake you up when they go to bed, during the night with snoring/other issues, or when getting up in the morning."
+      buttonValues={[
+        {
+          label:
+            'Ask partner to be more careful - not snooze alarm, not turn on lights',
+          value: 'careful',
+          solidColor: false,
+        },
+        {
+          label: `Ask partner to set out morning's clothes & do routine in another room`,
+          value: 'morning',
+          solidColor: false,
+        },
+        {
+          label: `Buy a sleep mask and comfortable earplugs`,
+          value: 'mask',
+          solidColor: false,
+        },
+        {
+          label: `If snoring/sleeping movement, get partner to seek treatment`,
+          value: 'treatment',
+          solidColor: false,
+        },
+      ]}
+    />
+  );
+};
+
+export const SHI8PartnerCarefulCommitAsk: React.FC<Props> = ({
+  navigation,
+}) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(
+            interventionLabels.askPartnerCareful,
+          );
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you ask your partner to be more careful to not disturb your sleep this week?"
+      textLabel={`A little additional care on the part of your partner can help you deal with insomnia. If they'd avoid turning on the lights, being noisy, using their phone in bed, etc, your sleep can come easier.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8PartnerMorningCommitAsk: React.FC<Props> = ({
+  navigation,
+}) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(
+            interventionLabels.askPartnerMorningRoutineElsewhere,
+          );
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you ask your partner to do their morning routine outside the bedroom?"
+      textLabel={`This can involve setting out their clothes the night before, doing their morning routine in another room, or being quiet when they get up.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8PartnerMaskCommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.maskPlugs);
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Can you commit to buying & using earplugs and/or a sleep mask this week?"
+      textLabel={`This gear can help prevent your partner waking you through light or noise. Cheap and comfortable equipment like the Nidra sleep mask or Mack earplugs can go a long way, and are worth a shot if you haven't tried them.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI8PartnerTreatmentCommitAsk: React.FC<Props> = ({
+  navigation,
+}) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(
+            interventionLabels.askPartnerApneaTreatment,
+          );
+          navigation.navigate('SHI8Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI8NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="If it's snoring, do you think you can convince your partner to seek treatment for sleep apnea?"
+      textLabel={`Good sleep can be hard if your partner doesn't have control of their actions, like snoring or restless legs.`}
       buttonLabel="Yes"
       bottomGreyButtonLabel="No"
       flexibleLayout
@@ -1410,6 +2012,96 @@ export const SHI8NoCommit: React.FC<Props> = ({ navigation }) => {
   );
 };
 
+/*
+
+SHI9 - late night work flow
+
+*/
+
+export const SHI9Begin: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        navigation.navigate('SHI9CommitAsk', {
+          progressBarPercent: 0.96,
+        });
+      }}
+      titleLabel="So you work late."
+      textLabel={`This can be fine for some people, However, doing mentally or demanding things around bedtime (like work, paying bills, studying, etc) can make it harder for you to fall asleep on time. \nThose activities can get your brain stuck in "productive mode". Without some natural ramp-down time, your brain might still be in "productive mode" even when you're in bed trying to sleep.`}
+      buttonLabel="That's not ideal"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI9CommitAsk: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={(res?: string) => {
+        if (res === undefined) {
+          HYGState.interventionsChosen.push(interventionLabels.reduceLateWork);
+          navigation.navigate('SHI9Commit', {
+            progressBarPercent: 0.96,
+          });
+        } else {
+          navigation.navigate('SHI9NoCommit', {
+            progressBarPercent: 0.96,
+          });
+        }
+      }}
+      titleLabel="Think you can try reducing evening activity this week?"
+      textLabel={`By moving these activities away from bedtime, we can make the rest of your insomnia treatment more effective. \nNote: If you're struggling to stay awake late enough to reach your target bedtime, don't worry about this too much - we'd recommend logging off 10-20 minutes before your bedtime, but do what you want before that.`}
+      buttonLabel="Yes"
+      bottomGreyButtonLabel="No"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI9Commit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Great!"
+      textLabel="Let's continue to track how late-night work affects your sleep in the meantime."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
+export const SHI9NoCommit: React.FC<Props> = ({ navigation }) => {
+  return (
+    <WizardContentScreen
+      theme={theme}
+      bottomBackButton={() => navigation.goBack()}
+      onQuestionSubmit={() => {
+        goToNextCateogry(navigation);
+      }}
+      titleLabel="Ok, no worries."
+      textLabel="We'll continue tracking how late-night work affects your sleep in the meantime and will follow up with you if necessary."
+      buttonLabel="Continue"
+      flexibleLayout
+    >
+      <FemaleDoctor width={imgSize} height={imgSize} />
+    </WizardContentScreen>
+  );
+};
+
 /* 
 
 Final meta flows
@@ -1417,6 +2109,16 @@ Final meta flows
 */
 
 export const HYGReview: React.FC<Props> = ({ navigation }) => {
+  // Turn the array of objects HYGState.interventionsChosen into a string, specifically the inSentence property
+  const interventions = HYGState.interventionsChosen.map(
+    (item) => item.inSentence,
+  );
+  const lastIntervention = interventions.pop();
+  const interventionsChosenString =
+    interventions.join(', ') +
+    (interventions.length ? ', and ' : '') +
+    lastIntervention;
+
   return (
     <WizardContentScreen
       theme={theme}
@@ -1433,7 +2135,7 @@ export const HYGReview: React.FC<Props> = ({ navigation }) => {
         }
       }}
       titleLabel="So, here's the plan this week:"
-      textLabel="Message us (in the Support tab) and we'll give you 1:1 advice on improving your sleep hygiene. Stick to your target sleep schedule, and continue any other techniques you've learned. Can you recommit to following the care plan this week?"
+      textLabel={`You chose to ${interventionsChosenString}. Make sure to stick to your target sleep schedule, and continue any other techniques you've learned. Can you make that happen this week?`}
       buttonLabel="Ok, I can do it this week"
       bottomGreyButtonLabel="Wait, I have questions"
       flexibleLayout
@@ -1530,6 +2232,9 @@ export const HYGEnd: React.FC<Props> = ({ navigation }) => {
             SHI8: HYGState.SHI8,
             SHI9: HYGState.SHI9,
             SHIScore: HYGState.SHIScore,
+            interventionsChosen: HYGState.interventionsChosen.map(
+              (intervention) => intervention.key,
+            ),
           },
           reminderObject: reminderObject,
         });
