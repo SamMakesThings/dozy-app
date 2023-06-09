@@ -2,18 +2,25 @@
 import React from 'react';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import * as Icon from '@expo/vector-icons';
-// import * as Sentry from 'sentry-expo';
-// import { SENTRY_DSN } from '@env';
-import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
-import { LogBox, StatusBar, Text, UIManager, Platform } from 'react-native';
+import {
+  LogBox,
+  StatusBar,
+  Text,
+  UIManager,
+  Platform,
+  View,
+} from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
 import LoadingOverlay from './src/components/LoadingOverlay';
 import { dozy_theme } from './src/config/Themes';
 import AppNavigator from './src/navigation/AppNavigator';
-// import Updates from './src/utilities/updates.service';
 import Feedback from './src/utilities/feedback.service';
 import Auth from './src/utilities/auth.service';
 import { useUserDataStore } from './src/utilities/userDataStore';
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 // Mute "setting a timer" firebase warnings in console
 LogBox.ignoreLogs(['Setting a timer']);
@@ -51,7 +58,6 @@ export default function App(): React.ReactElement {
   // Using auth functions from react-navigation guide
   // Full dispatch code in mainAppReducer.ts
 
-  // const isCheckingUpdate: boolean = Updates.useUpdating();
   const feedbackContextValue = Feedback.useFeedbackService();
   const authContextValue = Auth.useAuthService();
   const isOnboardingComplete = useUserDataStore(
@@ -91,13 +97,14 @@ export default function App(): React.ReactElement {
 
   // Render a loading screen if loading, otherwise load the main app
   if (isLoading) {
-    return (
-      <AppLoading
-        startAsync={_loadResourcesAsync}
-        onError={_handleLoadingError}
-        onFinish={_handleFinishLoading}
-      />
-    );
+    return <View />;
+    // return (
+    //   <AppLoading
+    //     startAsync={_loadResourcesAsync}
+    //     onError={_handleLoadingError}
+    //     onFinish={_handleFinishLoading}
+    //   />
+    // );
   } else {
     return (
       <Auth.Context.Provider value={authContextValue}>
