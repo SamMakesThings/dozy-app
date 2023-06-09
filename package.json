@@ -60,7 +60,6 @@
     "date-fns": "^2.22.1",
     "date-time-format-timezone": "^1.0.21",
     "expo": "^48.0.0",
-    "expo-app-loading": "~2.0.0",
     "expo-apple-authentication": "~6.0.1",
     "expo-application": "~5.1.1",
     "expo-asset": "~8.9.1",
