@@ -2,15 +2,15 @@
 import React from 'react';
 import { Provider as ThemeProvider } from '@draftbit/ui';
 import * as Icon from '@expo/vector-icons';
-import * as Sentry from 'sentry-expo';
-import { SENTRY_DSN } from '@env';
+// import * as Sentry from 'sentry-expo';
+// import { SENTRY_DSN } from '@env';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { LogBox, StatusBar, Text, UIManager, Platform } from 'react-native';
 import LoadingOverlay from './src/components/LoadingOverlay';
 import { dozy_theme } from './src/config/Themes';
 import AppNavigator from './src/navigation/AppNavigator';
-import Updates from './src/utilities/updates.service';
+// import Updates from './src/utilities/updates.service';
 import Feedback from './src/utilities/feedback.service';
 import Auth from './src/utilities/auth.service';
 import { useUserDataStore } from './src/utilities/userDataStore';
@@ -25,11 +25,11 @@ console.warn = (message: string): void => {
 };
 
 // Sentry Initialization
-Sentry.init({
-  dsn: SENTRY_DSN,
-  enableInExpoDevelopment: true,
-  debug: __DEV__ ? true : false,
-});
+// Sentry.init({
+//   dsn: SENTRY_DSN,
+//   enableInExpoDevelopment: true,
+//   debug: __DEV__ ? true : false,
+// });
 
 // Disable font scaling app-wide, enable on things it doesn't break
 // Hmm - this code throws TS undefined errors, but works. Not sure why.
@@ -51,7 +51,7 @@ export default function App(): React.ReactElement {
   // Using auth functions from react-navigation guide
   // Full dispatch code in mainAppReducer.ts
 
-  const isCheckingUpdate: boolean = Updates.useUpdating();
+  // const isCheckingUpdate: boolean = Updates.useUpdating();
   const feedbackContextValue = Feedback.useFeedbackService();
   const authContextValue = Auth.useAuthService();
   const isOnboardingComplete = useUserDataStore(
@@ -108,11 +108,7 @@ export default function App(): React.ReactElement {
               backgroundColor={dozy_theme.colors.background}
             />
             <AppNavigator />
-            {(isCheckingUpdate || isCheckingOnboarding) && (
-              <LoadingOverlay
-                title={isCheckingUpdate ? 'Downloading updates...' : ''}
-              />
-            )}
+            {isCheckingOnboarding && <LoadingOverlay title={''} />}
           </ThemeProvider>
         </Feedback.Context.Provider>
       </Auth.Context.Provider>

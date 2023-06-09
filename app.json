@@ -14,18 +14,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#232B3F"
     },
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "dozy",
-            "project": "dozy-mobile",
-            "authToken": "82be5876abc44092911beeb02882b1e6856354397950480ebfcd36034ac539f9"
-          }
-        }
-      ]
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -94,7 +82,6 @@
           "color": "#00818A"
         }
       ],
-      "sentry-expo",
       "expo-build-properties"
     ]
   }
