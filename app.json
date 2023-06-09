@@ -80,6 +80,9 @@
         "storageBucket": "slumber-app.appspot.com",
         "messagingSenderId": "713165282203",
         "appId": "1:713165282203:web:634561b97436c2905bdf3e"
+      },
+      "eas": {
+        "projectId": "c33da84f-e718-4a89-bbe0-83a682478464"
       }
     },
     "plugins": [
