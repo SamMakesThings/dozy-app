@@ -124,7 +124,7 @@ export const SupportChatScreen: React.FC<{ navigation: Navigation }> = ({
                   ...styles.Text_CoachName,
                 }}
               >
-                {coach}
+                {coachNameString}
               </Text>
               <Text
                 style={{ ...theme.typography.body2, ...styles.Text_CoachTitle }}
