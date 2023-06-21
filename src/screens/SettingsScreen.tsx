@@ -26,13 +26,22 @@ import { encodeLocalTime, decodeServerTime } from '../utilities/time';
 import Auth from '../utilities/auth.service';
 import Notification from '../utilities/notification.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
+import { useUserDataStore } from '../../src/utilities/userDataStore';
+
+interface NotifObject {
+  logReminderTime: Date;
+  logNotifsEnabled: boolean;
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function SettingsScreen() {
   // Pass along the signOut function from the context provider
   const { state, signOut } = Auth.useAuth();
-  const logReminderIdRef = useRef();
+  const logReminderIdRef = useRef<string>();
   const theme = dozy_theme;
+
+  const userData = useUserDataStore((state) => state.userData);
+  const displayName = userData.userInfo.displayName;
 
   // Add function to update notification in Firebase based on local state
   const updateFbLogNotification = useCallback(
@@ -52,7 +61,10 @@ export function SettingsScreen() {
   // Set up a reducer to manage settings state & keep Firebase updated
   // TODO: Have enabling notifs recheck permissions / Expo token
   const [settings, dispatch] = React.useReducer(
-    (prevState, action) => {
+    (
+      prevState: NotifObject,
+      action: { type: string; time?: Date; enabledStatus?: boolean },
+    ): NotifObject => {
       let encodedTimeData;
 
       switch (action.type) {
@@ -62,10 +74,10 @@ export function SettingsScreen() {
           });
           return {
             ...prevState,
-            logNotifsEnabled: action.enabledStatus,
+            logNotifsEnabled: action.enabledStatus || true,
           };
         case 'SET_LOG_REMINDER_TIME':
-          encodedTimeData = encodeLocalTime(action.time);
+          encodedTimeData = encodeLocalTime(action.time || new Date());
           updateFbLogNotification({
             time: encodedTimeData.value,
             version: encodedTimeData.version,
@@ -73,8 +85,10 @@ export function SettingsScreen() {
           });
           return {
             ...prevState,
-            logReminderTime: action.time,
+            logReminderTime: action.time || new Date(),
           };
+        default:
+          return prevState;
       }
     },
     {
@@ -87,7 +101,7 @@ export function SettingsScreen() {
     if (!(await Notification.isNotificationEnabled())) {
       const expoPushToken =
         await Notification.registerForPushNotificationsAsync(false, true);
-      if (expoPushToken) {
+      if (expoPushToken && state.userId) {
         Notification.updateExpoPushToken(expoPushToken, state.userId);
       }
     }
@@ -118,18 +132,20 @@ export function SettingsScreen() {
         latestNotificationDoc.ref.onSnapshot((notif) => {
           if (notif) {
             const notifData = notif.data();
-            dispatch({
-              type: 'SET_LOG_REMINDER_TIME',
-              time: decodeServerTime({
-                version: notifData.version,
-                value: notifData.time.toDate(),
-                timezone: notifData.timezone,
-              }),
-            });
-            dispatch({
-              type: 'TOGGLE_LOG_NOTIFS',
-              enabledStatus: notifData.enabled,
-            });
+            if (notifData) {
+              dispatch({
+                type: 'SET_LOG_REMINDER_TIME',
+                time: decodeServerTime({
+                  version: notifData.version,
+                  value: notifData.time.toDate(),
+                  timezone: notifData.timezone,
+                }),
+              });
+              dispatch({
+                type: 'TOGGLE_LOG_NOTIFS',
+                enabledStatus: notifData.enabled,
+              });
+            }
           }
         });
         // Delete notification docs except the latest one
@@ -160,8 +176,7 @@ export function SettingsScreen() {
         onPress={() => {
           if (!state.profileData.name) {
             let newProfileData = state.profileData;
-            newProfileData.name =
-              state.userData.userInfo?.displayName || 'Temp Name';
+            newProfileData.name = displayName || 'Temp Name';
             SecureStore.setItemAsync(
               'profileData',
               JSON.stringify(newProfileData),
@@ -176,7 +191,6 @@ export function SettingsScreen() {
           useThemeGutterPadding={true}
         >
           <Icon
-            style={styles.Icon_ny}
             name="Ionicons/ios-person"
             size={200}
             color={theme.colors.primary}
@@ -220,7 +234,6 @@ export function SettingsScreen() {
             Sleep log & check-in reminders
           </Text>
           <Switch
-            style={styles.Switch_n9}
             color={theme.colors.primary}
             disabled={false}
             value={settings.logNotifsEnabled}
@@ -303,7 +316,7 @@ const styles = StyleSheet.create({
       Platform.select({
         ios: dozy_theme.spacing.small,
         android: dozy_theme.spacing.medium,
-      }),
+      })!,
     ),
   },
   datePicker: {
