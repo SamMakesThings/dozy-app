@@ -19,7 +19,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
 import { scale } from 'react-native-size-matters';
-import ExpoConstants from 'expo-constants';
+import * as Application from 'expo-application';
 import { take } from 'lodash';
 import { dozy_theme } from '../config/Themes';
 import Analytics from '../utilities/analytics.service';
@@ -45,7 +45,7 @@ export function SettingsScreen() {
   const theme = dozy_theme;
 
   const userData = useUserDataStore((userDataState) => userDataState.userData);
-  const displayName = userData.userInfo.displayName;
+  const displayName = userData.userInfo?.displayName;
 
   // Add function to update notification in Firebase based on local state
   const updateFbLogNotification = useCallback(
@@ -295,7 +295,7 @@ export function SettingsScreen() {
               ]}
               testID="appVersion"
             >
-              {`@dozyapp ${ExpoConstants.nativeAppVersion}`}
+              {`@dozyapp ${Application.nativeApplicationVersion}`}
             </Text>
           </Container>
         </TouchableOpacity>
