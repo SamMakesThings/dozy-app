@@ -44,7 +44,7 @@ export function SettingsScreen() {
   const logReminderIdRef = useRef<string>();
   const theme = dozy_theme;
 
-  const userData = useUserDataStore((state) => state.userData);
+  const userData = useUserDataStore((userDataState) => userDataState.userData);
   const displayName = userData.userInfo.displayName;
 
   // Add function to update notification in Firebase based on local state
@@ -254,7 +254,7 @@ export function SettingsScreen() {
         <TouchableOpacity
           onPress={() => {
             if (!state.profileData.name) {
-              let newProfileData = state.profileData;
+              const newProfileData = state.profileData;
               newProfileData.name = displayName || 'Temp Name';
               SecureStore.setItemAsync(
                 'profileData',
