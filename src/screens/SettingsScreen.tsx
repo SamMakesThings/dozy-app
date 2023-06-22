@@ -57,15 +57,10 @@ export function SettingsScreen() {
           .collection('notifications')
           .doc(logReminderIdRef.current)
           .update(update)
-          .then(() => {
-            console.log('notif write worked?');
-          })
           .catch((err) => {
-            console.log('fucking error in notif write');
+            console.log('error in notif write');
             console.log(err);
           });
-
-        console.log('Hey look the reminder firebase write ran');
       }
     },
     [state.userId],
@@ -75,7 +70,6 @@ export function SettingsScreen() {
   const updateTargetSleepSchedule = useCallback(
     async (update) => {
       if (state.userId) {
-        console.log('uid: ', state.userId);
         try {
           await firestore().collection('users').doc(state.userId).set(
             {
@@ -84,7 +78,6 @@ export function SettingsScreen() {
             },
             { merge: true },
           );
-          console.log('Write happened, in theory');
         } catch (err) {
           console.log(err);
         }
@@ -127,7 +120,6 @@ export function SettingsScreen() {
         case 'SET_TARGET_SLEEP_SCHEDULE':
           const targetWakeTime = action.time || new Date();
           const targetTimeInBed = userData?.currentTreatments?.targetTimeInBed;
-          console.log(action.time);
           const targetBedTime =
             targetWakeTime && targetTimeInBed
               ? new Date(targetWakeTime.getTime() - targetTimeInBed * 60000)
@@ -208,31 +200,13 @@ export function SettingsScreen() {
               });
             }
           }
-          function setNewUserDataInState(newUserData: Record<string, any>) {
-            console.log('fetching new settings for target sleep schedule');
-            const currentTreatments = newUserData.currentTreatments;
-            console.log('new state for wake time:');
-            console.log(currentTreatments.targetWakeTime);
-            if (
-              currentTreatments &&
-              currentTreatments.targetBedTime &&
-              currentTreatments.targetWakeTime &&
-              currentTreatments.targetTimeInBed
-            ) {
-              const targetWakeTime =
-                currentTreatments.targetWakeTime instanceof Date
-                  ? currentTreatments.targetWakeTime
-                  : new Date(currentTreatments.targetWakeTime.seconds * 1000);
-              dispatch({
-                type: 'SET_TARGET_SLEEP_SCHEDULE',
-                time: targetWakeTime,
-              });
-            }
-          }
-          setNewUserDataInState(userData);
-          useUserDataStore.subscribe((newUserData) => {
-            setNewUserDataInState(newUserData.userData);
-          });
+          // function setNewUserDataInState(newUserData: Record<string, any>) {
+
+          // }
+          // setNewUserDataInState(userData);
+          // useUserDataStore.subscribe((newUserData) => {
+          //   setNewUserDataInState(newUserData.userData);
+          // });
         });
         // Delete notification docs except the latest one
         if (dailyLogNotificationDocs.docs.length > 1) {
@@ -247,6 +221,24 @@ export function SettingsScreen() {
             logReminderId: logReminderIdRef.current,
           });
         }
+      }
+
+      // Also fetch current target sleep schedule settings
+      const currentTreatments = userData.currentTreatments;
+      if (
+        currentTreatments &&
+        currentTreatments.targetBedTime &&
+        currentTreatments.targetWakeTime &&
+        currentTreatments.targetTimeInBed
+      ) {
+        const targetWakeTime =
+          currentTreatments.targetWakeTime instanceof Date
+            ? currentTreatments.targetWakeTime
+            : new Date(currentTreatments.targetWakeTime.seconds * 1000);
+        dispatch({
+          type: 'SET_TARGET_SLEEP_SCHEDULE',
+          time: targetWakeTime,
+        });
       }
     };
     getSettings();
@@ -403,7 +395,7 @@ export function SettingsScreen() {
               date={settings.targetWakeTime}
               onDateChange={(result) => {
                 dispatch({ type: 'SET_TARGET_SLEEP_SCHEDULE', time: result });
-                updateTargetSleepSchedule({ targetWakeTime: new Date() });
+                // updateTargetSleepSchedule({ targetWakeTime: new Date() });
                 Analytics.logEvent(AnalyticsEvents.editTargetSleepSchedule);
               }}
             />
