@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ExpoConstants from 'expo-constants';
+import * as Application from 'expo-application';
 import { findByTestID } from '../../utilities/tests';
 import { SettingsScreen } from '../SettingsScreen';
 
@@ -21,7 +21,7 @@ describe('SettingsScreen', () => {
   it('should show the app version correctly', () => {
     const component = shallow(<SettingsScreen />);
     expect(findByTestID(component, 'appVersion').props().children).toBe(
-      `@dozyapp ${ExpoConstants.nativeAppVersion}`,
+      `@dozyapp ${Application.nativeApplicationVersion}`,
     );
   });
 });

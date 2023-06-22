@@ -17,6 +17,7 @@ export default {
   switchSleepLogReminders: 'switch sleep log reminders', // Turns on/off the Sleep log reminders switch on the Settings screen
   logOut: 'log out', // Logs out on the Settings screen
   editReminderTime: 'edit reminder time', // Edits the Reminder time on the Settings screen
+  editTargetSleepSchedule: 'edit target sleep schedule',
   logIn: 'log in', // Logs in to the app
   onboardingWelcome: 'onboarding welcome', // Visits the welcome page in the onboarding
   onboardingOverview: 'onboarding overview', // Visits the overview page in the onboarding
