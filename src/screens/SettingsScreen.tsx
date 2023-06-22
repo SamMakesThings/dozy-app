@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 import {
   withTheme,
@@ -28,9 +29,12 @@ import Notification from '../utilities/notification.service';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
 import { useUserDataStore } from '../../src/utilities/userDataStore';
 
-interface NotifObject {
+interface SettingsObject {
   logReminderTime: Date;
   logNotifsEnabled: boolean;
+  targetBedTime: Date;
+  targetWakeTime: Date;
+  targetTimeInBed: number;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -52,7 +56,40 @@ export function SettingsScreen() {
           .doc(state.userId)
           .collection('notifications')
           .doc(logReminderIdRef.current)
-          .update(update);
+          .update(update)
+          .then(() => {
+            console.log('notif write worked?');
+          })
+          .catch((err) => {
+            console.log('fucking error in notif write');
+            console.log(err);
+          });
+
+        console.log('Hey look the reminder firebase write ran');
+      }
+    },
+    [state.userId],
+  );
+
+  // Update target sleep schedule values in currentTreatments in user object
+  const updateTargetSleepSchedule = useCallback(
+    async (update) => {
+      if (state.userId) {
+        console.log('uid: ', state.userId);
+        try {
+          await firestore().collection('users').doc(state.userId).set(
+            {
+              // testing: 'wassup',
+              currentTreatments: update,
+            },
+            { merge: true },
+          );
+          console.log('Write happened, in theory');
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        console.log("something isn't defined");
       }
     },
     [state.userId],
@@ -62,9 +99,9 @@ export function SettingsScreen() {
   // TODO: Have enabling notifs recheck permissions / Expo token
   const [settings, dispatch] = React.useReducer(
     (
-      prevState: NotifObject,
+      prevState: SettingsObject,
       action: { type: string; time?: Date; enabledStatus?: boolean },
-    ): NotifObject => {
+    ): SettingsObject => {
       let encodedTimeData;
 
       switch (action.type) {
@@ -87,6 +124,27 @@ export function SettingsScreen() {
             ...prevState,
             logReminderTime: action.time || new Date(),
           };
+        case 'SET_TARGET_SLEEP_SCHEDULE':
+          const targetWakeTime = action.time || new Date();
+          const targetTimeInBed = userData?.currentTreatments?.targetTimeInBed;
+          console.log(action.time);
+          const targetBedTime =
+            targetWakeTime && targetTimeInBed
+              ? new Date(targetWakeTime.getTime() - targetTimeInBed * 60000)
+              : new Date();
+
+          updateTargetSleepSchedule({
+            targetBedTime: targetBedTime,
+            targetWakeTime: targetWakeTime,
+            targetTimeInBed: targetTimeInBed,
+          });
+
+          return {
+            ...prevState,
+            targetBedTime: targetBedTime,
+            targetWakeTime: targetWakeTime,
+            targetTimeInBed: targetTimeInBed,
+          };
         default:
           return prevState;
       }
@@ -94,6 +152,9 @@ export function SettingsScreen() {
     {
       logReminderTime: new Date(),
       logNotifsEnabled: false,
+      targetBedTime: new Date(),
+      targetWakeTime: new Date(),
+      targetTimeInBed: 480,
     },
   );
 
@@ -147,6 +208,31 @@ export function SettingsScreen() {
               });
             }
           }
+          function setNewUserDataInState(newUserData: Record<string, any>) {
+            console.log('fetching new settings for target sleep schedule');
+            const currentTreatments = newUserData.currentTreatments;
+            console.log('new state for wake time:');
+            console.log(currentTreatments.targetWakeTime);
+            if (
+              currentTreatments &&
+              currentTreatments.targetBedTime &&
+              currentTreatments.targetWakeTime &&
+              currentTreatments.targetTimeInBed
+            ) {
+              const targetWakeTime =
+                currentTreatments.targetWakeTime instanceof Date
+                  ? currentTreatments.targetWakeTime
+                  : new Date(currentTreatments.targetWakeTime.seconds * 1000);
+              dispatch({
+                type: 'SET_TARGET_SLEEP_SCHEDULE',
+                time: targetWakeTime,
+              });
+            }
+          }
+          setNewUserDataInState(userData);
+          useUserDataStore.subscribe((newUserData) => {
+            setNewUserDataInState(newUserData.userData);
+          });
         });
         // Delete notification docs except the latest one
         if (dailyLogNotificationDocs.docs.length > 1) {
@@ -172,129 +258,195 @@ export function SettingsScreen() {
       scrollable={false}
       style={styles.Root_nd}
     >
-      <TouchableOpacity
-        onPress={() => {
-          if (!state.profileData.name) {
-            let newProfileData = state.profileData;
-            newProfileData.name = displayName || 'Temp Name';
-            SecureStore.setItemAsync(
-              'profileData',
-              JSON.stringify(newProfileData),
-            );
-          }
-        }}
-        disabled={state.profileData.name || Platform.OS === 'android'}
-      >
-        <Container
-          style={styles.Container_nz}
-          elevation={0}
-          useThemeGutterPadding={true}
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <TouchableOpacity
+          onPress={() => {
+            if (!state.profileData.name) {
+              let newProfileData = state.profileData;
+              newProfileData.name = displayName || 'Temp Name';
+              SecureStore.setItemAsync(
+                'profileData',
+                JSON.stringify(newProfileData),
+              );
+            }
+          }}
+          disabled={state.profileData.name || Platform.OS === 'android'}
         >
-          <Icon
-            name="Ionicons/ios-person"
-            size={200}
-            color={theme.colors.primary}
-          />
-          <Text
-            style={[
-              styles.Text_n1,
-              theme.typography.headline3,
-              {
-                color: theme.colors.strong,
-              },
-            ]}
+          <Container
+            style={styles.Container_nz}
+            elevation={0}
+            useThemeGutterPadding={true}
           >
-            {state.profileData.name || 'Tap here to fix chat'}
-          </Text>
-          <Text
-            style={[
-              styles.Text_nc,
-              theme.typography.subtitle2,
-              {
-                color: theme.colors.light,
-              },
-            ]}
-            testID="appVersion"
+            <Icon
+              name="Ionicons/ios-person"
+              size={200}
+              color={theme.colors.primary}
+            />
+            <Text
+              style={[
+                styles.Text_n1,
+                theme.typography.headline3,
+                {
+                  color: theme.colors.strong,
+                },
+              ]}
+            >
+              {state.profileData.name || 'Tap here to fix chat'}
+            </Text>
+            <Text
+              style={[
+                styles.Text_nc,
+                theme.typography.subtitle2,
+                {
+                  color: theme.colors.light,
+                },
+              ]}
+              testID="appVersion"
+            >
+              {`@dozyapp ${ExpoConstants.nativeAppVersion}`}
+            </Text>
+          </Container>
+        </TouchableOpacity>
+        <Container
+          style={styles.optionsWrapper}
+          elevation={0}
+          useThemeGutterPadding={true}
+        >
+          <Container
+            style={[styles.optionsItem, styles.rowAlign]}
+            elevation={0}
+            useThemeGutterPadding={true}
           >
-            {`@dozyapp ${ExpoConstants.nativeAppVersion}`}
-          </Text>
-        </Container>
-      </TouchableOpacity>
-      <Container
-        style={styles.optionsWrapper}
-        elevation={0}
-        useThemeGutterPadding={true}
-      >
-        <Container
-          style={[styles.optionsItem, styles.rowAlign]}
-          elevation={0}
-          useThemeGutterPadding={true}
-        >
-          <Text style={styles.optionsItemText}>
-            Sleep log & check-in reminders
-          </Text>
-          <Switch
-            color={theme.colors.primary}
-            disabled={false}
-            value={settings.logNotifsEnabled}
-            onValueChange={async (value) => {
-              dispatch({
-                type: 'TOGGLE_LOG_NOTIFS',
-                enabledStatus: value,
-              });
-              Analytics.logEvent(AnalyticsEvents.switchSleepLogReminders, {
-                enabled: value,
-              });
-              if (value) {
-                maybeAskNotificationPermission();
-              }
-            }}
-          />
-        </Container>
-        <View style={styles.horizontalRule} />
-        <Container
-          style={styles.optionsItem}
-          elevation={0}
-          useThemeGutterPadding={true}
-        >
-          <Text style={styles.optionsItemText}>Sleep log reminder time</Text>
-          <DatePicker
-            style={styles.datePicker}
-            mode="time"
-            label="Time"
-            type="underline"
-            error={false}
-            disabled={false}
-            leftIconMode="inset"
-            format="h:MM TT"
-            date={settings.logReminderTime}
-            onDateChange={(result) => {
-              dispatch({ type: 'SET_LOG_REMINDER_TIME', time: result });
-              Analytics.logEvent(AnalyticsEvents.editReminderTime);
-              maybeAskNotificationPermission();
-            }}
-          />
-        </Container>
-        <View style={styles.horizontalRule} />
-        <Touchable style={styles.touchableItemWrapper} onPress={signOut}>
+            <Text style={styles.optionsItemText}>
+              Sleep log & check-in reminders
+            </Text>
+            <Switch
+              color={theme.colors.primary}
+              disabled={false}
+              value={settings.logNotifsEnabled}
+              onValueChange={async (value) => {
+                dispatch({
+                  type: 'TOGGLE_LOG_NOTIFS',
+                  enabledStatus: value,
+                });
+                Analytics.logEvent(AnalyticsEvents.switchSleepLogReminders, {
+                  enabled: value,
+                });
+                if (value) {
+                  maybeAskNotificationPermission();
+                }
+              }}
+            />
+          </Container>
+          <View style={styles.horizontalRule} />
           <Container
             style={styles.optionsItem}
             elevation={0}
             useThemeGutterPadding={true}
           >
-            <Text
-              style={[styles.optionsItemText, { color: theme.colors.error }]}
-            >
-              Sign out of Dozy
+            <Text style={styles.optionsItemText}>Sleep log reminder time</Text>
+            <DatePicker
+              style={styles.datePicker}
+              mode="time"
+              label="Time"
+              type="underline"
+              error={false}
+              disabled={false}
+              leftIconMode="inset"
+              format="h:MM TT"
+              date={settings.logReminderTime}
+              onDateChange={(result) => {
+                dispatch({ type: 'SET_LOG_REMINDER_TIME', time: result });
+                Analytics.logEvent(AnalyticsEvents.editReminderTime);
+                maybeAskNotificationPermission();
+              }}
+            />
+          </Container>
+          <View style={styles.horizontalRule} />
+          <Container
+            style={{
+              ...styles.optionsItem,
+              ...styles.optionsItemDisabledOpacity,
+            }}
+            elevation={0}
+            useThemeGutterPadding={true}
+          >
+            <Text style={styles.optionsItemText}>Target bedtime</Text>
+            <DatePicker
+              style={styles.datePicker}
+              mode="time"
+              label="Time"
+              type="underline"
+              error={false}
+              disabled={true}
+              leftIconMode="inset"
+              format="h:MM TT"
+              date={settings.targetBedTime}
+            />
+          </Container>
+          <View style={styles.horizontalRule} />
+          <Container
+            style={styles.optionsItem}
+            elevation={0}
+            useThemeGutterPadding={true}
+          >
+            <Text style={styles.optionsItemText}>Target wake time</Text>
+            <DatePicker
+              style={styles.datePicker}
+              mode="time"
+              label="Time"
+              type="underline"
+              error={false}
+              disabled={false}
+              leftIconMode="inset"
+              format="h:MM TT"
+              date={settings.targetWakeTime}
+              onDateChange={(result) => {
+                dispatch({ type: 'SET_TARGET_SLEEP_SCHEDULE', time: result });
+                updateTargetSleepSchedule({ targetWakeTime: new Date() });
+                Analytics.logEvent(AnalyticsEvents.editTargetSleepSchedule);
+              }}
+            />
+          </Container>
+          <View style={styles.horizontalRule} />
+          <Container
+            style={{
+              ...styles.optionsItem,
+              ...styles.optionsItemDisabledOpacity,
+            }}
+            elevation={0}
+            useThemeGutterPadding={true}
+          >
+            <Text style={styles.optionsItemText}>Target time in bed</Text>
+            <Text style={styles.optionsItemText}>
+              {settings.targetTimeInBed}
             </Text>
           </Container>
-        </Touchable>
-      </Container>
+          <View style={styles.horizontalRule} />
+          <Touchable style={styles.touchableItemWrapper} onPress={signOut}>
+            <Container
+              style={styles.optionsItem}
+              elevation={0}
+              useThemeGutterPadding={true}
+            >
+              <Text
+                style={[styles.optionsItemText, { color: theme.colors.error }]}
+              >
+                Sign out of Dozy
+              </Text>
+            </Container>
+          </Touchable>
+        </Container>
+      </ScrollView>
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'space-around',
+  },
   optionsItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -306,6 +458,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: dozy_theme.colors.medium,
     paddingVertical: 10,
+    marginVertical: 50,
     borderRadius: 10,
     paddingLeft: 5,
     paddingRight: 0,
@@ -350,6 +503,9 @@ const styles = StyleSheet.create({
   optionsItemText: {
     ...dozy_theme.typography.subtitle2,
     color: dozy_theme.colors.strong,
+  },
+  optionsItemDisabledOpacity: {
+    opacity: 0.5,
   },
   touchableItemWrapper: {
     width: '100%',
