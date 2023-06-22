@@ -12,195 +12,139 @@ exports[`SettingsScreen should match the snapshot 1`] = `
     }
   }
 >
-  <TouchableOpacity
-    disabled={true}
-    onPress={[Function]}
-  >
-    <withTheme(Container)
-      elevation={0}
-      style={
-        Object {
-          "alignItems": "center",
-          "marginTop": NaN,
-        }
-      }
-      useThemeGutterPadding={true}
-    >
-      <Icon
-        color="rgba(0, 129, 138, 1)"
-        name="Ionicons/ios-person"
-        size={200}
-      />
-      <Text
-        style={
-          Array [
-            Object {
-              "textAlign": "center",
-              "width": "100%",
-            },
-            Object {
-              "fontFamily": "RubikMedium",
-              "fontSize": 60,
-              "lineHeight": 75,
-            },
-            Object {
-              "color": "rgba(255, 255, 255, 1)",
-            },
-          ]
-        }
-      >
-        Tap here to fix chat
-      </Text>
-      <Text
-        style={
-          Array [
-            Object {
-              "textAlign": "center",
-              "width": "100%",
-            },
-            Object {
-              "fontFamily": "RubikRegular",
-              "fontSize": 30,
-              "lineHeight": 47.14285714285714,
-            },
-            Object {
-              "color": "rgba(153, 172, 185, 1)",
-            },
-          ]
-        }
-        testID="appVersion"
-      >
-        @dozyapp mock
-      </Text>
-    </withTheme(Container)>
-  </TouchableOpacity>
-  <withTheme(Container)
-    elevation={0}
-    style={
+  <ScrollView
+    contentContainerStyle={
       Object {
-        "alignItems": "flex-start",
-        "backgroundColor": "rgba(64, 75, 105, 1)",
-        "borderRadius": 10,
-        "paddingLeft": 5,
-        "paddingRight": 0,
-        "paddingVertical": 10,
-        "width": "100%",
+        "flexGrow": 1,
+        "justifyContent": "space-around",
       }
     }
-    useThemeGutterPadding={true}
   >
-    <withTheme(Container)
-      elevation={0}
-      style={
-        Array [
-          Object {
-            "alignItems": "flex-start",
-            "flexDirection": "row",
-            "justifyContent": "space-between",
-            "paddingVertical": 10,
-          },
-          Object {
-            "alignItems": "center",
-          },
-        ]
-      }
-      useThemeGutterPadding={true}
+    <TouchableOpacity
+      disabled={true}
+      onPress={[Function]}
     >
-      <Text
+      <withTheme(Container)
+        elevation={0}
         style={
           Object {
-            "color": "rgba(255, 255, 255, 1)",
-            "fontFamily": "RubikRegular",
-            "fontSize": 30,
-            "lineHeight": 47.14285714285714,
+            "alignItems": "center",
+            "marginTop": NaN,
           }
         }
+        useThemeGutterPadding={true}
       >
-        Sleep log & check-in reminders
-      </Text>
-      <withTheme(Switch)
-        color="rgba(0, 129, 138, 1)"
-        disabled={false}
-        onValueChange={[Function]}
-        value={false}
-      />
-    </withTheme(Container)>
-    <View
-      style={
-        Object {
-          "alignSelf": "flex-end",
-          "backgroundColor": "rgba(255, 255, 255, 0.87)",
-          "height": 0.5,
-          "marginVertical": 10,
-          "width": "95%",
-        }
-      }
-    />
+        <Icon
+          color="rgba(0, 129, 138, 1)"
+          name="Ionicons/ios-person"
+          size={200}
+        />
+        <Text
+          style={
+            Array [
+              Object {
+                "textAlign": "center",
+                "width": "100%",
+              },
+              Object {
+                "fontFamily": "RubikMedium",
+                "fontSize": 60,
+                "lineHeight": 75,
+              },
+              Object {
+                "color": "rgba(255, 255, 255, 1)",
+              },
+            ]
+          }
+        >
+          Tap here to fix chat
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "textAlign": "center",
+                "width": "100%",
+              },
+              Object {
+                "fontFamily": "RubikRegular",
+                "fontSize": 30,
+                "lineHeight": 47.14285714285714,
+              },
+              Object {
+                "color": "rgba(153, 172, 185, 1)",
+              },
+            ]
+          }
+          testID="appVersion"
+        >
+          @dozyapp mock
+        </Text>
+      </withTheme(Container)>
+    </TouchableOpacity>
     <withTheme(Container)
       elevation={0}
       style={
         Object {
           "alignItems": "flex-start",
-          "flexDirection": "row",
-          "justifyContent": "space-between",
+          "backgroundColor": "rgba(64, 75, 105, 1)",
+          "borderRadius": 10,
+          "marginVertical": 50,
+          "paddingLeft": 5,
+          "paddingRight": 0,
           "paddingVertical": 10,
+          "width": "100%",
         }
       }
       useThemeGutterPadding={true}
     >
-      <Text
+      <withTheme(Container)
+        elevation={0}
         style={
-          Object {
-            "color": "rgba(255, 255, 255, 1)",
-            "fontFamily": "RubikRegular",
-            "fontSize": 30,
-            "lineHeight": 47.14285714285714,
-          }
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingVertical": 10,
+            },
+            Object {
+              "alignItems": "center",
+            },
+          ]
         }
+        useThemeGutterPadding={true}
       >
-        Sleep log reminder time
-      </Text>
-      <withTheme(DatePicker)
-        date={2021-01-01T00:00:00.000Z}
-        disabled={false}
-        error={false}
-        format="h:MM TT"
-        label="Time"
-        leftIconMode="inset"
-        mode="time"
-        onDateChange={[Function]}
+        <Text
+          style={
+            Object {
+              "color": "rgba(255, 255, 255, 1)",
+              "fontFamily": "RubikRegular",
+              "fontSize": 30,
+              "lineHeight": 47.14285714285714,
+            }
+          }
+        >
+          Sleep log & check-in reminders
+        </Text>
+        <withTheme(Switch)
+          color="rgba(0, 129, 138, 1)"
+          disabled={false}
+          onValueChange={[Function]}
+          value={false}
+        />
+      </withTheme(Container)>
+      <View
         style={
           Object {
-            "minWidth": 100,
-            "padding": 0,
-            "paddingVertical": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": -24,
+            "alignSelf": "flex-end",
+            "backgroundColor": "rgba(255, 255, 255, 0.87)",
+            "height": 0.5,
+            "marginVertical": 10,
+            "width": "95%",
           }
         }
-        type="underline"
       />
-    </withTheme(Container)>
-    <View
-      style={
-        Object {
-          "alignSelf": "flex-end",
-          "backgroundColor": "rgba(255, 255, 255, 0.87)",
-          "height": 0.5,
-          "marginVertical": 10,
-          "width": "95%",
-        }
-      }
-    />
-    <_default
-      onPress={[Function]}
-      style={
-        Object {
-          "width": "100%",
-        }
-      }
-    >
       <withTheme(Container)
         elevation={0}
         style={
@@ -215,23 +159,252 @@ exports[`SettingsScreen should match the snapshot 1`] = `
       >
         <Text
           style={
-            Array [
-              Object {
-                "color": "rgba(255, 255, 255, 1)",
-                "fontFamily": "RubikRegular",
-                "fontSize": 30,
-                "lineHeight": 47.14285714285714,
-              },
-              Object {
-                "color": "rgba(255, 69, 100, 1)",
-              },
-            ]
+            Object {
+              "color": "rgba(255, 255, 255, 1)",
+              "fontFamily": "RubikRegular",
+              "fontSize": 30,
+              "lineHeight": 47.14285714285714,
+            }
           }
         >
-          Sign out of Dozy
+          Sleep log reminder time
+        </Text>
+        <withTheme(DatePicker)
+          date={2021-01-01T00:00:00.000Z}
+          disabled={false}
+          error={false}
+          format="h:MM TT"
+          label="Time"
+          leftIconMode="inset"
+          mode="time"
+          onDateChange={[Function]}
+          style={
+            Object {
+              "minWidth": 100,
+              "padding": 0,
+              "paddingVertical": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": -24,
+            }
+          }
+          type="underline"
+        />
+      </withTheme(Container)>
+      <View
+        style={
+          Object {
+            "alignSelf": "flex-end",
+            "backgroundColor": "rgba(255, 255, 255, 0.87)",
+            "height": 0.5,
+            "marginVertical": 10,
+            "width": "95%",
+          }
+        }
+      />
+      <withTheme(Container)
+        elevation={0}
+        style={
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "opacity": 0.5,
+            "paddingVertical": 10,
+          }
+        }
+        useThemeGutterPadding={true}
+      >
+        <Text
+          style={
+            Object {
+              "color": "rgba(255, 255, 255, 1)",
+              "fontFamily": "RubikRegular",
+              "fontSize": 30,
+              "lineHeight": 47.14285714285714,
+            }
+          }
+        >
+          Target bedtime
+        </Text>
+        <withTheme(DatePicker)
+          date={2021-01-01T00:00:00.000Z}
+          disabled={true}
+          error={false}
+          format="h:MM TT"
+          label="Time"
+          leftIconMode="inset"
+          mode="time"
+          style={
+            Object {
+              "minWidth": 100,
+              "padding": 0,
+              "paddingVertical": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": -24,
+            }
+          }
+          type="underline"
+        />
+      </withTheme(Container)>
+      <View
+        style={
+          Object {
+            "alignSelf": "flex-end",
+            "backgroundColor": "rgba(255, 255, 255, 0.87)",
+            "height": 0.5,
+            "marginVertical": 10,
+            "width": "95%",
+          }
+        }
+      />
+      <withTheme(Container)
+        elevation={0}
+        style={
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "paddingVertical": 10,
+          }
+        }
+        useThemeGutterPadding={true}
+      >
+        <Text
+          style={
+            Object {
+              "color": "rgba(255, 255, 255, 1)",
+              "fontFamily": "RubikRegular",
+              "fontSize": 30,
+              "lineHeight": 47.14285714285714,
+            }
+          }
+        >
+          Target wake time
+        </Text>
+        <withTheme(DatePicker)
+          date={2021-01-01T00:00:00.000Z}
+          disabled={false}
+          error={false}
+          format="h:MM TT"
+          label="Time"
+          leftIconMode="inset"
+          mode="time"
+          onDateChange={[Function]}
+          style={
+            Object {
+              "minWidth": 100,
+              "padding": 0,
+              "paddingVertical": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": -24,
+            }
+          }
+          type="underline"
+        />
+      </withTheme(Container)>
+      <View
+        style={
+          Object {
+            "alignSelf": "flex-end",
+            "backgroundColor": "rgba(255, 255, 255, 0.87)",
+            "height": 0.5,
+            "marginVertical": 10,
+            "width": "95%",
+          }
+        }
+      />
+      <withTheme(Container)
+        elevation={0}
+        style={
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "opacity": 0.5,
+            "paddingVertical": 10,
+          }
+        }
+        useThemeGutterPadding={true}
+      >
+        <Text
+          style={
+            Object {
+              "color": "rgba(255, 255, 255, 1)",
+              "fontFamily": "RubikRegular",
+              "fontSize": 30,
+              "lineHeight": 47.14285714285714,
+            }
+          }
+        >
+          Target time in bed
+        </Text>
+        <Text
+          style={
+            Object {
+              "color": "rgba(255, 255, 255, 1)",
+              "fontFamily": "RubikRegular",
+              "fontSize": 30,
+              "lineHeight": 47.14285714285714,
+            }
+          }
+        >
+          480
         </Text>
       </withTheme(Container)>
-    </_default>
-  </withTheme(Container)>
+      <View
+        style={
+          Object {
+            "alignSelf": "flex-end",
+            "backgroundColor": "rgba(255, 255, 255, 0.87)",
+            "height": 0.5,
+            "marginVertical": 10,
+            "width": "95%",
+          }
+        }
+      />
+      <_default
+        onPress={[Function]}
+        style={
+          Object {
+            "width": "100%",
+          }
+        }
+      >
+        <withTheme(Container)
+          elevation={0}
+          style={
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingVertical": 10,
+            }
+          }
+          useThemeGutterPadding={true}
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "rgba(255, 255, 255, 1)",
+                  "fontFamily": "RubikRegular",
+                  "fontSize": 30,
+                  "lineHeight": 47.14285714285714,
+                },
+                Object {
+                  "color": "rgba(255, 69, 100, 1)",
+                },
+              ]
+            }
+          >
+            Sign out of Dozy
+          </Text>
+        </withTheme(Container)>
+      </_default>
+    </withTheme(Container)>
+  </ScrollView>
 </withTheme(ScreenContainer)>
 `;
