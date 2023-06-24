@@ -1,6 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
 import firestore from '@react-native-firebase/firestore';
-import { sub } from 'date-fns';
 import { take } from 'lodash';
 import refreshUserData from './refreshUserData';
 import { ACTION } from './mainAppReducer';

@@ -12,7 +12,6 @@ import moment from 'moment';
 import * as SecureStore from 'expo-secure-store';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { findLast } from 'lodash';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -1113,15 +1112,5 @@ const styles = StyleSheet.create({
   },
   textLabel: {
     lineHeight: 20,
-  },
-  keyboardAvoidingView: { justifyContent: 'space-around' },
-  spacer6: { flex: 0.6 },
-  spacer: { flex: 1 },
-  none: { display: 'none' },
-  View_ContentContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    paddingHorizontal: scale(10),
-    paddingVertical: scale(40),
   },
 });
