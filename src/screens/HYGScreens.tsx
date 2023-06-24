@@ -544,24 +544,6 @@ export const SHIResult: React.FC<Props> = ({ navigation }) => {
       </WizardContentScreen>
     );
   }
-
-  // return (
-  //   <WizardContentScreen
-  //     theme={theme}
-  //     bottomBackButton={() => navigation.goBack()}
-  //     onQuestionSubmit={() => {
-  //       navigation.navigate('HYGReview', {
-  //         progressBarPercent: 0.96,
-  //       });
-  //     }}
-  //     titleLabel={`You scored a ${HYGState.SHIScore} on the shortened Sleep Hygiene Index (out of 36).`}
-  //     textLabel="There are some improvements to be made, but we can help. Send us a message after you've scheduled your next checkin and we'll work out a plan together."
-  //     buttonLabel="OK"
-  //     flexibleLayout
-  //   >
-  //     <BarChart width={imgSize} height={imgSize} />
-  //   </WizardContentScreen>
-  // );
 };
 
 /*

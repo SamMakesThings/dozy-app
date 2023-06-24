@@ -551,7 +551,7 @@ export const COG1Review: React.FC<Props> = ({ navigation }) => {
         }
       }}
       titleLabel="So, here's the plan this week:"
-      textLabel={`Message us (in the Support tab) and we'll talk 1:1 re: ${COG1State.highestAvgCategoryLabel}. Stick to your target sleep schedule, and continue any other techniques you've learned. Can you recommit to following the improvement plan this week?`}
+      textLabel={`Message us in Discord (via the Support tab) and we'll talk re: ${COG1State.highestAvgCategoryLabel}. Stick to your target sleep schedule, and continue any other techniques you've learned. Can you recommit to following the improvement plan this week?`}
       buttonLabel="Ok, I can do it this week"
       bottomGreyButtonLabel="Wait, I have questions"
       flexibleLayout
