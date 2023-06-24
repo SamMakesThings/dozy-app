@@ -4,18 +4,11 @@ import {
   Text,
   StyleSheet,
   View,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-  FlatList,
   AppState,
   AppStateStatus,
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -36,25 +29,19 @@ import Stop from '../../assets/images/Stop.svg';
 import WarningTriangle from '../../assets/images/WarningTriangle.svg';
 import TanBook from '../../assets/images/TanBook.svg';
 import RaisedHands from '../../assets/images/RaisedHands.svg';
-import { ChatMessage } from '../components/ChatMessage';
-import { ChatTextInput } from '../components/ChatTextInput';
 import submitOnboardingData, {
   submitISIResults,
   submitHealthHistoryData,
   submitDiaryReminderAndCheckinData,
-  submitFirstChatMessage,
   OnboardingState,
 } from '../utilities/submitOnboardingData';
 import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import { getOnboardingCoach } from '../utilities/coach';
 import Notification from '../utilities/notification.service';
-import fetchChats from '../utilities/fetchChats';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
-import { Chat } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import { ISIquestionSubtitle } from '../constants/Onboarding';
-import { useChatsStore } from '../utilities/chatsStore';
 import { useUserDataStore } from '../utilities/userDataStore';
 
 // Define the theme for the file globally
@@ -87,10 +74,7 @@ const onboardingState: OnboardingState = {
   expoPushToken: 'No push token provided',
   diaryReminderTime: null,
   firstCheckinTime: null,
-  firstChatMessageContent: 'Hi',
 };
-
-let chatSubscriber: (() => void) | undefined;
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
@@ -1115,9 +1099,6 @@ export const OnboardingEnd: React.FC<Props> = ({ navigation }) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         submitOnboardingData(onboardingState, dispatch);
-        if (chatSubscriber) {
-          chatSubscriber();
-        }
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
       buttonLabel="Continue"

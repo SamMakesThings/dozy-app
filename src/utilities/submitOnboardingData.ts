@@ -24,7 +24,6 @@ export interface OnboardingState {
   ISI6: number;
   ISI7: number;
   ISITotal: number;
-  firstChatMessageContent: string;
 }
 
 export default async function submitOnboardingData(
@@ -240,65 +239,4 @@ export async function submitDiaryReminderAndCheckinData(
     .catch(function (error) {
       console.error('Error adding health history data: ', error);
     });
-}
-
-export async function submitFirstChatMessage(
-  firstChatMessageContent: string,
-  coachId: string,
-  coachName: string,
-  displayName?: string,
-): Promise<void> {
-  // Initialize relevant Firebase values
-  const userId = await SecureStore.getItemAsync('userId');
-  const userDocRef =
-    typeof userId === 'string'
-      ? firestore().collection('users').doc(userId)
-      : firestore().collection('users').doc('ERRORDELETEME');
-
-  // Check user already initialized a chat
-  const userData = await userDocRef.get();
-  if (!userData.data()?.lastSupportNotifSent) {
-    // Add initial support chat messages to chat collection
-    const chatColRef = userDocRef.collection('supportMessages');
-    chatColRef.add({
-      sender: coachId,
-      message: `Welcome to Dozy! I'm ${coachName} I'll be your sleep coach.`,
-      time: sub(new Date(), { minutes: 4 }),
-      sentByUser: false,
-      dontSendNotification: true,
-    });
-    chatColRef.add({
-      sender: coachId,
-      message: 'Why do you want to improve your sleep?',
-      time: sub(new Date(), { minutes: 3 }),
-      sentByUser: false,
-      dontSendNotification: true,
-    });
-    chatColRef.add({
-      sender: displayName ?? 'You',
-      message: firstChatMessageContent,
-      time: sub(new Date(), { minutes: 2 }),
-      sentByUser: true,
-    });
-    const lastChat = {
-      sender: coachId,
-      message:
-        "Thanks for sending! We'll reply soon. You can find our conversation in the Support tab of the app. :)",
-      time: new Date(),
-      sentByUser: false,
-      dontSendNotification: true,
-    };
-    chatColRef.add(lastChat);
-
-    // Also store reminder info & next check-in datetime
-    userDocRef
-      .update({
-        lastChat,
-        lastSupportNotifSent: lastChat.time,
-        livechatUnreadMsg: false,
-      })
-      .catch(function (error) {
-        console.error('Error adding health history data: ', error);
-      });
-  }
 }
