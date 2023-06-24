@@ -4,21 +4,14 @@ import {
   Text,
   StyleSheet,
   View,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-  FlatList,
   AppState,
   AppStateStatus,
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import moment from 'moment';
-import firestore, {
-  FirebaseFirestoreTypes,
-} from '@react-native-firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { findLast } from 'lodash';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import IconExplainScreen from '../components/screens/IconExplainScreen';
 import MultiButtonScreen from '../components/screens/MultiButtonScreen';
 import DateTimePickerScreen from '../components/screens/DateTimePickerScreen';
@@ -35,25 +28,19 @@ import Stop from '../../assets/images/Stop.svg';
 import WarningTriangle from '../../assets/images/WarningTriangle.svg';
 import TanBook from '../../assets/images/TanBook.svg';
 import RaisedHands from '../../assets/images/RaisedHands.svg';
-import { ChatMessage } from '../components/ChatMessage';
-import { ChatTextInput } from '../components/ChatTextInput';
 import submitOnboardingData, {
   submitISIResults,
   submitHealthHistoryData,
   submitDiaryReminderAndCheckinData,
-  submitFirstChatMessage,
   OnboardingState,
 } from '../utilities/submitOnboardingData';
 import Analytics from '../utilities/analytics.service';
 import Auth from '../utilities/auth.service';
 import { getOnboardingCoach } from '../utilities/coach';
 import Notification from '../utilities/notification.service';
-import fetchChats from '../utilities/fetchChats';
 import AnalyticsEvents from '../constants/AnalyticsEvents';
-import { Chat } from '../types/custom';
 import { ErrorObj } from '../types/error';
 import { ISIquestionSubtitle } from '../constants/Onboarding';
-import { useChatsStore } from '../utilities/chatsStore';
 import { useUserDataStore } from '../utilities/userDataStore';
 
 // Define the theme for the file globally
@@ -86,10 +73,7 @@ const onboardingState: OnboardingState = {
   expoPushToken: 'No push token provided',
   diaryReminderTime: null,
   firstCheckinTime: null,
-  firstChatMessageContent: 'Hi',
 };
-
-let chatSubscriber: (() => void) | undefined;
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   imgSize = imgSizePercent * useWindowDimensions().width;
@@ -1062,7 +1046,7 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
       defaultValue={moment().add(1, 'weeks').toDate()}
       onQuestionSubmit={(value: Date | boolean) => {
         onboardingState.firstCheckinTime = value as Date;
-        navigation.navigate('SendFirstChat', { progressBarPercent: 0.8 });
+        navigation.navigate('DiscordIntro', { progressBarPercent: 0.8 });
         submitDiaryReminderAndCheckinData(onboardingState);
       }}
       validInputChecker={validateInput}
@@ -1074,190 +1058,28 @@ export const CheckinScheduling: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export const SendFirstChat: React.FC<Props> = ({ navigation }) => {
-  const { state } = Auth.useAuth();
-  const { setChats } = useChatsStore((chatsState) => ({
-    setChats: chatsState.setChats,
-  }));
-  const { coach } = useUserDataStore((userDataState) => ({
-    coach: userDataState.coach,
-  }));
-
+export const DiscordIntro: React.FC<Props> = ({ navigation }) => {
   useEffect((): void => {
-    chatSubscriber = undefined;
-    Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChat);
-
-    if (state.userId) {
-      const fetchSupportMessages = () => {
-        fetchChats(firestore(), state.userId!)
-          .then((chats: Array<Chat>) => {
-            // Check that theres >1 entry. If no, set state accordingly
-            if (chats.length === 0) {
-              setChats([]);
-            } else {
-              setChats(chats);
-            }
-            console.log('set chats: ', chats);
-
-            return;
-          })
-          .catch(function (error) {
-            console.log('Error getting chats:', error);
-          });
-      };
-
-      chatSubscriber = firestore()
-        .collection('users')
-        .doc(state.userId)
-        .collection('supportMessages')
-        .onSnapshot(fetchSupportMessages);
-    }
+    Analytics.logEvent(AnalyticsEvents.onboardingDiscordIntro);
   }, []);
-
-  const senderName = `${coach.firstName} ${coach.lastName}`;
 
   return (
     <WizardContentScreen
       theme={theme}
       bottomBackButton={() => navigation.goBack()}
-      textLabel="Your (real human) sleep coach will provide support and answer questions for you during the process. Let's send them a message now!"
-      onQuestionSubmit={() => {
-        navigation.navigate('SendFirstChatContd');
-      }}
-      buttonLabel="Continue"
-    >
-      <View>
-        {/* <ChatMessage
-          coach={senderName}
-          message={`Welcome to Dozy! I'm ${state.coach.firstName}, I'll be your sleep coach.`}
-          time={new Date()}
-          sentByUser={false}
-        /> */}
-        <ChatMessage
-          coach={senderName}
-          message="Why do you want to improve your sleep?"
-          time={new Date()}
-          sentByUser={false}
-        />
-      </View>
-    </WizardContentScreen>
-  );
-};
-
-export const SendFirstChatContd: React.FC<Props> = ({ navigation }) => {
-  const { coach } = useUserDataStore((state) => ({
-    coach: state.coach,
-  }));
-  const userData = useUserDataStore((state) => state.userData);
-  const displayName = userData.userInfo.displayName;
-  const senderName = `${coach.firstName} ${coach.lastName}`;
-  const coachNameString = `${coach.firstName} ${coach.lastName}`;
-  const chats = useChatsStore((chatsState) => chatsState.chats);
-
-  const [message, setMessage] = React.useState('');
-  const [replyVisible, makeReplyVisible] = React.useState(false);
-
-  const messageSent = message?.trim().length > 0;
-
-  useEffect((): void => {
-    Analytics.logEvent(AnalyticsEvents.onboardingSendFirstChatContd);
-  }, []);
-
-  useEffect((): void => {
-    const lastUserMessage = findLast(chats, { sentByUser: true });
-    if (lastUserMessage?.message) {
-      setMessage(lastUserMessage.message);
-      makeReplyVisible(true);
-    }
-  }, [chats]);
-
-  return (
-    <WizardContentScreen
-      theme={theme}
-      bottomBackButton={() => navigation.goBack()}
+      textLabel="You can get answers to your questions, and help from the community, from our Discord server! Join via the Support tab in the app."
       onQuestionSubmit={() => {
         navigation.navigate('OnboardingEnd');
       }}
       buttonLabel="Continue"
-      flexibleLayout
-      onlyBackButton={!replyVisible}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.select({ ios: 'padding' })}
-        keyboardVerticalOffset={Platform.select({ ios: scale(60) })}
-        style={styles.keyboardAvoidingView}
-      >
-        <View style={styles.spacer6} />
-        {chats.length ? (
-          <FlatList
-            contentContainerStyle={styles.View_ContentContainer}
-            renderItem={({ item }) => (
-              <ChatMessage
-                message={item.message}
-                time={(item.time as FirebaseFirestoreTypes.Timestamp).toDate()}
-                sentByUser={item.sentByUser}
-                coach={coachNameString}
-              />
-            )}
-            keyExtractor={(item, index) => `${item.message}${index}`}
-            inverted={true}
-            data={chats}
-          />
-        ) : (
-          <>
-            <ChatMessage
-              coach={senderName}
-              message={`Welcome to Dozy! I'm ${coach.firstName}, I'll be your sleep coach.`}
-              time={new Date()}
-              sentByUser={false}
-            />
-            <ChatMessage
-              coach={senderName}
-              message="Why do you want to improve your sleep?"
-              time={new Date()}
-              sentByUser={false}
-            />
-            <View style={!messageSent && styles.none}>
-              <ChatMessage
-                coach="You"
-                message={message}
-                time={new Date()}
-                sentByUser={true}
-                pending={!replyVisible}
-              />
-            </View>
-            <View style={!replyVisible && styles.none}>
-              <ChatMessage
-                coach={senderName}
-                message="Thanks for sending! We usually reply within 24 hours. You can find our conversation in the Support tab of the app at any time. :)"
-                time={new Date()}
-                sentByUser={false}
-              />
-            </View>
-          </>
-        )}
-        <View style={styles.spacer} />
-        <ChatTextInput
-          onSend={(typedMsg: string) => {
-            if (typedMsg?.trim().length) {
-              onboardingState.firstChatMessageContent = typedMsg;
-              setMessage(typedMsg);
-              Keyboard.dismiss();
-              submitFirstChatMessage(
-                typedMsg,
-                coach.id,
-                coach.firstName,
-                displayName,
-              );
-              setTimeout(() => {
-                makeReplyVisible(true);
-              }, 1000);
-            }
-          }}
-          viewStyle={!!messageSent && styles.none}
-          defaultMessage="To feel more rested"
+      <View>
+        <MaterialCommunityIcons
+          name="discord"
+          size={scale(100)}
+          color={theme.colors.secondary}
         />
-      </KeyboardAvoidingView>
+      </View>
     </WizardContentScreen>
   );
 };
@@ -1276,9 +1098,6 @@ export const OnboardingEnd: React.FC<Props> = ({ navigation }) => {
       image={<RaisedHands width={imgSize} height={imgSize} />}
       onQuestionSubmit={() => {
         submitOnboardingData(onboardingState, dispatch);
-        if (chatSubscriber) {
-          chatSubscriber();
-        }
       }}
       textLabel="You made it!! We won’t let you down. Let’s get started and record how you slept last night."
       buttonLabel="Continue"
@@ -1293,15 +1112,5 @@ const styles = StyleSheet.create({
   },
   textLabel: {
     lineHeight: 20,
-  },
-  keyboardAvoidingView: { justifyContent: 'space-around' },
-  spacer6: { flex: 0.6 },
-  spacer: { flex: 1 },
-  none: { display: 'none' },
-  View_ContentContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    paddingHorizontal: scale(10),
-    paddingVertical: scale(40),
   },
 });

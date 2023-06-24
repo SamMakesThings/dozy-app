@@ -78,6 +78,7 @@ export default {
   onboardingDiaryReminderUnset: 'onboarding diary reminder unset', // Unset the diary reminder in the onboarding
   onboardingCheckinScheduling: 'onboarding checkin scheduling', // Visits the checking scheduling page in the onboarding
   onboardingSendFirstChat: 'onboarding send first chat', // Visits the send first chat page in the onboarding
+  onboardingDiscordIntro: 'onboarding discord intro', // Visits the discord intro page in the onboarding
   onboardingSendFirstChatContd: 'onboarding send first chat contd', // Visits the send first chat contd page in the onboarding
   onboardingOnboardingEnd: 'onboarding end', // Visits the end page in the onboarding
   leaveFeedback: 'leaveFeedback', // Leaves a feedback
