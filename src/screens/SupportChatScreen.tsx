@@ -63,7 +63,7 @@ export const SupportChatScreen: React.FC = ({}) => {
                 <MaterialCommunityIcons
                   name="discord"
                   size={scale(100)}
-                  color={theme.colors.primary}
+                  color={theme.colors.secondary}
                 />
               </View>
             </TouchableOpacity>
