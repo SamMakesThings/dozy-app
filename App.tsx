@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { Provider as ThemeProvider } from '@draftbit/ui';
-import * as Icon from '@expo/vector-icons';
-import * as Font from 'expo-font';
+// import * as Icon from '@expo/vector-icons';
+// import * as Font from 'expo-font';
 import {
   LogBox,
   StatusBar,
@@ -63,7 +63,7 @@ export default function App(): React.ReactElement {
   const isOnboardingComplete = useUserDataStore(
     (state) => state.isOnboardingComplete,
   );
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading] = React.useState(true);
 
   const isCheckingOnboarding: boolean =
     !!authContextValue.state.userId && isOnboardingComplete === undefined;
@@ -74,26 +74,26 @@ export default function App(): React.ReactElement {
     StatusBar.setBarStyle('light-content');
   }, []);
 
-  const _handleLoadingError = (error: Error) => {
-    // Add error reporting here
-    console.warn(error);
-  };
+  // const _handleLoadingError = (error: Error) => {
+  //   // Add error reporting here
+  //   console.warn(error);
+  // };
 
-  // Trigger the switch from the loading screen to the app
-  function _handleFinishLoading() {
-    setIsLoading(false);
-  }
+  // // Trigger the switch from the loading screen to the app
+  // function _handleFinishLoading() {
+  //   setIsLoading(false);
+  // }
 
   // Load assets async w/Expo tools
-  async function _loadResourcesAsync() {
-    await Font.loadAsync({
-      ...Icon.Ionicons.font,
-      'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-      RubikRegular: require('./assets/fonts/RubikRegular.ttf'),
-      RubikMedium: require('./assets/fonts/RubikMedium.ttf'),
-      RubikBold: require('./assets/fonts/RubikBold.ttf'),
-    });
-  }
+  // async function _loadResourcesAsync() {
+  //   await Font.loadAsync({
+  //     ...Icon.Ionicons.font,
+  //     'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+  //     RubikRegular: require('./assets/fonts/RubikRegular.ttf'),
+  //     RubikMedium: require('./assets/fonts/RubikMedium.ttf'),
+  //     RubikBold: require('./assets/fonts/RubikBold.ttf'),
+  //   });
+  // }
 
   // Render a loading screen if loading, otherwise load the main app
   if (isLoading) {
