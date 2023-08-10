@@ -6,8 +6,9 @@
     "privacy": "public",
     "platforms": ["ios", "android"],
     "primaryColor": "#00818A",
-    "version": "0.7.420",
+    "version": "0.7.422",
     "orientation": "portrait",
+    "runtimeVersion":"1.0.0",
     "icon": "./assets/images/appleIcon.png",
     "splash": {
       "image": "./assets/images/splashImage.png",
@@ -33,6 +34,7 @@
     "ios": {
       "supportsTablet": false,
       "icon": "./assets/images/appleIcon.png",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.dozyhealth.dozy",
       "buildNumber": "435",
       "config": {
@@ -44,6 +46,10 @@
     "android": {
       "package": "com.dozyhealth.dozy",
       "icon": "./assets/images/appleIcon.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/appleIcon.png",
+        "backgroundColor": "#232B3F"
+      },
       "versionCode": 435,
       "config": {
         "googleSignIn": {
@@ -94,7 +100,9 @@
           "color": "#00818A"
         }
       ],
-      "sentry-expo"
+      "sentry-expo",
+      "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics"
     ]
   }
 }
