@@ -6,7 +6,7 @@
     "privacy": "public",
     "platforms": ["ios", "android"],
     "primaryColor": "#00818A",
-    "version": "0.7.420",
+    "version": "0.7.422",
     "orientation": "portrait",
     "runtimeVersion":"1.0.0",
     "icon": "./assets/images/appleIcon.png",
